@@ -1,0 +1,631 @@
+@prefix : <http://maennerchormurgdatabase.org/> . 
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix wd: <https://www.wikidata.org/wiki/> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#////////////////////////////////////////////
+#                   CLASSES 
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#////////////////////////////////////////////
+
+
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#--------------Documenten-Classes------------
+#////////////////////////////////////////////
+
+
+:Document a rdfs:Class ;
+    rdfs:subClassOf schema:CreativeWork ;
+    rdfs:label "Document"@en ;
+    rdfs:label "Dokument"@de ;
+    rdfs:comment "A document, typically a written or printed work, that can be formal or informal."@en ;
+    rdfs:comment "Ein Dokument, typischerweise ein schriftliches oder gedrucktes Werk, das formal oder informell sein kann."@de ;
+    owl:sameAs wd:Q49848 .
+
+
+#--------------Documenten-Sub-Classes------------
+
+:Letter a rdfs:Class ;                     #Brief
+    rdfs:subClassOf :Document; 
+    rdfs:label "Letter"@en ;
+    rdfs:label "Brief"@de ;
+    rdfs:comment "A written message, typically sent from one person to another."@en ;
+    rdfs:comment "Ein schriftliches Dokument, das typischerweise von einer Person an eine andere gesendet wird."@de ;
+    owl:sameAs wd:Q133492 .
+
+:report a rdfs:Class ;                      #Protocol
+    rdfs:subClassOf :Document ;
+    rdfs:label "report"@en ;
+    rdfs:label "Protokoll"@de ;
+    rdfs:comment "A record or minutes of a meeting or event."@en ;
+    rdfs:comment "Ein Protokoll oder eine Aufzeichnung von einer Sitzung oder einem Ereignis."@de ;
+    owl:sameAs wd:Q10870555 .
+
+:Postcard a rdfs:Class ;                    #Postkarte
+    rdfs:subClassOf :Document ;
+    rdfs:label "Postcard"@en ;
+    rdfs:label "Postkarte"@de ;
+    rdfs:comment "A postcard, typically used for sending short messages with or without an envelope."@en ;
+    rdfs:comment "Eine Postkarte, die typischerweise für das Versenden von kurzen Nachrichten mit oder ohne Umschlag verwendet wird."@de ;
+    owl:sameAs wd:Q192425 .
+
+:Invoice a rdfs:Class ;                     #Rechnung
+    rdfs:subClassOf :Document ;
+    rdfs:label "Invoice"@en ;
+    rdfs:label "Rechnung"@de ;
+    rdfs:comment "A document that details a transaction, including the goods or services provided and the payment terms."@en ;
+    rdfs:comment "Ein Dokument, das eine Transaktion beschreibt, einschließlich der gelieferten Waren oder Dienstleistungen und der Zahlungsbedingungen."@de ;
+    owl:sameAs wd:Q190581 .
+
+:GovernmentDocument a rdfs:Class ;          #Behördenpost/Regierungsdokument
+    rdfs:subClassOf :Document ;
+    rdfs:label "Government document"@en ;
+    rdfs:label "Regierungsdokument"@de ;
+    rdfs:comment "A document issued by a government entity, typically containing official information or records."@en ;
+    rdfs:comment "Ein Dokument, das von einer Regierungsstelle herausgegeben wurde und in der Regel offizielle Informationen oder Aufzeichnungen enthält."@de ;
+    owl:sameAs wd:Q30941709 .
+
+:Map a rdfs:Class ;                         #Karte (geographisch)
+    rdfs:subClassOf :Document ;
+    rdfs:label "Map"@en ;
+    rdfs:label "Karte"@de ;
+    rdfs:comment "A visual representation of an area, often used for navigation or spatial understanding."@en ;
+    rdfs:comment "Eine visuelle Darstellung eines Gebiets, die häufig zur Navigation oder zum räumlichen Verständnis verwendet wird."@de ;
+    owl:sameAs wd:Q4006 .
+
+:SheetMusic a rdfs:Class ;                  #Noten/Notenblatt
+    rdfs:subClassOf :Document ;
+    rdfs:label "Sheet music"@en ;
+    rdfs:label "Notenblatt"@de ;
+    rdfs:comment "A musical score or written representation of musical notes, used for performing music."@en ;
+    rdfs:comment "Eine musikalische Partitur oder schriftliche Darstellung von Noten, die zur Aufführung von Musik verwendet wird."@de ;
+    owl:sameAs wd:P3030 .
+
+:NewspaperArticle a rdfs:Class ;            #Zeitungsartikel
+    rdfs:subClassOf :Document ;
+    rdfs:label "Newspaper article"@en ;
+    rdfs:label "Zeitungsartikel"@de ;
+    rdfs:comment "An article published in a newspaper, typically covering news, opinions, or other subjects of public interest."@en ;
+    rdfs:comment "Ein in einer Zeitung veröffentlichter Artikel, der in der Regel Nachrichten, Meinungen oder andere Themen von öffentlichem Interesse behandelt."@de ;
+    owl:sameAs wd:Q5707594 .
+
+:List a rdfs:Class ;                        #Liste
+    rdfs:subClassOf :Document ;
+    rdfs:label "List"@en ;
+    rdfs:label "Liste"@de ;
+    rdfs:comment "A collection of items, typically arranged in a specific order or according to a particular criteria."@en ;
+    rdfs:comment "Eine Sammlung von Elementen, die typischerweise in einer bestimmten Reihenfolge oder nach bestimmten Kriterien angeordnet ist."@de ;
+    owl:sameAs wd:Q12139612 .
+
+:Website a rdfs:Class ;                    #Website
+    rdfs:subClassOf :Document ;
+    rdfs:label "Website"@en ;
+    rdfs:label "Webseite"@de ;
+    rdfs:comment "A collection of related web pages served from a single domain, often containing information, media, or other resources."@en ;
+    rdfs:comment "Eine Sammlung von zusammenhängenden Webseiten, die von einer einzigen Domain bereitgestellt werden und häufig Informationen, Medien oder andere Ressourcen enthalten."@de ;
+    owl:sameAs wd:Q35127 .
+
+:TextAnnotation a rdfs:Class ;             #Notiz/Notizzettel
+    rdfs:subClassOf :Document ;
+    rdfs:label "Text annotation"@en ;
+    rdfs:label "Notiz"@de ;
+    rdfs:comment "A note or annotation added to a text, often used for clarification, comments, or additional information."@en ;
+    rdfs:comment "Eine Notiz oder Anmerkung, die zu einem Text hinzugefügt wird und häufig zur Klärung, für Kommentare oder zusätzliche Informationen verwendet wird."@de ;
+    owl:sameAs wd:Q2851776 .
+
+:Offer a rdfs:Class ;                      #Offerte/Angebot   
+    rdfs:subClassOf :Document ;
+    rdfs:label "Offer"@en ;
+    rdfs:label "Offerte"@de ; 
+    rdfs:comment "A proposal or quotation provided, often in a commercial context, outlining the terms and conditions for a service or product."@en ;
+    rdfs:comment "Ein Vorschlag oder Angebot, oft im kommerziellen Kontext, der die Bedingungen und Konditionen für eine Dienstleistung oder ein Produkt beschreibt."@de ;
+    owl:sameAs wd:Q6501319 .
+
+
+
+
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#------------Organization-Classes------------
+#////////////////////////////////////////////
+
+:Organization a rdfs:Class ;
+    owl:equivalentClass schema:Organisation;                #Organisation
+    rdfs:label "Organization"@en ;
+    rdfs:label "Organisation"@de ;
+    rdfs:comment "An entity that is structured and managed to pursue a collective goal, which can include businesses, associations, and other institutions."@en ;
+    rdfs:comment "Eine Einheit, die strukturiert und verwaltet wird, um ein gemeinsames Ziel zu verfolgen, einschließlich Unternehmen, Vereinen und anderen Institutionen."@de ;
+    owl:sameAs wd:Q43229 .
+
+:FeldpostNumber a rdfs:Class ;              #Feldpostnummer
+    rdfs:label "Feldpostnummer"@de ;
+    rdfs:label "Feldpost Number"@en ;
+    rdfs:comment "Represents a Feldpost number used in military units to identify postal services."@en , "Repräsentiert eine Feldpostnummer, die in Militäreinheiten für den Postverkehr verwendet wird."@de ;
+    owl:sameAs wd:Q467921.
+
+
+#-------------Freizeit-Organisationen
+
+:Person a owl:Class ;                      #Person
+    owl:equivalentClass  schema:Person;
+    rdfs:label "Person"@en ;  
+    rdfs:label "Person"@de ;
+    rdfs:comment "An individual human being with properties like name, birth date, and relationships."@en , "Ein Mensch mit Eigenschaften wie Name, Geburtsdatum und Beziehungen."@de ;
+    owl:sameAs wd:Q5.
+
+:Association a rdfs:Class ;                #Verein
+    rdfs:subClassOf :Organization ;
+    rdfs:label "Association"@en ;
+    rdfs:label "Verein"@de ;
+    rdfs:comment "An organization formed by a group of people with a common purpose or interest, often non-profit."@en , "Eine Organisation, die von einer Gruppe von Menschen mit einem gemeinsamen Zweck oder Interesse gegründet wurde, oft gemeinnützig."@de ;
+    owl:sameAs wd:Q9299236.
+
+:Choir a rdfs:Class ;                       #Chor
+    rdfs:subClassOf :Association ,schema:PerformingGroup ;
+    rdfs:label "Choir"@en ;
+    rdfs:label "Chor"@de ;
+    rdfs:comment "A musical group composed of singers who perform together."@en ;
+    rdfs:comment "Eine musikalische Gruppe, die aus Sängern besteht und gemeinsam auftritt."@de ;
+    owl:sameAs wd:Q131186.
+
+
+
+
+
+#-------------------Staatliche Organisationen-----------------
+:PoliticalOrganization a rdfs:Class ;
+    rdfs:subClassOf :Organization ;
+    rdfs:label "Political Organization"@en ;
+    rdfs:label "Politische Organisation"@de ;
+    rdfs:comment "An organization involved in political processes, such as political parties or groups."@en ;
+    rdfs:comment "Eine Organisation, die an politischen Prozessen beteiligt ist, wie politische Parteien oder Gruppen."@de ;
+    owl:sameAs wd:Q7210356 .
+
+
+:PoliticalParty a rdfs:Class ;              #politische Partei
+    rdfs:subClassOf :PoliticalOrganization ;
+    rdfs:label "Political Party"@en ;
+    rdfs:label "Politische Partei"@de ;
+    rdfs:comment "An organization that represents a political beliefs or agenda and participates in elections and potentially government."@en ;
+    rdfs:comment "Eine Organisation, die eine politische Haltung oder Agenda vertritt und an Wahlen und möglicherweise der Regierung teilnimmt."@de ;
+    owl:sameAs wd:Q7278 .
+
+:GovernmentAgency a rdfs:Class ;            #Behörde
+    rdfs:subClassOf :PoliticalOrganization ;
+    rdfs:label "Government Agency"@en ;
+    rdfs:label "Behörde"@de ;
+    rdfs:comment "An organization that is part of the government and responsible for implementing policies, regulations, and services."@en ;
+    rdfs:comment "Eine Organisation, die Teil der Regierung ist und für die Umsetzung von Richtlinien, Vorschriften und Dienstleistungen verantwortlich ist."@de ;
+    owl:sameAs wd:Q327333 .
+
+:SS a rdfs:Class ;                          #SS
+    rdfs:subClassOf :GovernmentAgency ;
+    rdfs:label "SS"@en ;
+    rdfs:label "Schutzstaffel"@de ;
+    skos:altLabel "Schutzstaffel"@en ;
+    skos:altLabel "SS"@de ;
+    rdfs:comment "A major paramilitary organization under Adolf Hitler and the Nazi Party during Nazi Germany."@en ;
+    rdfs:comment "Eine wichtige paramilitärische Organisation unter Adolf Hitler und der NSDAP im nationalsozialistischen Deutschland."@de ;
+    owl:sameAs wd:Q44687 .
+
+:Military a rdfs:Class ;                # Militär
+    rdfs:subClassOf :GovernmentAgency ;
+    rdfs:label "Military"@en ;
+    rdfs:label "Militär"@de ;
+    rdfs:comment "The militaryof a state or nation."@en ;
+    rdfs:comment "Das Militär eines Staates oder Nation."@de ;
+    owl:sameAs wd:Q8473.
+
+:Wehrmacht a rdfs:Class ;                   #Wehrmacht
+    rdfs:subClassOf :Military ;
+    rdfs:label "Wehrmacht"@en ;
+    rdfs:label "Wehrmacht"@de ;
+    rdfs:comment "The unified armed forces of Nazi Germany from 1935 to 1945."@en ;
+    rdfs:comment "Die Streitkräfte des nationalsozialistischen Deutschlands von 1935 bis 1945."@de ;
+    schema:hasPart :MilitaryUnit;
+    owl:sameAs wd:Q128781 .
+
+:Kriegsmarine a rdfs:Class ;                      #Marine
+    rdfs:subClassOf :Military ;
+    rdfs:label "Navy"@en ;
+    rdfs:label "Marine"@de ;
+    rdfs:comment "A branch of a nation's armed forces that conducts military operations at sea."@en ;
+    rdfs:comment "Ein Zweig der Streitkräfte eines Landes, der militärische Operationen auf See durchführt."@de ;
+    owl:sameAs wd:Q151701 .
+
+
+:WaffenSS a rdfs:Class ;                    #Waffen-SS
+    rdfs:subClassOf :SS ;
+    rdfs:label "Waffen-SS"@en ;
+    rdfs:label "Waffen-SS"@de ;
+    rdfs:comment "The armed wing of the SS, Nazi Germany's paramilitary organization, active during World War II."@en ;
+    rdfs:comment "Der bewaffnete Zweig der SS, der paramilitärischen Organisation des nationalsozialistischen Deutschlands, die im Zweiten Weltkrieg aktiv war."@de ;
+    owl:sameAs wd:Q153626 .
+
+:Luftwaffe a rdfs:Class ;
+    rdfs:subClassOf :Military ;
+    rdfs:label "Luftwaffe"@en ;
+    rdfs:label "Luftwaffe"@de ;
+    rdfs:comment "The air force branch of Nazi Germany's military during World War II."@en ;
+    rdfs:comment "Die Luftwaffe des Militärs im nationalsozialistischen Deutschland während des Zweiten Weltkriegs."@de ;
+    owl:sameAs wd:Q2564009 .
+
+
+:UnitWaffenSS a rdfs:Class ;                # Militäreinheit WaffenSS
+    rdfs:subClassOf :WaffenSS;
+    rdfs:label "Military unit"@en ;
+    rdfs:label "Militärische Einheiten"@de ;
+    rdfs:comment "A military unit to which a person belongs."@en ;
+    rdfs:comment "Die Militäreinheit, der eine Person zugehört."@de ;
+    owl:sameAs wd:Q176799.
+
+:UnitLuftwaffe a rdfs:Class ;                # Militäreinheit Luftwaffe
+    rdfs:subClassOf :Luftwaffe;
+    rdfs:label "Military unit"@en ;
+    rdfs:label "Militärische Einheiten"@de ;
+    rdfs:comment "A military unit to which a person belongs."@en ;
+    rdfs:comment "Die Militäreinheit, der eine Person zugehört."@de ;
+    owl:sameAs wd:Q176799.
+
+:UnitMarine a rdfs:Class ;                # Militäreinheit Kriegsmarine
+    rdfs:subClassOf :Kriegsmarine;
+    rdfs:label "Military unit"@en ;
+    rdfs:label "Militärische Einheiten"@de ;
+    rdfs:comment "A military unit to which a person belongs."@en ;
+    rdfs:comment "Die Militäreinheit, der eine Person zugehört."@de ;
+    owl:sameAs wd:Q176799.
+
+:UnitWehrmacht a rdfs:Class ;                # Militäreinheit Wehrmacht
+    rdfs:subClassOf :Wehrmacht;
+    rdfs:label "Military unit"@en ;
+    rdfs:label "Militärische Einheiten"@de ;
+    rdfs:comment "A military unit to which a person belongs."@en ;
+    rdfs:comment "Die Militäreinheit, der eine Person zugehört."@de ;
+    owl:sameAs wd:Q176799.
+
+
+:VolunteerFireDepartment a rdfs:Class ;      # Freiwillige Feuerwehr
+    rdfs:subClassOf :Association, schema:EmergencyService ;
+    rdfs:label "Volunteer Fire Department"@en ;
+    rdfs:label "Freiwillige Feuerwehr"@de ;
+    rdfs:comment "An organization made up of volunteers that provides fire protection and emergency response services."@en ;
+    rdfs:comment "Eine Organisation aus Freiwilligen, die Brandschutz und Notfalleinsätze anbietet."@de ;
+    owl:sameAs wd:Q285852 .
+    
+
+
+
+
+#----------------wirtschaftliche Organisationen--------
+
+:Business a rdfs:Class ;                    #Firma
+    rdfs:subClassOf :Organization ;
+    rdfs:label "Business"@en ;
+    rdfs:label "Firma"@de ;
+    rdfs:comment "An organization involved in commercial, industrial, or professional activities."@en ;
+    rdfs:comment "Eine Organisation, die in kommerziellen, industriellen oder beruflichen Tätigkeiten tätig ist."@de ;
+    owl:sameAs wd:Q4830453 .
+
+:Bank a rdfs:Class ;                        #Bank
+    rdfs:subClassOf :Business ;
+    rdfs:label "Bank"@en ;
+    rdfs:label "Bank"@de ;
+    rdfs:comment "A financial institution that accepts deposits, offers loans, and provides various financial services."@en ;
+    rdfs:comment "Ein Finanzinstitut, das Einlagen entgegennimmt, Kredite vergibt und verschiedene Finanzdienstleistungen anbietet."@de ;
+    owl:sameAs wd:Q22687 .
+
+
+
+
+#--------------Organization-Sub-Classes------------
+
+:MaleChoir a rdfs:Class ;                   #Männerchor
+    rdfs:subClassOf :Choir ; 
+    rdfs:label "Men´s Choir"@en ;
+    rdfs:label "Männerchor"@de ;
+    rdfs:comment "A musical group composed of male singers who perform together."@en ;
+    rdfs:comment "Eine musikalische Gruppe, die aus männlichen Sängern besteht und gemeinsam auftritt."@de ;
+    owl:sameAs wd:Q1684352.
+
+:Orchestra a rdfs:Class ;                   # Orchester
+    rdfs:subClassOf :Association ;
+    rdfs:label "Orchestra"@en ;
+    rdfs:label "Orchester"@de ;
+    rdfs:comment "A large group of musicians who play together, typically performing classical music."@en ;
+    rdfs:comment "Eine große Gruppe von Musikern, die gemeinsam spielen, typischerweise klassische Musik aufführen."@de ;
+    owl:sameAs wd:Q42998.
+
+
+
+:TransportCompany a rdfs:Class ;            #Transportunternehmen
+    rdfs:subClassOf :Business ;
+    rdfs:label "Transport Company"@en ;
+    rdfs:label "Transportunternehmen"@de ;
+    rdfs:comment "A business that specializes in the transportation of goods or passengers."@en ;
+    rdfs:comment "Ein Unternehmen, das sich auf den Transport von Gütern oder Personen spezialisiert."@de ;
+    owl:sameAs wd:Q740752 .
+
+:Brewery a rdfs:Class ;                     #Brauerei
+    rdfs:subClassOf :Business ;
+    rdfs:label "Brewery"@en ;
+    rdfs:label "Brauerei"@de ;
+    rdfs:comment "A business involved in the production of beer through brewing."@en ;
+    rdfs:comment "Ein Unternehmen, das sich mit der Herstellung von Bier durch Brauen beschäftigt."@de ;
+    owl:sameAs wd:Q131734 .
+
+
+
+
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#////////////////////////////////////////////
+#                 PROPERTIES 
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#////////////////////////////////////////////
+
+
+#-------------Document_Properties--------------
+
+:hasAuthorID a rdfs:Property ;                  # Gibt an, wer das Dokument verfasst hat (Person oder Organisation).
+    rdfs:label "has author"@en ;
+    rdfs:label "hat Verfasser"@de ;
+    rdfs:comment "The person or organization that created the document."@en ;
+    rdfs:comment "Die Person oder Organisation, die das Dokument erstellt hat."@de ;
+    rdfs:domain :Document ;
+    rdfs:range [ a owl:Class ; owl:unionOf (:Person :Organization) ] .
+
+:hasDocumentID a rdfs:Property ;              # Eindeutige ID, die jedes Dokument identifiziert.
+    rdfs:label "has document ID"@en ;
+    rdfs:label "hat Dokumenten-ID"@de ;
+    rdfs:comment "A unique identifier for the document."@en ;
+    rdfs:comment "Eine eindeutige Kennung für das Dokument."@de ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:hasRecipientID a rdfs:Property ;               # Beschreibt, an wen das Dokument gerichtet ist (Person oder Organisation).
+    rdfs:label "has recipient"@en ;
+    rdfs:label "hat Empfänger"@de ;
+    rdfs:comment "The person or organization to whom the document is addressed."@en ;
+    rdfs:comment "Die Person oder Organisation, an die das Dokument gerichtet ist."@de ;
+    rdfs:domain :Document ;
+    rdfs:range [ a owl:Class ; owl:unionOf (:Person :Organization) ] .
+
+:hasTranscription a rdfs:Property ;          # Datum, an dem das Dokument transkribiert wurde.
+    rdfs:label "has the transcription"@en ;
+    rdfs:label "hat die Transkription"@de ;
+    rdfs:comment "refers to a transcription."@en ;
+    rdfs:comment "Referenziert auf eine Transkription."@de ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:hasCreationPlace a rdfs:Property ;              # Ort, an dem das Dokument erstellt wurde.
+    rdfs:label "creation place"@en ;
+    rdfs:label "Entstehungsort"@de ;
+    rdfs:comment "The place where the document was created."@en ;
+    rdfs:comment "Der Ort, an dem das Dokument erstellt wurde."@de ;
+    rdfs:domain :Document ;
+    rdfs:range schema:Place .
+
+:hasReceiptPlace a rdfs:Property ;               # Ort, an dem das Dokument empfangen wurde.
+    rdfs:label "receipt place"@en ;
+    rdfs:label "Empfangsort"@de ;
+    rdfs:comment "The place where the document was received."@en ;
+    rdfs:comment "Der Ort, an dem das Dokument empfangen wurde."@de ;
+    rdfs:domain :Document ;
+    rdfs:range schema:Place .
+
+:hasContentTags a rdfs:Property ;                # Tags, die den Inhalt des Dokuments beschreiben.
+    rdfs:label "content tags"@en ;
+    rdfs:label "Inhalt-Tags"@de ;
+    rdfs:comment "Tags that describe the content or themes of the document."@en ;
+    rdfs:comment "Tags, die den Inhalt oder die Themen des Dokuments beschreiben."@de ;
+    rdfs:domain :Document ;
+    rdfs:range xsd:string .
+
+:hasCreationDate a rdfs:Property ;               # Das Datum, an dem das Dokument ursprünglich erstellt wurde.
+    rdfs:label "creation date"@en ;
+    rdfs:label "Entstehungsdatum"@de ;
+    rdfs:comment "The date when the document was originally created."@en ;
+    rdfs:comment "Das Datum, an dem das Dokument ursprünglich erstellt wurde."@de ;
+    rdfs:domain :Document ;
+     rdfs:range [
+        a owl:Class ;
+        owl:unionOf (xsd:date xsd:gYear)
+    ] .
+
+
+#-------------Person_Properties--------------
+                                                            #Membership to an association
+#:isActiveMemberOf a rdfs:Property ;
+#    rdfs:label "Active Member"@en ;
+#    rdfs:label "Aktivmitglied"@de ;
+#    rdfs:comment "Indicates that a person is an active member of an association."@en ;
+#    rdfs:comment "Gibt an, dass eine Person ein aktives Mitglied eines Vereins ist."@de ;
+#    rdfs:domain :Person ;
+#    rdfs:range :Association ;          # The range is Association (could be Choir, Club, etc.)
+#    rdfs:subPropertyOf schema:member . # Subproperty of the general 'member' property from schema.org
+
+#:isPassiveMemberOf a rdfs:Property ;
+#    rdfs:label "Passive Member"@en ;
+#    rdfs:label "Passivmitglied"@de ;
+#    rdfs:comment "Indicates that a person is an passive member of an association."@en ;
+#    rdfs:comment "Gibt an, dass eine Person ein passives Mitglied eines Vereins ist."@de ;
+#    rdfs:domain :Person ;
+#    rdfs:range :Association ;          # The range is Association (could be Choir, Club, etc.)
+#    rdfs:subPropertyOf schema:member . # Subproperty of the general 'member' property from schema.org
+
+#:NoMemberOf a rdfs:Property ;            # Corrected to rdf:Property
+#    rdfs:label "No member"@en ;
+#    rdfs:label "Kein Mitglied"@de ;
+#    rdfs:comment "status or relation: is no member of an association"@en ;  # Fixed typo: "pf" -> "of"
+#    rdfs:comment "Status oder das Verhältnis: Ist kein Mitglied in einem Verein"@de ;
+#    rdfs:domain :Person ;
+#    rdfs:range :Association ;          # The range is Association (could be Choir, Club, etc.)
+#    rdfs:subPropertyOf schema:member . # Subproperty of the general 'member' property from schema.org
+
+:relatedTo a rdfs:Property ;
+    rdfs:label "Related to"@en ;
+    rdfs:label "Verwandt mit"@de ;
+    rdfs:comment "Defines the familial  relationship between two individuals, such as kinship, marriage."@en ;
+    rdfs:comment "Definiert die familiäre Beziehung zwischen zwei Personen, wie Verwandtschaft, Ehe."@de ;
+    rdfs:domain :Person ;
+    rdfs:range :Person .
+
+
+#-------------Organization_Properties------------
+
+
+#-----------------Properties---------------
+
+
+:hasRoleInChoir a rdfs:Property ;
+    rdfs:label "Role/Position in choir"@en ;
+    rdfs:label "Rolle/Position im Chor"@de ;
+    rdfs:comment "A role or position held by a person in the choir."@en ;
+    rdfs:comment "Die Rolle oder Position einer Person im Chor"@de ;
+    rdfs:domain :Person ;
+    rdfs:range xsd:string .
+    
+
+
+
+
+#--------------Militry_Unit_Properties--------------
+ 
+
+:hasFeldpostNumber a rdfs:Property ;
+    rdfs:label "Feldpost number"@en ;
+    rdfs:label "Feldpostnummer"@de;
+    rdfs:comment "The Feldpost number associated with a military unit during a certain time."@en ;
+    rdfs:comment "Die erste Feldpostnummer in Verbindung mit einer Militäreinheit."@de ;
+    rdfs:seeAlso wd:Q467921;
+    rdfs:domain :MilitaryUnit ;
+    rdfs:range :FeldpostNumber .
+
+
+
+#//////////////////////////////////////////////////
+#///////// WICHTIGE SCHEMA PROPERTIES ////////////
+#////////////////////////////////////////////////
+
+#schema:affiliation                                      #Teilnahme/EIntritt und Austritt mit RDF Star Zeitraum festlegen
+
+
+
+
+
+#//////////////////////////////////////////////////
+#//////////////// BEISPIELE //////////////////////
+#////////////////////////////////////////////////
+
+#_Personen__
+
+# Beispiel einer Person mit den definierten Attributen
+
+#:person1234 a :Person ;
+    #schema:familyName "Mustermann" ;
+    #schema:givenName "Suter" ;
+    #schema:alternateName "Manni" ;
+    #schema:homeLocation wd:Q64;                        #wikidata für Berlin
+    #schema:birthDate "1920-05-15"^^xsd:date ;
+    #schema:deathDate "2000-04-20"^^xsd:date ;
+    #:hasRoleInChoir "Ehrenpräsident"@de,"Honorary President"@en ;
+    #:hasMilitaryUnit :militaryUnit123 ;
+    #schema:relatedTo :person5678 .
+
+
+
+#//////////////////////////////////////////////////
+#////////////// RDF STAR BEISPIELE ///////////////
+#////////////////////////////////////////////////
+
+#---------------RDF* PERSON------------------
+
+                                                                #Feldpostnummer und Zeitraum
+
+#<< :person1234 :hasMilitaryUnit :militaryUnit123 >> 
+#    :hasFeldpostNumber "12345" ;
+#    schema:startDate "1939"^^xsd:gYear ;
+#    schema:endDate "1942"^^xsd:gYear .
+
+
+#<< :person1234 schema:affiliation :organizationABC >>
+    #schema:startDate "2020-01-01"^^xsd:date ;
+    #schema:endDate "2023-01-01"^^xsd:date .
+
+
+:militaryUnit0000EXAMPLE a :MilitaryUnit ;
+    schema:isPartOf :Wehrmacht ;
+    schema:location wd:Q490453 ;
+    schema:member :person0000EXAMPLE;
+    schema:startDate "1939-09-01"^^xsd:date ;
+    schema:endDate "1945-08-06"^^xsd:date;
+    :hasFeldpostNumber :FPN0000EXAMPLE.
+
+:militaryUnit0001EXAMPLE a :MilitaryUnit ;
+    schema:isPartOf :Wehrmacht ;
+    schema:location wd:Q490453 ;
+    schema:member :person0001EXAMPLE;
+    schema:isPartOf :Wehrmacht;
+    :hasFeldpostNumber :FPN0001EXAMPLE .    
+<<:militaryUnit0001EXAMPLE :hasFeldpostNumber :FPN0001EXAMPLEMilitaryUnit>>schema:startDate "1939-09-01"^^xsd:date.
+<<:militaryUnit0001EXAMPLE :hasFeldpostNumber :FPN0001EXAMPLE>>schema:endDate "1945-08-06"^^xsd:date.
+
+
+
+
+:organization0000EXAMPLE a :MaleChoir;
+    schema:location :Murg ;
+    schema:label "Beispiel Chor" ;
+    schema:startDate "1861"^^xsd:gYear.
+
+    
+
+:FPN0000EXAMPLE a :FeldpostNumber ;
+    rdfs:label "00000BeispFelPoNum"@de, "0000ExampleFeldPoNumber"@en ;
+    schema:affiliation :militaryUnit0000EXAMPLE.
+
+:FPN0001EXAMPLE a :FeldpostNumber ;
+    rdfs:label "00001BspFelPoNum"@de, "0001ExampleFeldPoNo"@en ;
+    schema:affiliation :militaryUnit0001EXAMPLE.
+
+:person0000EXAMPLE a :Person ;
+    schema:familyName "Mustermann" ;
+    schema:givenName "Mustermanfred" ;
+    schema:alternateName "ManniMuster" ;
+    schema:homeLocation wd:Q64;                        #wikidata für Berlin
+    schema:birthDate "1877-05-15"^^xsd:date ;
+    schema:deathDate "1942-04-20"^^xsd:date ;
+    :hasRoleInChoir "Ehrenpräsident"@de, "Honorary President"@en .
+
+:person0000EXAMPLE schema:member :militaryUnit0000EXAMPLE;
+    schema:startDate "1939"^^xsd:gYear ;
+    schema:endDate "1942"^^xsd:gYear;
+    :hasFeldpostNumber :FPN0000EXAMPLE.
+
+                                                                #membership and accession year
+<<:person0000EXAMPLE schema:member :organization0000EXAMPLE>> schema:startDate "1897-01-01"^^xsd:date; schema:endDate "1942-04-20"^^xsd:date .
+
+
+:person0001EXAMPLE a :Person ;
+    schema:familyName "Doe" ;
+    schema:givenName "John" ;
+    schema:alternateName "JOHNEXAMPLE" ;
+    schema:homeLocation :Murg ;                        #wikidata für Berlin
+    schema:birthDate "1889-01-01"^^xsd:date ;
+    schema:deathDate "1945-01-01"^^xsd:date .
+
+:person0001EXAMPLE schema:member :organization0001EXAMPLE ;
+    schema:startDate "1899-01-01"^^xsd:date ;
+    schema:endDate "1944-01-01"^^xsd:date .
+
+
+
+:Murg a schema:Place;
+    owl:sameAs wd:Q550673.
