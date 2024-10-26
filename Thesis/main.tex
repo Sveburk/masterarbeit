@@ -34,7 +34,7 @@
 \usepackage{eso-pic} % Für Hintergrundbilder
 \usepackage[backend=biber]{biblatex}
 \usepackage{csquotes}
-
+\usepackage{minted}
 
 
 \ifPDFTeX
@@ -190,7 +190,7 @@
 \floatstyle{ruled}
 \@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
 \floatname{codelisting}{Listing}
-\newcommand*\listoflistings{\listof{codelisting}{Listingverzeichnis}}
+\providecommand{\listoflistings}{\listof{codelisting}{Listingverzeichnis}}
 \makeatother
 \makeatletter
 \makeatother
@@ -329,7 +329,7 @@
     Switzerland
 \end{center}
 
-\pagecolor{\nopagecolor}
+\newpage
 \newpage
 \pagenumbering{arabic}
 \color{black}           % Setzt die Schriftfarbe auf Schwarz für die folgenden Seiten
@@ -396,30 +396,64 @@ If you have questions that are not addressed within this template, Overleaf offe
 %------------------------          S E C T I O N 1         ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{Structure of a document}
+\section{Normalisierung der Dateien - von PDF zu JPEG}
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize,
+linenos
+]
+{python}
 
-The most important file when using LaTeX is your \texttt{.tex} file. This is the file in which you write the text for your paper / thesis, while also describing its layout.
+import os
+import fitz  # PyMuPDF
 
-Each file starts with a preamble, in which you can change metadata and other settings of the document and also import and set up packages you want to use. In this template, the preamble is deliberately kept as short and concise as possible, but can of course be extended by you. Images, links, references, code etc. can be embedded within the document and will be rendered when the document is compiled. Pages are auto-numbered, starting after the table of contents.
+def convert_pdf_to_jpg(src_folder, dest_folder):
+    # Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen
+    if not os.path.exists(dest_folder):
+        os.makedirs(dest_folder)
 
-The basic structure of a \texttt{.tex} file looks like this:
+    # Durchgehen durch alle Dateien im Quellordner
+    for root, dirs, files in os.walk(src_folder):
+        for file in files:
+            # Überprüfen, ob die Datei eine PDF-Datei ist
+            if file.lower().endswith(".pdf"):
+                # Vollständigen Pfad zur PDF-Datei erstellen
+                pdf_path = os.path.join(root, file)
+                # PDF-Datei öffnen
+                doc = fitz.open(pdf_path)
+                # Durch alle Seiten der PDF-Datei gehen
+                for page_num in range(len(doc)):
+                    page = doc[page_num]
+                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung in JPG)
+                    pix = page.get_pixmap()
+                    # Dateinamen ohne Dateiendung extrahieren
+                    filename_without_extension = os.path.splitext(file)[0]
+                    # Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer
+                    output_filename = f"{filename_without_extension}_S{page_num + 1:03d}.jpg"
 
-\begin{verbatim}
------
+                    # Vollständigen Pfad zur Ausgabedatei erstellen
+                    output_path = os.path.join(dest_folder, output_filename)
+                    # Bild speichern
+                    pix.save(output_path)
+                # PDF-Datei schließen
+                doc.close()
+                
+                # Erfolgsmeldung ausgeben
+                print(f"{file} wurde erfolgreich umgewandelt und gespeichert in {dest_folder}")
 
-This is the document preamble
-\usepackage{example}
+# Pfade zu den Ordnern mit den PDF-Dateien (Quelle) und den JPG-Dateien (Ziel)
+src_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Scan_Männerchor/Männerchor Akten 1925 – 1945/Scan_Männerchor_PDF/Akte_324"
+dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/JPEG_Akten_Scans"
 
------
+# Funktion aufrufen, um die Konvertierung durchzuführen
+convert_pdf_to_jpg(src_folder, dest_folder)
 
-\begin{document}
+\end{minted}
 
-This is my Master's Thesis.
-
-\end{document}
-\end{verbatim}
-
-Segmenting your document into sections and subsections works like this:
 
 
 %--------------------------------------------------------------------------------------%
