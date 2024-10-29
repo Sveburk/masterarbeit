@@ -20,8 +20,8 @@ input_cost_per_mio_in_dollars = 2.5  # Cost per million input tokens
 output_cost_per_mio_in_dollars = 10  # Cost per million output tokens
 
 # Directories for input images and output JSON files
-image_directory = "/Users/svenburkhardt/Developer/masterarbeit/Project/Data/Json_file_test_folder/Test_Data_JSON_files_openai"
-output_directory = "/Users/svenburkhardt/Developer/masterarbeit/Project/Data/Json_file_test_folder/Test_answer_JSON_files_openai"
+image_directory = "/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/Json_file_test_folder/Test_Data_JSON_files_openai"
+output_directory = "/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/Json_file_test_folder/Test_answer_JSON_files_openai"
 
 # Clear any pre-existing files in the output directory to prevent old data mix-ups
 for root, _, filenames in os.walk(output_directory):
@@ -84,7 +84,7 @@ for root, _, filenames in os.walk(image_directory):
 
             I am interested in: Metadata such as author, recipient, other mentioned persons, location(s), date(s), 
             and events including Sender, Recipient, and geographical places as well as content tags in a structured JSON file.
-            Please ensure that all German text, especially umlauts (ä, ö, ü) and the ß character, is encoded and outputted in UTF-8 format.
+            It is urgent that you ensure that you output the utf-8 codes as text instead of a character. This is for all German text, especially umlauts (ä, ö, ü) and the ß character, is encoded and outputted in UTF-8 format.
             The JSON should be structured like this:
             ```json
             {{
@@ -207,7 +207,7 @@ for root, _, filenames in os.walk(image_directory):
 
                     # Save the answer to a JSON file
                     with open(f"{output_directory}/{image_id}.json", "w", encoding="utf-8") as json_file:
-                        json.dump(answer_data, json_file, indent=4)
+                        json.dump(answer_data, json_file, indent=4,ensure_ascii=False)
                         print(f"> Saved the answer for {image_id} to {output_directory}/{image_id}.json")
             else:
                 print("> No match found for the JSON content.")
