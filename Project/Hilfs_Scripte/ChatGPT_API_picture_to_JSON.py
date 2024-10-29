@@ -32,9 +32,11 @@ for root, _, filenames in os.walk(output_directory):
 organization_id = "org-kCXwagm4pKQHcMdTVlQ8Qp7m"  # Organization ID for OpenAI
 project_id = "proj_HphMz16KxX6eEVA7LXbZ3dD9"  # Project ID
 
-                                                                                                    #######################
-api_key = "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"                                     # DELETE THIS CODE !!!#
-                                                                                                    #######################
+
+api_key = os.getenv("OPENAI_API_KEY")                                    # API Key in Umgebungsvariable#
+if api_key is None:
+    raise ValueError("API key not found. Please set the OPENAI_API_KEY environment variable.")
+
 
 model = "gpt-4o"  # Model name used for the API request
 section = "A"  # Optional section parameter (if applicable)
@@ -48,12 +50,12 @@ for root, _, filenames in os.walk(image_directory):
     file_number = 1  # Tracks the current file number for processing feedback
     total_files = len(filenames)  # Count the total number of files to process
     for filename in filenames:
-        if filename.endswith(".jpeg"):  # Only process files with a .jpeg extension
+        if filename.endswith(".jpg"):  # Only process files with a .jpg extension
             print("----------------------------------------")
             print(f"> Processing file ({file_number}/{total_files}): {filename}")
             
-            # Extract the filename without the .jpeg extension for use as image_id
-            image_id = filename.rsplit(".jpeg", 1)[0]  # Splits before ".jpeg" to get just the name
+            # Extract the filename without the .jpg extension for use as image_id
+            image_id = filename.rsplit(".jpg", 1)[0]  # Splits before ".jpg" to get just the name
             
             # Open, resize, and convert the image to a base64-encoded string
             with Image.open(os.path.join(root, filename)) as img:
