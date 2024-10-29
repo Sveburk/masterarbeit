@@ -84,7 +84,7 @@ for root, _, filenames in os.walk(image_directory):
 
             I am interested in: Metadata such as author, recipient, other mentioned persons, location(s), date(s), 
             and events including Sender, Recipient, and geographical places as well as content tags in a structured JSON file.
-
+            Please ensure that all German text, especially umlauts (ä, ö, ü) and the ß character, is encoded and outputted in UTF-8 format.
             The JSON should be structured like this:
             ```json
             {{
@@ -158,7 +158,6 @@ for root, _, filenames in os.walk(image_directory):
             }}
             """
 
-            # Prepare the API workload including prompt text and encoded image
             workload = [
                 {
                     "role": "user",
@@ -173,27 +172,29 @@ for root, _, filenames in os.walk(image_directory):
                 }
             ]
 
-            # Send the workload to the OpenAI API for processing
             answer = client.chat.completions.create(messages=workload,
                                                     model=model,
                                                     temperature=temperature)
             print("Done.")
 
-            # Extract and parse the JSON response from the API's answer
+            # Extract the answer from the response
             answer_text = answer.choices[0].message.content
             print("> Received an answer from the API. Token cost (in/out):", answer.usage.prompt_tokens, "/",
                   answer.usage.completion_tokens)
-            total_in_tokens += answer.usage.prompt_tokens  # Accumulate input tokens for cost tracking
-            total_out_tokens += answer.usage.completion_tokens  # Accumulate output tokens for cost tracking
+            total_in_tokens += answer.usage.prompt_tokens
+            total_out_tokens += answer.usage.completion_tokens
 
             print("> Processing the answer...")
-            # Use regex to find and extract the JSON data from the response
+            # Save the answer to a json file. The filename should be the image_id with a .json extension
+            # The response from the API is a string which encloses the JSON object. We need to remove the enclosing
+            # quotes to get the JSON object. ```json [data] ``` -> [data]
             pattern = r"```\s*json(.*?)\s*```"
             match = re.search(pattern, answer_text, re.DOTALL)
             if match:
-                answer_text = match.group(1).strip()  # Extract JSON content
+                # Extract the JSON content
+                answer_text = match.group(1).strip()
 
-                # Parse the JSON content into a Python object and handle potential errors
+                # Parse the JSON content into a Python object
                 try:
                     answer_data = json.loads(answer_text)
                 except json.JSONDecodeError as e:
@@ -201,32 +202,27 @@ for root, _, filenames in os.walk(image_directory):
                     answer_data = None
 
                 if answer_data:
-                    os.makedirs(output_directory, exist_ok=True)  # Ensure output directory exists
+                    # Create the answers directory if it doesn't exist
+                    os.makedirs(output_directory, exist_ok=True)
 
-                    # Save the parsed JSON response to a .json file
+                    # Save the answer to a JSON file
                     with open(f"{output_directory}/{image_id}.json", "w", encoding="utf-8") as json_file:
                         json.dump(answer_data, json_file, indent=4)
                         print(f"> Saved the answer for {image_id} to {output_directory}/{image_id}.json")
             else:
                 print("> No match found for the JSON content.")
 
-            # File processing complete: move to the next file
+            # File complete: Increment the file number
             file_number += 1
             print("> Processing the answer... Done.")
 
-# Final statistics on processing time and API costs
+# Calculate and print the total processing time
 end_time = time.time()
 total_time = end_time - start_time
 print("----------------------------------------")
 print(f"Total processing time: {total_time:.2f} seconds")
 print(f"Total token cost (in/out): {total_in_tokens} / {total_out_tokens}")
-
-# Ensure total_files is greater than zero to avoid division by zero
-if total_files > 0:
-    print(f"Average token cost per image: {total_out_tokens / total_files}")
-else:
-    print("No files were processed, so no average token cost can be calculated.")
-
+print(f"Average token cost per image: {total_out_tokens / total_files}")
 print((
     f"Total cost (in/out): ${total_in_tokens / 1e6 * input_cost_per_mio_in_dollars:.2f} / "
     f"${total_out_tokens / 1e6 * output_cost_per_mio_in_dollars:.2f}"
