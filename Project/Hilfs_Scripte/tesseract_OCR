@@ -1,0 +1,42 @@
+from PIL import Image, ImageEnhance
+import pytesseract
+import os
+
+# Pfad zum Ordner mit den Bildern
+input_folder = 'path/to/your/input_folder'
+output_folder = 'path/to/your/output_folder'
+os.makedirs(output_folder, exist_ok=True)
+
+# Konvertiere Bilder in Schwarz-Weiß und erhöhe den Kontrast
+def process_image(image_path, output_path):
+    with Image.open(image_path) as img:
+        # Konvertiere in Schwarz-Weiß
+        img_bw = img.convert('L')
+        
+        # Erhöhe den Kontrast
+        enhancer = ImageEnhance.Contrast(img_bw)
+        img_contrasted = enhancer.enhance(2)  # Faktor 2 ist beispielhaft und kann angepasst werden
+
+        # Speichere das bearbeitete Bild
+        img_contrasted.save(output_path)
+        
+        # OCR-Verarbeitung
+        text = pytesseract.image_to_string(img_contrasted, lang='deu')
+        return text
+
+# Schleife durch alle Bilder im Ordner und bearbeite sie
+for filename in os.listdir(input_folder):
+    if filename.endswith(('.jpg', '.jpeg', '.png', '.tif', '.tiff')):
+        input_path = os.path.join(input_folder, filename)
+        output_path = os.path.join(output_folder, filename)
+
+        # Bildverarbeitung und OCR
+        text = process_image(input_path, output_path)
+
+        # Speichere das OCR-Ergebnis in einer Textdatei
+        text_filename = os.path.splitext(filename)[0] + '.txt'
+        text_path = os.path.join(output_folder, text_filename)
+        with open(text_path, 'w', encoding='utf-8') as text_file:
+            text_file.write(text)
+
+print("Verarbeitung abgeschlossen. Die bearbeiteten Bilder und OCR-Ergebnisse sind im Output-Ordner.")
