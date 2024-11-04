@@ -3,8 +3,8 @@ import pytesseract
 import os
 
 # Pfad zum Ordner mit den Bildern
-input_folder = 'path/to/your/input_folder'
-output_folder = 'path/to/your/output_folder'
+input_folder = '/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/Test_Data/Test_Data'
+output_folder = '/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/Test_Data/Test_Answer_Tesseract'
 os.makedirs(output_folder, exist_ok=True)
 
 # Konvertiere Bilder in Schwarz-Weiß und erhöhe den Kontrast
