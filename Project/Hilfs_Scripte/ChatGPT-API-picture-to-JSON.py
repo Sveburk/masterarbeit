@@ -172,12 +172,15 @@ for filename in filenames:
     }}
     """
 
+    with open('path/to/file.csv', encoding="utf-8") as f:
+        persons_list = f.read()
 
     workload = [
         {
             "role": "user",
             "content": [
                 {"type": "text", "text": prompt},
+                {"type": "text", "text": persons_list},
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
             ]
         },
