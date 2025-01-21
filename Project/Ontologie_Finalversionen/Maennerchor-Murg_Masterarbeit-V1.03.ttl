@@ -7,7 +7,7 @@
 @prefix : <http://maennerchormurgdatabase.org/> .
 <http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
                                       owl:versionIRI <urn:absolute:v1.02> ;
-                                      owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.02> .
+                                      owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.03> .
 
 
 
@@ -151,9 +151,9 @@ schema:gender  rdf:type owl:ObjectProperty,
                                                rdfs:range :Person .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasProfession
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasProfession> rdf:type owl:ObjectProperty ;
-                                                                                                              rdfs:subPropertyOf <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> ;
+#:hasProfession
+:hasProfession rdf:type owl:ObjectProperty ;
+                                                                                                              rdfs:subPropertyOf :hasRole ;
                                                                                                               rdfs:domain :Person ;
                                                                                                               rdfs:range schema:Occupation ;
                                                                                                               rdfs:comment "Property die eine Person mit ihrem Beruf verknüpft"@de ,
@@ -162,8 +162,8 @@ schema:gender  rdf:type owl:ObjectProperty,
                                                                                                                          "hat Beruf"@de .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> rdf:type owl:ObjectProperty ;
+#hasRole
+:hasRole rdf:type owl:ObjectProperty ;
                                                                                                         rdfs:subPropertyOf owl:topObjectProperty ;
                                                                                                         rdfs:domain :Person ;
                                                                                                         rdfs:range :Organization ;
@@ -179,7 +179,7 @@ owl:topObjectProperty rdf:type owl:SymmetricProperty ,
 
 ###  https://dbpedia.org/ontology/militaryRank
 <https://dbpedia.org/ontology/militaryRank> rdf:type owl:ObjectProperty ;
-                                            rdfs:domain <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                            rdfs:domain :MilitaryRank ;
                                             rdfs:range <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces> ;
                                             rdfs:comment "Property connecting a Role to the Armed Forces"@en ;
                                             rdfs:label "hasMilitaryRank"@en .
@@ -520,7 +520,7 @@ public servant""" ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> rdf:type owl:Class ;
+:MilitaryRank rdf:type owl:Class ;
                                                                                                              rdfs:subClassOf schema:Occupation ;
                                                                                                              owl:sameAs "<https://www.wikidata.org/wiki/Q56019>"@en .
 
@@ -995,7 +995,7 @@ rdfs:Property rdf:type owl:Class .
                                                                 :Person ,
                                                                 schema:Person  ;
                                                        :hasFeldpostNumber :FPN3330EXAMPLE ;
-                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
+                                                       :hasRole :Gefreiter ;
                                                        schema:alternateName  "ManniMuster" ; 
                                                        schema:birthDate  "1877-05-15"^^xsd:date ;
                                                        schema:deathDate  "1942-04-20"^^xsd:date ;
@@ -1012,7 +1012,7 @@ rdfs:Property rdf:type owl:Class .
 :person0001EXAMPLE  rdf:type owl:NamedIndividual ,
                                                                 :Person ,
                                                                 schema:Person  ;
-                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter> ;
+                                                       :hasRole :Obergefreiter ;
                                                        schema:alternateName  "JOHNEXAMPLE" ;
                                                        schema:birthDate  "1889-01-01"^^xsd:date ;
                                                        schema:deathDate  "1945-01-01"^^xsd:date ;
@@ -1051,7 +1051,7 @@ rdfs:Property rdf:type owl:Class .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent> rdf:type owl:NamedIndividual ,
+:Hilfszollbetriebsassistent rdf:type owl:NamedIndividual ,
                                                                                                                                     schema:Occupation ,
                                                                                                                                     schema:Role  ,
                                                                                                                                     <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee> ;
@@ -1063,10 +1063,10 @@ H.I.Z.Bass"""@de ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee> rdf:type owl:NamedIndividual ,
+:LeutnantZurSee rdf:type owl:NamedIndividual ,
                                                                                                                         schema:Occupation ,
                                                                                                                         schema:Role  ,
-                                                                                                                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                                        :MilitaryRank ;
                                                                                                                schema:alternateName  """LtzS
 Lt z S
 Lt zS
@@ -1079,13 +1079,13 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter> rdf:type owl:NamedIndividual ,
+:Obergefreiter rdf:type owl:NamedIndividual ,
                                                                                                                        :Organization ,
                                                                                                                        schema:Occupation ,
                                                                                                                        schema:Organisation  ,
                                                                                                                        schema:Role  ,
-                                                                                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
-                                                                                                              owl:differentFrom <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
+                                                                                                                       :MilitaryRank ;
+                                                                                                              owl:differentFrom :Gefreiter ;
                                                                                                               rdfs:comment "Mannschaftsdienstgrad im Militär"@de ,
                                                                                                                            "enlisted personnel in the militarye"@en ;
                                                                                                               rdfs:label "Obergefreiter"@de ;
@@ -1093,10 +1093,10 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister> rdf:type owl:NamedIndividual ,
+:Oberzahlmeister rdf:type owl:NamedIndividual ,
                                                                                                                          schema:Occupation ,
                                                                                                                          schema:Role  ,
-                                                                                                                         <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                                         :MilitaryRank ;
                                                                                                                 schema:hasPart ":wd <https://www.wikidata.org/wiki/Q7156771>"@en ;
                                                                                                                 rdfs:comment "military profession involving paying wages or salaries"@en ,
                                                                                                                              "militärische Profession die das Auszahlen von Sold beinhaltet"@de ;
@@ -1104,10 +1104,10 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier> rdf:type owl:NamedIndividual ,
+:Unteroffizier rdf:type owl:NamedIndividual ,
                                                                                                                        schema:Occupation ,
                                                                                                                        schema:Role  ,
-                                                                                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                                       :MilitaryRank ;
                                                                                                               rdfs:comment "Military Rank in german speaking armed forces"@en ,
                                                                                                                            "Militärischer Rang in deutsprachigen Streitkräften"@de ;
                                                                                                               rdfs:label "Unteroffizier"@de ;
@@ -1124,12 +1124,12 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> rdf:type owl:NamedIndividual ,
+:Gefreiter rdf:type owl:NamedIndividual ,
                                                                                                                    :Organization ,
                                                                                                                    schema:Occupation ,
                                                                                                                    schema:Organisation  ,
                                                                                                                    schema:Role  ,
-                                                                                                                   <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                                   :MilitaryRank ;
                                                                                                           rdfs:comment "Rangniedriger Mannschaftsgrad im Militär"@de ,
                                                                                                                        "low ranking enlisted personnel"@en ;
                                                                                                           rdfs:label "Gefreiter"@de ;
@@ -1298,13 +1298,13 @@ Leutnant Marine Artillerie"""@de ;
 #    Annotations
 #################################################################
 
-<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN3331EXAMPLE%3E%3E> schema:endDate "1945-08-06"^^xsd:date .
+:FPN3331EXAMPLE  schema:endDate "1945-08-06"^^xsd:date .
 
 
-<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN3331EXAMPLEMilitaryUnit%3E%3E> schema:startDate  "1939-09-01"^^xsd:date .
+:FPN3331EXAMPLEMilitaryUnit schema:startDate  "1939-09-01"^^xsd:date .
 
 
-<%3C%3Chttp://maennerchormurgdatabase.org/person0000EXAMPLE%20http://schema.org/member%20http://maennerchormurgdatabase.org/organization1110EXAMPLE%3E%3E> schema:endDate "1942-04-20"^^xsd:date ;
+:organization1110EXAMPLE schema:endDate "1942-04-20"^^xsd:date ;
                                                                                                                                                            schema:startDate  "1897-01-01"^^xsd:date .
 
 
@@ -1611,39 +1611,39 @@ Leutnant Marine Artillerie"""@de ;
 #################################################################
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+  owl:distinctMembers ( :Hilfszollbetriebsassistent
+                        :LeutnantZurSee
+                        :Obergefreiter
+                        :Oberzahlmeister
+                        :Unteroffizier
+                        :Gefreiter
                       )
 ] .
 
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+  owl:distinctMembers ( :Hilfszollbetriebsassistent
+                        :Obergefreiter
+                        :Oberzahlmeister
+                        :Unteroffizier
+                        :Gefreiter
                       )
 ] .
 
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+  owl:distinctMembers ( :Hilfszollbetriebsassistent
+                        :Obergefreiter
+                        :Unteroffizier
+                        :Gefreiter
                       )
 ] .
 
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
-                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+  owl:distinctMembers ( :Hilfszollbetriebsassistent
+                        :Obergefreiter
+                        :Gefreiter
                       )
 ] .
 
