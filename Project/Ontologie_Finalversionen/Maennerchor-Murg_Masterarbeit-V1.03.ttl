@@ -206,6 +206,12 @@ owl:topObjectProperty rdf:type owl:SymmetricProperty ,
 #    Classes
 #################################################################
 
+###  http://schema.org/GenderType
+<http://schema.org/GenderType> rdf:type owl:Class ;
+                               rdfs:comment "Bezeichnung des angenommenen Geschlechts einer Person"@de ,
+                                            "assumed gender of a person"@en ;
+                               rdfs:label "Gender Type"@en .
+
 ###  http://schema.org/Divers
 <http://schema.org/Divers> rdf:type owl:Class ;
                            rdfs:subClassOf <http://schema.org/GenderType> .
@@ -213,14 +219,11 @@ owl:topObjectProperty rdf:type owl:SymmetricProperty ,
 
 ###  http://schema.org/Female
 <http://schema.org/Female> rdf:type owl:Class ;
-                           rdfs:subClassOf <http://schema.org/GenderType> .
-
-
-###  http://schema.org/GenderType
-<http://schema.org/GenderType> rdf:type owl:Class ;
-                               rdfs:comment "Bezeichnung des angenommenen Geschlechts einer Person"@de ,
-                                            "assumed gender of a person"@en ;
-                               rdfs:label "Gender Type"@en .
+                           rdfs:subClassOf <http://schema.org/GenderType> ;
+                           rdfs:comment "Person of female gender"@en ,
+                                        "Person weiblichen Geschlechts"@de ;
+                           rdfs:label "female"@en ,
+                                      "weiblich"@de .
 
 
 ###  http://schema.org/Male
@@ -997,6 +1000,18 @@ rdfs:Property rdf:type owl:Class .
                                                        <http://schema.org/homeLocation> <http://maennerchormurgdatabase.org/Murg> ;
                                                        <http://schema.org/member> <http://maennerchormurgdatabase.org/organization0001EXAMPLE> ;
                                                        <http://schema.org/startDate> "1899-01-01"^^xsd:date .
+
+###  http://maennerchormurgdatabase.org#Person0002EXAMPLE
+<http://maennerchormurgdatabase.org/Person0002EXAMPLE> rdf:type owl:NamedIndividual ,
+                            <http://maennerchormurgdatabase.org/Person> ;
+                   <http://schema.org/spouse> <http://maennerchormurgdatabase.org/person0000EXAMPLE> ;
+                   <http://schema.org/birthDate> "1900-01-05"^^xsd:date ;
+                   <http://schema.org/deathDate> "1969-03-03"^^xsd:date ;
+                   <http://schema.org/familyName> "Mustermann" ;
+                   <http://schema.org/givenName> "Erika" ;
+                   <http://schema.org/gender> <http://schema.org/Female>;
+                   <http://schema.org/homeLocation> "https://www.wikidata.org/wiki/Q64" .
+
 
 
 ###  http://maennerchormurgdatabase.org/relatedTo
