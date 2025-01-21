@@ -63,7 +63,9 @@
 
 
 ###  http://schema.org/member
-<http://schema.org/member> rdf:type owl:AnnotationProperty .
+<http://schema.org/member> rdf:type owl:ObjectProperty ;
+                           rdfs:domain <http://schema.org/Person> ;
+                           rdfs:range <http://schema.org/Organization> .
 
 
 ###  http://schema.org/startDate
@@ -78,9 +80,22 @@ owl:sameAs rdf:type owl:AnnotationProperty .
 <http://www.w3.org/2004/02/skos/core#altLabel> rdf:type owl:AnnotationProperty .
 
 
+
+
+
+
 #################################################################
 #    Object Properties
 #################################################################
+
+###  schema:spouse
+<http://schema.org/spouse> rdf:type owl:SymmetricProperty,
+                           owl:FunctionalProperty ;
+                           rdfs:domain <http://schema.org/Person> ;
+                           rdfs:range <http://schema.org/Person> ;
+                           rdfs:comment "Ehepartner/in Person"@de , "Spouse of a Person"@en .
+
+
 
 ###  schema:gender
 <http://schema.org/gender> rdf:type owl:ObjectProperty,
@@ -974,7 +989,7 @@ rdfs:Property rdf:type owl:Class .
                                                                 <http://schema.org/Person> ;
                                                        <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0000EXAMPLE> ;
                                                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
-                                                       <http://schema.org/alternateName> "ManniMuster" ;
+                                                       <http://schema.org/alternateName> "ManniMuster" ; 
                                                        <http://schema.org/birthDate> "1877-05-15"^^xsd:date ;
                                                        <http://schema.org/deathDate> "1942-04-20"^^xsd:date ;
                                                        <http://schema.org/endDate> "1942"^^xsd:gYear ;
