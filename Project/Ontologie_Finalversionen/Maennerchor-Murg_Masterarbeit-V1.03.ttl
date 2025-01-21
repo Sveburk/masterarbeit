@@ -83,15 +83,7 @@ owl:sameAs rdf:type owl:AnnotationProperty .
 #################################################################
 
 ###  http://maennerchormurgdatabase.org#hasGender
-:hasGender rdf:type owl:ObjectProperty ;
-           rdfs:subPropertyOf <http://schema.org/gender> ;
-           rdf:type owl:FunctionalProperty ;
-           rdfs:domain <http://schema.org/Person> ;
-           rdfs:range <http://schema.org/GenderType> .
-
-
-###  http://schema.org/gender
-<http://schema.org/gender> rdf:type owl:ObjectProperty ,
+<http://maennerchormurgdatabase.org/hasGender> rdf:type owl:ObjectProperty ;
                                     owl:FunctionalProperty ;
                            rdfs:domain <http://schema.org/Person> ;
                            rdfs:range <http://schema.org/GenderType> ;
