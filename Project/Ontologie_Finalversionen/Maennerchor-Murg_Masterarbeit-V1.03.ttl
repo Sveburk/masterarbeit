@@ -587,20 +587,20 @@ rdfs:Property rdf:type owl:Class .
 <https://www.wikidata.org/wiki/Q49848> rdf:type owl:NamedIndividual .
 
 
-###  http://maennerchormurgdatabase.org/FPN0000EXAMPLE
-<http://maennerchormurgdatabase.org/FPN0000EXAMPLE> rdf:type owl:NamedIndividual ,
+###  http://maennerchormurgdatabase.org/FPN3330EXAMPLE
+<http://maennerchormurgdatabase.org/FPN3330EXAMPLE> rdf:type owl:NamedIndividual ,
                                                              <http://maennerchormurgdatabase.org/FeldpostNumber> ;
-                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> ;
-                                                    rdfs:label "00000BeispFelPoNum"@de ,
-                                                               "0000ExampleFeldPoNumber"@en .
+                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE> ;
+                                                    rdfs:label "1111BeispFelPoNum"@de ,
+                                                               "1111ExampleFeldPoNumber"@en .
 
 
-###  http://maennerchormurgdatabase.org/FPN0001EXAMPLE
-<http://maennerchormurgdatabase.org/FPN0001EXAMPLE> rdf:type owl:NamedIndividual ,
+###  http://maennerchormurgdatabase.org/1112EXAMPLE
+<http://maennerchormurgdatabase.org/FPN3331EXAMPLE> rdf:type owl:NamedIndividual ,
                                                              <http://maennerchormurgdatabase.org/FeldpostNumber> ;
-                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE> ;
-                                                    rdfs:label "00001BspFelPoNum"@de ,
-                                                               "0001ExampleFeldPoNo"@en .
+                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE> ;
+                                                    rdfs:label "1112BspFelPoNum"@de ,
+                                                               "1112ExampleFeldPoNo"@en .
 
 
 ###  http://maennerchormurgdatabase.org/FeldpostNumber
@@ -942,10 +942,24 @@ rdfs:Property rdf:type owl:Class .
                                                                rdfs:Property .
 
 
-###  http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE
-<http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> rdf:type owl:NamedIndividual ,
+
+
+#############################################################
+#         Example Data
+#############################################################
+
+
+#Persons:       000X digits
+#organizations: 111X digits
+#mil._units:    222X digits
+#Feldpostnu.:   333X digits
+
+
+
+###  http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE
+<http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE> rdf:type owl:NamedIndividual ,
                                                                       <http://maennerchormurgdatabase.org/MilitaryUnit> ;
-                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0000EXAMPLE> ;
+                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN3330EXAMPLE> ;
                                                              <http://schema.org/endDate> "1945-08-06"^^xsd:date ;
                                                              <http://schema.org/isPartOf> <http://maennerchormurgdatabase.org/Wehrmacht> ;
                                                              <http://schema.org/location> <https://www.wikidata.org/wiki/Q490453> ;
@@ -953,17 +967,17 @@ rdfs:Property rdf:type owl:Class .
                                                              <http://schema.org/startDate> "1939-09-01"^^xsd:date .
 
 
-###  http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE
-<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE> rdf:type owl:NamedIndividual ,
+###  http://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE
+<http://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE> rdf:type owl:NamedIndividual ,
                                                                       <http://maennerchormurgdatabase.org/MilitaryUnit> ;
-                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0001EXAMPLE> ;
+                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN3331EXAMPLE> ;
                                                              <http://schema.org/isPartOf> <http://maennerchormurgdatabase.org/Wehrmacht> ;
                                                              <http://schema.org/location> <https://www.wikidata.org/wiki/Q490453> ;
                                                              <http://schema.org/member> <http://maennerchormurgdatabase.org/person0001EXAMPLE> .
 
 
-###  http://maennerchormurgdatabase.org/organization0000EXAMPLE
-<http://maennerchormurgdatabase.org/organization0000EXAMPLE> rdf:type owl:NamedIndividual ,
+###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
+<http://maennerchormurgdatabase.org/organization1110EXAMPLE> rdf:type owl:NamedIndividual ,
                                                                       <http://maennerchormurgdatabase.org/Association> ,
                                                                       <http://maennerchormurgdatabase.org/Choir> ,
                                                                       <http://maennerchormurgdatabase.org/MaleChoir> ,
@@ -980,7 +994,7 @@ rdfs:Property rdf:type owl:Class .
                                                                 <http://maennerchormurgdatabase.org/MilitaryUnit> ,
                                                                 <http://maennerchormurgdatabase.org/Person> ,
                                                                 <http://schema.org/Person> ;
-                                                       <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0000EXAMPLE> ;
+                                                       <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN3330EXAMPLE> ;
                                                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
                                                        <http://schema.org/alternateName> "ManniMuster" ; 
                                                        <http://schema.org/birthDate> "1877-05-15"^^xsd:date ;
@@ -989,7 +1003,7 @@ rdfs:Property rdf:type owl:Class .
                                                        <http://schema.org/familyName> "Mustermann" ;
                                                        <http://schema.org/givenName> "Mustermanfred" ;
                                                        <http://schema.org/homeLocation> <https://www.wikidata.org/wiki/Q64> ;
-                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> ;
+                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE> ;
                                                        <http://schema.org/gender> <http://schema.org/Male>;
                                                        <http://schema.org/startDate> "1939"^^xsd:gYear .
 
@@ -1006,7 +1020,7 @@ rdfs:Property rdf:type owl:Class .
                                                        <http://schema.org/familyName> "Doe" ;
                                                        <http://schema.org/givenName> "John" ;
                                                        <http://schema.org/homeLocation> <http://maennerchormurgdatabase.org/Murg> ;
-                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/organization0001EXAMPLE> ;
+                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/organization1111EXAMPLE> ;
                                                        <http://schema.org/startDate> "1899-01-01"^^xsd:date .
 
 ###  http://maennerchormurgdatabase.org#Person0002EXAMPLE
@@ -1133,7 +1147,7 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  https://www.wikidata.org/wiki/P3030
-<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual .
+<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual.
 
 
 ###  https://www.wikidata.org/wiki/Q10870555
@@ -1284,13 +1298,13 @@ Leutnant Marine Artillerie"""@de ;
 #    Annotations
 #################################################################
 
-<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN0001EXAMPLE%3E%3E> <http://schema.org/endDate> "1945-08-06"^^xsd:date .
+<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN3331EXAMPLE%3E%3E> <http://schema.org/endDate> "1945-08-06"^^xsd:date .
 
 
-<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN0001EXAMPLEMilitaryUnit%3E%3E> <http://schema.org/startDate> "1939-09-01"^^xsd:date .
+<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN3331EXAMPLEMilitaryUnit%3E%3E> <http://schema.org/startDate> "1939-09-01"^^xsd:date .
 
 
-<%3C%3Chttp://maennerchormurgdatabase.org/person0000EXAMPLE%20http://schema.org/member%20http://maennerchormurgdatabase.org/organization0000EXAMPLE%3E%3E> <http://schema.org/endDate> "1942-04-20"^^xsd:date ;
+<%3C%3Chttp://maennerchormurgdatabase.org/person0000EXAMPLE%20http://schema.org/member%20http://maennerchormurgdatabase.org/organization1110EXAMPLE%3E%3E> <http://schema.org/endDate> "1942-04-20"^^xsd:date ;
                                                                                                                                                            <http://schema.org/startDate> "1897-01-01"^^xsd:date .
 
 
