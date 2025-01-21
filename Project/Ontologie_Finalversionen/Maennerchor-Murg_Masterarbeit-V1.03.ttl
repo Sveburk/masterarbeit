@@ -1,0 +1,1635 @@
+@prefix : <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/untitled-ontology-14/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/untitled-ontology-14/> .
+
+<http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
+                                      owl:versionIRI <urn:absolute:v1.02> ;
+                                      owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.02> .
+
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://schema.org/affiliation
+<http://schema.org/affiliation> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/alternateName
+<http://schema.org/alternateName> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/birthDate
+<http://schema.org/birthDate> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/deathDate
+<http://schema.org/deathDate> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/endDate
+<http://schema.org/endDate> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/familyName
+<http://schema.org/familyName> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/givenName
+<http://schema.org/givenName> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/hasPart
+<http://schema.org/hasPart> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/homeLocation
+<http://schema.org/homeLocation> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/isPartOf
+<http://schema.org/isPartOf> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/label
+<http://schema.org/label> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/location
+<http://schema.org/location> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/member
+<http://schema.org/member> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/startDate
+<http://schema.org/startDate> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#sameAs
+owl:sameAs rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+<http://www.w3.org/2004/02/skos/core#altLabel> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://maennerchormurgdatabase.org#hasGender
+:hasGender rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf <http://schema.org/gender> ;
+           rdf:type owl:FunctionalProperty ;
+           rdfs:domain <http://schema.org/Person> ;
+           rdfs:range <http://schema.org/GenderType> .
+
+
+###  http://schema.org/gender
+<http://schema.org/gender> rdf:type owl:ObjectProperty ,
+                                    owl:FunctionalProperty ;
+                           rdfs:domain <http://schema.org/Person> ;
+                           rdfs:range <http://schema.org/GenderType> ;
+                           rdfs:comment "Geschlecht einer Person"@de ,
+                                        "gender of a Person"@en ;
+                           owl:sameAs "schema:gender" .
+
+
+###  http://maennerchormurgdatabase.org/hasAuthorID
+<http://maennerchormurgdatabase.org/hasAuthorID> rdf:type owl:ObjectProperty ;
+                                                 rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                 rdfs:range [ rdf:type owl:Class ;
+                                                              owl:unionOf ( <http://maennerchormurgdatabase.org/Organization>
+                                                                            <http://maennerchormurgdatabase.org/Person>
+                                                                          )
+                                                            ] .
+
+
+###  http://maennerchormurgdatabase.org/hasCreationDate
+<http://maennerchormurgdatabase.org/hasCreationDate> rdf:type owl:ObjectProperty ;
+                                                     rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                     rdfs:range [ rdf:type owl:Class ;
+                                                                  owl:unionOf ( xsd:date
+                                                                                xsd:gYear
+                                                                              )
+                                                                ] .
+
+
+###  http://maennerchormurgdatabase.org/hasCreationPlace
+<http://maennerchormurgdatabase.org/hasCreationPlace> rdf:type owl:ObjectProperty ;
+                                                      rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                      rdfs:range <http://schema.org/Place> .
+
+
+###  http://maennerchormurgdatabase.org/hasFeldpostNumber
+<http://maennerchormurgdatabase.org/hasFeldpostNumber> rdf:type owl:ObjectProperty ;
+                                                       rdfs:domain <http://maennerchormurgdatabase.org/MilitaryUnit> ;
+                                                       rdfs:range <http://maennerchormurgdatabase.org/FeldpostNumber> .
+
+
+###  http://maennerchormurgdatabase.org/hasReceiptPlace
+<http://maennerchormurgdatabase.org/hasReceiptPlace> rdf:type owl:ObjectProperty ;
+                                                     rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                     rdfs:range <http://schema.org/Place> .
+
+
+###  http://maennerchormurgdatabase.org/hasRecipientID
+<http://maennerchormurgdatabase.org/hasRecipientID> rdf:type owl:ObjectProperty ;
+                                                    rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                    rdfs:range [ rdf:type owl:Class ;
+                                                                 owl:unionOf ( <http://maennerchormurgdatabase.org/Organization>
+                                                                               <http://maennerchormurgdatabase.org/Person>
+                                                                             )
+                                                               ] .
+
+
+###  http://maennerchormurgdatabase.org/relatedTo
+<http://maennerchormurgdatabase.org/relatedTo> rdf:type owl:ObjectProperty ;
+                                               rdfs:domain <http://maennerchormurgdatabase.org/Person> ;
+                                               rdfs:range <http://maennerchormurgdatabase.org/Person> .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasProfession
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasProfession> rdf:type owl:ObjectProperty ;
+                                                                                                              rdfs:subPropertyOf <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> ;
+                                                                                                              rdfs:domain <http://maennerchormurgdatabase.org/Person> ;
+                                                                                                              rdfs:range <http://schema.org/Occupation> ;
+                                                                                                              rdfs:comment "Property die eine Person mit ihrem Beruf verknüpft"@de ,
+                                                                                                                           "property linking a person to their profession"@en ;
+                                                                                                              rdfs:label "has Profession"@en ,
+                                                                                                                         "hat Beruf"@de .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> rdf:type owl:ObjectProperty ;
+                                                                                                        rdfs:subPropertyOf owl:topObjectProperty ;
+                                                                                                        rdfs:domain <http://maennerchormurgdatabase.org/Person> ;
+                                                                                                        rdfs:range <http://maennerchormurgdatabase.org/Organization> ;
+                                                                                                        rdfs:comment "the connection between an Organization by the function of a person"@en ;
+                                                                                                        rdfs:label "hasRole"@en .
+
+
+###  http://www.w3.org/2002/07/owl#topObjectProperty
+owl:topObjectProperty rdf:type owl:SymmetricProperty ,
+                               owl:TransitiveProperty ,
+                               owl:ReflexiveProperty .
+
+
+###  https://dbpedia.org/ontology/militaryRank
+<https://dbpedia.org/ontology/militaryRank> rdf:type owl:ObjectProperty ;
+                                            rdfs:domain <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                            rdfs:range <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces> ;
+                                            rdfs:comment "Property connecting a Role to the Armed Forces"@en ;
+                                            rdfs:label "hasMilitaryRank"@en .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://maennerchormurgdatabase.org/hasContentTags
+<http://maennerchormurgdatabase.org/hasContentTags> rdf:type owl:DatatypeProperty ;
+                                                    rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                    rdfs:range xsd:string .
+
+
+###  http://maennerchormurgdatabase.org/hasDocumentID
+<http://maennerchormurgdatabase.org/hasDocumentID> rdf:type owl:DatatypeProperty ;
+                                                   rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                   rdfs:range xsd:string .
+
+
+###  http://maennerchormurgdatabase.org/hasTranscription
+<http://maennerchormurgdatabase.org/hasTranscription> rdf:type owl:DatatypeProperty ;
+                                                      rdfs:domain <http://maennerchormurgdatabase.org/Document> ;
+                                                      rdfs:range xsd:string .
+
+
+
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://schema.org/Divers
+<http://schema.org/Divers> rdf:type owl:Class ;
+                           rdfs:subClassOf <http://schema.org/GenderType> .
+
+
+###  http://schema.org/Female
+<http://schema.org/Female> rdf:type owl:Class ;
+                           rdfs:subClassOf <http://schema.org/GenderType> .
+
+
+###  http://schema.org/GenderType
+<http://schema.org/GenderType> rdf:type owl:Class ;
+                               rdfs:comment "Bezeichnung des angenommenen Geschlechts einer Person"@de ,
+                                            "assumed gender of a person"@en ;
+                               rdfs:label "Gender Type"@en .
+
+
+###  http://schema.org/Male
+<http://schema.org/Male> rdf:type owl:Class ;
+                         rdfs:subClassOf <http://schema.org/GenderType> ;
+                         rdfs:comment "Person männlichen Geschlechts"@de ,
+                                      "Person of male gender"@en ;
+                         rdfs:label "Male"@en ,
+                                    "Männlich"@de .
+
+
+
+###  http://maennerchormurgdatabase.org/Association
+<http://maennerchormurgdatabase.org/Association> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <http://maennerchormurgdatabase.org/Organization> ,
+                                                                 <http://schema.org/Organisation> .
+
+
+###  http://maennerchormurgdatabase.org/Bank
+<http://maennerchormurgdatabase.org/Bank> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://maennerchormurgdatabase.org/Business> .
+
+
+###  http://maennerchormurgdatabase.org/Brewery
+<http://maennerchormurgdatabase.org/Brewery> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://maennerchormurgdatabase.org/Business> .
+
+
+###  http://maennerchormurgdatabase.org/Business
+<http://maennerchormurgdatabase.org/Business> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://maennerchormurgdatabase.org/Organization> ,
+                                                              <http://schema.org/Organisation> .
+
+
+###  http://maennerchormurgdatabase.org/Choir
+<http://maennerchormurgdatabase.org/Choir> rdf:type owl:Class ;
+                                           rdfs:subClassOf <http://maennerchormurgdatabase.org/Association> ,
+                                                           <http://schema.org/PerformingGroup> .
+
+
+###  http://maennerchormurgdatabase.org/Document
+<http://maennerchormurgdatabase.org/Document> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://schema.org/CreativeWork> .
+
+
+###  http://maennerchormurgdatabase.org/FeldpostNumber
+<http://maennerchormurgdatabase.org/FeldpostNumber> rdf:type owl:Class .
+
+
+###  http://maennerchormurgdatabase.org/GovernmentAgency
+<http://maennerchormurgdatabase.org/GovernmentAgency> rdf:type owl:Class ;
+                                                      rdfs:subClassOf <http://maennerchormurgdatabase.org/PoliticalOrganization> .
+
+
+###  http://maennerchormurgdatabase.org/GovernmentDocument
+<http://maennerchormurgdatabase.org/GovernmentDocument> rdf:type owl:Class ;
+                                                        rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Invoice
+<http://maennerchormurgdatabase.org/Invoice> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Kriegsmarine
+<http://maennerchormurgdatabase.org/Kriegsmarine> rdf:type owl:Class ;
+                                                  rdfs:subClassOf <http://maennerchormurgdatabase.org/Military> .
+
+
+###  http://maennerchormurgdatabase.org/Letter
+<http://maennerchormurgdatabase.org/Letter> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/List
+<http://maennerchormurgdatabase.org/List> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Luftwaffe
+<http://maennerchormurgdatabase.org/Luftwaffe> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://maennerchormurgdatabase.org/Military> .
+
+
+###  http://maennerchormurgdatabase.org/MaleChoir
+<http://maennerchormurgdatabase.org/MaleChoir> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://maennerchormurgdatabase.org/Choir> .
+
+
+###  http://maennerchormurgdatabase.org/Map
+<http://maennerchormurgdatabase.org/Map> rdf:type owl:Class ;
+                                         rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Military
+<http://maennerchormurgdatabase.org/Military> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces> .
+
+
+###  http://maennerchormurgdatabase.org/MilitaryUnit
+<http://maennerchormurgdatabase.org/MilitaryUnit> rdf:type owl:Class .
+
+
+###  http://maennerchormurgdatabase.org/NewspaperArticle
+<http://maennerchormurgdatabase.org/NewspaperArticle> rdf:type owl:Class ;
+                                                      rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Offer
+<http://maennerchormurgdatabase.org/Offer> rdf:type owl:Class ;
+                                           rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Orchestra
+<http://maennerchormurgdatabase.org/Orchestra> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://maennerchormurgdatabase.org/Association> .
+
+
+###  http://maennerchormurgdatabase.org/Organization
+<http://maennerchormurgdatabase.org/Organization> rdf:type owl:Class ;
+                                                  owl:equivalentClass <http://schema.org/Organisation> .
+
+
+###  http://maennerchormurgdatabase.org/Person
+<http://maennerchormurgdatabase.org/Person> rdf:type owl:Class ;
+                                            owl:equivalentClass <http://schema.org/Person> .
+
+
+###  http://maennerchormurgdatabase.org/PoliticalOrganization
+<http://maennerchormurgdatabase.org/PoliticalOrganization> rdf:type owl:Class ;
+                                                           rdfs:subClassOf <http://maennerchormurgdatabase.org/Organization> ,
+                                                                           <http://schema.org/Organisation> .
+
+
+###  http://maennerchormurgdatabase.org/PoliticalParty
+<http://maennerchormurgdatabase.org/PoliticalParty> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://maennerchormurgdatabase.org/PoliticalOrganization> .
+
+
+###  http://maennerchormurgdatabase.org/Postcard
+<http://maennerchormurgdatabase.org/Postcard> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/SS
+<http://maennerchormurgdatabase.org/SS> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces> .
+
+
+###  http://maennerchormurgdatabase.org/SheetMusic
+<http://maennerchormurgdatabase.org/SheetMusic> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/TextAnnotation
+<http://maennerchormurgdatabase.org/TextAnnotation> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/TransportCompany
+<http://maennerchormurgdatabase.org/TransportCompany> rdf:type owl:Class ;
+                                                      rdfs:subClassOf <http://maennerchormurgdatabase.org/Business> .
+
+
+###  http://maennerchormurgdatabase.org/UnitLuftwaffe
+<http://maennerchormurgdatabase.org/UnitLuftwaffe> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://maennerchormurgdatabase.org/Luftwaffe> .
+
+
+###  http://maennerchormurgdatabase.org/UnitMarine
+<http://maennerchormurgdatabase.org/UnitMarine> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://maennerchormurgdatabase.org/Kriegsmarine> .
+
+
+###  http://maennerchormurgdatabase.org/UnitWaffenSS
+<http://maennerchormurgdatabase.org/UnitWaffenSS> rdf:type owl:Class ;
+                                                  rdfs:subClassOf <http://maennerchormurgdatabase.org/WaffenSS> .
+
+
+###  http://maennerchormurgdatabase.org/UnitWehrmacht
+<http://maennerchormurgdatabase.org/UnitWehrmacht> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://maennerchormurgdatabase.org/Wehrmacht> .
+
+
+###  http://maennerchormurgdatabase.org/VolunteerFireDepartment
+<http://maennerchormurgdatabase.org/VolunteerFireDepartment> rdf:type owl:Class ;
+                                                             rdfs:subClassOf <http://maennerchormurgdatabase.org/Association> ,
+                                                                             <http://schema.org/EmergencyService> .
+
+
+###  http://maennerchormurgdatabase.org/WaffenSS
+<http://maennerchormurgdatabase.org/WaffenSS> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://maennerchormurgdatabase.org/SS> .
+
+
+###  http://maennerchormurgdatabase.org/Website
+<http://maennerchormurgdatabase.org/Website> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://maennerchormurgdatabase.org/Wehrmacht
+<http://maennerchormurgdatabase.org/Wehrmacht> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://maennerchormurgdatabase.org/Military> .
+
+
+###  http://maennerchormurgdatabase.org/report
+<http://maennerchormurgdatabase.org/report> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://maennerchormurgdatabase.org/Document> .
+
+
+###  http://schema.org/CreativeWork
+<http://schema.org/CreativeWork> rdf:type owl:Class .
+
+
+###  http://schema.org/EmergencyService
+<http://schema.org/EmergencyService> rdf:type owl:Class .
+
+
+###  http://schema.org/Occupation
+<http://schema.org/Occupation> rdf:type owl:Class ;
+                               rdfs:subClassOf <http://schema.org/Role> ;
+                               rdfs:comment "the business someone is following to earn money"@en ;
+                               rdfs:label "Beruf"@de ,
+                                          "Occupation"@en .
+
+
+###  http://schema.org/Organisation
+<http://schema.org/Organisation> rdf:type owl:Class .
+
+
+###  http://schema.org/PerformingGroup
+<http://schema.org/PerformingGroup> rdf:type owl:Class .
+
+
+###  http://schema.org/Person
+<http://schema.org/Person> rdf:type owl:Class .
+
+
+###  http://schema.org/Place
+<http://schema.org/Place> rdf:type owl:Class .
+
+
+###  http://schema.org/Role
+<http://schema.org/Role> rdf:type owl:Class ;
+                         rdfs:subClassOf owl:Thing ;
+                         rdfs:comment "Represents additional information about a relationship or property, such as a member role linking a person to an organization.\""@en ,
+                                      "zusätzliche Informationen, die Personen mit einer Organisation verknüpfen"@de ;
+                         rdfs:label "Role"@en ,
+                                    "Rolle"@de .
+
+
+###  http://schema.org/roleName
+<http://schema.org/roleName> rdf:type owl:Class ;
+                             rdfs:subClassOf <http://schema.org/Role> ;
+                             rdfs:comment "A name that specifies the role being performed or filled."@en ,
+                                          "Der Name, der eine ausgeübte Rolle spezifiziert"@de ;
+                             rdfs:label "Role name"@en ,
+                                        "Rollen-Bezeichnung"@de .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces> rdf:type owl:Class ;
+                                                                                                            rdfs:subClassOf <http://maennerchormurgdatabase.org/GovernmentAgency> ;
+                                                                                                            rdfs:comment "Alle bewaffneten Organisationen eines Landes wie Militär und Paramilitär"@de ,
+                                                                                                                         "collective organization of a country's armed military and paramilitary"@en ;
+                                                                                                            rdfs:label "ArmedForces"@en ,
+                                                                                                                       "Streitkräfte"@de ;
+                                                                                                            owl:sameAs "wd: <https://www.wikidata.org/wiki/Q772547>"@en .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#CivilProfession
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#CivilProfession> rdf:type owl:Class ;
+                                                                                                                rdfs:subClassOf <http://schema.org/Occupation> .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee> rdf:type owl:Class ;
+                                                                                                               rdfs:subClassOf <http://schema.org/Occupation> ;
+                                                                                                               <http://schema.org/alternateName> """civil service official
+public servant""" ;
+                                                                                                               rdfs:comment "Mensch im öffentlichen Dienst"@de ,
+                                                                                                                            "career civil service personnel"@en ;
+                                                                                                               rdfs:label "Beamter"@de ,
+                                                                                                                          "Public Employee"@en ;
+                                                                                                               owl:sameAs ":wd <https://www.wikidata.org/wiki/Q11771944>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> rdf:type owl:Class ;
+                                                                                                             rdfs:subClassOf <http://schema.org/Occupation> ;
+                                                                                                             owl:sameAs "<https://www.wikidata.org/wiki/Q56019>"@en .
+
+
+###  http://www.w3.org/2000/01/rdf-schema#Property
+rdfs:Property rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://maennerchormurgdatabase.org/Association
+<http://maennerchormurgdatabase.org/Association> rdf:type owl:NamedIndividual ;
+                                                 owl:sameAs <https://www.wikidata.org/wiki/Q9299236> .
+
+
+###  https://www.wikidata.org/wiki/Q9299236
+<https://www.wikidata.org/wiki/Q9299236> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Bank
+<http://maennerchormurgdatabase.org/Bank> rdf:type owl:NamedIndividual ;
+                                          owl:sameAs <https://www.wikidata.org/wiki/Q22687> .
+
+
+###  https://www.wikidata.org/wiki/Q22687
+<https://www.wikidata.org/wiki/Q22687> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Brewery
+<http://maennerchormurgdatabase.org/Brewery> rdf:type owl:NamedIndividual ;
+                                             owl:sameAs <https://www.wikidata.org/wiki/Q131734> .
+
+
+###  https://www.wikidata.org/wiki/Q131734
+<https://www.wikidata.org/wiki/Q131734> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Business
+<http://maennerchormurgdatabase.org/Business> rdf:type owl:NamedIndividual ;
+                                              owl:sameAs <https://www.wikidata.org/wiki/Q4830453> .
+
+
+###  https://www.wikidata.org/wiki/Q4830453
+<https://www.wikidata.org/wiki/Q4830453> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Choir
+<http://maennerchormurgdatabase.org/Choir> rdf:type owl:NamedIndividual ;
+                                           owl:sameAs <https://www.wikidata.org/wiki/Q131186> .
+
+
+###  https://www.wikidata.org/wiki/Q131186
+<https://www.wikidata.org/wiki/Q131186> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Document
+<http://maennerchormurgdatabase.org/Document> rdf:type owl:NamedIndividual ;
+                                              owl:sameAs <https://www.wikidata.org/wiki/Q49848> .
+
+
+###  https://www.wikidata.org/wiki/Q49848
+<https://www.wikidata.org/wiki/Q49848> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/FPN0000EXAMPLE
+<http://maennerchormurgdatabase.org/FPN0000EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                             <http://maennerchormurgdatabase.org/FeldpostNumber> ;
+                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> ;
+                                                    rdfs:label "00000BeispFelPoNum"@de ,
+                                                               "0000ExampleFeldPoNumber"@en .
+
+
+###  http://maennerchormurgdatabase.org/FPN0001EXAMPLE
+<http://maennerchormurgdatabase.org/FPN0001EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                             <http://maennerchormurgdatabase.org/FeldpostNumber> ;
+                                                    <http://schema.org/affiliation> <http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE> ;
+                                                    rdfs:label "00001BspFelPoNum"@de ,
+                                                               "0001ExampleFeldPoNo"@en .
+
+
+###  http://maennerchormurgdatabase.org/FeldpostNumber
+<http://maennerchormurgdatabase.org/FeldpostNumber> rdf:type owl:NamedIndividual ;
+                                                    owl:sameAs <https://www.wikidata.org/wiki/Q467921> .
+
+
+###  https://www.wikidata.org/wiki/Q467921
+<https://www.wikidata.org/wiki/Q467921> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/GovernmentAgency
+<http://maennerchormurgdatabase.org/GovernmentAgency> rdf:type owl:NamedIndividual ;
+                                                      owl:sameAs <https://www.wikidata.org/wiki/Q327333> .
+
+
+###  https://www.wikidata.org/wiki/Q327333
+<https://www.wikidata.org/wiki/Q327333> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/GovernmentDocument
+<http://maennerchormurgdatabase.org/GovernmentDocument> rdf:type owl:NamedIndividual ;
+                                                        owl:sameAs <https://www.wikidata.org/wiki/Q30941709> .
+
+
+###  https://www.wikidata.org/wiki/Q30941709
+<https://www.wikidata.org/wiki/Q30941709> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Invoice
+<http://maennerchormurgdatabase.org/Invoice> rdf:type owl:NamedIndividual ;
+                                             owl:sameAs <https://www.wikidata.org/wiki/Q190581> .
+
+
+###  https://www.wikidata.org/wiki/Q190581
+<https://www.wikidata.org/wiki/Q190581> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Kriegsmarine
+<http://maennerchormurgdatabase.org/Kriegsmarine> rdf:type owl:NamedIndividual ;
+                                                  owl:sameAs <https://www.wikidata.org/wiki/Q151701> .
+
+
+###  https://www.wikidata.org/wiki/Q151701
+<https://www.wikidata.org/wiki/Q151701> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Letter
+<http://maennerchormurgdatabase.org/Letter> rdf:type owl:NamedIndividual ;
+                                            owl:sameAs <https://www.wikidata.org/wiki/Q133492> .
+
+
+###  https://www.wikidata.org/wiki/Q133492
+<https://www.wikidata.org/wiki/Q133492> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/List
+<http://maennerchormurgdatabase.org/List> rdf:type owl:NamedIndividual ;
+                                          owl:sameAs <https://www.wikidata.org/wiki/Q12139612> .
+
+
+###  https://www.wikidata.org/wiki/Q12139612
+<https://www.wikidata.org/wiki/Q12139612> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Luftwaffe
+<http://maennerchormurgdatabase.org/Luftwaffe> rdf:type owl:NamedIndividual ;
+                                               owl:sameAs <https://www.wikidata.org/wiki/Q2564009> .
+
+
+###  https://www.wikidata.org/wiki/Q2564009
+<https://www.wikidata.org/wiki/Q2564009> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/MaleChoir
+<http://maennerchormurgdatabase.org/MaleChoir> rdf:type owl:NamedIndividual ;
+                                               owl:sameAs <https://www.wikidata.org/wiki/Q1684352> .
+
+
+###  https://www.wikidata.org/wiki/Q1684352
+<https://www.wikidata.org/wiki/Q1684352> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Map
+<http://maennerchormurgdatabase.org/Map> rdf:type owl:NamedIndividual ;
+                                         owl:sameAs <https://www.wikidata.org/wiki/Q4006> .
+
+
+###  https://www.wikidata.org/wiki/Q4006
+<https://www.wikidata.org/wiki/Q4006> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Military
+<http://maennerchormurgdatabase.org/Military> rdf:type owl:NamedIndividual ;
+                                              owl:sameAs <https://www.wikidata.org/wiki/Q8473> .
+
+
+###  https://www.wikidata.org/wiki/Q8473
+<https://www.wikidata.org/wiki/Q8473> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Murg
+<http://maennerchormurgdatabase.org/Murg> rdf:type owl:NamedIndividual ,
+                                                   <http://schema.org/Place> ;
+                                          owl:sameAs <https://www.wikidata.org/wiki/Q550673> .
+
+
+###  https://www.wikidata.org/wiki/Q550673
+<https://www.wikidata.org/wiki/Q550673> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/NewspaperArticle
+<http://maennerchormurgdatabase.org/NewspaperArticle> rdf:type owl:NamedIndividual ;
+                                                      owl:sameAs <https://www.wikidata.org/wiki/Q5707594> .
+
+
+###  https://www.wikidata.org/wiki/Q5707594
+<https://www.wikidata.org/wiki/Q5707594> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Offer
+<http://maennerchormurgdatabase.org/Offer> rdf:type owl:NamedIndividual ;
+                                           owl:sameAs <https://www.wikidata.org/wiki/Q6501319> .
+
+
+###  https://www.wikidata.org/wiki/Q6501319
+<https://www.wikidata.org/wiki/Q6501319> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Orchestra
+<http://maennerchormurgdatabase.org/Orchestra> rdf:type owl:NamedIndividual ;
+                                               owl:sameAs <https://www.wikidata.org/wiki/Q42998> .
+
+
+###  https://www.wikidata.org/wiki/Q42998
+<https://www.wikidata.org/wiki/Q42998> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Organization
+<http://maennerchormurgdatabase.org/Organization> rdf:type owl:NamedIndividual ;
+                                                  owl:sameAs <https://www.wikidata.org/wiki/Q43229> .
+
+
+###  https://www.wikidata.org/wiki/Q43229
+<https://www.wikidata.org/wiki/Q43229> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Person
+<http://maennerchormurgdatabase.org/Person> rdf:type owl:NamedIndividual ;
+                                            owl:sameAs <https://www.wikidata.org/wiki/Q5> .
+
+
+###  https://www.wikidata.org/wiki/Q5
+<https://www.wikidata.org/wiki/Q5> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/PoliticalOrganization
+<http://maennerchormurgdatabase.org/PoliticalOrganization> rdf:type owl:NamedIndividual ;
+                                                           owl:sameAs <https://www.wikidata.org/wiki/Q7210356> .
+
+
+###  https://www.wikidata.org/wiki/Q7210356
+<https://www.wikidata.org/wiki/Q7210356> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/PoliticalParty
+<http://maennerchormurgdatabase.org/PoliticalParty> rdf:type owl:NamedIndividual ;
+                                                    owl:sameAs <https://www.wikidata.org/wiki/Q7278> .
+
+
+###  https://www.wikidata.org/wiki/Q7278
+<https://www.wikidata.org/wiki/Q7278> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Postcard
+<http://maennerchormurgdatabase.org/Postcard> rdf:type owl:NamedIndividual ;
+                                              owl:sameAs <https://www.wikidata.org/wiki/Q192425> .
+
+
+###  https://www.wikidata.org/wiki/Q192425
+<https://www.wikidata.org/wiki/Q192425> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/SS
+<http://maennerchormurgdatabase.org/SS> rdf:type owl:NamedIndividual ;
+                                        owl:sameAs <https://www.wikidata.org/wiki/Q44687> .
+
+
+###  https://www.wikidata.org/wiki/Q44687
+<https://www.wikidata.org/wiki/Q44687> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/SheetMusic
+<http://maennerchormurgdatabase.org/SheetMusic> rdf:type owl:NamedIndividual ;
+                                                owl:sameAs <https://www.wikidata.org/wiki/P3030> .
+
+
+###  https://www.wikidata.org/wiki/P3030
+<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/TextAnnotation
+<http://maennerchormurgdatabase.org/TextAnnotation> rdf:type owl:NamedIndividual ;
+                                                    owl:sameAs <https://www.wikidata.org/wiki/Q2851776> .
+
+
+###  https://www.wikidata.org/wiki/Q2851776
+<https://www.wikidata.org/wiki/Q2851776> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/TransportCompany
+<http://maennerchormurgdatabase.org/TransportCompany> rdf:type owl:NamedIndividual ;
+                                                      owl:sameAs <https://www.wikidata.org/wiki/Q740752> .
+
+
+###  https://www.wikidata.org/wiki/Q740752
+<https://www.wikidata.org/wiki/Q740752> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/UnitLuftwaffe
+<http://maennerchormurgdatabase.org/UnitLuftwaffe> rdf:type owl:NamedIndividual ;
+                                                   owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+
+
+###  https://www.wikidata.org/wiki/Q176799
+<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/UnitMarine
+<http://maennerchormurgdatabase.org/UnitMarine> rdf:type owl:NamedIndividual ;
+                                                owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+
+
+###  https://www.wikidata.org/wiki/Q176799
+<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/UnitWaffenSS
+<http://maennerchormurgdatabase.org/UnitWaffenSS> rdf:type owl:NamedIndividual ;
+                                                  owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+
+
+###  https://www.wikidata.org/wiki/Q176799
+<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/UnitWehrmacht
+<http://maennerchormurgdatabase.org/UnitWehrmacht> rdf:type owl:NamedIndividual ;
+                                                   owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+
+
+###  https://www.wikidata.org/wiki/Q176799
+<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/VolunteerFireDepartment
+<http://maennerchormurgdatabase.org/VolunteerFireDepartment> rdf:type owl:NamedIndividual ;
+                                                             owl:sameAs <https://www.wikidata.org/wiki/Q285852> .
+
+
+###  https://www.wikidata.org/wiki/Q285852
+<https://www.wikidata.org/wiki/Q285852> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/WaffenSS
+<http://maennerchormurgdatabase.org/WaffenSS> rdf:type owl:NamedIndividual ;
+                                              owl:sameAs <https://www.wikidata.org/wiki/Q153626> .
+
+
+###  https://www.wikidata.org/wiki/Q153626
+<https://www.wikidata.org/wiki/Q153626> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Website
+<http://maennerchormurgdatabase.org/Website> rdf:type owl:NamedIndividual ;
+                                             owl:sameAs <https://www.wikidata.org/wiki/Q35127> .
+
+
+###  https://www.wikidata.org/wiki/Q35127
+<https://www.wikidata.org/wiki/Q35127> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/Wehrmacht
+<http://maennerchormurgdatabase.org/Wehrmacht> rdf:type owl:NamedIndividual ;
+                                               owl:sameAs <https://www.wikidata.org/wiki/Q128781> .
+
+
+###  https://www.wikidata.org/wiki/Q128781
+<https://www.wikidata.org/wiki/Q128781> rdf:type owl:NamedIndividual .
+
+
+###  http://maennerchormurgdatabase.org/hasAuthorID
+<http://maennerchormurgdatabase.org/hasAuthorID> rdf:type owl:NamedIndividual ,
+                                                          rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasContentTags
+<http://maennerchormurgdatabase.org/hasContentTags> rdf:type owl:NamedIndividual ,
+                                                             rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasCreationDate
+<http://maennerchormurgdatabase.org/hasCreationDate> rdf:type owl:NamedIndividual ,
+                                                              rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasCreationPlace
+<http://maennerchormurgdatabase.org/hasCreationPlace> rdf:type owl:NamedIndividual ,
+                                                               rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasDocumentID
+<http://maennerchormurgdatabase.org/hasDocumentID> rdf:type owl:NamedIndividual ,
+                                                            rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasFeldpostNumber
+<http://maennerchormurgdatabase.org/hasFeldpostNumber> rdf:type owl:NamedIndividual ,
+                                                                rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasReceiptPlace
+<http://maennerchormurgdatabase.org/hasReceiptPlace> rdf:type owl:NamedIndividual ,
+                                                              rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasRecipientID
+<http://maennerchormurgdatabase.org/hasRecipientID> rdf:type owl:NamedIndividual ,
+                                                             rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasRoleInChoir
+<http://maennerchormurgdatabase.org/hasRoleInChoir> rdf:type owl:NamedIndividual ,
+                                                             rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/hasTranscription
+<http://maennerchormurgdatabase.org/hasTranscription> rdf:type owl:NamedIndividual ,
+                                                               rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE
+<http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                                      <http://maennerchormurgdatabase.org/MilitaryUnit> ;
+                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0000EXAMPLE> ;
+                                                             <http://schema.org/endDate> "1945-08-06"^^xsd:date ;
+                                                             <http://schema.org/isPartOf> <http://maennerchormurgdatabase.org/Wehrmacht> ;
+                                                             <http://schema.org/location> <https://www.wikidata.org/wiki/Q490453> ;
+                                                             <http://schema.org/member> <http://maennerchormurgdatabase.org/person0000EXAMPLE> ;
+                                                             <http://schema.org/startDate> "1939-09-01"^^xsd:date .
+
+
+###  http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE
+<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                                      <http://maennerchormurgdatabase.org/MilitaryUnit> ;
+                                                             <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0001EXAMPLE> ;
+                                                             <http://schema.org/isPartOf> <http://maennerchormurgdatabase.org/Wehrmacht> ;
+                                                             <http://schema.org/location> <https://www.wikidata.org/wiki/Q490453> ;
+                                                             <http://schema.org/member> <http://maennerchormurgdatabase.org/person0001EXAMPLE> .
+
+
+###  http://maennerchormurgdatabase.org/organization0000EXAMPLE
+<http://maennerchormurgdatabase.org/organization0000EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                                      <http://maennerchormurgdatabase.org/Association> ,
+                                                                      <http://maennerchormurgdatabase.org/Choir> ,
+                                                                      <http://maennerchormurgdatabase.org/MaleChoir> ,
+                                                                      <http://maennerchormurgdatabase.org/Organization> ,
+                                                                      <http://schema.org/Organisation> ,
+                                                                      <http://schema.org/PerformingGroup> ;
+                                                             <http://schema.org/label> "Beispiel Chor" ;
+                                                             <http://schema.org/location> <http://maennerchormurgdatabase.org/Murg> ;
+                                                             <http://schema.org/startDate> "1861"^^xsd:gYear .
+
+
+###  http://maennerchormurgdatabase.org/person0000EXAMPLE
+<http://maennerchormurgdatabase.org/person0000EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                                <http://maennerchormurgdatabase.org/MilitaryUnit> ,
+                                                                <http://maennerchormurgdatabase.org/Person> ,
+                                                                <http://schema.org/Person> ;
+                                                       <http://maennerchormurgdatabase.org/hasFeldpostNumber> <http://maennerchormurgdatabase.org/FPN0000EXAMPLE> ;
+                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
+                                                       <http://schema.org/alternateName> "ManniMuster" ;
+                                                       <http://schema.org/birthDate> "1877-05-15"^^xsd:date ;
+                                                       <http://schema.org/deathDate> "1942-04-20"^^xsd:date ;
+                                                       <http://schema.org/endDate> "1942"^^xsd:gYear ;
+                                                       <http://schema.org/familyName> "Mustermann" ;
+                                                       <http://schema.org/givenName> "Mustermanfred" ;
+                                                       <http://schema.org/homeLocation> <https://www.wikidata.org/wiki/Q64> ;
+                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/militaryUnit0000EXAMPLE> ;
+                                                       <http://schema.org/gender> <http://schema.org/Male>;
+                                                       <http://schema.org/startDate> "1939"^^xsd:gYear .
+
+
+###  http://maennerchormurgdatabase.org/person0001EXAMPLE
+<http://maennerchormurgdatabase.org/person0001EXAMPLE> rdf:type owl:NamedIndividual ,
+                                                                <http://maennerchormurgdatabase.org/Person> ,
+                                                                <http://schema.org/Person> ;
+                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#hasRole> <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter> ;
+                                                       <http://schema.org/alternateName> "JOHNEXAMPLE" ;
+                                                       <http://schema.org/birthDate> "1889-01-01"^^xsd:date ;
+                                                       <http://schema.org/deathDate> "1945-01-01"^^xsd:date ;
+                                                       <http://schema.org/endDate> "1944-01-01"^^xsd:date ;
+                                                       <http://schema.org/familyName> "Doe" ;
+                                                       <http://schema.org/givenName> "John" ;
+                                                       <http://schema.org/homeLocation> <http://maennerchormurgdatabase.org/Murg> ;
+                                                       <http://schema.org/member> <http://maennerchormurgdatabase.org/organization0001EXAMPLE> ;
+                                                       <http://schema.org/startDate> "1899-01-01"^^xsd:date .
+
+
+###  http://maennerchormurgdatabase.org/relatedTo
+<http://maennerchormurgdatabase.org/relatedTo> rdf:type owl:NamedIndividual ,
+                                                        rdfs:Property .
+
+
+###  http://maennerchormurgdatabase.org/report
+<http://maennerchormurgdatabase.org/report> rdf:type owl:NamedIndividual ;
+                                            owl:sameAs <https://www.wikidata.org/wiki/Q10870555> .
+
+
+###  https://www.wikidata.org/wiki/Q10870555
+<https://www.wikidata.org/wiki/Q10870555> rdf:type owl:NamedIndividual .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent> rdf:type owl:NamedIndividual ,
+                                                                                                                                    <http://schema.org/Occupation> ,
+                                                                                                                                    <http://schema.org/Role> ,
+                                                                                                                                    <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee> ;
+                                                                                                                           <http://schema.org/alternateName> """H.Z.Bass
+H.I.Z.Bass"""@de ;
+                                                                                                                           rdfs:label "Hilfszollbetriebsassistent"@de ;
+                                                                                                                           rdfs:seeAlso "<https://www.erinnern.at/media/9385acd707ceae81ddf79d43dac7209a/229_Gerhard_Wanner.pdf>"@de ,
+                                                                                                                                        "<https://www.zollgrenzschutz.de/index.php?option=com_content&view=article&id=112&Itemid=121>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee> rdf:type owl:NamedIndividual ,
+                                                                                                                        <http://schema.org/Occupation> ,
+                                                                                                                        <http://schema.org/Role> ,
+                                                                                                                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                               <http://schema.org/alternateName> """LtzS
+Lt z S
+Lt zS
+Leutnant M.A.
+Leutnant Marine Artillerie"""@de ;
+                                                                                                               rdfs:comment "lowest officer's rank in the german navy"@en ,
+                                                                                                                            "niedrigster Offiziersrang in der deutschen Marine"@de ;
+                                                                                                               rdfs:label "Leutnant zur See"@de ;
+                                                                                                               owl:sameAs ":wd <https://www.wikidata.org/wiki/Q1642186>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter> rdf:type owl:NamedIndividual ,
+                                                                                                                       <http://maennerchormurgdatabase.org/Organization> ,
+                                                                                                                       <http://schema.org/Occupation> ,
+                                                                                                                       <http://schema.org/Organisation> ,
+                                                                                                                       <http://schema.org/Role> ,
+                                                                                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                              owl:differentFrom <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> ;
+                                                                                                              rdfs:comment "Mannschaftsdienstgrad im Militär"@de ,
+                                                                                                                           "enlisted personnel in the militarye"@en ;
+                                                                                                              rdfs:label "Obergefreiter"@de ;
+                                                                                                              owl:sameAs ":wd <https://www.wikidata.org/wiki/Q385834>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister> rdf:type owl:NamedIndividual ,
+                                                                                                                         <http://schema.org/Occupation> ,
+                                                                                                                         <http://schema.org/Role> ,
+                                                                                                                         <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                                <http://schema.org/hasPart> ":wd <https://www.wikidata.org/wiki/Q7156771>"@en ;
+                                                                                                                rdfs:comment "military profession involving paying wages or salaries"@en ,
+                                                                                                                             "militärische Profession die das Auszahlen von Sold beinhaltet"@de ;
+                                                                                                                rdfs:label "Oberzahlmeister"@de .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier> rdf:type owl:NamedIndividual ,
+                                                                                                                       <http://schema.org/Occupation> ,
+                                                                                                                       <http://schema.org/Role> ,
+                                                                                                                       <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                              rdfs:comment "Military Rank in german speaking armed forces"@en ,
+                                                                                                                           "Militärischer Rang in deutsprachigen Streitkräften"@de ;
+                                                                                                              rdfs:label "Unteroffizier"@de ;
+                                                                                                              owl:sameAs ":wd <https://www.wikidata.org/wiki/Q17056546>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Werkmeister
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Werkmeister> rdf:type owl:NamedIndividual ,
+                                                                                                                     <http://schema.org/Occupation> ,
+                                                                                                                     <http://schema.org/Role> ;
+                                                                                                            rdfs:comment "Abteilungsleiter in einem Industriellen Betrieb, i.d.R ohne Meisterbrief, aber mit dem vom Betrieb verliehnen Titel"@de ,
+                                                                                                                         "Department head in an industrial company, usually without a master craftsman's certificate, but with the title awarded by the company"@en ;
+                                                                                                            rdfs:label "Werkmeister"@de .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter> rdf:type owl:NamedIndividual ,
+                                                                                                                   <http://maennerchormurgdatabase.org/Organization> ,
+                                                                                                                   <http://schema.org/Occupation> ,
+                                                                                                                   <http://schema.org/Organisation> ,
+                                                                                                                   <http://schema.org/Role> ,
+                                                                                                                   <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank> ;
+                                                                                                          rdfs:comment "Rangniedriger Mannschaftsgrad im Militär"@de ,
+                                                                                                                       "low ranking enlisted personnel"@en ;
+                                                                                                          rdfs:label "Gefreiter"@de ;
+                                                                                                          owl:sameAs ":wd <https://www.wikidata.org/wiki/Q475482>" .
+
+
+###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/honoraryPresident
+<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/honoraryPresident> rdf:type owl:NamedIndividual ,
+                                                                                                                           <http://schema.org/Role> ,
+                                                                                                                           <http://schema.org/roleName> ;
+                                                                                                                  rdfs:comment "A title given to a distinguished member of an Association."@en ,
+                                                                                                                               "Ein Titel, der einem verdienten Mitglied eines Vereins gegeben wird"@de ;
+                                                                                                                  rdfs:label "Ehrenpräsident"@de ,
+                                                                                                                             "Honorary President"@en .
+
+
+###  https://www.wikidata.org/wiki/P3030
+<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q10870555
+<https://www.wikidata.org/wiki/Q10870555> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q12139612
+<https://www.wikidata.org/wiki/Q12139612> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q128781
+<https://www.wikidata.org/wiki/Q128781> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131186
+<https://www.wikidata.org/wiki/Q131186> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q131734
+<https://www.wikidata.org/wiki/Q131734> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q133492
+<https://www.wikidata.org/wiki/Q133492> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q151701
+<https://www.wikidata.org/wiki/Q151701> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q153626
+<https://www.wikidata.org/wiki/Q153626> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q1684352
+<https://www.wikidata.org/wiki/Q1684352> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q176799
+<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q190581
+<https://www.wikidata.org/wiki/Q190581> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q192425
+<https://www.wikidata.org/wiki/Q192425> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q22687
+<https://www.wikidata.org/wiki/Q22687> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q2564009
+<https://www.wikidata.org/wiki/Q2564009> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q2851776
+<https://www.wikidata.org/wiki/Q2851776> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q285852
+<https://www.wikidata.org/wiki/Q285852> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q30941709
+<https://www.wikidata.org/wiki/Q30941709> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q327333
+<https://www.wikidata.org/wiki/Q327333> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q35127
+<https://www.wikidata.org/wiki/Q35127> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q4006
+<https://www.wikidata.org/wiki/Q4006> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q42998
+<https://www.wikidata.org/wiki/Q42998> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q43229
+<https://www.wikidata.org/wiki/Q43229> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q44687
+<https://www.wikidata.org/wiki/Q44687> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q467921
+<https://www.wikidata.org/wiki/Q467921> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q4830453
+<https://www.wikidata.org/wiki/Q4830453> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q49848
+<https://www.wikidata.org/wiki/Q49848> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q5
+<https://www.wikidata.org/wiki/Q5> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q550673
+<https://www.wikidata.org/wiki/Q550673> rdf:type owl:NamedIndividual ,
+                                                 <http://schema.org/Place> .
+
+
+###  https://www.wikidata.org/wiki/Q5707594
+<https://www.wikidata.org/wiki/Q5707594> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q6501319
+<https://www.wikidata.org/wiki/Q6501319> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q7210356
+<https://www.wikidata.org/wiki/Q7210356> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q7278
+<https://www.wikidata.org/wiki/Q7278> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q740752
+<https://www.wikidata.org/wiki/Q740752> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q8473
+<https://www.wikidata.org/wiki/Q8473> rdf:type owl:NamedIndividual .
+
+
+###  https://www.wikidata.org/wiki/Q9299236
+<https://www.wikidata.org/wiki/Q9299236> rdf:type owl:NamedIndividual .
+
+
+[ rdf:type <http://schema.org/roleName>
+] .
+
+#################################################################
+#    Annotations
+#################################################################
+
+<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN0001EXAMPLE%3E%3E> <http://schema.org/endDate> "1945-08-06"^^xsd:date .
+
+
+<%3C%3Chttp://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE%20http://maennerchormurgdatabase.org/hasFeldpostNumber%20http://maennerchormurgdatabase.org/FPN0001EXAMPLEMilitaryUnit%3E%3E> <http://schema.org/startDate> "1939-09-01"^^xsd:date .
+
+
+<%3C%3Chttp://maennerchormurgdatabase.org/person0000EXAMPLE%20http://schema.org/member%20http://maennerchormurgdatabase.org/organization0000EXAMPLE%3E%3E> <http://schema.org/endDate> "1942-04-20"^^xsd:date ;
+                                                                                                                                                           <http://schema.org/startDate> "1897-01-01"^^xsd:date .
+
+
+<http://maennerchormurgdatabase.org/Association> rdfs:comment "An organization formed by a group of people with a common purpose or interest, often non-profit."@en ,
+                                                              "Eine Organisation, die von einer Gruppe von Menschen mit einem gemeinsamen Zweck oder Interesse gegründet wurde, oft gemeinnützig."@de ;
+                                                 rdfs:label "Association"@en ,
+                                                            "Verein"@de .
+
+
+<http://maennerchormurgdatabase.org/Bank> rdfs:comment "A financial institution that accepts deposits, offers loans, and provides various financial services."@en ,
+                                                       "Ein Finanzinstitut, das Einlagen entgegennimmt, Kredite vergibt und verschiedene Finanzdienstleistungen anbietet."@de ;
+                                          rdfs:label "Bank"@de ,
+                                                     "Bank"@en .
+
+
+<http://maennerchormurgdatabase.org/Brewery> rdfs:comment "A business involved in the production of beer through brewing."@en ,
+                                                          "Ein Unternehmen, das sich mit der Herstellung von Bier durch Brauen beschäftigt."@de ;
+                                             rdfs:label "Brauerei"@de ,
+                                                        "Brewery"@en .
+
+
+<http://maennerchormurgdatabase.org/Business> rdfs:comment "An organization involved in commercial, industrial, or professional activities."@en ,
+                                                           "Eine Organisation, die in kommerziellen, industriellen oder beruflichen Tätigkeiten tätig ist."@de ;
+                                              rdfs:label "Business"@en ,
+                                                         "Firma"@de .
+
+
+<http://maennerchormurgdatabase.org/Choir> rdfs:comment "A musical group composed of singers who perform together."@en ,
+                                                        "Eine musikalische Gruppe, die aus Sängern besteht und gemeinsam auftritt."@de ;
+                                           rdfs:label "Choir"@en ,
+                                                      "Chor"@de .
+
+
+<http://maennerchormurgdatabase.org/Document> rdfs:comment "A document, typically a written or printed work, that can be formal or informal."@en ,
+                                                           "Ein Dokument, typischerweise ein schriftliches oder gedrucktes Werk, das formal oder informell sein kann."@de ;
+                                              rdfs:label "Document"@en ,
+                                                         "Dokument"@de .
+
+
+<http://maennerchormurgdatabase.org/FeldpostNumber> rdfs:comment "Represents a Feldpost number used in military units to identify postal services."@en ,
+                                                                 "Repräsentiert eine Feldpostnummer, die in Militäreinheiten für den Postverkehr verwendet wird."@de ;
+                                                    rdfs:label "Feldpost Number"@en ,
+                                                               "Feldpostnummer"@de .
+
+
+<http://maennerchormurgdatabase.org/GovernmentAgency> rdfs:comment "An organization that is part of the government and responsible for implementing policies, regulations, and services."@en ,
+                                                                   "Eine Organisation, die Teil der Regierung ist und für die Umsetzung von Richtlinien, Vorschriften und Dienstleistungen verantwortlich ist."@de ;
+                                                      rdfs:label "Behörde"@de ,
+                                                                 "Government Agency"@en .
+
+
+<http://maennerchormurgdatabase.org/GovernmentDocument> rdfs:comment "A document issued by a government entity, typically containing official information or records."@en ,
+                                                                     "Ein Dokument, das von einer Regierungsstelle herausgegeben wurde und in der Regel offizielle Informationen oder Aufzeichnungen enthält."@de ;
+                                                        rdfs:label "Government document"@en ,
+                                                                   "Regierungsdokument"@de .
+
+
+<http://maennerchormurgdatabase.org/Invoice> rdfs:comment "A document that details a transaction, including the goods or services provided and the payment terms."@en ,
+                                                          "Ein Dokument, das eine Transaktion beschreibt, einschließlich der gelieferten Waren oder Dienstleistungen und der Zahlungsbedingungen."@de ;
+                                             rdfs:label "Invoice"@en ,
+                                                        "Rechnung"@de .
+
+
+<http://maennerchormurgdatabase.org/Kriegsmarine> rdfs:comment "A branch of a nation's armed forces that conducts military operations at sea."@en ,
+                                                               "Ein Zweig der Streitkräfte eines Landes, der militärische Operationen auf See durchführt."@de ;
+                                                  rdfs:label "Marine"@de ,
+                                                             "Navy"@en .
+
+
+<http://maennerchormurgdatabase.org/Letter> rdfs:comment "A written message, typically sent from one person to another."@en ,
+                                                         "Ein schriftliches Dokument, das typischerweise von einer Person an eine andere gesendet wird."@de ;
+                                            rdfs:label "Brief"@de ,
+                                                       "Letter"@en .
+
+
+<http://maennerchormurgdatabase.org/List> rdfs:comment "A collection of items, typically arranged in a specific order or according to a particular criteria."@en ,
+                                                       "Eine Sammlung von Elementen, die typischerweise in einer bestimmten Reihenfolge oder nach bestimmten Kriterien angeordnet ist."@de ;
+                                          rdfs:label "List"@en ,
+                                                     "Liste"@de .
+
+
+<http://maennerchormurgdatabase.org/Luftwaffe> rdfs:comment "Die Luftwaffe des Militärs im nationalsozialistischen Deutschland während des Zweiten Weltkriegs."@de ,
+                                                            "The air force branch of Nazi Germany's military during World War II."@en ;
+                                               rdfs:label "Luftwaffe"@de ,
+                                                          "Luftwaffe"@en .
+
+
+<http://maennerchormurgdatabase.org/MaleChoir> rdfs:comment "A musical group composed of male singers who perform together."@en ,
+                                                            "Eine musikalische Gruppe, die aus männlichen Sängern besteht und gemeinsam auftritt."@de ;
+                                               rdfs:label "Men´s Choir"@en ,
+                                                          "Männerchor"@de .
+
+
+<http://maennerchormurgdatabase.org/Map> rdfs:comment "A visual representation of an area, often used for navigation or spatial understanding."@en ,
+                                                      "Eine visuelle Darstellung eines Gebiets, die häufig zur Navigation oder zum räumlichen Verständnis verwendet wird."@de ;
+                                         rdfs:label "Karte"@de ,
+                                                    "Map"@en .
+
+
+<http://maennerchormurgdatabase.org/Military> rdfs:comment "Das Militär eines Staates oder Nation."@de ,
+                                                           "The militaryof a state or nation."@en ;
+                                              rdfs:label "Military"@en ,
+                                                         "Militär"@de .
+
+
+<http://maennerchormurgdatabase.org/NewspaperArticle> rdfs:comment "An article published in a newspaper, typically covering news, opinions, or other subjects of public interest."@en ,
+                                                                   "Ein in einer Zeitung veröffentlichter Artikel, der in der Regel Nachrichten, Meinungen oder andere Themen von öffentlichem Interesse behandelt."@de ;
+                                                      rdfs:label "Newspaper article"@en ,
+                                                                 "Zeitungsartikel"@de .
+
+
+<http://maennerchormurgdatabase.org/Offer> rdfs:comment "A proposal or quotation provided, often in a commercial context, outlining the terms and conditions for a service or product."@en ,
+                                                        "Ein Vorschlag oder Angebot, oft im kommerziellen Kontext, der die Bedingungen und Konditionen für eine Dienstleistung oder ein Produkt beschreibt."@de ;
+                                           rdfs:label "Offer"@en ,
+                                                      "Offerte"@de .
+
+
+<http://maennerchormurgdatabase.org/Orchestra> rdfs:comment "A large group of musicians who play together, typically performing classical music."@en ,
+                                                            "Eine große Gruppe von Musikern, die gemeinsam spielen, typischerweise klassische Musik aufführen."@de ;
+                                               rdfs:label "Orchester"@de ,
+                                                          "Orchestra"@en .
+
+
+<http://maennerchormurgdatabase.org/Organization> rdfs:comment "An entity that is structured and managed to pursue a collective goal, which can include businesses, associations, and other institutions."@en ,
+                                                               "Eine Einheit, die strukturiert und verwaltet wird, um ein gemeinsames Ziel zu verfolgen, einschließlich Unternehmen, Vereinen und anderen Institutionen."@de ;
+                                                  rdfs:label "Organisation"@de ,
+                                                             "Organization"@en .
+
+
+<http://maennerchormurgdatabase.org/Person> rdfs:comment "An individual human being with properties like name, birth date, and relationships."@en ,
+                                                         "Ein Mensch mit Eigenschaften wie Name, Geburtsdatum und Beziehungen."@de ;
+                                            rdfs:label "Person"@de ,
+                                                       "Person"@en .
+
+
+<http://maennerchormurgdatabase.org/PoliticalOrganization> rdfs:comment "An organization involved in political processes, such as political parties or groups."@en ,
+                                                                        "Eine Organisation, die an politischen Prozessen beteiligt ist, wie politische Parteien oder Gruppen."@de ;
+                                                           rdfs:label "Political Organization"@en ,
+                                                                      "Politische Organisation"@de .
+
+
+<http://maennerchormurgdatabase.org/PoliticalParty> rdfs:comment "An organization that represents a political beliefs or agenda and participates in elections and potentially government."@en ,
+                                                                 "Eine Organisation, die eine politische Haltung oder Agenda vertritt und an Wahlen und möglicherweise der Regierung teilnimmt."@de ;
+                                                    rdfs:label "Political Party"@en ,
+                                                               "Politische Partei"@de .
+
+
+<http://maennerchormurgdatabase.org/Postcard> rdfs:comment "A postcard, typically used for sending short messages with or without an envelope."@en ,
+                                                           "Eine Postkarte, die typischerweise für das Versenden von kurzen Nachrichten mit oder ohne Umschlag verwendet wird."@de ;
+                                              rdfs:label "Postcard"@en ,
+                                                         "Postkarte"@de .
+
+
+<http://maennerchormurgdatabase.org/SS> rdfs:comment "A major paramilitary organization under Adolf Hitler and the Nazi Party during Nazi Germany."@en ,
+                                                     "Eine wichtige paramilitärische Organisation unter Adolf Hitler und der NSDAP im nationalsozialistischen Deutschland."@de ;
+                                        rdfs:label "SS"@en ,
+                                                   "Schutzstaffel"@de ;
+                                        <http://www.w3.org/2004/02/skos/core#altLabel> "SS"@de ,
+                                                                                       "Schutzstaffel"@en .
+
+
+<http://maennerchormurgdatabase.org/SheetMusic> rdfs:comment "A musical score or written representation of musical notes, used for performing music."@en ,
+                                                             "Eine musikalische Partitur oder schriftliche Darstellung von Noten, die zur Aufführung von Musik verwendet wird."@de ;
+                                                rdfs:label "Notenblatt"@de ,
+                                                           "Sheet music"@en .
+
+
+<http://maennerchormurgdatabase.org/TextAnnotation> rdfs:comment "A note or annotation added to a text, often used for clarification, comments, or additional information."@en ,
+                                                                 "Eine Notiz oder Anmerkung, die zu einem Text hinzugefügt wird und häufig zur Klärung, für Kommentare oder zusätzliche Informationen verwendet wird."@de ;
+                                                    rdfs:label "Notiz"@de ,
+                                                               "Text annotation"@en .
+
+
+<http://maennerchormurgdatabase.org/TransportCompany> rdfs:comment "A business that specializes in the transportation of goods or passengers."@en ,
+                                                                   "Ein Unternehmen, das sich auf den Transport von Gütern oder Personen spezialisiert."@de ;
+                                                      rdfs:label "Transport Company"@en ,
+                                                                 "Transportunternehmen"@de .
+
+
+<http://maennerchormurgdatabase.org/UnitLuftwaffe> rdfs:comment "A military unit to which a person belongs."@en ,
+                                                                "Die Militäreinheit, der eine Person zugehört."@de ;
+                                                   rdfs:label "Military unit"@en ,
+                                                              "Militärische Einheiten"@de .
+
+
+<http://maennerchormurgdatabase.org/UnitMarine> rdfs:comment "A military unit to which a person belongs."@en ,
+                                                             "Die Militäreinheit, der eine Person zugehört."@de ;
+                                                rdfs:label "Military unit"@en ,
+                                                           "Militärische Einheiten"@de .
+
+
+<http://maennerchormurgdatabase.org/UnitWaffenSS> rdfs:comment "A military unit to which a person belongs."@en ,
+                                                               "Die Militäreinheit, der eine Person zugehört."@de ;
+                                                  rdfs:label "Military unit"@en ,
+                                                             "Militärische Einheiten"@de .
+
+
+<http://maennerchormurgdatabase.org/UnitWehrmacht> rdfs:comment "A military unit to which a person belongs."@en ,
+                                                                "Die Militäreinheit, der eine Person zugehört."@de ;
+                                                   rdfs:label "Military unit"@en ,
+                                                              "Militärische Einheiten"@de .
+
+
+<http://maennerchormurgdatabase.org/VolunteerFireDepartment> rdfs:comment "An organization made up of volunteers that provides fire protection and emergency response services."@en ,
+                                                                          "Eine Organisation aus Freiwilligen, die Brandschutz und Notfalleinsätze anbietet."@de ;
+                                                             rdfs:label "Freiwillige Feuerwehr"@de ,
+                                                                        "Volunteer Fire Department"@en .
+
+
+<http://maennerchormurgdatabase.org/WaffenSS> rdfs:comment "Der bewaffnete Zweig der SS, der paramilitärischen Organisation des nationalsozialistischen Deutschlands, die im Zweiten Weltkrieg aktiv war."@de ,
+                                                           "The armed wing of the SS, Nazi Germany's paramilitary organization, active during World War II."@en ;
+                                              rdfs:label "Waffen-SS"@de ,
+                                                         "Waffen-SS"@en .
+
+
+<http://maennerchormurgdatabase.org/Website> rdfs:comment "A collection of related web pages served from a single domain, often containing information, media, or other resources."@en ,
+                                                          "Eine Sammlung von zusammenhängenden Webseiten, die von einer einzigen Domain bereitgestellt werden und häufig Informationen, Medien oder andere Ressourcen enthalten."@de ;
+                                             rdfs:label "Webseite"@de ,
+                                                        "Website"@en .
+
+
+<http://maennerchormurgdatabase.org/Wehrmacht> <http://schema.org/hasPart> <http://maennerchormurgdatabase.org/MilitaryUnit> ;
+                                               rdfs:comment "Die Streitkräfte des nationalsozialistischen Deutschlands von 1935 bis 1945."@de ,
+                                                            "The unified armed forces of Nazi Germany from 1935 to 1945."@en ;
+                                               rdfs:label "Wehrmacht"@de ,
+                                                          "Wehrmacht"@en .
+
+
+<http://maennerchormurgdatabase.org/hasAuthorID> rdfs:comment "Die Person oder Organisation, die das Dokument erstellt hat."@de ,
+                                                              "The person or organization that created the document."@en ;
+                                                 rdfs:label "has author"@en ,
+                                                            "hat Verfasser"@de .
+
+
+<http://maennerchormurgdatabase.org/hasContentTags> rdfs:comment "Tags that describe the content or themes of the document."@en ,
+                                                                 "Tags, die den Inhalt oder die Themen des Dokuments beschreiben."@de ;
+                                                    rdfs:label "Inhalt-Tags"@de ,
+                                                               "content tags"@en .
+
+
+<http://maennerchormurgdatabase.org/hasCreationDate> rdfs:comment "Das Datum, an dem das Dokument ursprünglich erstellt wurde."@de ,
+                                                                  "The date when the document was originally created."@en ;
+                                                     rdfs:label "Entstehungsdatum"@de ,
+                                                                "creation date"@en .
+
+
+<http://maennerchormurgdatabase.org/hasCreationPlace> rdfs:comment "Der Ort, an dem das Dokument erstellt wurde."@de ,
+                                                                   "The place where the document was created."@en ;
+                                                      rdfs:label "Entstehungsort"@de ,
+                                                                 "creation place"@en .
+
+
+<http://maennerchormurgdatabase.org/hasDocumentID> rdfs:comment "A unique identifier for the document."@en ,
+                                                                "Eine eindeutige Kennung für das Dokument."@de ;
+                                                   rdfs:label "has document ID"@en ,
+                                                              "hat Dokumenten-ID"@de .
+
+
+<http://maennerchormurgdatabase.org/hasFeldpostNumber> rdfs:comment "Die erste Feldpostnummer in Verbindung mit einer Militäreinheit."@de ,
+                                                                    "The Feldpost number associated with a military unit during a certain time."@en ;
+                                                       rdfs:label "Feldpost number"@en ,
+                                                                  "Feldpostnummer"@de ;
+                                                       rdfs:seeAlso <https://www.wikidata.org/wiki/Q467921> .
+
+
+<http://maennerchormurgdatabase.org/hasReceiptPlace> rdfs:comment "Der Ort, an dem das Dokument empfangen wurde."@de ,
+                                                                  "The place where the document was received."@en ;
+                                                     rdfs:label "Empfangsort"@de ,
+                                                                "receipt place"@en .
+
+
+<http://maennerchormurgdatabase.org/hasRecipientID> rdfs:comment "Die Person oder Organisation, an die das Dokument gerichtet ist."@de ,
+                                                                 "The person or organization to whom the document is addressed."@en ;
+                                                    rdfs:label "has recipient"@en ,
+                                                               "hat Empfänger"@de .
+
+
+<http://maennerchormurgdatabase.org/hasTranscription> rdfs:comment "Referenziert auf eine Transkription."@de ,
+                                                                   "refers to a transcription."@en ;
+                                                      rdfs:label "has the transcription"@en ,
+                                                                 "hat die Transkription"@de .
+
+
+<http://maennerchormurgdatabase.org/relatedTo> rdfs:comment "Defines the familial  relationship between two individuals, such as kinship, marriage."@en ,
+                                                            "Definiert die familiäre Beziehung zwischen zwei Personen, wie Verwandtschaft, Ehe."@de ;
+                                               rdfs:label "Related to"@en ,
+                                                          "Verwandt mit"@de .
+
+
+<http://maennerchormurgdatabase.org/report> rdfs:comment "A record or minutes of a meeting or event."@en ,
+                                                         "Ein Protokoll oder eine Aufzeichnung von einer Sitzung oder einem Ereignis."@de ;
+                                            rdfs:label "Protokoll"@de ,
+                                                       "report"@en .
+
+
+<http://maennerchormurgdatabase.org/Association> owl:sameAs "wd:Q9299236" .
+
+
+
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter>
+                        <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter>
+                      )
+] .
+
+
+###  Generated by the OWL API (version 4.5.29.2025-01-21T12:11:03Z) https://github.com/owlcs/owlapi
+
+
+
+
+
+
+
+
+
