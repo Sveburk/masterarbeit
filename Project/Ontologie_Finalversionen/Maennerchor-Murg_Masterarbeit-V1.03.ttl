@@ -1,10 +1,11 @@
-#// filepath: /Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/Maennerchor-Murg_Masterarbeit-V1.03.ttl
+@prefix : <http://maennerchormurgdatabase.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix schema: <http://schema.org/> .
-@prefix : <http://maennerchormurgdatabase.org/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
 <http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
                                       owl:versionIRI <urn:absolute:v1.02> ;
                                       owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.03> .
@@ -246,8 +247,7 @@ schema:Male rdf:type owl:Class ;
 
 ###  http://maennerchormurgdatabase.org/Association
 :Association rdf:type owl:Class ;
-                                                 rdfs:subClassOf :Organization ,
-                                                                 schema:Organisation  .
+                                                 rdfs:subClassOf schema:Organization  .
 
 
 ###  http://maennerchormurgdatabase.org/Bank
@@ -263,7 +263,7 @@ schema:Male rdf:type owl:Class ;
 ###  http://maennerchormurgdatabase.org/Business
 :Business rdf:type owl:Class ;
                                               rdfs:subClassOf :Organization ,
-                                                              schema:Organisation  .
+                                                              schema:Organization  .
 
 
 ###  http://maennerchormurgdatabase.org/Choir
@@ -352,7 +352,7 @@ schema:Male rdf:type owl:Class ;
 
 ###  http://maennerchormurgdatabase.org/Organization
 :Organization rdf:type owl:Class ;
-                                                  owl:equivalentClass schema:Organisation  .
+                                                  owl:equivalentClass schema:Organization  .
 
 
 ###  http://maennerchormurgdatabase.org/Person
@@ -363,7 +363,7 @@ schema:Male rdf:type owl:Class ;
 ###  http://maennerchormurgdatabase.org/PoliticalOrganization
 :PoliticalOrganization  rdf:type owl:Class ;
                                                            rdfs:subClassOf :Organization ,
-                                                                           schema:Organisation  .
+                                                                           schema:Organization  .
 
 
 ###  http://maennerchormurgdatabase.org/PoliticalParty
@@ -459,7 +459,7 @@ schema:Occupation rdf:type owl:Class ;
 
 
 ###  http://schema.org/Organisation
-schema:Organisation  rdf:type owl:Class .
+schema:Organization  rdf:type owl:Class .
 
 
 ###  http://schema.org/PerformingGroup
@@ -499,7 +499,7 @@ schema:roleName  rdf:type owl:Class ;
                                                                                                                          "collective organization of a country's armed military and paramilitary"@en ;
                                                                                                             rdfs:label "ArmedForces"@en ,
                                                                                                                        "Streitkräfte"@de ;
-                                                                                                            owl:sameAs "wd: <https://www.wikidata.org/wiki/Q772547>"@en .
+                                                                                                            owl:sameAs wd:Q772547 .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#CivilProfession
@@ -510,19 +510,18 @@ schema:roleName  rdf:type owl:Class ;
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee
 <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee> rdf:type owl:Class ;
                                                                                                                rdfs:subClassOf schema:Occupation ;
-                                                                                                               schema:alternateName  """civil service official
-public servant""" ;
+                                                                                                               schema:alternateName  "civil service official public servant" ;
                                                                                                                rdfs:comment "Mensch im öffentlichen Dienst"@de ,
                                                                                                                             "career civil service personnel"@en ;
                                                                                                                rdfs:label "Beamter"@de ,
                                                                                                                           "Public Employee"@en ;
-                                                                                                               owl:sameAs ":wd <https://www.wikidata.org/wiki/Q11771944>" .
+                                                                                                               owl:sameAs wd:Q11771944 .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank
 :MilitaryRank rdf:type owl:Class ;
                                                                                                              rdfs:subClassOf schema:Occupation ;
-                                                                                                             owl:sameAs "<https://www.wikidata.org/wiki/Q56019>"@en .
+                                                                                                             owl:sameAs wd:Q56019 .
 
 
 ###  http://www.w3.org/2000/01/rdf-schema#Property
@@ -535,361 +534,361 @@ rdfs:Property rdf:type owl:Class .
 
 ###  http://maennerchormurgdatabase.org/Association
 :Association rdf:type owl:NamedIndividual ;
-                                                 owl:sameAs <https://www.wikidata.org/wiki/Q9299236> .
+                                                 owl:sameAs wd:Q9299236 .
 
 
 ###  https://www.wikidata.org/wiki/Q9299236
-<https://www.wikidata.org/wiki/Q9299236> rdf:type owl:NamedIndividual .
+wd:Q9299236 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Bank
 :Bank rdf:type owl:NamedIndividual ;
-                                          owl:sameAs <https://www.wikidata.org/wiki/Q22687> .
+                                          owl:sameAs wd:Q22687 .
 
 
 ###  https://www.wikidata.org/wiki/Q22687
-<https://www.wikidata.org/wiki/Q22687> rdf:type owl:NamedIndividual .
+wd:Q22687 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Brewery
 :Brewery rdf:type owl:NamedIndividual ;
-                                             owl:sameAs <https://www.wikidata.org/wiki/Q131734> .
+                                             owl:sameAs wd:Q131734 .
 
 
 ###  https://www.wikidata.org/wiki/Q131734
-<https://www.wikidata.org/wiki/Q131734> rdf:type owl:NamedIndividual .
+wd:Q131734 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Business
 :Business rdf:type owl:NamedIndividual ;
-                                              owl:sameAs <https://www.wikidata.org/wiki/Q4830453> .
+                                              owl:sameAs wd:Q4830453 .
 
 
 ###  https://www.wikidata.org/wiki/Q4830453
-<https://www.wikidata.org/wiki/Q4830453> rdf:type owl:NamedIndividual .
+wd:Q4830453 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Choir
 :Choir rdf:type owl:NamedIndividual ;
-                                           owl:sameAs <https://www.wikidata.org/wiki/Q131186> .
+                                           owl:sameAs wd:Q131186 .
 
 
 ###  https://www.wikidata.org/wiki/Q131186
-<https://www.wikidata.org/wiki/Q131186> rdf:type owl:NamedIndividual .
+wd:Q131186 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Document
 :Document rdf:type owl:NamedIndividual ;
-                                              owl:sameAs <https://www.wikidata.org/wiki/Q49848> .
+                                              owl:sameAs wd:Q49848 .
 
 
 ###  https://www.wikidata.org/wiki/Q49848
-<https://www.wikidata.org/wiki/Q49848> rdf:type owl:NamedIndividual .
+wd:Q49848 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/FPN3330EXAMPLE
 :FPN3330EXAMPLE rdf:type owl:NamedIndividual ,
                                                              :FeldpostNumber ;
                                                     schema:affiliation  :militaryUnit2220EXAMPLE ;
-                                                    rdfs:label "1111BeispFelPoNum"@de ,
-                                                               "1111ExampleFeldPoNumber"@en .
+                                                    rdfs:label "3330BeispFelPoNum"@de ,
+                                                               "3330ExampleFeldPoNumber"@en .
 
 
 ###  http://maennerchormurgdatabase.org/1112EXAMPLE
 :FPN3331EXAMPLE  rdf:type owl:NamedIndividual ,
                                                              :FeldpostNumber ;
                                                     schema:affiliation  :militaryUnit2221EXAMPLE  ;
-                                                    rdfs:label "1112BspFelPoNum"@de ,
-                                                               "1112ExampleFeldPoNo"@en .
+                                                    rdfs:label "3331BspFelPoNum"@de ,
+                                                               "3331ExampleFeldPoNo"@en .
 
 
 ###  http://maennerchormurgdatabase.org/FeldpostNumber
 :FeldpostNumber rdf:type owl:NamedIndividual ;
-                                                    owl:sameAs <https://www.wikidata.org/wiki/Q467921> .
+                                                    owl:sameAs wd:Q467921 .
 
 
 ###  https://www.wikidata.org/wiki/Q467921
-<https://www.wikidata.org/wiki/Q467921> rdf:type owl:NamedIndividual .
+wd:Q467921 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/GovernmentAgency
 :GovernmentAgency  rdf:type owl:NamedIndividual ;
-                                                      owl:sameAs <https://www.wikidata.org/wiki/Q327333> .
+                                                      owl:sameAs wd:Q327333 .
 
 
 ###  https://www.wikidata.org/wiki/Q327333
-<https://www.wikidata.org/wiki/Q327333> rdf:type owl:NamedIndividual .
+wd:Q327333 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/GovernmentDocument
 :GovernmentDocument  rdf:type owl:NamedIndividual ;
-                                                        owl:sameAs <https://www.wikidata.org/wiki/Q30941709> .
+                                                        owl:sameAs wd:Q30941709 .
 
 
 ###  https://www.wikidata.org/wiki/Q30941709
-<https://www.wikidata.org/wiki/Q30941709> rdf:type owl:NamedIndividual .
+wd:Q30941709 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Invoice
 :Invoice rdf:type owl:NamedIndividual ;
-                                             owl:sameAs <https://www.wikidata.org/wiki/Q190581> .
+                                             owl:sameAs wd:Q190581 .
 
 
 ###  https://www.wikidata.org/wiki/Q190581
-<https://www.wikidata.org/wiki/Q190581> rdf:type owl:NamedIndividual .
+wd:Q190581 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Kriegsmarine
 :Kriegsmarine  rdf:type owl:NamedIndividual ;
-                                                  owl:sameAs <https://www.wikidata.org/wiki/Q151701> .
+                                                  owl:sameAs wd:Q151701 .
 
 
 ###  https://www.wikidata.org/wiki/Q151701
-<https://www.wikidata.org/wiki/Q151701> rdf:type owl:NamedIndividual .
+wd:Q151701 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Letter
 :Letter  rdf:type owl:NamedIndividual ;
-                                            owl:sameAs <https://www.wikidata.org/wiki/Q133492> .
+                                            owl:sameAs wd:Q133492 .
 
 
 ###  https://www.wikidata.org/wiki/Q133492
-<https://www.wikidata.org/wiki/Q133492> rdf:type owl:NamedIndividual .
+wd:Q133492 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/List
 :List  rdf:type owl:NamedIndividual ;
-                                          owl:sameAs <https://www.wikidata.org/wiki/Q12139612> .
+                                          owl:sameAs wd:Q12139612 .
 
 
 ###  https://www.wikidata.org/wiki/Q12139612
-<https://www.wikidata.org/wiki/Q12139612> rdf:type owl:NamedIndividual .
+wd:Q12139612 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Luftwaffe
 :Luftwaffe  rdf:type owl:NamedIndividual ;
-                                               owl:sameAs <https://www.wikidata.org/wiki/Q2564009> .
+                                               owl:sameAs wd:Q2564009 .
 
 
 ###  https://www.wikidata.org/wiki/Q2564009
-<https://www.wikidata.org/wiki/Q2564009> rdf:type owl:NamedIndividual .
+wd:Q2564009 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/MaleChoir
 :MaleChoir  rdf:type owl:NamedIndividual ;
-                                               owl:sameAs <https://www.wikidata.org/wiki/Q1684352> .
+                                               owl:sameAs wd:Q1684352 .
 
 
 ###  https://www.wikidata.org/wiki/Q1684352
-<https://www.wikidata.org/wiki/Q1684352> rdf:type owl:NamedIndividual .
+wd:Q1684352 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Map
 :Map rdf:type owl:NamedIndividual ;
-                                         owl:sameAs <https://www.wikidata.org/wiki/Q4006> .
+                                         owl:sameAs wd:Q4006 .
 
 
 ###  https://www.wikidata.org/wiki/Q4006
-<https://www.wikidata.org/wiki/Q4006> rdf:type owl:NamedIndividual .
+wd:Q4006 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Military
 :Military  rdf:type owl:NamedIndividual ;
-                                              owl:sameAs <https://www.wikidata.org/wiki/Q8473> .
+                                              owl:sameAs wd:Q8473 .
 
 
 ###  https://www.wikidata.org/wiki/Q8473
-<https://www.wikidata.org/wiki/Q8473> rdf:type owl:NamedIndividual .
+wd:Q8473 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Murg
 :Murg rdf:type owl:NamedIndividual ,
                                                    schema:Place  ;
-                                          owl:sameAs <https://www.wikidata.org/wiki/Q550673> .
+                                          owl:sameAs wd:Q550673 .
 
 
 ###  https://www.wikidata.org/wiki/Q550673
-<https://www.wikidata.org/wiki/Q550673> rdf:type owl:NamedIndividual .
+wd:Q550673 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/NewspaperArticle
 :NewspaperArticle  rdf:type owl:NamedIndividual ;
-                                                      owl:sameAs <https://www.wikidata.org/wiki/Q5707594> .
+                                                      owl:sameAs wd:Q5707594 .
 
 
 ###  https://www.wikidata.org/wiki/Q5707594
-<https://www.wikidata.org/wiki/Q5707594> rdf:type owl:NamedIndividual .
+wd:Q5707594 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Offer
 :Offer  rdf:type owl:NamedIndividual ;
-                                           owl:sameAs <https://www.wikidata.org/wiki/Q6501319> .
+                                           owl:sameAs wd:Q6501319 .
 
 
 ###  https://www.wikidata.org/wiki/Q6501319
-<https://www.wikidata.org/wiki/Q6501319> rdf:type owl:NamedIndividual .
+wd:Q6501319 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Orchestra
 :Orchestra rdf:type owl:NamedIndividual ;
-                                               owl:sameAs <https://www.wikidata.org/wiki/Q42998> .
+                                               owl:sameAs wd:Q42998 .
 
 
 ###  https://www.wikidata.org/wiki/Q42998
-<https://www.wikidata.org/wiki/Q42998> rdf:type owl:NamedIndividual .
+wd:Q42998 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Organization
 :Organization rdf:type owl:NamedIndividual ;
-                                                  owl:sameAs <https://www.wikidata.org/wiki/Q43229> .
+                                                  owl:sameAs wd:Q43229 .
 
 
 ###  https://www.wikidata.org/wiki/Q43229
-<https://www.wikidata.org/wiki/Q43229> rdf:type owl:NamedIndividual .
+wd:Q43229 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Person
 :Person rdf:type owl:NamedIndividual ;
-                                            owl:sameAs <https://www.wikidata.org/wiki/Q5> .
+                                            owl:sameAs wd:Q5 .
 
 
 ###  https://www.wikidata.org/wiki/Q5
-<https://www.wikidata.org/wiki/Q5> rdf:type owl:NamedIndividual .
+wd:Q5 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/PoliticalOrganization
 :PoliticalOrganization  rdf:type owl:NamedIndividual ;
-                                                           owl:sameAs <https://www.wikidata.org/wiki/Q7210356> .
+                                                           owl:sameAs wd:Q7210356 .
 
 
 ###  https://www.wikidata.org/wiki/Q7210356
-<https://www.wikidata.org/wiki/Q7210356> rdf:type owl:NamedIndividual .
+wd:Q7210356 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/PoliticalParty
 :PoliticalParty  rdf:type owl:NamedIndividual ;
-                                                    owl:sameAs <https://www.wikidata.org/wiki/Q7278> .
+                                                    owl:sameAs wd:Q7278 .
 
 
 ###  https://www.wikidata.org/wiki/Q7278
-<https://www.wikidata.org/wiki/Q7278> rdf:type owl:NamedIndividual .
+wd:Q7278 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Postcard
 :Postcard  rdf:type owl:NamedIndividual ;
-                                              owl:sameAs <https://www.wikidata.org/wiki/Q192425> .
+                                              owl:sameAs wd:Q192425 .
 
 
 ###  https://www.wikidata.org/wiki/Q192425
-<https://www.wikidata.org/wiki/Q192425> rdf:type owl:NamedIndividual .
+wd:Q192425 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/SS
 :SS rdf:type owl:NamedIndividual ;
-                                        owl:sameAs <https://www.wikidata.org/wiki/Q44687> .
+                                        owl:sameAs wd:Q44687 .
 
 
 ###  https://www.wikidata.org/wiki/Q44687
-<https://www.wikidata.org/wiki/Q44687> rdf:type owl:NamedIndividual .
+wd:Q44687 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/SheetMusic
 :SheetMusic rdf:type owl:NamedIndividual ;
-                                                owl:sameAs <https://www.wikidata.org/wiki/P3030> .
+                                                owl:sameAs wd:P3030 .
 
 
 ###  https://www.wikidata.org/wiki/P3030
-<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual .
+wd:P3030 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/TextAnnotation
 :TextAnnotation rdf:type owl:NamedIndividual ;
-                                                    owl:sameAs <https://www.wikidata.org/wiki/Q2851776> .
+                                                    owl:sameAs wd:Q2851776 .
 
 
 ###  https://www.wikidata.org/wiki/Q2851776
-<https://www.wikidata.org/wiki/Q2851776> rdf:type owl:NamedIndividual .
+wd:Q2851776 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/TransportCompany
 :TransportCompany  rdf:type owl:NamedIndividual ;
-                                                      owl:sameAs <https://www.wikidata.org/wiki/Q740752> .
+                                                      owl:sameAs wd:Q740752 .
 
 
 ###  https://www.wikidata.org/wiki/Q740752
-<https://www.wikidata.org/wiki/Q740752> rdf:type owl:NamedIndividual .
+wd:Q740752 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitLuftwaffe
 :UnitLuftwaffe  rdf:type owl:NamedIndividual ;
-                                                   owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+                                                   owl:sameAs wd:Q176799 .
 
 
 ###  https://www.wikidata.org/wiki/Q176799
-<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitMarine
 :UnitMarine  rdf:type owl:NamedIndividual ;
-                                                owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+                                                owl:sameAs wd:Q176799 .
 
 
 ###  https://www.wikidata.org/wiki/Q176799
-<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitWaffenSS
 :UnitWaffenSS rdf:type owl:NamedIndividual ;
-                                                  owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+                                                  owl:sameAs wd:Q176799 .
 
 
 ###  https://www.wikidata.org/wiki/Q176799
-<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitWehrmacht
 :UnitWehrmacht  rdf:type owl:NamedIndividual ;
-                                                   owl:sameAs <https://www.wikidata.org/wiki/Q176799> .
+                                                   owl:sameAs wd:Q176799 .
 
 
 ###  https://www.wikidata.org/wiki/Q176799
-<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/VolunteerFireDepartment
 :VolunteerFireDepartment rdf:type owl:NamedIndividual ;
-                                                             owl:sameAs <https://www.wikidata.org/wiki/Q285852> .
+                                                             owl:sameAs wd:Q285852 .
 
 
 ###  https://www.wikidata.org/wiki/Q285852
-<https://www.wikidata.org/wiki/Q285852> rdf:type owl:NamedIndividual .
+wd:Q285852 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/WaffenSS
 :WaffenSS rdf:type owl:NamedIndividual ;
-                                              owl:sameAs <https://www.wikidata.org/wiki/Q153626> .
+                                              owl:sameAs wd:Q153626 .
 
 
 ###  https://www.wikidata.org/wiki/Q153626
-<https://www.wikidata.org/wiki/Q153626> rdf:type owl:NamedIndividual .
+wd:Q153626 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Website
 :Website rdf:type owl:NamedIndividual ;
-                                             owl:sameAs <https://www.wikidata.org/wiki/Q35127> .
+                                             owl:sameAs wd:Q35127 .
 
 
 ###  https://www.wikidata.org/wiki/Q35127
-<https://www.wikidata.org/wiki/Q35127> rdf:type owl:NamedIndividual .
+wd:Q35127 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Wehrmacht
 :Wehrmacht  rdf:type owl:NamedIndividual ;
-                                               owl:sameAs <https://www.wikidata.org/wiki/Q128781> .
+                                               owl:sameAs wd:Q128781 .
 
 
 ###  https://www.wikidata.org/wiki/Q128781
-<https://www.wikidata.org/wiki/Q128781> rdf:type owl:NamedIndividual .
+wd:Q128781 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/hasAuthorID
@@ -962,8 +961,7 @@ rdfs:Property rdf:type owl:Class .
                                                              :hasFeldpostNumber :FPN3330EXAMPLE ;
                                                              schema:endDate "1945-08-06"^^xsd:date ;
                                                              schema:isPartOf :Wehrmacht  ;
-                                                             schema:location  <https://www.wikidata.org/wiki/Q490453> ;
-                                                             schema:member :person0000EXAMPLE  ;
+                                                             schema:location  wd:Q490453 ;
                                                              schema:startDate  "1939-09-01"^^xsd:date .
 
 
@@ -972,26 +970,25 @@ rdfs:Property rdf:type owl:Class .
                                                                       :MilitaryUnit ;
                                                              :hasFeldpostNumber :FPN3331EXAMPLE  ;
                                                              schema:isPartOf :Wehrmacht  ;
-                                                             schema:location  <https://www.wikidata.org/wiki/Q490453> ;
-                                                             schema:member :person0001EXAMPLE  .
-
-
-###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
+                                                             schema:location  wd:Q490453 .
+###  http://maennerchormurgdatabase.org/organization1111EXAMPLE
 :organization1110EXAMPLE rdf:type owl:NamedIndividual ,
-                                                                      :MaleChoir  ;
-                                                             schema:label "Beispiel Chor" ;
-                                                             schema:comment "Ein Beispielchor" ;
-                                                             schema:location  :Murg;
-                                                             schema:startDate  "1861"^^xsd:gYear .
-
-###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
-:organization1111EXAMPLE rdf:type owl:NamedIndividual ,
                                                                       :Association, 
                                                                       :Orchestra ;                                                                      
                                                              schema:label "Beispiel Orchester" ;
                                                              schema:comment "Ein Beispielorchester" ;
                                                              schema:location  :Murg;
                                                              schema:startDate  "1933"^^xsd:gYear .                                                             
+
+
+
+###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
+:organization1111EXAMPLE rdf:type owl:NamedIndividual ,
+                                                                      :MaleChoir  ;
+                                                             schema:label "Beispiel Chor" ;
+                                                             schema:comment "Ein Beispielchor" ;
+                                                             schema:location  :Murg;
+                                                             schema:startDate  "1861"^^xsd:gYear .
 
 
 ###  http://maennerchormurgdatabase.org/person0000EXAMPLE
@@ -1007,8 +1004,8 @@ rdfs:Property rdf:type owl:Class .
                                                        schema:endDate "1942"^^xsd:gYear ;
                                                        schema:familyName "Mustermann" ;
                                                        schema:givenName "Mustermanfred" ;
-                                                       schema:homeLocation <https://www.wikidata.org/wiki/Q64> ;
-                                                       schema:member :militaryUnit2220EXAMPLE ;
+                                                       schema:homeLocation wd:Q64 ;
+                                                       schema:member :militaryUnit2220EXAMPLE, :organization1111EXAMPLE ;
                                                        schema:gender  schema:Male;
                                                        schema:startDate  "1939"^^xsd:gYear .
 
@@ -1025,7 +1022,7 @@ rdfs:Property rdf:type owl:Class .
                                                        schema:familyName "Doe" ;
                                                        schema:givenName "John" ;
                                                        schema:homeLocation :Murg;
-                                                       schema:member :organization1111EXAMPLE  ;
+                                                       schema:member :organization1111EXAMPLE, :militaryUnit2221EXAMPLE  ;
                                                        schema:startDate  "1899-01-01"^^xsd:date .
 
 ###  http://maennerchormurgdatabase.org#Person0002EXAMPLE
@@ -1037,7 +1034,8 @@ rdfs:Property rdf:type owl:Class .
                    schema:familyName "Mustermann" ;
                    schema:givenName "Erika" ;
                    schema:gender  schema:Female;
-                   schema:homeLocation "https://www.wikidata.org/wiki/Q64" .
+                    schema:member :organization1110EXAMPLE ;
+                   schema:homeLocation wd:Q64.
 
 
 
@@ -1048,11 +1046,11 @@ rdfs:Property rdf:type owl:Class .
 
 ###  http://maennerchormurgdatabase.org/report
 :report  rdf:type owl:NamedIndividual ;
-                                            owl:sameAs <https://www.wikidata.org/wiki/Q10870555> .
+                                            owl:sameAs wd:Q10870555 .
 
 
 ###  https://www.wikidata.org/wiki/Q10870555
-<https://www.wikidata.org/wiki/Q10870555> rdf:type owl:NamedIndividual .
+wd:Q10870555 rdf:type owl:NamedIndividual .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent
@@ -1080,21 +1078,21 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                                rdfs:comment "lowest officer's rank in the german navy"@en ,
                                                                                                                             "niedrigster Offiziersrang in der deutschen Marine"@de ;
                                                                                                                rdfs:label "Leutnant zur See"@de ;
-                                                                                                               owl:sameAs ":wd <https://www.wikidata.org/wiki/Q1642186>" .
+                                                                                                               owl:sameAs wd:Q1642186.
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter
 :Obergefreiter rdf:type owl:NamedIndividual ,
                                                                                                                        :Organization ,
                                                                                                                        schema:Occupation ,
-                                                                                                                       schema:Organisation  ,
+                                                                                                                       schema:Organization  ,
                                                                                                                        schema:Role  ,
                                                                                                                        :MilitaryRank ;
                                                                                                               owl:differentFrom :Gefreiter ;
                                                                                                               rdfs:comment "Mannschaftsdienstgrad im Militär"@de ,
                                                                                                                            "enlisted personnel in the militarye"@en ;
                                                                                                               rdfs:label "Obergefreiter"@de ;
-                                                                                                              owl:sameAs ":wd <https://www.wikidata.org/wiki/Q385834>" .
+                                                                                                              owl:sameAs wd:Q385834 .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister
@@ -1102,7 +1100,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                                          schema:Occupation ,
                                                                                                                          schema:Role  ,
                                                                                                                          :MilitaryRank ;
-                                                                                                                schema:hasPart ":wd <https://www.wikidata.org/wiki/Q7156771>"@en ;
+                                                                                                                schema:hasPart  wd:Q7156771 ;
                                                                                                                 rdfs:comment "military profession involving paying wages or salaries"@en ,
                                                                                                                              "militärische Profession die das Auszahlen von Sold beinhaltet"@de ;
                                                                                                                 rdfs:label "Oberzahlmeister"@de .
@@ -1116,7 +1114,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                               rdfs:comment "Military Rank in german speaking armed forces"@en ,
                                                                                                                            "Militärischer Rang in deutsprachigen Streitkräften"@de ;
                                                                                                               rdfs:label "Unteroffizier"@de ;
-                                                                                                              owl:sameAs ":wd <https://www.wikidata.org/wiki/Q17056546>" .
+                                                                                                              owl:sameAs wd:Q17056546 .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Werkmeister
@@ -1132,13 +1130,13 @@ Leutnant Marine Artillerie"""@de ;
 :Gefreiter rdf:type owl:NamedIndividual ,
                                                                                                                    :Organization ,
                                                                                                                    schema:Occupation ,
-                                                                                                                   schema:Organisation  ,
+                                                                                                                   schema:Organization  ,
                                                                                                                    schema:Role  ,
                                                                                                                    :MilitaryRank ;
                                                                                                           rdfs:comment "Rangniedriger Mannschaftsgrad im Militär"@de ,
                                                                                                                        "low ranking enlisted personnel"@en ;
                                                                                                           rdfs:label "Gefreiter"@de ;
-                                                                                                          owl:sameAs ":wd <https://www.wikidata.org/wiki/Q475482>" .
+                                                                                                          owl:sameAs wd:Q475482 .
 
 
 ###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/honoraryPresident
@@ -1152,148 +1150,148 @@ Leutnant Marine Artillerie"""@de ;
 
 
 ###  https://www.wikidata.org/wiki/P3030
-<https://www.wikidata.org/wiki/P3030> rdf:type owl:NamedIndividual.
+wd:P3030 rdf:type owl:NamedIndividual.
 
 
 ###  https://www.wikidata.org/wiki/Q10870555
-<https://www.wikidata.org/wiki/Q10870555> rdf:type owl:NamedIndividual .
+wd:Q10870555 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q12139612
-<https://www.wikidata.org/wiki/Q12139612> rdf:type owl:NamedIndividual .
+wd:Q12139612 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q128781
-<https://www.wikidata.org/wiki/Q128781> rdf:type owl:NamedIndividual .
+wd:Q128781 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q131186
-<https://www.wikidata.org/wiki/Q131186> rdf:type owl:NamedIndividual .
+wd:Q131186 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q131734
-<https://www.wikidata.org/wiki/Q131734> rdf:type owl:NamedIndividual .
+wd:Q131734 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q133492
-<https://www.wikidata.org/wiki/Q133492> rdf:type owl:NamedIndividual .
+wd:Q133492 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q151701
-<https://www.wikidata.org/wiki/Q151701> rdf:type owl:NamedIndividual .
+wd:Q151701 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q153626
-<https://www.wikidata.org/wiki/Q153626> rdf:type owl:NamedIndividual .
+wd:Q153626 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q1684352
-<https://www.wikidata.org/wiki/Q1684352> rdf:type owl:NamedIndividual .
+wd:Q1684352 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q176799
-<https://www.wikidata.org/wiki/Q176799> rdf:type owl:NamedIndividual .
+wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q190581
-<https://www.wikidata.org/wiki/Q190581> rdf:type owl:NamedIndividual .
+wd:Q190581 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q192425
-<https://www.wikidata.org/wiki/Q192425> rdf:type owl:NamedIndividual .
+wd:Q192425 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q22687
-<https://www.wikidata.org/wiki/Q22687> rdf:type owl:NamedIndividual .
+wd:Q22687 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q2564009
-<https://www.wikidata.org/wiki/Q2564009> rdf:type owl:NamedIndividual .
+wd:Q2564009 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q2851776
-<https://www.wikidata.org/wiki/Q2851776> rdf:type owl:NamedIndividual .
+wd:Q2851776 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q285852
-<https://www.wikidata.org/wiki/Q285852> rdf:type owl:NamedIndividual .
+wd:Q285852 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q30941709
-<https://www.wikidata.org/wiki/Q30941709> rdf:type owl:NamedIndividual .
+wd:Q30941709 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q327333
-<https://www.wikidata.org/wiki/Q327333> rdf:type owl:NamedIndividual .
+wd:Q327333 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q35127
-<https://www.wikidata.org/wiki/Q35127> rdf:type owl:NamedIndividual .
+wd:Q35127 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q4006
-<https://www.wikidata.org/wiki/Q4006> rdf:type owl:NamedIndividual .
+wd:Q4006 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q42998
-<https://www.wikidata.org/wiki/Q42998> rdf:type owl:NamedIndividual .
+wd:Q42998 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q43229
-<https://www.wikidata.org/wiki/Q43229> rdf:type owl:NamedIndividual .
+wd:Q43229 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q44687
-<https://www.wikidata.org/wiki/Q44687> rdf:type owl:NamedIndividual .
+wd:Q44687 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q467921
-<https://www.wikidata.org/wiki/Q467921> rdf:type owl:NamedIndividual .
+wd:Q467921 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q4830453
-<https://www.wikidata.org/wiki/Q4830453> rdf:type owl:NamedIndividual .
+wd:Q4830453 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q49848
-<https://www.wikidata.org/wiki/Q49848> rdf:type owl:NamedIndividual .
+wd:Q49848 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q5
-<https://www.wikidata.org/wiki/Q5> rdf:type owl:NamedIndividual .
+wd:Q5 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q550673
-<https://www.wikidata.org/wiki/Q550673> rdf:type owl:NamedIndividual ,
+wd:Q550673 rdf:type owl:NamedIndividual ,
                                                  schema:Place  .
 
 
 ###  https://www.wikidata.org/wiki/Q5707594
-<https://www.wikidata.org/wiki/Q5707594> rdf:type owl:NamedIndividual .
+wd:Q5707594 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q6501319
-<https://www.wikidata.org/wiki/Q6501319> rdf:type owl:NamedIndividual .
+wd:Q6501319 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q7210356
-<https://www.wikidata.org/wiki/Q7210356> rdf:type owl:NamedIndividual .
+wd:Q7210356 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q7278
-<https://www.wikidata.org/wiki/Q7278> rdf:type owl:NamedIndividual .
+wd:Q7278 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q740752
-<https://www.wikidata.org/wiki/Q740752> rdf:type owl:NamedIndividual .
+wd:Q740752 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q8473
-<https://www.wikidata.org/wiki/Q8473> rdf:type owl:NamedIndividual .
+wd:Q8473 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q9299236
-<https://www.wikidata.org/wiki/Q9299236> rdf:type owl:NamedIndividual .
+wd:Q9299236 rdf:type owl:NamedIndividual .
 
 
 [ rdf:type schema:roleName 
@@ -1309,7 +1307,7 @@ Leutnant Marine Artillerie"""@de ;
 :FPN3331EXAMPLEMilitaryUnit schema:startDate  "1939-09-01"^^xsd:date .
 
 
-:organization1110EXAMPLE schema:endDate "1942-04-20"^^xsd:date ;
+:organization1111EXAMPLE schema:endDate "1942-04-20"^^xsd:date ;
                                                                                                                                                            schema:startDate  "1897-01-01"^^xsd:date .
 
 
@@ -1572,7 +1570,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                     "The Feldpost number associated with a military unit during a certain time."@en ;
                                                        rdfs:label "Feldpost number"@en ,
                                                                   "Feldpostnummer"@de ;
-                                                       rdfs:seeAlso <https://www.wikidata.org/wiki/Q467921> .
+                                                       rdfs:seeAlso wd:Q467921 .
 
 
 :hasReceiptPlace rdfs:comment "Der Ort, an dem das Dokument empfangen wurde."@de ,
