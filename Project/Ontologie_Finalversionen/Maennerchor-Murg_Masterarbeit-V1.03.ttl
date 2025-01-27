@@ -6,9 +6,9 @@
 @prefix wd: <http://www.wikidata.org/entity/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
-                                      owl:versionIRI <urn:absolute:v1.02> ;
-                                      owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.03> .
+#<http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
+                                      #owl:versionIRI <urn:absolute:v1.03> ;
+                                      #owl:imports <http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg_Masterarbeit-V1.03> .
 
 
 
@@ -492,7 +492,7 @@ schema:roleName  rdf:type owl:Class ;
                                         "Rollen-Bezeichnung"@de .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#ArmedForces
+### :ArmedForces
 :ArmedForces rdf:type owl:Class ;
                                                                                                             rdfs:subClassOf :GovernmentAgency  ;
                                                                                                             rdfs:comment "Alle bewaffneten Organisationen eines Landes wie Militär und Paramilitär"@de ,
@@ -502,12 +502,12 @@ schema:roleName  rdf:type owl:Class ;
                                                                                                             owl:sameAs wd:Q772547 .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#CivilProfession
+### :CivilProfession
 :CivilProfession rdf:type owl:Class ;
                                                                                                                 rdfs:subClassOf schema:Occupation .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#PublicEmployee
+### :PublicEmployee
 :PublicEmployee rdf:type owl:Class ;
                                                                                                                rdfs:subClassOf schema:Occupation ;
                                                                                                                schema:alternateName  "civil service official public servant" ;
@@ -1054,7 +1054,6 @@ wd:Q128781 rdf:type owl:NamedIndividual ;
 
 ###  http://maennerchormurgdatabase.org/person0000EXAMPLE
 :person0000EXAMPLE  rdf:type owl:NamedIndividual ,
-                                                                :MilitaryUnit ,
                                                                 :Person ,
                                                                 schema:Person  ;
                                                        :hasFeldpostNumber :FPN3330EXAMPLE ;
@@ -1114,7 +1113,7 @@ wd:Q128781 rdf:type owl:NamedIndividual ;
 wd:Q10870555 rdf:type owl:NamedIndividual .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Hilfszollbetriebsassistent
+### :Hilfszollbetriebsassistent
 :Hilfszollbetriebsassistent rdf:type owl:NamedIndividual ,
                                                                                                                                     schema:Occupation ,
                                                                                                                                     schema:Role  ,
@@ -1126,7 +1125,7 @@ H.I.Z.Bass"""@de ;
                                                                                                                                         "<https://www.zollgrenzschutz.de/index.php?option=com_content&view=article&id=112&Itemid=121>" .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#LeutnantZurSee
+### :LeutnantZurSee
 :LeutnantZurSee rdf:type owl:NamedIndividual ,
                                                                                                                         schema:Occupation ,
                                                                                                                         schema:Role  ,
@@ -1142,7 +1141,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                                owl:sameAs wd:Q1642186.
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Obergefreiter
+### :Obergefreiter
 :Obergefreiter rdf:type owl:NamedIndividual ,
                                                                                                                        :Organization ,
                                                                                                                        schema:Occupation ,
@@ -1156,7 +1155,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                               owl:sameAs wd:Q385834 .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Oberzahlmeister
+### :Oberzahlmeister
 :Oberzahlmeister rdf:type owl:NamedIndividual ,
                                                                                                                          schema:Occupation ,
                                                                                                                          schema:Role  ,
@@ -1167,7 +1166,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                                 rdfs:label "Oberzahlmeister"@de .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Unteroffizier
+### :Unteroffizier
 :Unteroffizier rdf:type owl:NamedIndividual ,
                                                                                                                        schema:Occupation ,
                                                                                                                        schema:Role  ,
@@ -1178,7 +1177,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                               owl:sameAs wd:Q17056546 .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1#Werkmeister
+### :Werkmeister
 :Werkmeister rdf:type owl:NamedIndividual ,
                                                                                                                      schema:Occupation ,
                                                                                                                      schema:Role  ;
@@ -1208,6 +1207,10 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                                                "Ein Titel, der einem verdienten Mitglied eines Vereins gegeben wird"@de ;
                                                                                                                   rdfs:label "Ehrenpräsident"@de ,
                                                                                                                              "Honorary President"@en .
+
+###https://www.wikidata.org/wiki/Q64    Berlin
+wd:Q64 rdf:type owl:NamedIndividual;
+schema:label "Berlin".
 
 
 ###  https://www.wikidata.org/wiki/P3030
