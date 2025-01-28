@@ -107,15 +107,6 @@ schema:gender  rdf:type owl:ObjectProperty,
                            rdfs:range schema:GenderType ;
                            rdfs:comment "Geschlecht einer Person"@de , "Gender of a Person"@en .
                                         
-###  http://maennerchormurgdatabase.org/hasAuthorID
-:hasAuthorID rdf:type owl:ObjectProperty ;
-                                                 rdfs:domain :Document ;
-                                                 rdfs:range [ rdf:type owl:Class ;
-                                                              owl:unionOf ( :Organization
-                                                                            :Person
-                                                                          )
-                                                            ] .
-
 
 ###  http://maennerchormurgdatabase.org/hasCreationDate
 :hasCreationDate rdf:type owl:ObjectProperty ;
@@ -188,7 +179,7 @@ owl:topObjectProperty rdf:type owl:SymmetricProperty ,
 
 
 ###  https://dbpedia.org/ontology/militaryRank
-<https://dbpedia.org/ontology/militaryRank> rdf:type owl:ObjectProperty ;
+dbo:militaryRank rdf:type owl:ObjectProperty ;
                                             rdfs:domain :MilitaryRank ;
                                             rdfs:range :ArmedForces ;
                                             rdfs:comment "Property connecting a Role to the Armed Forces"@en ;
@@ -951,11 +942,6 @@ wd:Q128781 rdf:type owl:NamedIndividual ;
                                                     schema:label "Wehrmacht".
 
 
-###  http://maennerchormurgdatabase.org/hasAuthorID
-:hasAuthorID  rdf:type owl:NamedIndividual ,
-                                                          rdfs:Property ;
-                                                    schema:label "hasAuthorID".
-
 
 ###  http://maennerchormurgdatabase.org/hasContentTags
 :hasContentTags rdf:type owl:NamedIndividual ,
@@ -1511,12 +1497,6 @@ wd:Q9299236 rdf:type owl:NamedIndividual .
                                                             "The unified armed forces of Nazi Germany from 1935 to 1945."@en ;
                                                rdfs:label "Wehrmacht"@de ,
                                                           "Wehrmacht"@en .
-
-
-:hasAuthorID  rdfs:comment "Die Person oder Organisation, die das Dokument erstellt hat."@de ,
-                                                              "The person or organization that created the document."@en ;
-                                                 rdfs:label "has author"@en ,
-                                                            "hat Verfasser"@de .
 
 
 :hasContentTags rdfs:comment "Tags that describe the content or themes of the document."@en ,

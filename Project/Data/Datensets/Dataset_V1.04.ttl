@@ -1,17 +1,22 @@
-@prefix : <http://maennerchormurgdatabase.org/> .
-@prefix ns: </Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/> .
+@prefix : <http://maennerchormurgdatabase.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix mmOnto: <http://maennerchormurgdatabase.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix db: <https://dbpedia.org/ontology/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 
-<http://maennerchormurgdatabase.org/dataset>
-    rdf:type dcat:Dataset ;
-    owl:imports <file:///Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/Maennerchor-Murg_Masterarbeit-V1.04.ttl> ;
-    owl:versionIRI <urn:absolute:v1.04> .
+@base <http://maennerchormurgdatabase.org/> .
+
+<http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
+                                      owl:versionInfo "v.1.04" ;
+                                      rdfs:comment "The Dataset for the masterthesis of Sven Burkhardt"@en ;
+                                      rdfs:comment "Die Datengrundlage für die Masterarbeit von Sven Burkhardt"@de ;
+                                        owl:imports <file:///Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/Maennerchor-Murg_Masterarbeit-V1.04.ttl> .
+            
 
 #############################################################
 #         Example Data
@@ -22,11 +27,14 @@
 #organizations: 111X digits
 #mil._units:    222X digits
 #Feldpostnu.:   333X digits
+#Documents:     444X digits
+#Events:        555X digits
+#geolocation    666X digits
 
 
 
 ###  http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE
-:militaryUnit2220EXAMPLE rdf:type owl:NamedIndividual ,
+:MilitaryUnit2220EXAMPLE rdf:type owl:NamedIndividual ,
                                                                       :MilitaryUnit ;
                                                              :hasFeldpostNumber :FPN3330EXAMPLE ;
                                                              schema:endDate "1945-08-06"^^xsd:date ;
@@ -36,13 +44,13 @@
 
 
 ###  http://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE
-:militaryUnit2221EXAMPLE  rdf:type owl:NamedIndividual ,
+:MilitaryUnit2221EXAMPLE  rdf:type owl:NamedIndividual ,
                                                                       :MilitaryUnit ;
                                                              :hasFeldpostNumber :FPN3331EXAMPLE  ;
                                                              schema:isPartOf :Wehrmacht  ;
                                                              schema:location  wd:Q490453 .
 ###  http://maennerchormurgdatabase.org/organization1111EXAMPLE
-:organization1110EXAMPLE rdf:type owl:NamedIndividual ,
+:Organization1110EXAMPLE rdf:type owl:NamedIndividual ,
                                                                       :Association, 
                                                                       :Orchestra ;                                                                      
                                                              schema:label "Beispiel Orchester" ;
@@ -53,7 +61,7 @@
 
 
 ###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
-:organization1111EXAMPLE rdf:type owl:NamedIndividual ,
+:Organization1111EXAMPLE rdf:type owl:NamedIndividual ,
                                                                       :MaleChoir  ;
                                                              schema:label "Beispiel Chor" ;
                                                              schema:comment "Ein Beispielchor" ;
@@ -62,7 +70,7 @@
 
 
 ###  http://maennerchormurgdatabase.org/person0000EXAMPLE
-:person0000EXAMPLE  rdf:type owl:NamedIndividual ,
+:Person0000EXAMPLE  rdf:type owl:NamedIndividual ,
                                                                 :Person ,
                                                                 schema:Person  ;
                                                        :hasFeldpostNumber :FPN3330EXAMPLE ;
@@ -70,7 +78,7 @@
                                                        schema:alternateName  "ManniMuster" ; 
                                                        schema:birthDate  "1877-05-15"^^xsd:date ;
                                                        schema:deathDate  "1942-04-20"^^xsd:date ;
-                                                       db:deathplace :Murg ;
+                                                       dbo:deathplace :Murg ;
                                                        schema:endDate "1942"^^xsd:gYear ;
                                                        schema:familyName "Mustermann" ;
                                                        schema:givenName "Mustermanfred" ;
@@ -81,7 +89,7 @@
 
 
 ###  http://maennerchormurgdatabase.org/person0001EXAMPLE
-:person0001EXAMPLE  rdf:type owl:NamedIndividual ,
+:Person0001EXAMPLE  rdf:type owl:NamedIndividual ,
                                                                 :Person ,
                                                                 schema:Person  ;
                                                        :hasRole :Obergefreiter ;
@@ -106,3 +114,21 @@
                    schema:gender  schema:Female;
                     schema:member :organization1110EXAMPLE ;
                    schema:homeLocation wd:Q64.
+
+
+
+:Document4440EXAMPLE rdf:type :Letter;
+                        schema:author :Person0000EXAMPLE ;
+                        schema:datePublished "1942-04-20"^^xsd:date ;
+                        schema:recipient :Person0001EXAMPLE ;
+                        schema:content "Lieber John, ich schreibe dir diese Zeilen, um dir mitzuteilen, dass ich heute in den Krieg ziehe. Ich hoffe, dass wir uns bald wiedersehen. Dein Manni" ;
+                        schema:address :Geolocation6660EXAMPLE.
+
+:Geolocation6660EXAMPLE rdf:type schema:location;
+                        schema:addressCountry wd:Q1206012;
+                        schema:addressLocality wd:Q550673 ; #"Murg"
+                        schema:postalCode "79730";
+                        schema:latitude "47.554722"^^xsd:float;
+                        schema:longitude "8.024167"^^xsd:float.                        
+
+
