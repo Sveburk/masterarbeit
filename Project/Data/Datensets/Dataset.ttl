@@ -1,0 +1,109 @@
+@prefix : <http://maennerchormurgdatabase.org/> .
+@prefix ns: </Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix db: <https://dbpedia.org/ontology/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<http://maennerchormurgdatabase.org/dataset>
+    rdf:type dcat:dataset ;
+    owl:imports <file:///Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/Maennerchor-Murg_Masterarbeit-V1.04.ttl> ;
+    owl:versionIRI <urn:absolute:v0.00> .
+ 
+
+#############################################################
+#         Example Data
+#############################################################
+
+
+#Persons:       000X digits
+#organizations: 111X digits
+#mil._units:    222X digits
+#Feldpostnu.:   333X digits
+
+
+
+###  http://maennerchormurgdatabase.org/militaryUnit2220EXAMPLE
+:militaryUnit2220EXAMPLE rdf:type owl:NamedIndividual ,
+                                                                      :MilitaryUnit ;
+                                                             :hasFeldpostNumber :FPN3330EXAMPLE ;
+                                                             schema:endDate "1945-08-06"^^xsd:date ;
+                                                             schema:isPartOf :Wehrmacht  ;
+                                                             schema:location  wd:Q490453 ;
+                                                             schema:startDate  "1939-09-01"^^xsd:date .
+
+
+###  http://maennerchormurgdatabase.org/militaryUnit2221EXAMPLE
+:militaryUnit2221EXAMPLE  rdf:type owl:NamedIndividual ,
+                                                                      :MilitaryUnit ;
+                                                             :hasFeldpostNumber :FPN3331EXAMPLE  ;
+                                                             schema:isPartOf :Wehrmacht  ;
+                                                             schema:location  wd:Q490453 .
+###  http://maennerchormurgdatabase.org/organization1111EXAMPLE
+:organization1110EXAMPLE rdf:type owl:NamedIndividual ,
+                                                                      :Association, 
+                                                                      :Orchestra ;                                                                      
+                                                             schema:label "Beispiel Orchester" ;
+                                                             schema:comment "Ein Beispielorchester" ;
+                                                             schema:location  :Murg;
+                                                             schema:startDate  "1933"^^xsd:gYear .                                                             
+
+
+
+###  http://maennerchormurgdatabase.org/organization1110EXAMPLE
+:organization1111EXAMPLE rdf:type owl:NamedIndividual ,
+                                                                      :MaleChoir  ;
+                                                             schema:label "Beispiel Chor" ;
+                                                             schema:comment "Ein Beispielchor" ;
+                                                             schema:location  :Murg;
+                                                             schema:startDate  "1861"^^xsd:gYear .
+
+
+###  http://maennerchormurgdatabase.org/person0000EXAMPLE
+:person0000EXAMPLE  rdf:type owl:NamedIndividual ,
+                                                                :Person ,
+                                                                schema:Person  ;
+                                                       :hasFeldpostNumber :FPN3330EXAMPLE ;
+                                                       :hasRole :Gefreiter ;
+                                                       schema:alternateName  "ManniMuster" ; 
+                                                       schema:birthDate  "1877-05-15"^^xsd:date ;
+                                                       schema:deathDate  "1942-04-20"^^xsd:date ;
+                                                       db:deathplace :Murg ;
+                                                       schema:endDate "1942"^^xsd:gYear ;
+                                                       schema:familyName "Mustermann" ;
+                                                       schema:givenName "Mustermanfred" ;
+                                                       schema:homeLocation wd:Q64 ;
+                                                       schema:member :militaryUnit2220EXAMPLE, :organization1111EXAMPLE ;
+                                                       schema:gender  schema:Male;
+                                                       schema:startDate  "1939"^^xsd:gYear .
+
+
+###  http://maennerchormurgdatabase.org/person0001EXAMPLE
+:person0001EXAMPLE  rdf:type owl:NamedIndividual ,
+                                                                :Person ,
+                                                                schema:Person  ;
+                                                       :hasRole :Obergefreiter ;
+                                                       schema:alternateName  "JOHNEXAMPLE" ;
+                                                       schema:birthDate  "1889-01-01"^^xsd:date ;
+                                                       schema:deathDate  "1945-01-01"^^xsd:date ;
+                                                       schema:endDate "1944-01-01"^^xsd:date ;
+                                                       schema:familyName "Doe" ;
+                                                       schema:givenName "John" ;
+                                                       schema:homeLocation :Murg;
+                                                       schema:member :organization1111EXAMPLE, :militaryUnit2221EXAMPLE  ;
+                                                       schema:startDate  "1899-01-01"^^xsd:date .
+
+###  http://maennerchormurgdatabase.org#Person0002EXAMPLE
+:Person0002EXAMPLE rdf:type owl:NamedIndividual ,
+                            :Person ;
+                   schema:spouse :person0000EXAMPLE  ;
+                   schema:birthDate  "1900-01-05"^^xsd:date ;
+                   schema:deathDate  "1969-03-03"^^xsd:date ;
+                   schema:familyName "Mustermann" ;
+                   schema:givenName "Erika" ;
+                   schema:gender  schema:Female;
+                    schema:member :organization1110EXAMPLE ;
+                   schema:homeLocation wd:Q64.
