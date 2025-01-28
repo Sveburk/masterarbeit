@@ -1,15 +1,22 @@
-@prefix : <http://maennerchormurgdatabase.org/> .
-@prefix wd: <https://www.wikidata.org/wiki/> .
-@prefix org: <http://www.w3.org/ns/org#> .
+@prefix : <http://maennerchormurgdatabase.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix mmOnto: <http://maennerchormurgdatabase.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix schema: <http://schema.org/> .
+
 @base <http://maennerchormurgdatabase.org/> .
 
+<http://maennerchormurgdatabase.org> rdf:type owl:Ontology ;
+                                      owl:versionInfo "v.0.01" ;
+                                      rdfs:comment "The Ontology for the masterthesis of Sven Burkhardt"@en ;
+                                      rdfs:comment "Die Ontologie für die Masterarbeit von Sven Burkhardt"@de .
+    
 #################################################################
 #    Annotation properties
 #################################################################
@@ -392,8 +399,7 @@ rdfs:Property rdf:type owl:Class .
 #################################################################
 
 ###  http://maennerchormurgdatabase.org/Association
-:Association rdf:type owl:NamedIndividual ;
-             owl:sameAs wd:Q9299236 .
+:Association rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q9299236
@@ -401,9 +407,7 @@ wd:Q9299236 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/Bank
-:Bank rdf:type owl:NamedIndividual ;
-      owl:sameAs wd:Q22687 .
-
+:Bank rdf:type owl:NamedIndividual .
 
 ###  https://www.wikidata.org/wiki/Q22687
 wd:Q22687 rdf:type owl:NamedIndividual .
@@ -692,8 +696,6 @@ wd:Q176799 rdf:type owl:NamedIndividual .
             owl:sameAs wd:Q176799 .
 
 
-###  https://www.wikidata.org/wiki/Q176799
-wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitWaffenSS
@@ -701,8 +703,6 @@ wd:Q176799 rdf:type owl:NamedIndividual .
               owl:sameAs wd:Q176799 .
 
 
-###  https://www.wikidata.org/wiki/Q176799
-wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/UnitWehrmacht
@@ -710,8 +710,6 @@ wd:Q176799 rdf:type owl:NamedIndividual .
                owl:sameAs wd:Q176799 .
 
 
-###  https://www.wikidata.org/wiki/Q176799
-wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/VolunteerFireDepartment
@@ -751,8 +749,7 @@ wd:Q128781 rdf:type owl:NamedIndividual .
 
 
 ###  http://maennerchormurgdatabase.org/hasAuthorID
-:hasAuthorID rdf:type owl:NamedIndividual ,
-                      rdfs:Property .
+:hasAuthorID rdf:type rdfs:Property .
 
 
 ###  http://maennerchormurgdatabase.org/hasContentTags
@@ -864,10 +861,6 @@ wd:Q128781 rdf:type owl:NamedIndividual .
         owl:sameAs wd:Q10870555 .
 
 
-###  https://www.wikidata.org/wiki/Q10870555
-wd:Q10870555 rdf:type owl:NamedIndividual .
-
-
 ###  https://www.wikidata.org/wiki/P3030
 wd:P3030 rdf:type owl:NamedIndividual .
 
@@ -908,8 +901,6 @@ wd:Q153626 rdf:type owl:NamedIndividual .
 wd:Q1684352 rdf:type owl:NamedIndividual .
 
 
-###  https://www.wikidata.org/wiki/Q176799
-wd:Q176799 rdf:type owl:NamedIndividual .
 
 
 ###  https://www.wikidata.org/wiki/Q190581
@@ -1016,13 +1007,13 @@ wd:Q9299236 rdf:type owl:NamedIndividual .
 #    Annotations
 #################################################################
 
-<<<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE http://maennerchormurgdatabase.org/hasFeldpostNumber http://maennerchormurgdatabase.org/FPN0001EXAMPLE>>> schema:endDate "1945-08-06"^^xsd:date .
+#<<<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE http://maennerchormurgdatabase.org/hasFeldpostNumber http://maennerchormurgdatabase.org/FPN0001EXAMPLE>>> schema:endDate "1945-08-06"^^xsd:date .
 
 
-<<<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE http://maennerchormurgdatabase.org/hasFeldpostNumber http://maennerchormurgdatabase.org/FPN0001EXAMPLEMilitaryUnit>>> schema:startDate "1939-09-01"^^xsd:date .
+#<<<http://maennerchormurgdatabase.org/militaryUnit0001EXAMPLE http://maennerchormurgdatabase.org/hasFeldpostNumber http://maennerchormurgdatabase.org/FPN0001EXAMPLEMilitaryUnit>>> schema:startDate "1939-09-01"^^xsd:date .
 
 
-<<<http://maennerchormurgdatabase.org/person0000EXAMPLE http://schema.org/member http://maennerchormurgdatabase.org/organization0000EXAMPLE>>> schema:endDate "1942-04-20"^^xsd:date ;
+#<<<http://maennerchormurgdatabase.org/person0000EXAMPLE http://schema.org/member http://maennerchormurgdatabase.org/organization0000EXAMPLE>>> schema:endDate "1942-04-20"^^xsd:date ;
                                                                                                                                                schema:startDate "1897-01-01"^^xsd:date .
 
 
@@ -1262,11 +1253,9 @@ wd:Q9299236 rdf:type owl:NamedIndividual .
                 rdfs:label "Inhalt-Tags"@de ,
                            "content tags"@en .
 
-
-:hasCreationDate rdfs:comment "Das Datum, an dem das Dokument ursprünglich erstellt wurde."@de ,
-                              "The date when the document was originally created."@en ;
-                 rdfs:label "Entstehungsdatum"@de ,
-                            "creation date"@en .
+:hasCreationDate rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Document ;
+                 rdfs:range xsd:date .
 
 
 :hasCreationPlace rdfs:comment "Der Ort, an dem das Dokument erstellt wurde."@de ,
@@ -1323,5 +1312,3 @@ wd:Q9299236 rdf:type owl:NamedIndividual .
         rdfs:label "Protokoll"@de ,
                    "report"@en .
 
-
-###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
