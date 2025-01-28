@@ -9,10 +9,9 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 
 <http://maennerchormurgdatabase.org/dataset>
-    rdf:type dcat:dataset ;
+    rdf:type dcat:Dataset ;
     owl:imports <file:///Users/svenburkhardt/Developer/masterarbeit/Project/Ontologie_Finalversionen/Maennerchor-Murg_Masterarbeit-V1.04.ttl> ;
-    owl:versionIRI <urn:absolute:v0.00> .
- 
+    owl:versionIRI <urn:absolute:v1.04> .
 
 #############################################################
 #         Example Data
