@@ -518,7 +518,7 @@ schema:roleName  rdf:type owl:Class ;
                                                                                                                owl:sameAs wd:Q11771944 .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/MilitaryRank
+###  mmOntoMilitaryRank
 :MilitaryRank rdf:type owl:Class ;
                                                                                                              rdfs:subClassOf schema:Occupation ;
                                                                                                              owl:sameAs wd:Q56019 .
@@ -1084,7 +1084,7 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                             rdfs:label "Werkmeister"@de .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/Gefreiter
+###  mmOnto:Gefreiter
 :Gefreiter rdf:type owl:NamedIndividual ,
                                                                                                                    :Organization ,
                                                                                                                    schema:Occupation ,
@@ -1097,8 +1097,8 @@ Leutnant Marine Artillerie"""@de ;
                                                                                                           owl:sameAs wd:Q475482 .
 
 
-###  http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/honoraryPresident
-<http://www.semanticweb.org/svenburkhardt/ontologies/2025/0/Maennerchor-Murg-Masterarbeit-V1.1/honoraryPresident> rdf:type owl:NamedIndividual ,
+###  mmOnto:honoraryPresident
+:honoraryPresident rdf:type owl:NamedIndividual ,
                                                                                                                            schema:Role  ,
                                                                                                                            schema:roleName  ;
                                                                                                                   rdfs:comment "A title given to a distinguished member of an Association."@en ,
