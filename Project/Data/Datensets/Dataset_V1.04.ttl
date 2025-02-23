@@ -124,11 +124,8 @@
                         schema:content "Lieber John, ich schreibe dir diese Zeilen, um dir mitzuteilen, dass ich heute in den Krieg ziehe. Ich hoffe, dass wir uns bald wiedersehen. Dein Manni" ;
                         schema:address :Geolocation6660EXAMPLE.
 
-:Geolocation6660EXAMPLE rdf:type schema:location;
-                        schema:addressCountry wd:Q1206012;
-                        schema:addressLocality wd:Q550673 ; #"Murg"
-                        schema:postalCode "79730";
-                        schema:latitude "47.554722"^^xsd:float;
-                        schema:longitude "8.024167"^^xsd:float.                        
-
-
+:Geolocation6660EXAMPLE rdf:type schema:Place;
+      schema:addressCountry [ rdf:type schema:Country; schema:name "Germany"@en; schema:identifier wd:Q1206012 ];
+      schema:addressLocality [ rdf:type schema:City; schema:name "Murg"@en; schema:identifier wd:Q550673 ];
+      schema:latitude "47.554722"^^xsd:float;
+      schema:longitude "8.024167"^^xsd:float.
