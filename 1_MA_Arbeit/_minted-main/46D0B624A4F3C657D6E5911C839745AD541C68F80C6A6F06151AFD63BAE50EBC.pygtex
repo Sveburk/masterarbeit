@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\PYG{k+kn}{import} \PYG{n+nn}{os}
+\PYG{k+kn}{import} \PYG{n+nn}{fitz}  \PYG{c+c1}{\PYGZsh{} PyMuPDF}
+
+\PYG{k}{def} \PYG{n+nf}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{,} \PYG{n}{dest\PYGZus{}folder}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{exists}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{):}
+        \PYG{n}{os}\PYG{o}{.}\PYG{n}{makedirs}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Durchgehen durch alle Dateien im Quellordner}
+    \PYG{k}{for} \PYG{n}{root}\PYG{p}{,} \PYG{n}{dirs}\PYG{p}{,} \PYG{n}{files} \PYG{o+ow}{in} \PYG{n}{os}\PYG{o}{.}\PYG{n}{walk}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{):}
+        \PYG{k}{for} \PYG{n}{file} \PYG{o+ow}{in} \PYG{n}{files}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{} Überprüfen, ob die Datei eine PDF\PYGZhy{}Datei ist}
+            \PYG{k}{if} \PYG{n}{file}\PYG{o}{.}\PYG{n}{lower}\PYG{p}{()}\PYG{o}{.}\PYG{n}{endswith}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}.pdf\PYGZdq{}}\PYG{p}{):}
+                \PYG{c+c1}{\PYGZsh{} Vollständigen Pfad zur PDF\PYGZhy{}Datei erstellen}
+                \PYG{n}{pdf\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{root}\PYG{p}{,} \PYG{n}{file}\PYG{p}{)}
+                \PYG{c+c1}{\PYGZsh{} PDF\PYGZhy{}Datei öffnen}
+                \PYG{n}{doc} \PYG{o}{=} \PYG{n}{fitz}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n}{pdf\PYGZus{}path}\PYG{p}{)}
+                \PYG{c+c1}{\PYGZsh{} Durch alle Seiten der PDF\PYGZhy{}Datei gehen}
+                \PYG{k}{for} \PYG{n}{page\PYGZus{}num} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{doc}\PYG{p}{)):}
+                    \PYG{n}{page} \PYG{o}{=} \PYG{n}{doc}\PYG{p}{[}\PYG{n}{page\PYGZus{}num}\PYG{p}{]}
+                    \PYG{c+c1}{\PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung in JPG)}
+                    \PYG{n}{pix} \PYG{o}{=} \PYG{n}{page}\PYG{o}{.}\PYG{n}{get\PYGZus{}pixmap}\PYG{p}{()}
+                    \PYG{c+c1}{\PYGZsh{} Dateinamen ohne Dateiendung extrahieren}
+                    \PYG{n}{filename\PYGZus{}without\PYGZus{}extension} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{splitext}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
+                    \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer}
+                    \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{page\PYGZus{}num}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{l+s+si}{:}\PYG{l+s+s2}{03d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.jpg\PYGZdq{}}
+
+                    \PYG{c+c1}{\PYGZsh{} Vollständigen Pfad zur Ausgabedatei erstellen}
+                    \PYG{n}{output\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{,} \PYG{n}{output\PYGZus{}filename}\PYG{p}{)}
+                    \PYG{c+c1}{\PYGZsh{} Bild speichern}
+                    \PYG{n}{pix}\PYG{o}{.}\PYG{n}{save}\PYG{p}{(}\PYG{n}{output\PYGZus{}path}\PYG{p}{)}
+                \PYG{c+c1}{\PYGZsh{} PDF\PYGZhy{}Datei schließen}
+                \PYG{n}{doc}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+
+                \PYG{c+c1}{\PYGZsh{} Erfolgsmeldung ausgeben}
+                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{file}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ wurde erfolgreich umgewandelt und gespeichert in }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{dest\PYGZus{}folder}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Pfade zu den Ordnern mit den PDF\PYGZhy{}Dateien (Quelle) und den JPG\PYGZhy{}Dateien (Ziel)}
+\PYG{n}{src\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Scan\PYGZus{}Männerchor/Männerchor Akten 1925 – 1945/Scan\PYGZus{}Männerchor\PYGZus{}PDF/Akte\PYGZus{}324\PYGZdq{}}
+\PYG{n}{dest\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Masterarbeit/JPEG\PYGZus{}Akten\PYGZus{}Scans\PYGZdq{}}
+
+\PYG{c+c1}{\PYGZsh{} Funktion aufrufen, um die Konvertierung durchzuführen}
+\PYG{n}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{,} \PYG{n}{dest\PYGZus{}folder}\PYG{p}{)}
+
+\end{Verbatim}

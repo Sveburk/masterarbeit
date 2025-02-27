@@ -1,0 +1,494 @@
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%-----------------------------    S E T T I N G S     ---------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+
+
+
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[12pt, a4paper, ngerman, bidi=default]{article}
+
+%--------------------------------------------------------------------------------------%
+%-----------------------------    S E T T I N G S     ---------------------------------%
+%-----------------------------      P A K E T E        --------------------------------%
+%--------------------------------------------------------------------------------------%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[fixed]{fontawesome5} %Fontawesome für Icons und Symbole; siehe https://mirrors.ibiblio.org/CTAN/fonts/fontawesome5/doc/fontawesome5.pdf
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{afterpage}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}  % Für die Verwendung von subfigure
+\usepackage{setspace}  % Für den Befehl \setstretch
+\usepackage{transparent}
+\usepackage{tikz}
+\usepackage{eso-pic} % Für Hintergrundbilder
+\usepackage{fvextra}     % Muss vor csquotes geladen werden
+\usepackage{csquotes}    % Nach fvextra laden
+\usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
+\addbibresource{assets/Literature_Bib/literatur.bib}
+\usepackage{minted}
+
+\usepackage[ngerman]{babel}
+\usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
+\usepackage{minted}  % Für Python-Code
+\usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
+\definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
+\definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=lightblue
+}
+\usepackage{iftex}
+\usepackage{csquotes}
+\ifPDFTeX
+\usepackage{lmodern}  % Nur für PDFTeX
+\else
+    \usepackage{fontspec} % Für XeTeX und LuaTeX
+\fi
+
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+% Paragraph spacing configuration depending on the class
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+
+\usepackage[x11names,table]{xcolor}
+\usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa, #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \else
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifpdf
+  \usepackage{authblk} % Paket für Affiliations
+  \usepackage{orcidlink} % Paket für ORCID-Link
+  \usepackage{pdfpages} % Paket zum Einbinden von PDFs
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Inhaltsverzeichnis}
+\else
+  \newcommand\contentsname{Inhaltsverzeichnis}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Abbildungsverzeichnis}
+\else
+  \newcommand\listfigurename{Abbildungsverzeichnis}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Tabellenverzeichnis}
+\else
+  \newcommand\listtablename{Tabellenverzeichnis}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Abbildung}
+\else
+  \newcommand\figurename{Abbildung}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabelle}
+\else
+  \newcommand\tablename{Tabelle}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\providecommand{\listoflistings}{\listof{codelisting}{Listingverzeichnis}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Konzeption für AG Masterarbeit am
+17.01.2025},
+  pdfauthor={Sven Burkhardt},
+  pdflang={de},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}
+}
+
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\title{\vspace*{4cm}Masterarbeit\\ Hier könnte ihre Werbung stehen}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{}
+\author{Sven Burkhardt}
+\date{2025-01-17}
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%----------------------------- T I T E L B L A T T   ----------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\begin{document}
+\begin{titlepage}
+    
+% Setzt die Schriftfarbe auf Weiß
+\color{white}
+\pagecolor[HTML]{46505A } %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
+\pagenumbering{gobble}    % Verhindert die Anzeige der Seitennummer auf dem Titelblatt
+\date{}
+\author{}
+\maketitle
+\begin{center}
+  \author{\LARGE{\author{\vspace{-0.5cm}Sven Burkhardt}}}\\
+  \vspace{4mm}
+  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % Orcid Link und Nummer
+  \begin{figure}[h]
+    \centering
+    \color{white}
+    \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
+  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ %logo Unibas + Link + Immatrikulationsnummer
+    
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}
+  \end{figure}
+  \setcounter{figure}{0}
+\end{center}
+
+
+% ------------ Hexagon grafik beginn -----------
+\centering
+\AddToShipoutPictureBG*{%
+    \put(0,-40){%
+        \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
+    }
+}
+\centering
+\AddToShipoutPictureBG*{%
+    \put(0,810){%
+        \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
+    }
+}
+\centering
+\AddToShipoutPictureBG*{%
+    \put(33,752){%
+        \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
+    }
+}
+\centering
+\AddToShipoutPictureBG*{%
+    \put(-99,752){%
+        \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
+    }
+}
+
+
+
+\noindent % Verhindert Einzug des nachfolgenden Textes
+% ------------ Hexagon grafik ende -----------
+
+
+
+\begin{center}
+    \vfill
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.3\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{./assets/Logos/uni-basel-logo-en_white.png}
+        \end{subfigure}%
+        \begin{subfigure}{.3\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{./assets/Logos/dhlab-logo-white.png}
+        \end{subfigure}
+        \end{figure}
+        \setcounter{figure}{0}
+
+    University of Basel\\
+    Digital Humanities Lab\\
+    Switzerland
+\end{center}
+
+
+\newpage
+\newpage
+\pagenumbering{arabic}
+\color{black}           % Setzt die Schriftfarbe auf Schwarz für die folgenden Seiten
+\setstretch{1.5}
+\thispagestyle{empty}
+\end{titlepage}
+\newpage
+%________________
+
+%________________
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%-----------------------------   A B S T R A C T     ----------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+
+
+\pagecolor{white}  
+\color{black}  % Textfarbe zurücksetzen
+\section*{Abstract}
+
+Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
+
+
+
+
+
+%--------------------------------------------------------------------------------------%
+%-----------------------------      T A B L E        ----------------------------------%
+%-----------------------------        O F            ----------------------------------%
+%-----------------------------   C O N T E N T S     ----------------------------------%
+%--------------------------------------------------------------------------------------%
+
+
+
+\renewcommand*\contentsname{Table of Contents} % This controls the title of your table of contents.
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{5} % Sets the maximum sublevel to be displayed within the table of contents.
+\tableofcontents
+}
+\newpage
+\pagenumbering{arabic}\setstretch{1.5} % Overwrites the previous command, pages are counted as normal from this point.
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------      I N T R O D U C T I O N     ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+
+\section{Introduction}
+
+What is LaTeX? You may have not heard of it before, but you have almost certainly seen it used somewhere, even without knowing. LaTeX is, in short, a language that describes both content \textbf{and} layout of a text, as opposed to regular word processors like \emph{Microsoft Word}. It is a very powerful tool for scientific publication and, when used correctly, gives you almost infinite control over the layout of your document and makes it look very professional.
+
+\textbf{Note}: This is \textbf{not} a guide on how to write a paper / thesis. If you need guidance on those topics, check the appropriate DH
+Lab \href{https://dhlab.philhist.unibas.ch/en/master-course/seminar-masterarbeit-masterpruefung/}{resources} or ask a supervisor.
+
+Instead, this template is meant to introduce you to what LaTeX can do and give you a starting point to use it on your own. While it is of course possible to install LaTeX locally and use it this way, it is recommended to use it via \href{https://www.overleaf.com}{Overleaf}, an online LaTeX editor that requires no installation and runs completely in the browser. This has multiple benefits over a local install: It works regardless of your device, your document and its associated files are always up to date and secure. All in all, it is clearly the most convenient and easy way to use LaTeX. This of course requires an internet connection to be used, which might be a downside to you.
+
+If you have questions that are not addressed within this template, Overleaf offers \href{https://www.overleaf.com/learn/latex/Tutorials}{tutorials} on nearly everything as well as a comprehensive \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{guide} to understand LaTeX in 30 minutes. If all else fails, you can also ask ChatGPT. From experience, it is very adept at writing and correcting LaTeX-code. As you can already see in this chapter, you can put clickable links in your document.
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          S E C T I O N 1         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\section{Normalisierung der Dateien - von PDF zu JPEG}
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize,
+linenos
+]
+{python}
+
+import os
+import fitz  # PyMuPDF
+
+def convert_pdf_to_jpg(src_folder, dest_folder):
+    # Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen
+    if not os.path.exists(dest_folder):
+        os.makedirs(dest_folder)
+
+    # Durchgehen durch alle Dateien im Quellordner
+    for root, dirs, files in os.walk(src_folder):
+        for file in files:
+            # Überprüfen, ob die Datei eine PDF-Datei ist
+            if file.lower().endswith(".pdf"):
+                # Vollständigen Pfad zur PDF-Datei erstellen
+                pdf_path = os.path.join(root, file)
+                # PDF-Datei öffnen
+                doc = fitz.open(pdf_path)
+                # Durch alle Seiten der PDF-Datei gehen
+                for page_num in range(len(doc)):
+                    page = doc[page_num]
+                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung in JPG)
+                    pix = page.get_pixmap()
+                    # Dateinamen ohne Dateiendung extrahieren
+                    filename_without_extension = os.path.splitext(file)[0]
+                    # Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer
+                    output_filename = f"{filename_without_extension}_S{page_num + 1:03d}.jpg"
+
+                    # Vollständigen Pfad zur Ausgabedatei erstellen
+                    output_path = os.path.join(dest_folder, output_filename)
+                    # Bild speichern
+                    pix.save(output_path)
+                # PDF-Datei schließen
+                doc.close()
+                
+                # Erfolgsmeldung ausgeben
+                print(f"{file} wurde erfolgreich umgewandelt und gespeichert in {dest_folder}")
+
+# Pfade zu den Ordnern mit den PDF-Dateien (Quelle) und den JPG-Dateien (Ziel)
+src_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Scan_Männerchor/Männerchor Akten 1925 – 1945/Scan_Männerchor_PDF/Akte_324"
+dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/JPEG_Akten_Scans"
+
+# Funktion aufrufen, um die Konvertierung durchzuführen
+convert_pdf_to_jpg(src_folder, dest_folder)
+
+\end{minted}
+
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          S E C T I O N 2         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\section{This is section 2}
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          S E C T I O N 3         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\section{This is section 3}
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          S E C T I O N 4     --------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\section{This is section 4}
+
+\newpage{}
+\printbibliography[
+heading=bibintoc,
+title={References} % title of the 'references' section, change this if necessary
+]
+
+
+\end{document}
