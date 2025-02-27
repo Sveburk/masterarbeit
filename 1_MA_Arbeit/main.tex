@@ -462,12 +462,15 @@ def convert_pdf_to_jpg(src_folder, dest_folder):
                 # Durch alle Seiten der PDF-Datei gehen
                 for page_num in range(len(doc)):
                     page = doc[page_num]
-                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung in JPG)
+                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung
+                    # in JPG)
                     pix = page.get_pixmap()
                     # Dateinamen ohne Dateiendung extrahieren
                     filename_without_extension = os.path.splitext(file)[0]
-                    # Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer
-                    output_filename = f"{filename_without_extension}_S{page_num + 1:03d}.jpg"
+                    # Ausgabedateinamen erstellen mit führenden Nullen für die 
+                    # Seitennummer
+                    output_filename = f"{filename_without_extension}_S
+                    {page_num + 1:03d}.jpg"
 
                     # Vollständigen Pfad zur Ausgabedatei erstellen
                     output_path = os.path.join(dest_folder, output_filename)

@@ -20,12 +20,15 @@
                 \PYG{c+c1}{\PYGZsh{} Durch alle Seiten der PDF\PYGZhy{}Datei gehen}
                 \PYG{k}{for} \PYG{n}{page\PYGZus{}num} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{doc}\PYG{p}{)):}
                     \PYG{n}{page} \PYG{o}{=} \PYG{n}{doc}\PYG{p}{[}\PYG{n}{page\PYGZus{}num}\PYG{p}{]}
-                    \PYG{c+c1}{\PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung in JPG)}
+                    \PYG{c+c1}{\PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung}
+                    \PYG{c+c1}{\PYGZsh{} in JPG)}
                     \PYG{n}{pix} \PYG{o}{=} \PYG{n}{page}\PYG{o}{.}\PYG{n}{get\PYGZus{}pixmap}\PYG{p}{()}
                     \PYG{c+c1}{\PYGZsh{} Dateinamen ohne Dateiendung extrahieren}
                     \PYG{n}{filename\PYGZus{}without\PYGZus{}extension} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{splitext}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
-                    \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer}
-                    \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{page\PYGZus{}num}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{l+s+si}{:}\PYG{l+s+s2}{03d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.jpg\PYGZdq{}}
+                    \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die}
+                    \PYG{c+c1}{\PYGZsh{} Seitennummer}
+                    \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}
+                    \PYG{p}{\PYGZob{}}\PYG{n}{page\PYGZus{}num} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{:}\PYG{l+m+mi}{03}\PYG{n}{d}\PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{jpg}\PYG{l+s+s2}{\PYGZdq{}}
 
                     \PYG{c+c1}{\PYGZsh{} Vollständigen Pfad zur Ausgabedatei erstellen}
                     \PYG{n}{output\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{,} \PYG{n}{output\PYGZus{}filename}\PYG{p}{)}
