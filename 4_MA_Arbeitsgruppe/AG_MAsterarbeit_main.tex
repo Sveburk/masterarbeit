@@ -34,7 +34,7 @@
 \usepackage{fvextra}     % Muss vor csquotes geladen werden
 \usepackage{csquotes}    % Nach fvextra laden
 \usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
-%\addbibresource{assets/Literature_Bib/literatur.bib}                     %LITERATURVERZEICHNIS EINFÜGEN
+\addbibresource{assets/Literature_Bib/literatur.bib}
 \usepackage{minted}
 
 \usepackage[ngerman]{babel}
@@ -48,17 +48,19 @@
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{booktabs}
-\usepackage{ragged2e} 
+\usepackage{ragged2e}
 \hypersetup{
     colorlinks=true,
     linkcolor=lightblue
 }
+\usepackage{iftex}
 \usepackage{csquotes}
-\usepackage{lmodern}
-\ifPDFTeX\fi
-\ifPDFTeX\else
-    % xetex/luatex font selection
+\ifPDFTeX%
+\usepackage{lmodern}  % Nur für PDFTeX
+\else
+    \usepackage{fontspec} % Für XeTeX und LuaTeX
 \fi
+
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 
@@ -73,6 +75,7 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+
 \usepackage[x11names,table]{xcolor}
 \usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
@@ -80,21 +83,21 @@
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
-  \let\oldparagraph\paragraph
+  \let\oldparagraph\paragraph%
   \renewcommand{\paragraph}{
-    \@ifstar
-      \xxxParagraphStar
-      \xxxParagraphNoStar
+    \@ifstar%
+      \xxxParagraphStar%
+      \xxxParagraphNoStar%
   }
   \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
   \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
-  \let\oldsubparagraph\subparagraph
+  \let\oldsubparagraph\subparagraph%
   \renewcommand{\subparagraph}{
-    \@ifstar
-      \xxxSubParagraphStar
-      \xxxSubParagraphNoStar
+    \@ifstar%
+      \xxxSubParagraphStar%
+      \xxxSubParagraphNoStar%
   }
   \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
   \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
@@ -132,10 +135,10 @@
   \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
 \makeatletter
  % allow citations to break across lines
- \let\@cite@ofmt\@firstofone
+ \let\@cite@ofmt\@firstofone%
  % avoid brackets around text for \cite:
  \def\@biblabel#1{}
- \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+ \def\@cite#1#2{{#1\if@tempswa, #2\fi}}
 \makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
@@ -147,7 +150,7 @@
   \setlength{\leftmargin}{0pt}
   \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
-  \ifodd #1
+  \ifodd #1 \else % chktex 1
    \setlength{\leftmargin}{\cslhangindent}
    \setlength{\itemindent}{-1\cslhangindent}
   \fi
@@ -157,37 +160,37 @@
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth-\csllabelwidth}{\strut#1\strut}} %chktex 8
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\ifpdf
+\ifpdf%
   \usepackage{authblk} % Paket für Affiliations
   \usepackage{orcidlink} % Paket für ORCID-Link
   \usepackage{pdfpages} % Paket zum Einbinden von PDFs
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
-\ifdefined\contentsname
+\ifdefined\contentsname%
   \renewcommand*\contentsname{Inhaltsverzeichnis}
 \else
   \newcommand\contentsname{Inhaltsverzeichnis}
 \fi
-\ifdefined\listfigurename
+\ifdefined\listfigurename%
   \renewcommand*\listfigurename{Abbildungsverzeichnis}
 \else
   \newcommand\listfigurename{Abbildungsverzeichnis}
 \fi
-\ifdefined\listtablename
+\ifdefined\listtablename%
   \renewcommand*\listtablename{Tabellenverzeichnis}
 \else
   \newcommand\listtablename{Tabellenverzeichnis}
 \fi
-\ifdefined\figurename
+\ifdefined\figurename%
   \renewcommand*\figurename{Abbildung}
 \else
   \newcommand\figurename{Abbildung}
 \fi
-\ifdefined\tablename
+\ifdefined\tablename%
   \renewcommand*\tablename{Tabelle}
 \else
   \newcommand\tablename{Tabelle}
@@ -208,7 +211,7 @@
 
 \babelprovide[main,import]{ngerman}
 % get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
+\let\LanguageShortHands\languageshorthands%
 \def\languageshorthands#1{}
 \usepackage{bookmark}
 
@@ -233,11 +236,16 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\title{\vspace*{4cm}\Huge{Vorbereitung Treffen AG Masterarbeit}}
-\subtitle {\large 74906-01 – Masterarbeiten in Digital Humanities}
+\title{\vspace*{4cm}Masterarbeit\\ Hier könnte ihre Werbung stehen}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{}
 \author{Sven Burkhardt}
-\date{2025-01-17}
-
+\date{2025-01-17} % chktex 8
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %----------------------------- T I T E L B L A T T   ----------------------------------%

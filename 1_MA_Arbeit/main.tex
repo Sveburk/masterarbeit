@@ -55,7 +55,7 @@
 }
 \usepackage{iftex}
 \usepackage{csquotes}
-\ifPDFTeX
+\ifPDFTeX%
 \usepackage{lmodern}  % Nur für PDFTeX
 \else
     \usepackage{fontspec} % Für XeTeX und LuaTeX
@@ -83,21 +83,21 @@
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
-  \let\oldparagraph\paragraph
+  \let\oldparagraph\paragraph%
   \renewcommand{\paragraph}{
-    \@ifstar
-      \xxxParagraphStar
-      \xxxParagraphNoStar
+    \@ifstar%
+      \xxxParagraphStar%
+      \xxxParagraphNoStar%
   }
   \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
   \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
-  \let\oldsubparagraph\subparagraph
+  \let\oldsubparagraph\subparagraph%
   \renewcommand{\subparagraph}{
-    \@ifstar
-      \xxxSubParagraphStar
-      \xxxSubParagraphNoStar
+    \@ifstar%
+      \xxxSubParagraphStar%
+      \xxxSubParagraphNoStar%
   }
   \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
   \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
@@ -135,7 +135,7 @@
   \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
 \makeatletter
  % allow citations to break across lines
- \let\@cite@ofmt\@firstofone
+ \let\@cite@ofmt\@firstofone%
  % avoid brackets around text for \cite:
  \def\@biblabel#1{}
  \def\@cite#1#2{{#1\if@tempswa, #2\fi}}
@@ -150,7 +150,7 @@
   \setlength{\leftmargin}{0pt}
   \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
-  \ifodd #1 \else
+  \ifodd #1 \else % chktex 1
    \setlength{\leftmargin}{\cslhangindent}
    \setlength{\itemindent}{-1\cslhangindent}
   \fi
@@ -160,37 +160,37 @@
 \usepackage{calc}
 \newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth-\csllabelwidth}{\strut#1\strut}} %chktex 8
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\ifpdf
+\ifpdf%
   \usepackage{authblk} % Paket für Affiliations
   \usepackage{orcidlink} % Paket für ORCID-Link
   \usepackage{pdfpages} % Paket zum Einbinden von PDFs
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
-\ifdefined\contentsname
+\ifdefined\contentsname%
   \renewcommand*\contentsname{Inhaltsverzeichnis}
 \else
   \newcommand\contentsname{Inhaltsverzeichnis}
 \fi
-\ifdefined\listfigurename
+\ifdefined\listfigurename%
   \renewcommand*\listfigurename{Abbildungsverzeichnis}
 \else
   \newcommand\listfigurename{Abbildungsverzeichnis}
 \fi
-\ifdefined\listtablename
+\ifdefined\listtablename%
   \renewcommand*\listtablename{Tabellenverzeichnis}
 \else
   \newcommand\listtablename{Tabellenverzeichnis}
 \fi
-\ifdefined\figurename
+\ifdefined\figurename%
   \renewcommand*\figurename{Abbildung}
 \else
   \newcommand\figurename{Abbildung}
 \fi
-\ifdefined\tablename
+\ifdefined\tablename%
   \renewcommand*\tablename{Tabelle}
 \else
   \newcommand\tablename{Tabelle}
@@ -211,7 +211,7 @@
 
 \babelprovide[main,import]{ngerman}
 % get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
+\let\LanguageShortHands\languageshorthands%
 \def\languageshorthands#1{}
 \usepackage{bookmark}
 
@@ -245,7 +245,7 @@
 \makeatother
 \subtitle{}
 \author{Sven Burkhardt}
-\date{2025-01-17}
+\date{2025-01-17} % chktex 8
 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
@@ -265,14 +265,14 @@
 \begin{center}
   \author{\LARGE{\author{\vspace{-0.5cm}Sven Burkhardt}}}\\
   \vspace{4mm}
-  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % Orcid Link und Nummer
+  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % chktex 8 % Orcid Link und Nummer
   \begin{figure}[h]
     \centering
     \color{white}
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
-  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ %logo Unibas + Link + Immatrikulationsnummer
+  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ % chktex 8 %logo Unibas + Link + Immatrikulationsnummer
     
-    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025} % chktex 8
   \end{figure}
   \setcounter{figure}{0}
 \end{center}
@@ -387,14 +387,14 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 
 \section{Introduction}
 
-What is LaTeX? You may have not heard of it before, but you have almost certainly seen it used somewhere, even without knowing. LaTeX is, in short, a language that describes both content \textbf{and} layout of a text, as opposed to regular word processors like \emph{Microsoft Word}. It is a very powerful tool for scientific publication and, when used correctly, gives you almost infinite control over the layout of your document and makes it look very professional.
+What is LaTeX\@ You may have not heard of it before, but you have almost certainly seen it used somewhere, even without knowing. LaTeX is, in short, a language that describes both content \textbf{and} layout of a text, as opposed to regular word processors like \emph{Microsoft Word}. It is a very powerful tool for scientific publication and, when used correctly, gives you almost infinite control over the layout of your document and makes it look very professional.
 
 \textbf{Note}: This is \textbf{not} a guide on how to write a paper / thesis. If you need guidance on those topics, check the appropriate DH
 Lab \href{https://dhlab.philhist.unibas.ch/en/master-course/seminar-masterarbeit-masterpruefung/}{resources} or ask a supervisor.
 
 Instead, this template is meant to introduce you to what LaTeX can do and give you a starting point to use it on your own. While it is of course possible to install LaTeX locally and use it this way, it is recommended to use it via \href{https://www.overleaf.com}{Overleaf}, an online LaTeX editor that requires no installation and runs completely in the browser. This has multiple benefits over a local install: It works regardless of your device, your document and its associated files are always up to date and secure. All in all, it is clearly the most convenient and easy way to use LaTeX. This of course requires an internet connection to be used, which might be a downside to you.
 
-If you have questions that are not addressed within this template, Overleaf offers \href{https://www.overleaf.com/learn/latex/Tutorials}{tutorials} on nearly everything as well as a comprehensive \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{guide} to understand LaTeX in 30 minutes. If all else fails, you can also ask ChatGPT. From experience, it is very adept at writing and correcting LaTeX-code. As you can already see in this chapter, you can put clickable links in your document.
+If you have questions that are not addressed within this template, Overleaf offers \href{https://www.overleaf.com/learn/latex/Tutorials}{tutorials} on nearly everything as well as a comprehensive \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{guide} to understand LaTeX in 30 minutes. If all else fails, you can also ask ChatGPT.\@ From experience, it is very adept at writing and correcting LaTeX-code. As you can already see in this chapter, you can put clickable links in your document.
 
 
 %--------------------------------------------------------------------------------------%
@@ -402,7 +402,7 @@ If you have questions that are not addressed within this template, Overleaf offe
 %------------------------          S E C T I O N 1         ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{Normalisierung der Dateien - von PDF zu JPEG}
+\section{Normalisierung der Dateien --- von PDF zu JPEG}
 \begin{minted}
 [
 frame=lines,
@@ -479,16 +479,16 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 4     --------------------------------%
+%------------------------           Bibliographie      --------------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{This is section 4}
+\section{Bibliographie}
 
 \newpage{}
-\printbibliography[
-heading=bibintoc,
-title={References} % title of the 'references' section, change this if necessary
-]
+%\printbibliography[
+%heading=bibintoc,
+%title={References} % title of the 'references' section, change this if necessary
+%]
 
 
 \end{document}
