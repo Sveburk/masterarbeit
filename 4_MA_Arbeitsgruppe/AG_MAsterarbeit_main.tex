@@ -264,14 +264,14 @@
 \begin{center}
   \author{\LARGE{\author{\vspace{-0.5cm}Sven Burkhardt}}}\\
   \vspace{4mm}
-  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % Orcid Link und Nummer
+  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\%chktex 8 % Orcid Link und Nummer
   \begin{figure}[h]
     \centering
     \color{white}
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
-  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ %logo Unibas + Link + Immatrikulationsnummer
+  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ %chktex 8 %logo Unibas + Link + Immatrikulationsnummer
     
-    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025} %chktex 8
   \end{figure}
   \setcounter{figure}{0}
 \end{center}
@@ -350,23 +350,26 @@
 \vfill
 \newpage
 \pagecolor{white} % Seitenfarbe Weiss
-\justifying     % Aktiviert den Blocksatz
+\justifying%     % Aktiviert den Blocksatz
 \begin{spacing}{1.5}
 \section*{Abstract}
 
 Report mit Auflistung von Forschungsfrage und Herangehensweise um Strategien und offene Fragen im Plenum der \textit{Arbeitsgemeinschaft Masterarbeit} zu besprechen. Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und geographische Ausdehnung sichtbar zu machen.
 %--------------------------------------------------------------------------------------%
 \section{Aufgabenstellung}
-\subsection {\textbf{Thema der Arbeit}}
+\subsection{\textbf{Thema der Arbeit}}
 
-Die Masterarbeit beschäftigt sich mit historischen Unterlagen zwischen 1925-1945 aus dem Archiv eines Männerchores. Diese habe ich bereits digitalisiert und in insgesamt 425 als Akten bezeichnete Sinnabschnitte gegliedert. Sie umfassen unterschiedliche Dokumententypen (Zeitungsartikel, (Feld-)Postkarten, Protokolle,und ähnliches. Ziel der Arbeit ist, diese Dokumente in eine Linked Open Data Datenbank (LOD) zu überführen, und damit eine Verknüpfung von Personen, Orten und Ereignissen innerhalb der Daten darstellen zu können. Der Vorteil, den LOD bietet ist es, weitere externe Online-Quellen zu verknüpfen, und so einzelne Dokumente in einen grösseren historischen Kontext eingliedern zu können. 
+Die Masterarbeit beschäftigt sich mit historischen Unterlagen zwischen 1925--1945 aus dem Archiv eines Männerchores. Diese habe ich bereits digitalisiert und in insgesamt 425 als Akten bezeichnete Sinnabschnitte gegliedert. Sie umfassen unterschiedliche Dokumententypen (Zeitungsartikel, (Feld-)Postkarten, Protokolle,und ähnliches). Ziel der Arbeit ist, diese Dokumente in eine Linked Open Data Datenbank (LOD) zu überführen, und damit eine Verknüpfung von Personen, Orten und Ereignissen innerhalb der Daten darstellen zu können. Der Vorteil, den LOD bietet ist es, weitere externe Online-Quellen zu verknüpfen, und so einzelne Dokumente in einen grösseren historischen Kontext eingliedern zu können. 
 Der Schwerpunkt der Arbeit liegt auf der Anwendung von Netzwerkanalysen, um die Beziehungen zwischen den Akten, den darin vorkommenden Personen, sowie zeitgeschichtlichen Ereignissen zu visualisieren und durch diese Kontextualisierung besser zu verstehen. Dabei sollen insbesondere Bezüge zu lokalen und überregionalen historischen Entwicklungen untersucht werden.
 
 \subsection{\textbf{Forschungsstand}} 
 \textit{Kritische Übersicht über die bisherige Forschung zu eurem Thema.
 Identifikation der Forschungslücke, die eure Arbeit schliessen soll.}
 
-Zu den Quellen selbst gib es keinen Forschungsstand; sie wurden noch nie bearbeitet. Für die Netzwerkanalyse nutze ich das Übersichtswerk von Gamper et. al.\footcite{gamper_knoten_2015}. Für Linked Open Data soll das Buch \textit{"Linking Knowledge. Linked Open Data for Knowledge Organization and Visualization"}\footcite{richard_linking_2022} ebenso wie der Kursinhalt von Sepideh Alassi erste Aufschlüsse geben.
+Zu den Quellen selbst gibt es keinen Forschungsstand; sie wurden noch nie bearbeitet.
+Für die Netzwerkanalyse nutze ich das Überblickswerk von Gamper et al.\footcite{gamper_knoten_2015}.
+Für Linked Open Data soll das Buch \enquote{Linking Knowledge. Linked Open Data for Knowledge Organization and Visualization}\footcite{richard_linking_2022}
+ebenso wie der Kursinhalt von Sepideh Alassi erste Aufschlüsse geben.
 
 \subsection{\textbf{Fragestellung}}
 \textit{Formulierung einer klaren und spezifischen Forschungsfrage.
@@ -374,19 +377,18 @@ Die Frage sollte wissenschaftlich relevant sein und einen Beitrag zum Verständn
 
  Wie können die historischen Netzwerke des Männerchors Murg durch die Anwendung von Linked Open Data und Netzwerkanalyse sichtbar gemacht werden, und welche Veränderungen lassen sich in diesen Netzwerken im Kontext der politischen Umwälzungen zwischen Weimarer Republik, NS-Diktatur und Zweitem Weltkrieg feststellen?
 
-\subsection {\textbf{Methodisch-theoretischer Zugang}}
+\subsection{\textbf{Methodisch-theoretischer Zugang}}
 \textit{Beschreibung und Begründung der Methoden und Theorien, die für die Beantwortung der Fragestellung geeignet sind.}
 
  Die Methodik der Arbeit wird in zwei Aspekte unterteilt. An erster Stelle steht der \textbf{Aufbau der LOD Datenbank}. Hierfür wird eine umfassende Ontologie erstellt, die zu grossen Teilen auf bereits bestehende Ontologien bauen soll, um eine bessere Integration in andere Projekte ermöglichen zu können. Die Strukturierung ist in grossen Teilen bereits erfolgt, und kann im  \hyperref[sec:Anhang Datenbankstruktur]{Anhang Datenbankstruktur} eingesehen werden. Gleiches gilt für die zum aktuellen Zeitpunkt \hyperref[tab:bestehenden Ontologien]{bestehenden Ontologien}.\\
 An zweiter Stelle soll eine quantitative Auswertung der Daten erfolgen, um den zeitlichen und geograhischen Verlauf des Netzwerks abbilden zu können.  
 
-\subsection {\textbf{Beschreibung der Quellen/Daten}}
+\subsection{\textbf{Beschreibung der Quellen/Daten}}
 \textit{Falls bereits bekannt, Angaben zu den geplanten Quellen oder Daten.}
 
-Das Archiv des Männerchors Murg umfasst Dokumente aus der Zeit zwischen der Weimarer Republik (ab 1925), der NS-Diktatur und dem Zweiten Weltkrieg. Der Bestand ist in 425 Akten gegliedert und enthält verschiedene Dokumenttypen wie Protokolle, Briefe, Feldpostkarten, Zeitungsartikel, Mitgliederlisten, Verwaltungsunterlagen und Veranstaltungsprogramme (vgl. \hyperref[sec:Anhang Datenbankstruktur]{Anhang} sehen). 
-
+Das Archiv des Männerchors Murg umfasst Dokumente aus der Zeit zwischen der Weimarer Republik (ab 1925), der NS-Diktatur und dem Zweiten Weltkrieg. Der Bestand ist in 425 Akten gegliedert und enthält verschiedene Dokumenttypen wie Protokolle, Briefe, Feldpostkarten, Zeitungsartikel, Mitgliederlisten, Verwaltungsunterlagen und Veranstaltungsprogramme (vgl. \hyperref[sec:Anhang Datenbankstruktur]{Anhang}).
 Zu den zentralen Dokumenten Briefe und Postkarten von Mitgliedern, die während des Zweiten Weltkriegs verschickt wurden sowie Protokolle, die Sitzungen und Entscheidungen des Vereins dokumentieren. Einige wenige Zeitungsartikel dokumentieren öffentliche Auftritte und Veranstaltungen des Chors, aber auch Auseinandersetzungen von Chormitgliedern mit der NSDAP. Politische Korrespondenzen zeugen jedoch von einer raschen und zunehmenden Gleichschaltung und Nazifizierung zumindest von Teilen des Vereins und der Mitglieder, andere äussern sich zwischen den Zeilen vorsichtig kritisch.
-So zeigen auch Verwaltungsdokumente wie Mitgliederlisten und Abrechnungen Einblick in die Struktur und Organisation des Vereins - wer ist Parteimitglied, wer muss an die Front? Programme verdeutlichen das musikalische Repertoire des Chors -  und von wem er engagiert wird.
+So zeigen auch Verwaltungsdokumente wie Mitgliederlisten und Abrechnungen Einblick in die Struktur und Organisation des Vereins --- wer ist Parteimitglied, wer muss an die Front? Programme verdeutlichen das musikalische Repertoire des Chors ---  und von wem er engagiert wird.
 Der Korpus umfasst immer selektive Themen, die durch die Datenbank in Kontext gebracht werden sollen. Am wohl interessantesten sind dabei die wenigen Feldpostbriefe, die Rückschlüsse auf den Einsatzort der Chormitglieder bieten. Diese sind bereits im Rahmen eines Seminars recherchiert worden, und können mit grob orientierender Einordnung am  \href{https://storymaps.arcgis.com/stories/ec8a4b675cac476380df910304a47547}{Ende der Webseite} eingesehen werden. Dort finden sich auch Beispiele aus den Quellen. 
 
 \subsection{\textbf{Entwurf einer Gliederung (optional)}}
@@ -499,8 +501,7 @@ Der Korpus umfasst immer selektive Themen, die durch die Datenbank in Kontext ge
 \textcolor{yellow}{\ding{110}} Personen und deren Rollen.\\
 \textcolor{orange}{\ding{110}} Organisationen.\\
 \textcolor{green}{\ding{51}} grüne Haken sind bereits rudimentär \\\hspace*{0.5cm}in meiner Ontologie aufgebaut.
-\end{tcolorbox}
-\label{sec:Anhang Datenbankstruktur}
+\end{tcolorbox}\label{sec:AnhangDatenbankstruktur}
 \vspace{1em}
 
 \begin{figure}[htbp]
@@ -508,8 +509,7 @@ Der Korpus umfasst immer selektive Themen, die durch die Datenbank in Kontext ge
 \includepdf[pages=-]{assets/Datenbank_Maennerchor_Struktur_FS2024_komp.pdf}
 \end{figure}
 \newpage
-\subsubsection{Bestehenden Ontologien}
-\label{tab:bestehenden Ontologien}
+\subsubsection{Bestehenden Ontologien}\label{tab:bestehenden Ontologien}
 \begin{table}[h]
 \centering
 \renewcommand{\arraystretch}{1.3}  % Vergrößert den Zeilenabstand in der Tabelle
@@ -536,5 +536,7 @@ skos: & SKOS & Organisation kontrollierter Vokabulare, aktuell genutzt für alte
 \caption{aktuell Verwendete Ontologien in der Männerchor-Datenbank (Stand: 13.01.25)}
 \end{table}
 \end{spacing}
-\printbibliography
+
+
+\printbibliography%
 \end{document}

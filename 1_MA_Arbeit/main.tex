@@ -357,9 +357,7 @@
 
 Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
 
-
-
-
+\newpage
 
 %--------------------------------------------------------------------------------------%
 %-----------------------------      T A B L E        ----------------------------------%
@@ -369,7 +367,7 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 
 
 
-\renewcommand*\contentsname{Table of Contents} % This controls the title of your table of contents.
+\renewcommand*\contentsname{Inhaltsverzeichnis} % This controls the title of your table of contents.
 {
 \hypersetup{linkcolor=}
 \setcounter{tocdepth}{5} % Sets the maximum sublevel to be displayed within the table of contents.
@@ -385,24 +383,54 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 
-\section{Introduction}
+\section{Einleitung}
+\subsection{Ziel und Relevanz der Arbeit}
+\subsection{Forschungsstand und Forschungslücke}
+\subsection{Formulierung der Forschungsfrage}
+\subsection{Aufbau der Arbeit}
 
-What is LaTeX\@ You may have not heard of it before, but you have almost certainly seen it used somewhere, even without knowing. LaTeX is, in short, a language that describes both content \textbf{and} layout of a text, as opposed to regular word processors like \emph{Microsoft Word}. It is a very powerful tool for scientific publication and, when used correctly, gives you almost infinite control over the layout of your document and makes it look very professional.
-
-\textbf{Note}: This is \textbf{not} a guide on how to write a paper / thesis. If you need guidance on those topics, check the appropriate DH
-Lab \href{https://dhlab.philhist.unibas.ch/en/master-course/seminar-masterarbeit-masterpruefung/}{resources} or ask a supervisor.
-
-Instead, this template is meant to introduce you to what LaTeX can do and give you a starting point to use it on your own. While it is of course possible to install LaTeX locally and use it this way, it is recommended to use it via \href{https://www.overleaf.com}{Overleaf}, an online LaTeX editor that requires no installation and runs completely in the browser. This has multiple benefits over a local install: It works regardless of your device, your document and its associated files are always up to date and secure. All in all, it is clearly the most convenient and easy way to use LaTeX. This of course requires an internet connection to be used, which might be a downside to you.
-
-If you have questions that are not addressed within this template, Overleaf offers \href{https://www.overleaf.com/learn/latex/Tutorials}{tutorials} on nearly everything as well as a comprehensive \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{guide} to understand LaTeX in 30 minutes. If all else fails, you can also ask ChatGPT.\@ From experience, it is very adept at writing and correcting LaTeX-code. As you can already see in this chapter, you can put clickable links in your document.
-
-
+\newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 1         ----------------------------%
+%------------------------          Historischer Kontext        ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{Normalisierung der Dateien --- von PDF zu JPEG}
+\section{Historischer Kontext}
+\subsection{Historische Einordnung des Zeitraums}
+\subsection{Historische Einordnung des Vereins}
+  \subsubsection{Der Männerchor Murg im Umfeld der Weimarer Republik}
+  \subsubsection{Auswirkungen der NS-Diktatur auf den Verein}
+  \subsubsection{Der Männerchor während des Zweiten Weltkriegs}
+  \subsubsection{Politische Entwicklungen und ihre Auswirkungen auf das Vereinsleben}
+
+  \newpage
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          Quellenbeschreibung        ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Quellenbeschreibung und Korpusaufbau}
+  \subsection{Beschreibung des Archivbestands}
+  \subsection{Digitale Erfassung und Strukturierung der Quellen}
+    \subsubsection{Gliederung in Akten}
+    \subsubsection{Herausforderungen bei der Digitalisierung (z.B. OCR-Erkennung)}
+    \newpage
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          Methodik        ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+
+    
+\section{Methodischer Zugang}
+  \subsection{Einführung in Linked Open Data (LOD)}
+        \subsubsection{Definition und Nutzen von LOD}
+  \subsection{Netzwerkanalyse als Methode}
+        \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
+        \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
+        \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
+
+\subsection{Normalisierung der Dateien --- von PDF zu JPEG}
 \begin{minted}
 [
 frame=lines,
@@ -459,24 +487,62 @@ dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/M
 convert_pdf_to_jpg(src_folder, dest_folder)
 
 \end{minted}
+\newpage
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          Aufbau der Datenbank        ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
 
-
-
+\section{Aufbau der Datenbank}
+    \subsection{ Konzeption der Ontologie}
+      \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
+      \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
+    
+    \subsection{Implementierung der Datenbank}
+      \subsubsection{Datenbankdesign}
+      \subsubsection{Herausforderungen bei der Datenaufnahme}
+      \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
+    \subsection{Datenbankdesign}
+    \subsection{Herausforderungen bei der Datenaufnahme}
+    \subsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
+    \newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 2         ----------------------------%
+%------------------------          Analyse der Netzwerke         ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{This is section 2}
-
-
+\section{Analyse der Netzwerke }
+  \subsection{Soziale Netzwerke des Vereinslebens}
+    \subsubsection{Verbindungen zwischen Mitgliedern}
+    \subsubsection{ Kooperationen mit anderen Vereinen}
+\subsection{ Politische Netzwerke und deren Veränderungen}
+    \subsubsection{Einfluss der NS-Diktatur auf die Netzwerke}
+    \subsubsection{Feldpostkarten als Quelle für militärische Netzwerke}
+    
+ \subsection{ Geografische Ausdehnung der Netzwerke}
+  \subsubsection{Einsatzorte der Chormitglieder während des Krieges}
+  \subsubsection{ Lokale und überregionale Verbindungen}
+  \newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 3         ----------------------------%
+%------------------------          Diskussion der Erebnisse         ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{This is section 3}
-
+\section{Diskussion der Ergebnisse}
+  \subsection{Sichtbarmachung der Netzwerke durch LOD und Netzwerkanalyse}
+  \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
+  \newpage
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------          Fazit und Ausblick        ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+\section{Fazit und Ausblick}
+\subsection{Zusammenfassung der zentralen Erkenntnisse}
+\subsection{Methodische Herausforderungen und Lösungen}
+\subsection{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}
+\newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %------------------------           Bibliographie      --------------------------------%
@@ -484,11 +550,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %--------------------------------------------------------------------------------------%
 \section{Bibliographie}
 
+
 \newpage{}
 %\printbibliography[
 %heading=bibintoc,
 %title={References} % title of the 'references' section, change this if necessary
 %]
-
 
 \end{document}
