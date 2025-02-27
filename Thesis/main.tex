@@ -11,19 +11,18 @@
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
-\documentclass[
-  12pt,
-  a4paper,
-]{article}
-
+\documentclass[12pt, a4paper, ngerman, bidi=default]{article}
 
 %--------------------------------------------------------------------------------------%
 %-----------------------------    S E T T I N G S     ---------------------------------%
 %-----------------------------      P A K E T E        --------------------------------%
 %--------------------------------------------------------------------------------------%
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[fixed]{fontawesome5} %Fontawesome für Icons und Symbole; siehe https://mirrors.ibiblio.org/CTAN/fonts/fontawesome5/doc/fontawesome5.pdf
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor}
+\usepackage{tcolorbox}
 \usepackage{afterpage}
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -32,41 +31,49 @@
 \usepackage{transparent}
 \usepackage{tikz}
 \usepackage{eso-pic} % Für Hintergrundbilder
-\usepackage[backend=biber]{biblatex}
-\usepackage{csquotes}
+\usepackage{fvextra}     % Muss vor csquotes geladen werden
+\usepackage{csquotes}    % Nach fvextra laden
+\usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
+%\addbibresource{assets/Literature_Bib/literatur.bib}                     %LITERATURVERZEICHNIS EINFÜGEN
 \usepackage{minted}
 
-
-\ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
+\usepackage[ngerman]{babel}
+\usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
+\usepackage{minted}  % Für Python-Code
+\usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
+\definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
+\definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{ragged2e} 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=lightblue
+}
+\usepackage{csquotes}
 \usepackage{lmodern}
-\ifPDFTeX\else  
+\ifPDFTeX\fi
+\ifPDFTeX\else
     % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
+
+% Paragraph spacing configuration depending on the class
 \makeatletter
 \@ifundefined{KOMAClassName}{% if non-KOMA class
   \IfFileExists{parskip.sty}{%
     \usepackage{parskip}
   }{% else
     \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+    \setlength{\parskip}{0pt}}
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
+\usepackage[x11names,table]{xcolor}
 \usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
@@ -199,24 +206,17 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
 \babelprovide[main,import]{ngerman}
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \usepackage{bookmark}
 
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Masterarbeit Sven Burkhardt},
+  pdftitle={Konzeption für AG Masterarbeit am
+17.01.2025},
   pdfauthor={Sven Burkhardt},
   pdflang={de},
   colorlinks=true,
@@ -225,19 +225,18 @@
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}
-  }
+}
 
-
-\title{Masterarbeit}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Hier könnte ihre Werbung stehen}
+\title{\vspace*{4cm}\Huge{Vorbereitung Treffen AG Masterarbeit}}
+\subtitle {\large 74906-01 – Masterarbeiten in Digital Humanities}
 \author{Sven Burkhardt}
-\date{2024-09-16}
+\date{2025-01-17}
 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
@@ -245,31 +244,26 @@
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 \begin{document}
-
-
+\begin{titlepage}
+    
 % Setzt die Schriftfarbe auf Weiß
 \color{white}
-\pagecolor[HTML]{46505A } %Seitenfarbe in Uni Basel Anthrazit
-\afterpage{\nopagecolor}  % Rückkehr zum Standardhintergrund auf den folgenden Seiten
+\pagecolor[HTML]{46505A } %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
 \pagenumbering{gobble}    % Verhindert die Anzeige der Seitennummer auf dem Titelblatt
-
-
-\date{} %killt Date
-\author{} %killt Author
+\date{}
+\author{}
 \maketitle
-
-
 \begin{center}
-  \author{\LARGE{\author{Sven Burkhardt}}}\\
-  \vspace{3mm}
-  \orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}\\ % Orcid Link und Nummer
+  \author{\LARGE{\author{\vspace{-0.5cm}Sven Burkhardt}}}\\
+  \vspace{4mm}
+  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % Orcid Link und Nummer
   \begin{figure}[h]
     \centering
     \color{white}
-    \href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{\includegraphics[height=3.0
-  mm]{./assets/Logos/Uni_basel_logo_white.png}} 17-056-912\\ %logo Unibas + Link + Immatrikulationsnummer
-    \vspace{3mm}
-    \large{2024-08-05}
+    \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
+  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ %logo Unibas + Link + Immatrikulationsnummer
+    
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}
   \end{figure}
   \setcounter{figure}{0}
 \end{center}
@@ -304,7 +298,6 @@
 
 
 \noindent % Verhindert Einzug des nachfolgenden Textes
-
 % ------------ Hexagon grafik ende -----------
 
 
@@ -329,13 +322,14 @@
     Switzerland
 \end{center}
 
+
 \newpage
 \newpage
 \pagenumbering{arabic}
 \color{black}           % Setzt die Schriftfarbe auf Schwarz für die folgenden Seiten
 \setstretch{1.5}
 \thispagestyle{empty}
-
+\end{titlepage}
 %________________
 
 
@@ -345,223 +339,194 @@
 %-----------------------------   A B S T R A C T     ----------------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-
-
+\vfill
+\newpage
+\pagecolor{white} % Seitenfarbe Weiss
+\justifying     % Aktiviert den Blocksatz
+\begin{spacing}{1.5}
 \section*{Abstract}
 
-Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
-
-
-
-
-
+Report mit Auflistung von Forschungsfrage und Herangehensweise um Strategien und offene Fragen im Plenum der \textit{Arbeitsgemeinschaft Masterarbeit} zu besprechen. Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und geographische Ausdehnung sichtbar zu machen.
 %--------------------------------------------------------------------------------------%
-%-----------------------------      T A B L E        ----------------------------------%
-%-----------------------------        O F            ----------------------------------%
-%-----------------------------   C O N T E N T S     ----------------------------------%
-%--------------------------------------------------------------------------------------%
+\section{Aufgabenstellung}
+\subsection {\textbf{Thema der Arbeit}}
 
+Die Masterarbeit beschäftigt sich mit historischen Unterlagen zwischen 1925-1945 aus dem Archiv eines Männerchores. Diese habe ich bereits digitalisiert und in insgesamt 425 als Akten bezeichnete Sinnabschnitte gegliedert. Sie umfassen unterschiedliche Dokumententypen (Zeitungsartikel, (Feld-)Postkarten, Protokolle,und ähnliches. Ziel der Arbeit ist, diese Dokumente in eine Linked Open Data Datenbank (LOD) zu überführen, und damit eine Verknüpfung von Personen, Orten und Ereignissen innerhalb der Daten darstellen zu können. Der Vorteil, den LOD bietet ist es, weitere externe Online-Quellen zu verknüpfen, und so einzelne Dokumente in einen grösseren historischen Kontext eingliedern zu können. 
+Der Schwerpunkt der Arbeit liegt auf der Anwendung von Netzwerkanalysen, um die Beziehungen zwischen den Akten, den darin vorkommenden Personen, sowie zeitgeschichtlichen Ereignissen zu visualisieren und durch diese Kontextualisierung besser zu verstehen. Dabei sollen insbesondere Bezüge zu lokalen und überregionalen historischen Entwicklungen untersucht werden.
 
+\subsection{\textbf{Forschungsstand}} 
+\textit{Kritische Übersicht über die bisherige Forschung zu eurem Thema.
+Identifikation der Forschungslücke, die eure Arbeit schliessen soll.}
 
-\renewcommand*\contentsname{Table of Contents} % This controls the title of your table of contents.
-{
-\hypersetup{linkcolor=}
-\setcounter{tocdepth}{5} % Sets the maximum sublevel to be displayed within the table of contents.
-\tableofcontents
-}
-\newpage
-\pagenumbering{arabic}\setstretch{1.5} % Overwrites the previous command, pages are counted as normal from this point.
+Zu den Quellen selbst gib es keinen Forschungsstand; sie wurden noch nie bearbeitet. Für die Netzwerkanalyse nutze ich das Übersichtswerk von Gamper et. al.\footcite{gamper_knoten_2015}. Für Linked Open Data soll das Buch \textit{"Linking Knowledge. Linked Open Data for Knowledge Organization and Visualization"}\footcite{richard_linking_2022} ebenso wie der Kursinhalt von Sepideh Alassi erste Aufschlüsse geben.
 
+\subsection{\textbf{Fragestellung}}
+\textit{Formulierung einer klaren und spezifischen Forschungsfrage.
+Die Frage sollte wissenschaftlich relevant sein und einen Beitrag zum Verständnis des Themas leisten.}
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------      I N T R O D U C T I O N     ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+ Wie können die historischen Netzwerke des Männerchors Murg durch die Anwendung von Linked Open Data und Netzwerkanalyse sichtbar gemacht werden, und welche Veränderungen lassen sich in diesen Netzwerken im Kontext der politischen Umwälzungen zwischen Weimarer Republik, NS-Diktatur und Zweitem Weltkrieg feststellen?
 
-\section{Introduction}
+\subsection {\textbf{Methodisch-theoretischer Zugang}}
+\textit{Beschreibung und Begründung der Methoden und Theorien, die für die Beantwortung der Fragestellung geeignet sind.}
 
-What is LaTeX? You may have not heard of it before, but you have almost certainly seen it used somewhere, even without knowing. LaTeX is, in short, a language that describes both content \textbf{and} layout of a text, as opposed to regular word processors like \emph{Microsoft Word}. It is a very powerful tool for scientific publication and, when used correctly, gives you almost infinite control over the layout of your document and makes it look very professional.
+ Die Methodik der Arbeit wird in zwei Aspekte unterteilt. An erster Stelle steht der \textbf{Aufbau der LOD Datenbank}. Hierfür wird eine umfassende Ontologie erstellt, die zu grossen Teilen auf bereits bestehende Ontologien bauen soll, um eine bessere Integration in andere Projekte ermöglichen zu können. Die Strukturierung ist in grossen Teilen bereits erfolgt, und kann im  \hyperref[sec:Anhang Datenbankstruktur]{Anhang Datenbankstruktur} eingesehen werden. Gleiches gilt für die zum aktuellen Zeitpunkt \hyperref[tab:bestehenden Ontologien]{bestehenden Ontologien}.\\
+An zweiter Stelle soll eine quantitative Auswertung der Daten erfolgen, um den zeitlichen und geograhischen Verlauf des Netzwerks abbilden zu können.  
 
-\textbf{Note}: This is \textbf{not} a guide on how to write a paper / thesis. If you need guidance on those topics, check the appropriate DH
-Lab \href{https://dhlab.philhist.unibas.ch/en/master-course/seminar-masterarbeit-masterpruefung/}{resources} or ask a supervisor.
+\subsection {\textbf{Beschreibung der Quellen/Daten}}
+\textit{Falls bereits bekannt, Angaben zu den geplanten Quellen oder Daten.}
 
-Instead, this template is meant to introduce you to what LaTeX can do and give you a starting point to use it on your own. While it is of course possible to install LaTeX locally and use it this way, it is recommended to use it via \href{https://www.overleaf.com}{Overleaf}, an online LaTeX editor that requires no installation and runs completely in the browser. This has multiple benefits over a local install: It works regardless of your device, your document and its associated files are always up to date and secure. All in all, it is clearly the most convenient and easy way to use LaTeX. This of course requires an internet connection to be used, which might be a downside to you.
+Das Archiv des Männerchors Murg umfasst Dokumente aus der Zeit zwischen der Weimarer Republik (ab 1925), der NS-Diktatur und dem Zweiten Weltkrieg. Der Bestand ist in 425 Akten gegliedert und enthält verschiedene Dokumenttypen wie Protokolle, Briefe, Feldpostkarten, Zeitungsartikel, Mitgliederlisten, Verwaltungsunterlagen und Veranstaltungsprogramme (vgl. \hyperref[sec:Anhang Datenbankstruktur]{Anhang} sehen). 
 
-If you have questions that are not addressed within this template, Overleaf offers \href{https://www.overleaf.com/learn/latex/Tutorials}{tutorials} on nearly everything as well as a comprehensive \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{guide} to understand LaTeX in 30 minutes. If all else fails, you can also ask ChatGPT. From experience, it is very adept at writing and correcting LaTeX-code. As you can already see in this chapter, you can put clickable links in your document.
+Zu den zentralen Dokumenten Briefe und Postkarten von Mitgliedern, die während des Zweiten Weltkriegs verschickt wurden sowie Protokolle, die Sitzungen und Entscheidungen des Vereins dokumentieren. Einige wenige Zeitungsartikel dokumentieren öffentliche Auftritte und Veranstaltungen des Chors, aber auch Auseinandersetzungen von Chormitgliedern mit der NSDAP. Politische Korrespondenzen zeugen jedoch von einer raschen und zunehmenden Gleichschaltung und Nazifizierung zumindest von Teilen des Vereins und der Mitglieder, andere äussern sich zwischen den Zeilen vorsichtig kritisch.
+So zeigen auch Verwaltungsdokumente wie Mitgliederlisten und Abrechnungen Einblick in die Struktur und Organisation des Vereins - wer ist Parteimitglied, wer muss an die Front? Programme verdeutlichen das musikalische Repertoire des Chors -  und von wem er engagiert wird.
+Der Korpus umfasst immer selektive Themen, die durch die Datenbank in Kontext gebracht werden sollen. Am wohl interessantesten sind dabei die wenigen Feldpostbriefe, die Rückschlüsse auf den Einsatzort der Chormitglieder bieten. Diese sind bereits im Rahmen eines Seminars recherchiert worden, und können mit grob orientierender Einordnung am  \href{https://storymaps.arcgis.com/stories/ec8a4b675cac476380df910304a47547}{Ende der Webseite} eingesehen werden. Dort finden sich auch Beispiele aus den Quellen. 
 
-
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 1         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-\section{Normalisierung der Dateien - von PDF zu JPEG}
-\begin{minted}
-[
-frame=lines,
-framesep=2mm,
-baselinestretch=1.2,
-bgcolor=LightGray,
-fontsize=\footnotesize,
-linenos
-]
-{python}
-
-import os
-import fitz  # PyMuPDF
-
-def convert_pdf_to_jpg(src_folder, dest_folder):
-    # Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen
-    if not os.path.exists(dest_folder):
-        os.makedirs(dest_folder)
-
-    # Durchgehen durch alle Dateien im Quellordner
-    for root, dirs, files in os.walk(src_folder):
-        for file in files:
-            # Überprüfen, ob die Datei eine PDF-Datei ist
-            if file.lower().endswith(".pdf"):
-                # Vollständigen Pfad zur PDF-Datei erstellen
-                pdf_path = os.path.join(root, file)
-                # PDF-Datei öffnen
-                doc = fitz.open(pdf_path)
-                # Durch alle Seiten der PDF-Datei gehen
-                for page_num in range(len(doc)):
-                    page = doc[page_num]
-                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung in JPG)
-                    pix = page.get_pixmap()
-                    # Dateinamen ohne Dateiendung extrahieren
-                    filename_without_extension = os.path.splitext(file)[0]
-                    # Ausgabedateinamen erstellen mit führenden Nullen für die Seitennummer
-                    output_filename = f"{filename_without_extension}_S{page_num + 1:03d}.jpg"
-
-                    # Vollständigen Pfad zur Ausgabedatei erstellen
-                    output_path = os.path.join(dest_folder, output_filename)
-                    # Bild speichern
-                    pix.save(output_path)
-                # PDF-Datei schließen
-                doc.close()
-                
-                # Erfolgsmeldung ausgeben
-                print(f"{file} wurde erfolgreich umgewandelt und gespeichert in {dest_folder}")
-
-# Pfade zu den Ordnern mit den PDF-Dateien (Quelle) und den JPG-Dateien (Ziel)
-src_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Scan_Männerchor/Männerchor Akten 1925 – 1945/Scan_Männerchor_PDF/Akte_324"
-dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/JPEG_Akten_Scans"
-
-# Funktion aufrufen, um die Konvertierung durchzuführen
-convert_pdf_to_jpg(src_folder, dest_folder)
-
-\end{minted}
-
-
-
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 2         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-\section{This is a section}
-
-\subsection{This is a sub-section}
-
-\subsubsection{This is a sub-sub-section}
-
-\paragraph{This is a paragraph}
-
-\subparagraph{This is a sub-paragraph}
-
-
-Up to 5 sublevels are possible, as you can see. By default, the sections are automatically numbered while the (sub)-paragraphs are not. This of course can be changed by you. The table of contents will be automatically generated (including said numbering and page numbers) upon compiling your document. \textbf{You do not need to write it yourself.}
-
-See \href{https://www.overleaf.com/learn/latex/Sections_and_chapters}{this} part of the tutorial for more information about sections and chapters.
-
-
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 3         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-
-\section{Formatting your document}
-
-LaTeX supports a variety of formatting options:
-
-\emph{You can write in italics.}
-
-\textbf{Or bold.}
-
-\textbf{\emph{Or both at the same time.}}
-
-You can also superscript\textsuperscript{text} or subscript\textsubscript{text}.
-
-You can also write lists (unordered or ordered):
-
-\begin{itemize}
-\tightlist
-\item
-    Example list
-\item 
-    This one is unordered in the form of bullet points
-\end{itemize}
-
+\subsection{\textbf{Entwurf einer Gliederung (optional)}}
+\setstretch{1}
 \begin{enumerate}
-\tightlist
-\item
-    This
-\item
-    is
-\item
-    an
-\item
-    ordered
-\item
-    list
+    \item \textbf{Einleitung}
+    \begin{enumerate}
+        \item \small Ziel und Relevanz der Arbeit
+        \item \small Forschungsstand und Forschungslücke
+        \item \small Formulierung der Forschungsfrage
+        \item \small Aufbau der Arbeit
+    \end{enumerate}
+    
+    \item \textbf{Historischer Kontext}
+        \begin{enumerate}
+        \item \small{ Historische Einordnung des Zeitraums}
+        \item \small{ Historische Einordnung des Vereins}
+            \begin{enumerate}
+            \item \small Der Männerchor Murg im Umfeld der Weimarer Republik
+            \item \small Auswirkungen der NS-Diktatur auf den Verein 
+            \item \small Der Männerchor während des Zweiten Weltkriegs
+            \item \small Politische Entwicklungen und ihre Auswirkungen auf das Vereinsleben
+    \end{enumerate}
 \end{enumerate}
+    
+    \item \textbf{Quellenbeschreibung und Korpusaufbau}
+    \begin{enumerate}
+        \item \small Beschreibung des Archivbestands
+        \item \small Digitale Erfassung und Strukturierung der Quellen
+        \begin{enumerate}
+            \item \small Gliederung in Akten
+            \item \small Herausforderungen bei der Digitalisierung (z.\,B.\ OCR-Erkennung)
+        \end{enumerate}
+    \end{enumerate}
+    
+    \item \textbf{Methodischer Zugang}
+    \begin{enumerate}
+        \item \small Einführung in Linked Open Data (LOD)
+        \begin{enumerate}
+            \item \small \textit{Definition und Nutzen von LOD}
+        \end{enumerate}
+        \item \textbf{Netzwerkanalyse als Methode}
+        \begin{enumerate}
+            \item \small{ \textit{Theoretischer Hintergrund der Netzwerkanalyse
+            \item Ziele der Netzwerkanalyse im Kontext der Quellen
+            \item Technische Umsetzung (Tools, Datenbankstruktur)}}
+        \end{enumerate}
+    \end{enumerate}
+    
+    \item \textbf{Aufbau der Datenbank}
+    \begin{enumerate}
+        \item \small { Konzeption der Ontologie}
+        \begin{enumerate}
+            \item \small {\textit{Eigene Ontologie im Vergleich zu bestehenden Standards
+            \item Verknüpfung von Personen, Orten und Ereignissen}}
+        \end{enumerate}
+        \item Implementierung der Datenbank
+        \begin{enumerate}
+            \item \small {Datenbankdesign
+            \item Herausforderungen bei der Datenaufnahme
+            \item Verknüpfung mit externen Quellen (z.\,B.\ Wikidata)}
+        \end{enumerate}
+    \end{enumerate}
+    
+    \item \textbf{Analyse der Netzwerke }
+    \begin{enumerate}
+        \item \small{Soziale Netzwerke des Vereinslebens
+        \begin{enumerate}
+            \item \textit{Verbindungen zwischen Mitgliedern
+            \item Kooperationen mit anderen Vereinen}
+        \end{enumerate}
+        \item Politische Netzwerke und deren Veränderungen
+        \begin{enumerate}
+            \item \textit{Einfluss der NS-Diktatur auf die Netzwerke
+            \item Feldpostkarten als Quelle für militärische Netzwerke}
+        \end{enumerate}
+        \item Geografische Ausdehnung der Netzwerke
+        \begin{enumerate}
+            \item \textit{Einsatzorte der Chormitglieder während des Krieges
+            \item Lokale und überregionale Verbindungen}
+        \end{enumerate}}
+    \end{enumerate}
+    
+    \item \textbf{ Diskussion der Ergebnisse}
+    \begin{enumerate}
+        \item Sichtbarmachung der Netzwerke durch LOD und Netzwerkanalyse
+        \item Gibt es Veränderungen der Netzwerke im historischen Kontext?
+    \end{enumerate}
+    
+    \item \textbf{Fazit und Ausblick}
+    \begin{enumerate}
+        \item Zusammenfassung der zentralen Erkenntnisse
+        \item Methodische Herausforderungen und Lösungen
+        \item Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank
+    \end{enumerate}
 
-and use tables (with various formatting options, this is just an example):
+    \textbf{Literaturverzeichnis}
+    
+    \item \textbf{Anhang}
+    
+\end{enumerate}
+\setstretch{1.5}
 
-\begin{table}[h!]
+\newpage
+\section{\textbf{Anhang}}
+\subsection{Skizze der Datenbankstruktur}
+\begin{tcolorbox}[colback=gray!20, colframe=gray!50, width=\dimexpr\textwidth-7cm\relax]
+\textcolor{blue}{\ding{110}} Analogen Akten und damit \\
+\hspace*{0.5cm}verbundene Klassifizierung.\\
+\textcolor{yellow}{\ding{110}} Personen und deren Rollen.\\
+\textcolor{orange}{\ding{110}} Organisationen.\\
+\textcolor{green}{\ding{51}} grüne Haken sind bereits rudimentär \\\hspace*{0.5cm}in meiner Ontologie aufgebaut.
+\end{tcolorbox}
+\label{sec:Anhang Datenbankstruktur}
+\vspace{1em}
+
+\begin{figure}[htbp]
 \centering
-\begin{tabular}{|c c c|} 
- \hline
- Col1 & Col2 & Col3 \\ [0.5ex] 
- \hline\hline
- 1 & 2 & 3 \\ 
- 2 & 3 & 4 \\
- 3 & 4 & 5 \\
- 4 & 5 & 6 \\
- 5 & 6 & 7 \\ [1ex] 
- \hline
+\includepdf[pages=-]{assets/Datenbank_Maennerchor_Struktur_FS2024_komp.pdf}
+\end{figure}
+\newpage
+\subsubsection{Bestehenden Ontologien}
+\label{tab:bestehenden Ontologien}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.3}  % Vergrößert den Zeilenabstand in der Tabelle
+\begin{tabular}{@{}>{\ttfamily}l>{\raggedright\arraybackslash}p{5cm}>{\raggedright\arraybackslash}p{7cm}@{}}
+\toprule
+\rowcolor{gray!20} \multicolumn{3}{c}{\textbf{Interne Ontologien}} \\
+\midrule
+\textbf{Präfix} & \textbf{Ontologie/Quelle} & \textbf{Funktion} \\
+\arrayrulecolor{lightgray}\midrule
+: & Eigene Ontologie & Projektspezifische Klassen und Properties (bspw. Feldpostnummer)\\
+\arrayrulecolor{black}\midrule
+\rowcolor{gray!20} \multicolumn{3}{c}{\textbf{Externe Ontologien}} \\
+\midrule
+\textbf{Präfix} & \textbf{Ontologie/Quelle} & \textbf{Funktion} \\
+\arrayrulecolor{lightgray}\midrule
+schema: & Schema.org & Modellierung allgemeiner Konzepte (Person, Ort) \\
+wd: & Wikidata & Verknüpfung mit externen Wikidata-Einträgen \\
+owl: & Web Ontology Language & Komplexe Modellierung von Beziehungen \\
+xsd: & W3C XML Schema & Datentypen (String, Datum) \\
+rdfs: & RDF Schema & Strukturierung von Klassen und Eigenschaften \\
+skos: & SKOS & Organisation kontrollierter Vokabulare, aktuell genutzt für alternative Label \\
+\bottomrule
 \end{tabular}
-\caption{Example table}
+\caption{aktuell Verwendete Ontologien in der Männerchor-Datenbank (Stand: 13.01.25)}
 \end{table}
-
-This is a more complex table, but it shows what is theoretically possible. As you can see, the tables are automatically numbered as well, as long as you give them a caption.
-
-It is possible to automatically generate a list of tables at any point of the document. To do this, use the command \texttt{\textbackslash{listoftables}}:
-
-\listoftables
-
-You can also insert page breaks like this:
-
-\newpage{}
-
-These are only some examples, please see the respective sections in the tutorial for more: \href{https://www.overleaf.com/learn/latex/Bold%2C_italics_and_underlining}{text formatting}, \href{https://www.overleaf.com/learn/latex/Lists}{lists} and \href{https://www.overleaf.com/learn/latex/Tables}{tables}.
-
-
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          S E C T I O N 4
-----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-
-\newpage{}
-\printbibliography[
-heading=bibintoc,
-title={References} % title of the 'references' section, change this if necessary
-]
-
-
+\end{spacing}
+\printbibliography
 \end{document}
