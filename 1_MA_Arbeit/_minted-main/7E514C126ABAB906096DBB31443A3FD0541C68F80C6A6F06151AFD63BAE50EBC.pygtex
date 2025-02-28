@@ -1,5 +1,4 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-
 \PYG{k+kn}{import} \PYG{n+nn}{os}
 \PYG{k+kn}{import} \PYG{n+nn}{fitz}  \PYG{c+c1}{\PYGZsh{} PyMuPDF}
 
@@ -20,8 +19,7 @@
                 \PYG{c+c1}{\PYGZsh{} Durch alle Seiten der PDF\PYGZhy{}Datei gehen}
                 \PYG{k}{for} \PYG{n}{page\PYGZus{}num} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{doc}\PYG{p}{)):}
                     \PYG{n}{page} \PYG{o}{=} \PYG{n}{doc}\PYG{p}{[}\PYG{n}{page\PYGZus{}num}\PYG{p}{]}
-                    \PYG{c+c1}{\PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung}
-                    \PYG{c+c1}{\PYGZsh{} in JPG)}
+                    \PYG{c+c1}{\PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung in JPG)}
                     \PYG{n}{pix} \PYG{o}{=} \PYG{n}{page}\PYG{o}{.}\PYG{n}{get\PYGZus{}pixmap}\PYG{p}{()}
                     \PYG{c+c1}{\PYGZsh{} Dateinamen ohne Dateiendung extrahieren}
                     \PYG{n}{filename\PYGZus{}without\PYGZus{}extension} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{splitext}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
@@ -38,11 +36,13 @@
                 \PYG{n}{doc}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
 
                 \PYG{c+c1}{\PYGZsh{} Erfolgsmeldung ausgeben}
-                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{file}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ wurde erfolgreich umgewandelt und gespeichert in }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{dest\PYGZus{}folder}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{file}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ wurde erfolgreich umgewandelt und gespeichert}
+                \PYG{o+ow}{in} \PYG{p}{\PYGZob{}}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{})}
 
 \PYG{c+c1}{\PYGZsh{} Pfade zu den Ordnern mit den PDF\PYGZhy{}Dateien (Quelle) und den JPG\PYGZhy{}Dateien (Ziel)}
-\PYG{n}{src\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Scan\PYGZus{}Männerchor/Männerchor Akten 1925 – 1945/Scan\PYGZus{}Männerchor\PYGZus{}PDF/Akte\PYGZus{}324\PYGZdq{}}
+\PYG{n}{src\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Scan\PYGZus{}Männerchor/Männerchor\PYGZus{}Akten\PYGZus{}1925–1945/Scan\PYGZus{}Männerchor\PYGZus{}PDF\PYGZdq{}}
 \PYG{n}{dest\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Masterarbeit/JPEG\PYGZus{}Akten\PYGZus{}Scans\PYGZdq{}}
+
 
 \PYG{c+c1}{\PYGZsh{} Funktion aufrufen, um die Konvertierung durchzuführen}
 \PYG{n}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{,} \PYG{n}{dest\PYGZus{}folder}\PYG{p}{)}
