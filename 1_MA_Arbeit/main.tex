@@ -35,7 +35,7 @@
 \usepackage{csquotes}    % Nach fvextra laden
 \usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
 \addbibresource{assets/Literature_Bib/literatur.bib}
-\usepackage{minted}
+\usepackage{minted} % Für Python-Code im Text
 
 \usepackage[ngerman]{babel}
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
@@ -236,7 +236,13 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\title{\vspace*{4cm}Masterarbeit\\ Hier könnte ihre Werbung stehen}
+\title{\vspace*{4cm} \LARGE Von Papier zur digitalen Netzwerkanalyse 
+\color{UniMint} \rule{8cm}{0.4pt} \\  
+\vspace{0.2cm}  
+\color{white}\large Digitalisierung, Modellierung und Untersuchung\\historischer Vereinsakten\\mit Machine Learning und Nodegoat}
+\color{UniMint} \rule{8cm}{0.4pt} \\  
+\vspace{0.2cm}
+
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -398,8 +404,8 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 \section{Historischer Kontext}
 \subsection{Historische Einordnung des Zeitraums}
 \subsection{Historische Einordnung des Vereins}
-  \subsubsection{Der Männerchor Murg im Umfeld der Weimarer Republik}
-  \subsubsection{Auswirkungen der NS-Diktatur auf den Verein}
+  %\subsubsection{Der Männerchor Murg im Umfeld der Weimarer Republik}
+  %\subsubsection{Auswirkungen der NS-Diktatur auf den Verein}
   \subsubsection{Der Männerchor während des Zweiten Weltkriegs}
   \subsubsection{Politische Entwicklungen und ihre Auswirkungen auf das Vereinsleben}
 
@@ -411,10 +417,9 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 %--------------------------------------------------------------------------------------% 
 \section{Quellenbeschreibung und Korpusaufbau}
   \subsection{Beschreibung des Archivbestands}
-  \subsection{Digitale Erfassung und Strukturierung der Quellen}
-    \subsubsection{Gliederung in Akten}
-    \subsubsection{Herausforderungen bei der Digitalisierung (z.B. OCR-Erkennung)}
     \newpage
+
+    \href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %------------------------          Methodik        ----------------------------%
@@ -423,25 +428,36 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 
     
 \section{Methodischer Zugang}
-  \subsection{Einführung in Linked Open Data (LOD)}
+
+\subsection{Digitale Erfassung und Strukturierung der Quellen}
+    \subsubsection{Gliederung in Akten}
+    \subsubsection{Digitalisierung und Transkription}
+    \subsection{Digitalisierungsprozess und Herausforderungen}
+    Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,und eine Korrektur beigefügt.\\
+    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch mit diesem Modell transkribiert.
+      \subsection{Wechsel von Linked Open Data (LOD zu Nodegoat)}
         \subsubsection{Definition und Nutzen von LOD}
+        \subsubsection{Aufbau der LOD Ontologie}
+        \subsubsection{Gründe für den Wechsel zu Nodegoat}
+        \subsubsection{Nodegoat Modelierung}
+
+
   \subsection{Netzwerkanalyse als Methode}
         \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
         \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
         \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
 
 \subsection{Normalisierung der Dateien --- von PDF zu JPEG}
-\begin{minted}
-[
+\begin{minted}[
 frame=lines,
 framesep=2mm,
 baselinestretch=1.2,
 bgcolor=LightGray,
 fontsize=\footnotesize,
-linenos
-]
-{python}
-
+linenos,
+breaklines=true,   % Automatischer Zeilenumbruch
+breakanywhere=true % Minted darf überall umbrechen (optional)
+]{python}
 import os
 import fitz  # PyMuPDF
 
@@ -462,8 +478,7 @@ def convert_pdf_to_jpg(src_folder, dest_folder):
                 # Durch alle Seiten der PDF-Datei gehen
                 for page_num in range(len(doc)):
                     page = doc[page_num]
-                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung
-                    # in JPG)
+                    # Seite in ein PixMap-Objekt umwandeln (für die Konvertierung in JPG)
                     pix = page.get_pixmap()
                     # Dateinamen ohne Dateiendung extrahieren
                     filename_without_extension = os.path.splitext(file)[0]
@@ -480,11 +495,13 @@ def convert_pdf_to_jpg(src_folder, dest_folder):
                 doc.close()
                 
                 # Erfolgsmeldung ausgeben
-                print(f"{file} wurde erfolgreich umgewandelt und gespeichert in {dest_folder}")
+                print(f"{file} wurde erfolgreich umgewandelt und gespeichert
+                in {dest_folder}")
 
 # Pfade zu den Ordnern mit den PDF-Dateien (Quelle) und den JPG-Dateien (Ziel)
-src_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Scan_Männerchor/Männerchor Akten 1925 – 1945/Scan_Männerchor_PDF/Akte_324"
+src_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Scan_Männerchor/Männerchor_Akten_1925–1945/Scan_Männerchor_PDF"
 dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/Masterarbeit/JPEG_Akten_Scans"
+
 
 # Funktion aufrufen, um die Konvertierung durchzuführen
 convert_pdf_to_jpg(src_folder, dest_folder)
@@ -498,7 +515,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %--------------------------------------------------------------------------------------%
 
 \section{Aufbau der Datenbank}
-    \subsection{ Konzeption der Ontologie}
+    \subsection{Konzeption der Datenmodelieung}
       \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
       \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
     
@@ -506,9 +523,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
       \subsubsection{Datenbankdesign}
       \subsubsection{Herausforderungen bei der Datenaufnahme}
       \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
-    \subsection{Datenbankdesign}
-    \subsection{Herausforderungen bei der Datenaufnahme}
-    \subsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
+
     \newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
@@ -533,7 +548,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 \section{Diskussion der Ergebnisse}
-  \subsection{Sichtbarmachung der Netzwerke durch LOD und Netzwerkanalyse}
+  \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
   \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
   \newpage
 %--------------------------------------------------------------------------------------%
