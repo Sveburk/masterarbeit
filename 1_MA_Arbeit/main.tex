@@ -240,9 +240,6 @@
 \color{UniMint} \rule{8cm}{0.4pt} \\  
 \vspace{0.2cm}  
 \color{white}\large Digitalisierung, Modellierung und Untersuchung\\historischer Vereinsakten\\mit Machine Learning und Nodegoat}
-\color{UniMint} \rule{8cm}{0.4pt} \\  
-\vspace{0.2cm}
-
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -435,6 +432,33 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     \subsection{Digitalisierungsprozess und Herausforderungen}
     Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,und eine Korrektur beigefügt.\\
     Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch mit diesem Modell transkribiert.
+
+    Beispiel für handschriftlicen Text erkannt von Transkribus in Akte_076:
+    "Murg. 15. Aug 41 \\
+    \\
+    Mein lieber Alfons! \\
+    Sehen lunge Lreitt es mich dem Männer- \\
+    chor wieder einmal ein Liedehen zu stehten. \\
+    und kam mir die gestege Gelegenheit gussend. \\
+    Männechor Venstad um den Title das Liedchen \\
+    zu erhalten, wo sie zum Abschied am Aute \\
+    sängen „auf Wiederschen Owohl ich Frei! \\
+    märke beifügte, keine Aentwarb. Vielleicht \\
+    gelingt es Dir diesen Iitel zu erhalten. \\
+    Weiterhin sänge ich fal Lied nur \\
+    "Bas alte Lied von being. Rerohl \\
+    Es wurde 1928 am 10. Dachub. Sängerb. Frst \\
+    von Begrüßungsabend in Dien gesungen. \\
+    und erntete überaus großen Reifall. \\
+    Es ich schwer das Richtige zu finden. \\
+    Aler Alfon, werst das Vemsladler Liedchen. \\
+    alsdann das Biener Lidchen und wenn \\
+    Leides unmöglich, dann freu Nall. \\
+    Mit herzl. Grüße \\
+    Dein \\
+    Carl"
+
+
       \subsection{Wechsel von Linked Open Data (LOD zu Nodegoat)}
         \subsubsection{Definition und Nutzen von LOD}
         \subsubsection{Aufbau der LOD Ontologie}
