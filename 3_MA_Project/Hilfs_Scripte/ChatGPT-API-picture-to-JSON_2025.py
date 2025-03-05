@@ -33,8 +33,8 @@ for root, _, filenames in os.walk(output_directory):
 
 # Set the API key, model, section, and temperature
 
-api_key = os.getenv("OPENAI_API_KEY")    #personal api_key =
-#api_key = 
+#api_key = os.getenv("OPENAI_API_KEY")    #personal api_key =
+api_key =  "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"
 model = "gpt-4o"
 section = "A"
 temperature = 0.5
@@ -82,7 +82,7 @@ for root, _, filenames in os.walk(image_directory):
     and events including Sender, Recipient, and geographical places as well as content tags in a structured JSON file.
     It is urgent that you ensure all text is output in UTF-8, especially German umlauts (ä, ö, ü) and the ß character, without using HTML entities.
     Represent any line breaks in the text as real line breaks rather than `\n`.
-    
+    The pictures do have Tags in them, namely   "Handschrift", "Maschinell", "mitUnterschrift", "Bild". Extract and mention those in the Json below.
     The JSON should be structured like this:
     ```json
     {{
@@ -157,7 +157,13 @@ for root, _, filenames in os.walk(image_directory):
                 "Website",
                 "Notizzettel",
                 "Offerte"
-            ]
+            ],
+            "document_format_options": [
+                "Handschrift",
+                "Maschinell"
+                "mitUnterschrift",
+                "Bild",
+            
         }}
     """
 
