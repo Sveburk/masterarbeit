@@ -431,9 +431,9 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     \subsubsection{Digitalisierung und Transkription}
     \subsection{Digitalisierungsprozess und Herausforderungen}
     Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,und eine Korrektur beigefügt.\\
-    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch mit diesem Modell transkribiert.
-
-    Beispiel für handschriftlicen Text erkannt von Transkribus in Akte_076:
+    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch mit diesem Modell transkribiert. \\
+  
+    Beispiel für handschriftlicen Text erkannt von Transkribus in Akte\_076: \\
     "Murg. 15. Aug 41 \\
     \\
     Mein lieber Alfons! \\
@@ -456,7 +456,27 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     Leides unmöglich, dann freu Nall. \\
     Mit herzl. Grüße \\
     Dein \\
-    Carl"
+    Carl" \\
+
+    ChatGPT produziert daraus:
+
+    Murg, 15. Aug. 41\\
+    \\
+Mein lieber Alfons!\\
+\\
+Schon lange treibt es mich, dem Männerchor wieder einmal ein Liedchen zu stiften, und kam mir die günstige Gelegenheit gelegen.\\
+Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: „Auf Wiedersehen, o wohl ich frei!“\\
+Ich fügte eine Frankierung bei, erhielt jedoch keine Antwort. Vielleicht gelingt es Dir, diesen Titel zu erhalten.\\
+\\
+Weiterhin sang ich das Lied nur „Das alte Lied von Wien“. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüßungsabend in Wien gesungen wurde und überaus großen Beifall erntete, ist es schwer, das Richtige zu finden.\\
+
+Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn beides unmöglich, dann Fröhlichsein.\\
+
+Mit herzlichen Grüßen\\
+Dein\\
+Carl\\
+
+
 
 
       \subsection{Wechsel von Linked Open Data (LOD zu Nodegoat)}
