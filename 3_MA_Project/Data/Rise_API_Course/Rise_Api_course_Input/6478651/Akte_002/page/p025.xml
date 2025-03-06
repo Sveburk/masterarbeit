@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:49.541+01:00</Created>
+        <LastChange>2025-02-11T22:17:24.219+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798955" pageNr="17" tsid="228135314" status="GT" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=ZKLUPZPGICIIPZPQQGQPNZJP&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=CJATLJJTGTNQKRVTVMGVGTZW" imageId="74816140"/>
+    </Metadata>
+    <Page imageFilename="p025.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262695667" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="2888,2217 3409,2217 3409,2312 2888,2312"/>
+            <TextLine id="l" custom="readingOrder {index:0;} person {offset:6; length:11;}">
+                <Coords points="2907,2274 3346,2274 3346,2244 2907,2244"/>
+                <Baseline points="2907,2274 3346,2274"/>
+                <TextEquiv>
+                    <Unicode>phot. Rolf Keller</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

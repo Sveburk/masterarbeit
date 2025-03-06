@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=29_01_2025_15:07</Creator>
+        <Created>2025-01-22T16:49:47.366+01:00</Created>
+        <LastChange>2025-02-11T22:05:49.548+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798946" pageNr="2" tsid="228132282" status="GT" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=FSYDKTTIXLUGOHQWKTEPCMCK&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=VPSREGKRESNWQOSYOUJMKXWF" imageId="74816130"/>
+    </Metadata>
+    <Page imageFilename="p002.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262692519" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r_33"/>
+                <RegionRefIndexed index="1" regionRef="r_7"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+                <RegionRefIndexed index="3" regionRef="r_5"/>
+                <RegionRefIndexed index="4" regionRef="r_6"/>
+                <RegionRefIndexed index="5" regionRef="r"/>
+                <RegionRefIndexed index="6" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_33" custom="readingOrder {index:0;}">
+            <Coords points="196,736 848,736 848,1580 196,1580"/>
+            <TextLine id="l_66" custom="readingOrder {index:0;} date {offset:0; length:10; continued:true;when:03.05.1943;}">
+                <Coords points="584,1244 508,880 479,886 555,1250"/>
+                <Baseline points="584,1244 508,880"/>
+                <TextEquiv>
+                    <Unicode>03.5.43-19</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_62" custom="readingOrder {index:1;} place {offset:0; length:10;wikiData:Q6602;}">
+                <Coords points="560,1316 448,1312 356,1280 276,1188 268,1128 276,976 316,920 292,902 248,966 238,1129 249,1200 339,1305 442,1341 559,1346"/>
+                <Baseline points="560,1316 448,1312 356,1280 276,1188 268,1128 276,976 316,920"/>
+                <TextEquiv>
+                    <Unicode>Strassburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_7" custom="readingOrder {index:1;}">
+            <Coords points="171,269 685,269 685,959 171,959"/>
+            <TextLine id="l_32" custom="readingOrder {index:0;}">
+                <Coords points="496,844 432,336 402,340 466,848"/>
+                <Baseline points="496,844 432,336"/>
+                <TextEquiv>
+                    <Unicode>Feldpost</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="933,1042 1101,1042 1101,1691 933,1691"/>
+            <TextLine id="l_4" custom="readingOrder {index:0;}">
+                <Coords points="1068,1664 1068,1124 1038,1124 1038,1664"/>
+                <Baseline points="1068,1664 1068,1124"/>
+                <TextEquiv>
+                    <Unicode>An den</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_5" custom="readingOrder {index:3;}">
+            <Coords points="1250,115 1506,115 1506,1659 1250,1659"/>
+            <TextLine id="l_8" custom="readingOrder {index:0;} organization {offset:0; length:15;}">
+                <Coords points="1428,1588 1420,144 1390,144 1398,1588"/>
+                <Baseline points="1428,1588 1420,144"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_6" custom="readingOrder {index:4;}">
+            <Coords points="1664,0 2197,0 2197,1461 1664,1461"/>
+            <TextLine id="l_12" custom="readingOrder {index:0;}">
+                <Coords points="1772,1444 1780,272 1750,272 1742,1444"/>
+                <Baseline points="1772,1444 1780,272"/>
+                <TextEquiv>
+                    <Unicode>z. hd. v. Herrn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_28" custom="readingOrder {index:1;} person {offset:0; length:17;}">
+                <Coords points="2004,1388 2024,984 2028,744 2012,136 2068,16 2040,3 1982,130 1998,744 1994,983 1974,1386"/>
+                <Baseline points="2004,1388 2024,984 2028,744 2012,136 2068,16"/>
+                <TextEquiv>
+                    <Unicode>Alfons Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:5;}">
+            <Coords points="145,1859 2317,1859 2317,3466 145,3466"/>
+            <TextLine id="l" custom="readingOrder {index:0;}">
+                <Coords points="726,2024 731,1905 886,1853 1428,1832 1705,1827 2042,1868 2122,1892 2127,2037 1943,2130 1798,2125 1044,2076"/>
+                <Baseline points="740,2024 767,2024 812,2021 856,2021 901,2018 946,2018 991,2015 1035,2015 1080,2015 1125,2018 1170,2018 1215,2015 1259,2012 1304,2006 1349,2003 1394,2003 1439,2000 1483,1997 1528,1994 1573,1994 1618,1994 1662,1997 1772,1992 1806,1985 1851,1988 1895,1991 1940,1988 1985,1988 2030,1988 2074,1997 2119,2006 2131,2009"/>
+                <TextEquiv>
+                    <Unicode>Liebe Sängerkameraden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:1;}">
+                <Coords points="329,2275 907,2254 1039,2319 1112,2249 1438,2244 1622,2361 1785,2374 2000,2306 2000,2166 1819,2125 1710,2164 1645,2117 1516,2179 1438,2122 1283,2171 1018,2171 915,2112 840,2146 751,2086 575,2159 435,2052 326,2096"/>
+                <Baseline points="343,2230 388,2233 432,2236 477,2239 522,2242 567,2245 612,2245 656,2245 701,2245 746,2245 791,2245 835,2245 880,2245 925,2245 970,2248 1015,2251 1059,2248 1104,2242 1149,2242 1194,2245 1238,2242 1283,2242 1328,2242 1373,2242 1418,2242 1462,2248 1507,2248 1552,2248 1597,2251 1642,2251 1686,2251 1731,2254 1776,2257 1821,2260 1865,2260 1910,2257 1955,2257 2000,2251 2006,2251"/>
+                <TextEquiv>
+                    <Unicode>Das Liebespaket dankend</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_4" custom="readingOrder {index:2;}">
+                <Coords points="205,2444 298,2397 591,2451 842,2407 1272,2459 1757,2431 1811,2475 2042,2410 2039,2314 1759,2394 1591,2337 1319,2361 1132,2291 1021,2379 912,2280 801,2361 609,2265 417,2265 358,2311 202,2252"/>
+                <Baseline points="220,2391 265,2391 310,2394 355,2400 400,2400 444,2400 489,2403 534,2406 579,2406 623,2403 668,2403 713,2403 758,2406 803,2409 847,2409 892,2412 937,2415 982,2415 1027,2418 1071,2421 1116,2424 1161,2427 1206,2430 1250,2430 1295,2433 1340,2430 1385,2430 1430,2430 1474,2427 1519,2427 1564,2427 1609,2430 1653,2430 1698,2430 1743,2430 1788,2436 1833,2430 1877,2424 1922,2418 1967,2409 2012,2406 2045,2403"/>
+                <TextEquiv>
+                    <Unicode>erhalten. Es kam eben zur</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_5" custom="readingOrder {index:3;}">
+                <Coords points="200,2576 588,2581 640,2625 728,2568 1117,2620 1480,2586 1806,2617 2130,2596 2130,2542 1651,2477 1285,2475 1192,2514 1119,2459 972,2472 933,2433 757,2526 500,2444 197,2501"/>
+                <Baseline points="211,2543 256,2543 301,2549 346,2555 391,2561 435,2564 480,2567 525,2564 570,2564 615,2564 659,2564 704,2564 749,2570 794,2573 838,2573 883,2573 928,2573 973,2576 1018,2576 1062,2579 1107,2582 1152,2585 1197,2585 1241,2588 1286,2588 1331,2588 1376,2588 1421,2588 1465,2588 1510,2585 1555,2588 1600,2588 1645,2591 1689,2591 1734,2591 1779,2591 1824,2594 1868,2588 1913,2588 1958,2585 2003,2579 2048,2582 2092,2579 2137,2588 2140,2585"/>
+                <TextEquiv>
+                    <Unicode>rechten Zeit, denn mein</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_6" custom="readingOrder {index:4;}">
+                <Coords points="251,2757 308,2744 402,2830 588,2760 679,2799 720,2757 837,2819 982,2770 1244,2801 1446,2760 1557,2817 1819,2765 2117,2822 2091,2640 1801,2679 1632,2640 1464,2716 1386,2659 1249,2695 1145,2630 860,2659 798,2612 679,2659 378,2638 308,2573 251,2581"/>
+                <Baseline points="265,2738 313,2731 358,2737 403,2740 447,2743 492,2743 537,2743 582,2746 626,2749 671,2758 716,2758 761,2755 806,2758 850,2758 895,2761 940,2761 985,2761 1030,2761 1074,2761 1119,2758 1164,2758 1209,2758 1253,2758 1298,2758 1343,2758 1388,2758 1433,2758 1477,2758 1522,2758 1567,2755 1612,2758 1656,2758 1701,2761 1746,2767 1791,2770 1836,2764 1880,2764 1925,2764 1970,2761 2015,2758 2060,2761 2104,2758 2122,2755"/>
+                <TextEquiv>
+                    <Unicode>Zigarettenbestand war eben </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_7" custom="readingOrder {index:5;}">
+                <Coords points="153,2962 474,2918 739,2970 806,2928 873,2959 1153,2915 1780,2926 1832,2970 1902,2936 2011,3003 2171,2936 2236,2962 2236,2819 2190,2796 2089,2837 1861,2822 1804,2879 1599,2801 1485,2848 1379,2799 1078,2827 917,2783 811,2837 720,2767 624,2840 381,2819 311,2876 153,2819"/>
+                <Baseline points="167,2916 208,2919 253,2913 298,2916 343,2916 388,2916 432,2916 477,2919 522,2919 567,2919 612,2919 656,2919 701,2919 746,2919 791,2919 835,2922 880,2922 925,2919 970,2916 1015,2916 1059,2916 1104,2916 1149,2913 1194,2916 1238,2916 1283,2916 1328,2913 1373,2916 1418,2916 1462,2919 1507,2919 1552,2919 1597,2919 1642,2919 1686,2919 1731,2916 1776,2919 1821,2919 1865,2919 1910,2919 1955,2919 2000,2919 2045,2922 2089,2919 2134,2919 2179,2919 2224,2922 2239,2922"/>
+                <TextEquiv>
+                    <Unicode>im Nichts verschwunden, und </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_8" custom="readingOrder {index:6;}">
+                <Coords points="140,3065 565,3089 630,3055 687,3091 974,3055 1086,3091 1246,3055 1625,3099 1816,3065 1995,3120 2156,3078 2130,3008 1850,3014 1770,2954 1705,3014 1586,3014 1516,2944 1368,2972 1270,2931 917,2931 829,3003 694,2944 635,3003 536,2967 438,3003 329,2949 277,3001 228,2970 140,3001"/>
+                <Baseline points="155,3051 200,3051 244,3051 289,3051 334,3051 379,3054 423,3054 468,3054 513,3054 558,3054 603,3054 647,3054 692,3051 737,3054 782,3054 826,3054 871,3054 916,3054 961,3054 1006,3054 1050,3054 1095,3054 1140,3057 1185,3054 1230,3054 1274,3057 1319,3057 1364,3060 1409,3063 1453,3066 1498,3066 1543,3066 1588,3063 1633,3066 1677,3066 1722,3063 1767,3063 1812,3066 1857,3063 1901,3063 1946,3063 1991,3063 2036,3066 2080,3063 2125,3063 2161,3063"/>
+                <TextEquiv>
+                    <Unicode>meine Gesundheit liess schon zu</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_9" custom="readingOrder {index:7;}">
+                <Coords points="153,3174 472,3187 547,3247 599,3192 733,3247 1047,3203 1117,3257 1259,3208 2210,3211 2210,3148 2096,3151 2037,3094 1951,3148 1436,3143 1376,3091 1259,3143 1174,3065 998,3058 922,3135 803,3164 619,3058 536,3130 464,3078 402,3130 220,3063 153,3112"/>
+                <Baseline points="167,3167 211,3167 256,3167 301,3170 346,3173 391,3176 435,3179 480,3182 525,3185 570,3185 615,3188 659,3188 704,3188 749,3188 794,3191 838,3191 883,3191 928,3194 973,3194 1018,3194 1062,3197 1107,3200 1152,3200 1197,3203 1241,3200 1286,3200 1331,3200 1376,3197 1421,3200 1465,3200 1510,3200 1555,3203 1600,3203 1645,3203 1689,3203 1734,3203 1779,3203 1824,3203 1868,3203 1913,3203 1958,3203 2003,3206 2048,3203 2092,3206 2137,3206 2182,3203 2218,3203"/>
+                <TextEquiv>
+                    <Unicode>wünschen übrig, aber nun bin </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_10" custom="readingOrder {index:8;}">
+                <Coords points="155,3288 754,3306 801,3348 917,3306 1208,3325 1205,3211 1143,3257 979,3229 920,3257 860,3211 749,3260 674,3198 523,3257 456,3200 386,3244 316,3179 220,3182 155,3234"/>
+                <Baseline points="170,3281 214,3284 259,3287 304,3293 349,3293 394,3296 438,3299 483,3301 528,3301 573,3301 618,3304 662,3304 707,3304 752,3307 797,3304 841,3307 886,3307 931,3307 976,3304 1021,3307 1065,3304 1110,3304 1155,3304 1200,3310 1215,3301"/>
+                <TextEquiv>
+                    <Unicode>ich wieder gesund.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:9;}">
+                <Coords points="521,3309 1599,3304 2094,3306 2208,3314 2208,3431 2000,3452 785,3465 521,3431"/>
+                <Baseline points="534,3430 579,3427 623,3427 668,3427 713,3427 758,3436 803,3436 847,3433 892,3430 937,3430 982,3430 1027,3427 1099,3434 1101,3424 1125,3418 1170,3424 1215,3421 1259,3421 1304,3421 1349,3421 1394,3421 1439,3421 1483,3421 1501,3422 1633,3424 1677,3421 1722,3421 1767,3424 1812,3427 1857,3427 1901,3430 1946,3430 1991,3430 2036,3430 2080,3430 2125,3427 2170,3427 2215,3421"/>
+                <TextEquiv>
+                    <Unicode>Herzliche Grüsse Emil Durst</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:6;}">
+            <Coords points="2069,2243 2259,2243 2259,2834 2069,2834"/>
+            <TextLine id="l_9" custom="readingOrder {index:0;}">
+                <Coords points="2238,2783 2241,2312 2211,2312 2208,2782"/>
+                <Baseline points="2238,2783 2241,2312"/>
+                <TextEquiv>
+                    <Unicode>Strassburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_5" custom="readingOrder {index:1;}">
+                <Coords points="2140,2800 2137,2280 2107,2280 2110,2801"/>
+                <Baseline points="2140,2800 2137,2280"/>
+                <TextEquiv>
+                    <Unicode>Das Münster</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>
