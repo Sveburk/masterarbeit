@@ -24,7 +24,7 @@ input_cost_per_mio_in_dollars = 2.5
 output_cost_per_mio_in_dollars = 10
 
 image_directory = "/Users/svenburkhardt/Library/Mobile Documents/com~apple~CloudDocs/1 Uni/Master/1_Studienfächer/Digital Humanities/FS2025/Rise_API_Course/Rise_Api_course_Input"
-output_directory = "/Users/svenburkhardt/Library/Mobile Documents/com~apple~CloudDocs/1 Uni/Master/1_Studienfächer/Digital Humanities/FS2025/Rise_API_Course/Rise_Api_course_output'"
+output_directory = "/Users/svenburkhardt/Library/Mobile Documents/com~apple~CloudDocs/1 Uni/Master/1_Studienfächer/Digital Humanities/FS2025/Rise_API_Course/Rise_Api_course_output"
 
 # Clear the output directory
 for root, _, filenames in os.walk(output_directory):

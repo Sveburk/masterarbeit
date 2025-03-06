@@ -1,214 +1,110 @@
 import json
 import os
-import re
-import time
 import xml.etree.ElementTree as ET
 from openai import OpenAI
 
-# Zeitmessung starten
-start_time = time.time()
-total_files = 0
-total_in_tokens = 0
-total_out_tokens = 0
-input_cost_per_mio_in_dollars = 2.5
-output_cost_per_mio_in_dollars = 10
-
-# Definiere die Input- und Output-Ordner
-input_directory = "/Users/svenburkhardt/Library/Mobile Documents/com~apple~CloudDocs/1 Uni/Master/1_Studienfächer/Digital Humanities/FS2025/Rise_API_Course/Rise_Api_course_Input"
-output_directory = "/Users/svenburkhardt/Library/Mobile Documents/com~apple~CloudDocs/1 Uni/Master/1_Studienfächer/Digital Humanities/FS2025/Rise_API_Course/Rise_Api_course_output"
-
-# Stelle sicher, dass der Output-Ordner existiert
-os.makedirs(output_directory, exist_ok=True)
-
-# Setze API-Schlüssel, Modell und Temperatur
+# API & Verzeichnisse
 api_key = "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"
+client = OpenAI(api_key=api_key)
 model = "gpt-4o"
 temperature = 0.0
 
-# OpenAI-Client initialisieren
-client = OpenAI(api_key=api_key)
+base_input_directory = "Rise_Api_course_Input"
+output_directory = "Rise_Api_course_output"
+os.makedirs(output_directory, exist_ok=True)
 
-# Durchlaufe alle XML-Dateien im Input-Ordner
-for subdir in os.listdir(input_directory):
-    subdir_path = os.path.join(input_directory, subdir)
-    if os.path.isdir(subdir_path):
-        xml_file = None
-        for item in os.listdir(subdir_path):
-            item_path = os.path.join(subdir_path, item)
-            if os.path.isfile(item_path) and item.lower().endswith(".xml"):
-                xml_file = item_path
-                break  # Nur die erste gefundene XML verwenden
-        if xml_file is None:
-            continue  # Falls keine XML gefunden wurde, zum nächsten Ordner springen
+# Durchlaufe die relevanten Ordnerstrukturen
+for seven_digit_folder in os.listdir(base_input_directory):
+    folder_path = os.path.join(base_input_directory, seven_digit_folder)
+    if not os.path.isdir(folder_path) or not seven_digit_folder.isdigit() or len(seven_digit_folder) != 7:
+        continue
 
-        total_files += 1
-        print("----------------------------------------")
-        print(f"> Verarbeite XML ({total_files}): {xml_file}")
-
-        # Extrahiere den Text aus der XML-Datei
-        transcript_text = ""
-        metadata_info = {}
-
-        try:
-            tree = ET.parse(xml_file)
-            root = tree.getroot()
-
-            # Namespace-Handling für XML-Parsing
-            ns = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
-
-            # Metadaten extrahieren
-            transkribus_meta = root.find(".//ns:TranskribusMetadata", ns)
-            if transkribus_meta is not None:
-                metadata_info = {
-                    "docId": transkribus_meta.get("docId", ""),
-                    "pageId": transkribus_meta.get("pageId", ""),
-                    "tsid": transkribus_meta.get("tsid", ""),
-                    "imageId": transkribus_meta.get("imageId", ""),
-                    "imgUrl": transkribus_meta.get("imgUrl", ""),
-                    "xmlUrl": transkribus_meta.get("xmlUrl", "")
-                }
-
-            # Text extrahieren aus Unicode-Tags
-            for text_equiv in root.findall(".//ns:TextEquiv/ns:Unicode", ns):
-                if text_equiv.text:
-                    transcript_text += text_equiv.text + "\n"
-
-        except Exception as e:
-            print(f"> Fehler beim Lesen der XML {xml_file}: {e}")
+    for subdir in os.listdir(folder_path):
+        if not subdir.startswith("Akte_") or not subdir.endswith("_pdf"):
             continue
 
-        # Erstelle den Prompt für die API
-        prompt = f"""
-I am providing you a text transcript extracted from acorpus of the Männerchor Murg from Germany,
-    dating from 1925 to 1945 and covers the so-called Third Reich, which may be reflected in 
-    language and context.
-    Your Role is beeing a Historian, the task is to analyze each image for its text content and extract and compare relevant information.
-    Keep in mind the context I provided. The data will be used for scientific research, so it is essential 
-    that the data is absolutely accurate, the temperature should therfore be 0,0.
-    If there is no data for a particular item, please write "None". Use the list under "document_type_options" 
-    to identify and select the appropriate document type for the current document. Choose only the type that best matches.
+        page_folder = os.path.join(folder_path, subdir, "page")
+        if not os.path.isdir(page_folder):
+            continue
 
-I am interested in: Metadata such as author, recipient, other mentioned persons, location(s), date(s), 
-    and events including Sender, Recipient, and geographical places as well as content tags in a structured JSON file.
-    It is urgent that you ensure all text is output in UTF-8, especially German umlauts (ä, ö, ü) and the ß character, without using HTML entities.
-    Represent any line breaks in the text as real line breaks rather than `\n`. For Dates youse the format "yyyy.mm.dd".
-    The pictures do have Tags in them, namely   "Handschrift", "Maschinell", "mitUnterschrift", "Bild". Extract and mention those in the Json below.
+        for xml_file in os.listdir(page_folder):
+            if not xml_file.endswith(".xml"):
+                continue
 
-    Here are additional metadata extracted from Transkribus:
-- Document ID: {metadata_info.get("docId", "None")}
-- Page ID: {metadata_info.get("pageId", "None")}
-- Transkribus Segment ID: {metadata_info.get("tsid", "None")}
-- Image URL: {metadata_info.get("imgUrl", "None")}
-- XML URL: {metadata_info.get("xmlUrl", "None")}
+            xml_path = os.path.join(page_folder, xml_file)
+            print(f"> Verarbeite XML: {xml_path}")
 
-    The JSON should striktly be structured like this:
+            transcript_text = ""
+            metadata_info = {}
 
-```
-json
-[
-  {
-    "object_type": "Dokument",
-    "attributes": {
-        "document_id": "{metadata_info.get('docId', 'None')}",
-        "page_id": "{metadata_info.get('pageId', 'None')}",
-        "transkribus_segment_id": "{metadata_info.get('tsid', 'None')}",
-        "image_url": "{metadata_info.get('imgUrl', 'None')}",
-        "xml_url": "{metadata_info.get('xmlUrl', 'None')}",
-        "author": {
-            "forename": "", 
-            "familyname": "", 
-            "role": "", 
-            "associated_place": "",  
-            "associated_organisation": ""
-        },
-        "recipient": {
-            "forename": "", 
-            "familyname": "", 
-            "role": "", 
-            "associated_place": "",
-            "associated_organisation": ""
-        },
-        "mentioned_persons": [
-            {
-                "forename": "", 
-                "familyname": "", 
-                "role": "", 
-                "associated_place": "", 
-                "associated_organisation": ""
-            }
-        ],
-        "mentioned_organizations": [
-            {
-                "Organization_name": "", 
-                "associated_place": ""
-            }
-        ],
-        "mentioned_events": [
-            {
-                "date": "", 
-                "description": "", 
-                "associated_place": "", 
-                "associated_organisation": ""
-            }
-        ],
-        "creation_date": "",  
-        "creation_place": [""],
-        "mentioned_dates": [
-            {
-                "day": "", 
-                "month": "", 
-                "year": ""
-            }
-        ],
-        "mentioned_places": [""],
-        "content_tags_in_german": [""],
-        "content_transcription": "{transcript_text}",
-        "document_type_options": ["Brief", "Protokoll", "Postkarte", "Rechnung", "Regierungsdokument", "Karte", "Noten", "Zeitungsartikel", "Liste", "Website", "Notizzettel", "Offerte"],
-        "document_format_options": ["Handschrift", "Maschinell", "mitUnterschrift", "Bild"]
-    }
-  }
-]
-"""
-
-        # API-Aufruf INNERHALB der Schleife!
-        answer = client.chat.completions.create(
-            messages=workload,
-            model=model,
-            temperature=temperature
-        )
-        print("Übermittlung an API abgeschlossen.")
-
-        # Extrahiere die Antwort aus der API
-        answer_text = answer.choices[0].message.content
-        print("> API-Antwort erhalten.")
-
-        # JSON aus der API-Antwort extrahieren
-        pattern = r"```\s*json(.*?)\s*```"
-        match = re.search(pattern, answer_text, re.DOTALL)
-        if match:
-            answer_text = match.group(1).strip()
             try:
-                answer_data = json.loads(answer_text)
-            except json.JSONDecodeError as e:
-                print(f"> Fehler beim Parsen von JSON: {e}")
-                continue  # Zum nächsten Dokument springen
+                tree = ET.parse(xml_path)
+                root = tree.getroot()
+                ns = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
 
-            # Speichere das JSON-File pro PDF-Dokument
-            output_filename = os.path.join(output_directory, f"{os.path.splitext(os.path.basename(pdf_file))[0]}.json")
-            with open(output_filename, "w", encoding="utf-8") as json_file:
-                json.dump(answer_data, json_file, indent=4)
-                print(f"> Antwort gespeichert: {output_filename}")
+                transkribus_meta = root.find(".//ns:TranskribusMetadata", ns)
+                if transkribus_meta is not None:
+                    metadata_info = {
+                        "docId": transkribus_meta.get("docId", ""),
+                        "pageId": transkribus_meta.get("pageId", ""),
+                        "tsid": transkribus_meta.get("tsid", ""),
+                        "imgUrl": transkribus_meta.get("imgUrl", ""),
+                        "xmlUrl": transkribus_meta.get("xmlUrl", "")
+                    }
 
-# Berechne die gesamte Verarbeitungszeit
-end_time = time.time()
-total_time = end_time - start_time
+                for text_equiv in root.findall(".//ns:TextEquiv/ns:Unicode", ns):
+                    if text_equiv.text:
+                        transcript_text += text_equiv.text + "\n"
 
-# Berechne die Gesamtkosten
-if total_files > 0:
-    total_cost_in = (total_in_tokens / 1e6) * input_cost_per_mio_in_dollars
-    total_cost_out = (total_out_tokens / 1e6) * output_cost_per_mio_in_dollars
-    print(f"Total processing time: {total_time:.2f} seconds")
-    print(f"Total token cost (in/out): {total_in_tokens} / {total_out_tokens}")
-    print(f"Total cost (in/out): ${total_cost_in:.2f} / ${total_cost_out:.2f}")
-else:
-    print("No files were processed. Skipping cost calculation.")
+            except Exception as e:
+                print(f"> Fehler beim Lesen der XML {xml_path}: {e}")
+                continue
+
+            if not transcript_text.strip():
+                print(f"> Kein Text in {xml_path} gefunden. Überspringe...")
+                continue
+
+            prompt = f"""
+I am providing a text transcript from the Männerchor Murg corpus (Germany), covering 1925–1945, including the Third Reich period, which may influence language and context.
+
+**Your role:** Historian. Analyze each image, extract the text, and compare relevant information with absolute accuracy (**temperature = 0.0**).
+
+**Instructions:**  
+- If data is missing, write `"None"`.  
+- Identify the correct **document type** from `"document_type_options"`—choose only the best match.  
+- Extract and structure metadata in JSON:  
+  - **Author, recipient, mentioned persons**  
+  - **Locations, dates (format: "yyyy.mm.dd")**  
+  - **Events, sender/recipient, geographical references**  
+  - **Content tags**  
+
+**Formatting requirements:**  
+- Output **UTF-8** text, preserving **German umlauts (ä, ö, ü, ß)**—no HTML entities.  
+- Keep real **line breaks**, not `\n`.  
+- Extract and include **image tags**: `"Handschrift"`, `"Maschinell"`, `"mitUnterschrift"`, `"Bild"`.  
+
+Text to analyze:
+{transcript_text}
+"""
+            
+            response = client.completions.create(
+                model=model,
+                prompt=prompt,
+                temperature=temperature,
+                max_tokens=2048
+            )
+
+            json_structure = json.loads(response.choices[0].text.strip())
+
+            try:
+                json_string = json.dumps(json_structure, indent=4, ensure_ascii=False)
+                print("> JSON erfolgreich generiert.")
+            except Exception as e:
+                print(f"> Fehler beim Erstellen der JSON-Struktur: {e}")
+                continue
+
+            output_file = os.path.join(output_directory, os.path.basename(xml_path).replace(".xml", ".json"))
+            with open(output_file, "w", encoding="utf-8") as json_out:
+                json_out.write(json_string)
+
+            print(f"> JSON gespeichert: {output_file}")
