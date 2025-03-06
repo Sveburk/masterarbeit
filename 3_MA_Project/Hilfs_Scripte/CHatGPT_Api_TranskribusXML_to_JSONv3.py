@@ -5,53 +5,75 @@ import openai
 import re
 import time
 
-# Save the start time, set the image and output directories
+# ------------------------------
+# BASIS-EINSTELLUNGEN
+# ------------------------------
 start_time = time.time()
+
+# Zähler
 total_files = 0
 total_in_tokens = 0
 total_out_tokens = 0
+
+# Kosten-Konstanten
 input_cost_per_mio_in_dollars = 2.5
 output_cost_per_mio_in_dollars = 10
 
-# OpenAI API & Verzeichnisse
+# OpenAI API
 api_key = "sk-OUnUKfiRurjwDl4pHMgNS6YBYhTFv65_L4jqhxZgelT3BlbkFJ2BP4s-8K1L37Ccs3a6JfiE843sUsjAXBcNRIjDPbQA"
 client = openai.OpenAI(api_key=api_key)
-model = "gpt-4o"
+model = "gpt-4"       # Oder was Du verwenden möchtest
 temperature = 0.0
 
+# Verzeichnisse
 base_input_directory = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Rise_API_Course/Rise_Api_course_Input"
 output_directory = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Rise_API_Course/Rise_Api_course_output"
 os.makedirs(output_directory, exist_ok=True)
 
-# Durchlaufe die relevanten Ordnerstrukturen
+# -------------------------------------------------------------
+# ALLE 7-stelligen ORDNER im Basis-Verzeichnis durchlaufen
+# -------------------------------------------------------------
 for seven_digit_folder in os.listdir(base_input_directory):
     folder_path = os.path.join(base_input_directory, seven_digit_folder)
-    if not os.path.isdir(folder_path) or not seven_digit_folder.isdigit() or len(seven_digit_folder) != 7:
+
+    # Prüfe, ob es tatsächlich ein Ordner ist, 7-stelliger Name etc.
+    if (not os.path.isdir(folder_path)
+        or not seven_digit_folder.isdigit()
+        or len(seven_digit_folder) != 7):
         continue
 
+    # Jetzt ALLE Unterordner (z. B. "Akte_123_pdf") in diesem 7-stelligen Ordner ansehen
     for subdir in os.listdir(folder_path):
-        if not subdir.startswith("Akte_") or not subdir.endswith("_pdf"):
+        subdir_path = os.path.join(folder_path, subdir)
+
+        # Prüfe, ob subdir tatsächlich ein Ordner ist:
+        # und ob er mit "Akte_" anfängt (und evtl. "_pdf" endet).
+        if not os.path.isdir(subdir_path):
             continue
 
-        akte_number_match = re.search(r"Akte_(\d+)_pdf", subdir)
-        if not akte_number_match:
+        if not subdir.startswith("Akte_"):
+            # Andere Ordner ignorieren
             continue
-        akte_number = akte_number_match.group(1)
 
-        page_folder = os.path.join(folder_path, subdir, "page")
+        # Nun liegt in diesem Ordner "subdir" (z. B. "Akte_123_pdf") ein "page"-Ordner
+        page_folder = os.path.join(subdir_path, "page")
         if not os.path.isdir(page_folder):
+            # Falls kein "page"-Ordner vorhanden ist, überspringen
             continue
 
+        # ---------------------------------------------------------
+        # Hier liegen jetzt die XML-Seiten => alle .xml iterieren
+        # ---------------------------------------------------------
         for xml_file in os.listdir(page_folder):
             if not xml_file.endswith(".xml"):
                 continue
 
             xml_path = os.path.join(page_folder, xml_file)
-            print(f"> 🟢 Starte Verarbeitung für Akte {akte_number}, Seite {xml_file}")
+            print(f"> 🟢 Starte Verarbeitung für Ordner {seven_digit_folder}, '{subdir}', Seite {xml_file}")
             total_files += 1
 
             # Seitenzahl extrahieren (beginnend bei 1)
-            page_number_match = re.search(r"P(\d+)", xml_file)
+            page_number_match = re.search(r"p(\d+)", xml_file,re.IGNORECASE)
             if page_number_match:
                 page_number = f"{int(page_number_match.group(1)) + 1:03d}"
             else:
@@ -60,9 +82,9 @@ for seven_digit_folder in os.listdir(base_input_directory):
             transcript_text = ""
             metadata_info = {}
 
-            # ---------------------
-            # 1) XML einlesen (try 1)
-            # ---------------------
+            # ---------------------------------------------------------
+            # 1) XML EINLESEN
+            # ---------------------------------------------------------
             try:
                 tree = ET.parse(xml_path)
                 root = tree.getroot()
@@ -91,7 +113,9 @@ for seven_digit_folder in os.listdir(base_input_directory):
                 print(f"> Kein Text in {xml_path} gefunden. Überspringe...")
                 continue
 
-            # JSON-Grundstruktur
+            # ---------------------------------------------------------
+            # JSON-GRUNDELEMENT
+            # ---------------------------------------------------------
             json_structure = {
                 "object_type": "Dokument",
                 "attributes": {
@@ -132,7 +156,9 @@ for seven_digit_folder in os.listdir(base_input_directory):
                 "document_format_options": ["Handschrift", "Maschinell", "mitUnterschrift", "Bild"]
             }
 
-            # Prompt erstellen
+            # ---------------------------------------------------------
+            # PROMPT FÜR DIE API
+            # ---------------------------------------------------------
             prompt = f"""
             I am providing a text transcript from the Männerchor Murg corpus (Germany), covering 1925–1945, including the Third Reich period, which may influence language and context.
 
@@ -159,9 +185,9 @@ for seven_digit_folder in os.listdir(base_input_directory):
             {json.dumps(json_structure, indent=4, ensure_ascii=False)}
             """
 
-            # --------------------------------------
-            # 2) OpenAI-API-Aufruf (try 2)
-            # --------------------------------------
+            # ---------------------------------------------------------
+            # 2) OPENAI-API-AUFRUF
+            # ---------------------------------------------------------
             try:
                 response = client.chat.completions.create(
                     model=model,
@@ -169,13 +195,13 @@ for seven_digit_folder in os.listdir(base_input_directory):
                         {"role": "system", "content": "You are a historian analyzing historical documents with precision."},
                         {"role": "user", "content": prompt}
                     ],
-                    temperature=temperature,
+                    temperature=temperature
                 )
             except Exception as e:
                 print(f"> ❌ Fehler bei API-Anfrage für {xml_file}: {e}")
                 continue
 
-            # Token-Infos aus der Antwort
+            # Token-Infos extrahieren
             if response and hasattr(response, "usage"):
                 total_in_tokens += response.usage.prompt_tokens
                 total_out_tokens += response.usage.completion_tokens
@@ -192,17 +218,16 @@ for seven_digit_folder in os.listdir(base_input_directory):
                 print("> ❌ Leere Antwort vom Modell erhalten.")
                 continue
 
-            # JSON in der API-Antwort ggf. aus Markdown-Block extrahieren
+            # ---------------------------------------------------------
+            # 3) JSON PARSEN & SPEICHERN
+            # ---------------------------------------------------------
+            # Markdown-Block ggf. herauslösen
             pattern = r"`json\s*(.*?)\s*`"
             match = re.search(pattern, response_text, re.DOTALL)
             if match:
                 response_text = match.group(1).strip()
 
-            # --------------------------------------
-            # 3) JSON parsen & Datei schreiben (try 3)
-            # --------------------------------------
-
-            # 3a) JSON parsen
+            # JSON parsen
             try:
                 parsed_json = json.loads(response_text)
             except json.JSONDecodeError as e:
@@ -210,10 +235,10 @@ for seven_digit_folder in os.listdir(base_input_directory):
                 print(f"> Antwort war: {response_text[:500]}")
                 continue
 
-            # 3b) Datei speichern
-            output_filename = f"Akte_{akte_number}_P{page_number}.json"
+            # Datei speichern
+            output_filename = f"Akte_{subdir}_P{page_number}.json"
             output_file = os.path.join(output_directory, output_filename)
-            print(f">  Debug: Speichere Datei unter {output_file}")
+            print(f">  Debug: Speichere JSON unter {output_file}")
 
             try:
                 with open(output_file, "w", encoding="utf-8") as json_out:
@@ -223,13 +248,14 @@ for seven_digit_folder in os.listdir(base_input_directory):
                 print(f"> Fehler beim Speichern von {output_file}: {e}")
                 continue
 
-# Verarbeitungszeit
+# ---------------------------------------------------------
+# NACH ABSCHLUSS: STATISTIK AUSGEBEN
+# ---------------------------------------------------------
 end_time = time.time()
 total_time = end_time - start_time
 print(f"\n✅ Verarbeitete Dateien: {total_files}")
 print(f"⏳ Gesamtzeit: {total_time:.2f} Sekunden")
 
-# Berechne die Gesamtkosten
 if total_files > 0:
     total_cost_in = (total_in_tokens / 1e6) * input_cost_per_mio_in_dollars
     total_cost_out = (total_out_tokens / 1e6) * output_cost_per_mio_in_dollars
