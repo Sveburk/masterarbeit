@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=30_01_2025_14:21</Creator>
+        <Created>2025-01-22T16:49:49.893+01:00</Created>
+        <LastChange>2025-02-11T22:18:52.303+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798958" pageNr="20" tsid="228135293" status="GT" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=OWVMKACEGOEETTBEGDVTSSYI&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=IFAYMWTKPNOATEJOJUWRFOLI" imageId="74816143"/>
+    </Metadata>
+    <Page imageFilename="p029.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262696402" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_27"/>
+                <RegionRefIndexed index="2" regionRef="r_25"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="792,232 2895,232 2715,1687 792,1762"/>
+            <TextLine id="l" custom="readingOrder {index:0;} date {offset:0; length:16; continued:true;}">
+                <Coords points="978,614 2177,651 2324,589 2791,671 2796,642 2321,559 2172,621 979,584"/>
+                <Baseline points="978,614 2177,651 2324,589 2791,671"/>
+                <TextEquiv>
+                    <Unicode>Weihnachten 1942</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_21" custom="date {continued:true;} readingOrder {index:1;} date {offset:0; length:12; continued:true;}">
+                <Coords points="818,970 1215,999 1666,1011 2296,1019 2296,989 1666,981 1217,969 821,940"/>
+                <Baseline points="818,970 1215,999 1666,1011 2296,1019"/>
+                <TextEquiv>
+                    <Unicode>Neujahr 1943</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_28" custom="readingOrder {index:2;}">
+                <Coords points="1080,1600 1510,1633 2398,1649 2399,1619 1511,1603 1083,1570"/>
+                <Baseline points="1080,1600 1510,1633 2398,1649"/>
+                <TextEquiv>
+                    <Unicode>Wolf Walter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_27" custom="readingOrder {index:1;}">
+            <Coords points="863,1654 1564,1654 1564,1983 863,1983"/>
+            <TextLine id="l_187" custom="readingOrder {index:0;}">
+                <Coords points="1421,1699 1229,1774 1138,1796 911,1887 922,1914 1148,1825 1238,1802 1432,1727"/>
+                <Baseline points="1421,1699 1229,1774 1138,1796 911,1887"/>
+                <TextEquiv>
+                    <Unicode>Agfa Brovira</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_25" custom="readingOrder {index:2;}">
+            <Coords points="2786,745 3432,745 3432,1191 2786,1191"/>
+            <TextLine id="l_176" custom="readingOrder {index:0;}">
+                <Coords points="3367,793 2850,1002 2861,1030 3378,821"/>
+                <Baseline points="3367,793 2850,1002"/>
+                <TextEquiv>
+                    <Unicode>Agfa Brovira</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

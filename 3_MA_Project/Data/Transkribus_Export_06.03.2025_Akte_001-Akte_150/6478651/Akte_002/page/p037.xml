@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=30_01_2025_14:21</Creator>
+        <Created>2025-01-22T16:49:50.648+01:00</Created>
+        <LastChange>2025-02-11T22:40:17.215+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798983" pageNr="25" tsid="228139036" status="FINAL" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=WCSCTTPBCOTEUCPIBGTLJXMM&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=JNLSDJNRPXNZVAIXOWTLWZAJ" imageId="74816128"/>
+    </Metadata>
+    <Page imageFilename="p037.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262697759" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+                <RegionRefIndexed index="1" regionRef="tr_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="119,145 119,2878 1307,2878 1307,145"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;} place {offset:11; length:4;}">
+                <Coords points="113,204 158,181 519,193 562,171 583,190 608,176 756,201 756,116 113,108"/>
+                <Baseline points="119,179 152,177 186,176 219,177 253,179 287,177 320,175 354,173 388,173 421,175 455,176 488,176 522,176 556,176 589,176 623,176 657,176 690,176 724,176 758,182"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="131,266 256,240 452,259 522,241 600,268 764,250 754,201 131,200"/>
+                <Baseline points="137,244 168,242 200,240 231,238 263,238 294,238 326,237 357,235 389,233 420,232 452,232 483,234 515,235 546,235 578,235 609,233 641,233 672,235 704,237 735,240 767,244"/>
+                <TextEquiv>
+                    <Unicode>(Alter Schweizer Männerchor)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="373,414 659,417 658,373 613,339 598,353 554,350 518,370 507,361 439,369 423,353 371,358"/>
+                <Baseline points="379,397 404,397 430,397 456,399 481,401 507,403 533,403 559,403 584,403 610,403 636,403 662,403"/>
+                <TextEquiv>
+                    <Unicode>Obergefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;} person {offset:0; length:20; continued:true;}">
+                <Coords points="373,466 1006,469 1006,419 905,393 845,417 818,399 691,419 373,414"/>
+                <Baseline points="379,453 410,451 442,450 473,450 505,452 536,453 568,452 599,450 631,450 662,450 694,450 725,450 757,450 788,450 820,450 851,450 883,450 914,450 946,450 977,452 1009,453"/>
+                <TextEquiv>
+                    <Unicode>Baumgartner Heinrich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:4;}">
+                <Coords points="368,490 389,482 405,481 766,468 784,561 702,562 528,562 370,561"/>
+                <Baseline points="376,525 401,525 427,525 452,527 478,528 504,529 534,534 563,534 593,533 622,531 652,536 665,536 730,543 757,549 785,549"/>
+                <TextEquiv>
+                    <Unicode>FPN - 12 495</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_8" custom="readingOrder {index:5;}">
+                <Coords points="373,656 392,666 473,664 501,674 514,666 538,666 537,631 529,632 512,615 507,619 484,598 468,599 445,622 430,622 408,601 396,601 371,621"/>
+                <Baseline points="379,650 405,652 432,653 459,653 486,654 513,656 540,656"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_9" custom="readingOrder {index:6;} person {offset:0; length:15; continued:true;}">
+                <Coords points="373,715 501,719 536,737 729,711 770,730 883,723 883,673 808,676 775,657 745,680 619,658 590,680 373,669"/>
+                <Baseline points="379,707 404,707 429,707 455,705 480,705 505,706 531,706 556,704 581,704 607,704 632,704 657,704 683,704 708,704 733,704 759,705 784,707 809,707 835,708 860,709 886,710"/>
+                <TextEquiv>
+                    <Unicode>Baumgarter Hugo</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_10" custom="readingOrder {index:7;}">
+                <Coords points="378,808 730,825 730,733 612,728 539,752 481,739 378,742"/>
+                <Baseline points="385,782 411,779 438,779 465,780 492,782 518,782 545,782 572,780 599,779 625,779 652,779 679,779 706,781 761,791"/>
+                <TextEquiv>
+                    <Unicode>FPN - 18 803</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_11" custom="readingOrder {index:8;}">
+                <Coords points="373,908 468,922 645,921 662,917 664,885 644,885 626,867 561,862 553,871 537,854 518,854 499,873 457,857 436,874 419,857 374,858"/>
+                <Baseline points="379,907 405,907 431,906 457,905 483,904 509,904 535,903 561,901 587,903 613,905 639,906 665,907"/>
+                <TextEquiv>
+                    <Unicode>H.Z.Bass.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_12" custom="readingOrder {index:9;} person {offset:0; length:12; continued:true;}">
+                <Coords points="369,963 561,972 589,960 615,979 770,971 770,914 707,900 624,915 595,938 522,915 455,927 369,918"/>
+                <Baseline points="376,955 402,955 428,955 455,955 481,956 508,958 534,958 561,958 587,958 614,958 640,958 667,958 693,958 720,958 746,959 773,961"/>
+                <TextEquiv>
+                    <Unicode>Bäumle Adolf</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_13" custom="readingOrder {index:10;}">
+                <Coords points="432,1059 819,1065 815,997 774,1005 741,984 644,995 613,981 573,988 551,1011 535,999 501,1009 474,983 430,986"/>
+                <Baseline points="395,1038 435,1040 475,1035 510,1036 539,1036 565,1030 590,1032 616,1034 641,1035 667,1035 692,1035 718,1035 743,1035 769,1035 794,1037 820,1039"/>
+                <TextEquiv>
+                    <Unicode>FPN -10 782 a</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_14" custom="readingOrder {index:11;}">
+                <Coords points="378,1158 398,1170 421,1166 462,1171 488,1165 514,1175 540,1171 540,1137 499,1114 490,1120 471,1103 453,1104 446,1111 377,1113"/>
+                <Baseline points="385,1155 411,1153 437,1152 464,1152 490,1153 516,1155 543,1158"/>
+                <TextEquiv>
+                    <Unicode>Uffz.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_15" custom="readingOrder {index:12;} person {offset:0; length:15; continued:true;}">
+                <Coords points="376,1224 582,1226 623,1206 682,1225 853,1229 853,1164 773,1152 606,1172 572,1151 528,1178 376,1164"/>
+                <Baseline points="382,1209 408,1209 434,1209 461,1209 487,1209 513,1209 540,1209 566,1209 592,1207 619,1206 645,1206 671,1207 698,1209 724,1209 750,1209 777,1209 803,1209 829,1209 856,1209"/>
+                <TextEquiv>
+                    <Unicode>Binkert Hermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_16" custom="readingOrder {index:13;}">
+                <Coords points="382,1262 1304,1275 1304,1211 1211,1205 382,1227"/>
+                <Baseline points="388,1256 436,1259 484,1259 533,1259 581,1259 629,1258 678,1257 726,1259 774,1259 823,1259 871,1259 920,1259 968,1259 1016,1259 1065,1259 1113,1262 1161,1262 1210,1263 1258,1265 1307,1265"/>
+                <TextEquiv>
+                    <Unicode>1.Komp./Kraftfahr-Ausbildgsst.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_17" custom="readingOrder {index:14;}">
+                <Coords points="385,1321 529,1334 566,1320 743,1334 804,1311 825,1329 856,1321 848,1267 812,1282 626,1266 558,1283 428,1263 385,1275"/>
+                <Baseline points="391,1307 417,1309 443,1310 469,1310 495,1310 521,1310 547,1309 573,1307 599,1307 625,1308 651,1309 677,1310 703,1310 729,1310 755,1310 781,1310 807,1310 833,1310 859,1310"/>
+                <TextEquiv>
+                    <Unicode>Fliegertruppe 6.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_18" custom="readingOrder {index:15;} place {offset:0; length:11; continued:true;}">
+                <Coords points="382,1412 518,1410 551,1426 582,1414 627,1426 647,1411 720,1413 720,1339 706,1335 682,1356 565,1332 382,1335"/>
+                <Baseline points="388,1382 413,1380 439,1379 465,1381 490,1382 516,1382 542,1382 567,1382 593,1382 619,1382 644,1380 670,1380 696,1382 722,1385"/>
+                <TextEquiv>
+                    <Unicode>Neubiberg 2</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_19" custom="readingOrder {index:16;} place {offset:0; length:9; continued:true;}">
+                <Coords points="373,1474 492,1471 511,1481 524,1471 552,1490 643,1471 693,1480 692,1435 652,1413 626,1432 539,1426 522,1414 481,1429 448,1418 371,1426"/>
+                <Baseline points="379,1459 405,1457 431,1456 458,1456 484,1457 510,1459 537,1459 563,1459 589,1459 616,1459 642,1459 668,1458 695,1456"/>
+                <TextEquiv>
+                    <Unicode>München 8</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_20" custom="readingOrder {index:17;}">
+                <Coords points="378,1567 547,1570 545,1539 532,1538 516,1523 496,1525 480,1511 471,1511 461,1523 422,1520 409,1509 390,1521 376,1521"/>
+                <Baseline points="385,1555 412,1555 439,1556 467,1558 494,1559 521,1561 549,1561"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_21" custom="readingOrder {index:18;} person {offset:0; length:12; continued:true;}">
+                <Coords points="382,1618 416,1631 542,1623 577,1642 631,1625 773,1641 773,1580 667,1531 615,1569 569,1578 382,1569"/>
+                <Baseline points="388,1606 413,1608 439,1609 465,1607 491,1606 517,1606 543,1607 569,1609 594,1607 620,1606 646,1606 672,1606 698,1606 724,1608 750,1609 776,1612"/>
+                <TextEquiv>
+                    <Unicode>Bossert Otto</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_22" custom="readingOrder {index:19;}">
+                <Coords points="443,1715 733,1716 728,1644 673,1638 656,1647 629,1631 554,1656 451,1634 439,1641"/>
+                <Baseline points="395,1690 474,1687 500,1689 526,1689 552,1691 578,1694 604,1696 630,1698 656,1698 682,1698 708,1698 775,1690"/>
+                <TextEquiv>
+                    <Unicode>FPN - 37 72</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_23" custom="readingOrder {index:20;}">
+                <Coords points="382,1808 453,1822 853,1818 853,1772 833,1770 741,1786 695,1763 654,1779 624,1761 478,1779 443,1764 382,1771"/>
+                <Baseline points="388,1806 414,1806 440,1805 466,1804 492,1804 518,1806 544,1806 570,1806 596,1806 622,1806 648,1806 674,1806 700,1806 726,1806 752,1806 778,1806 804,1806 830,1806 856,1809"/>
+                <TextEquiv>
+                    <Unicode>Oberzahlmeister</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_24" custom="readingOrder {index:21;} person {offset:0; length:15; continued:true;}">
+                <Coords points="378,1865 854,1878 854,1818 378,1827"/>
+                <Baseline points="385,1859 411,1857 437,1857 463,1857 489,1857 515,1857 542,1857 568,1858 594,1859 620,1858 646,1857 672,1857 699,1857 725,1857 751,1857 777,1857 803,1859 829,1858 856,1857"/>
+                <TextEquiv>
+                    <Unicode>Fricker Richard</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_25" custom="readingOrder {index:22;}">
+                <Coords points="434,1964 588,1960 637,1971 761,1962 761,1885 677,1879 660,1897 582,1889 534,1909 468,1885 434,1894"/>
+                <Baseline points="397,1935 465,1933 490,1931 515,1929 540,1929 565,1933 589,1939 614,1938 639,1937 664,1937 689,1935 714,1934 739,1934 764,1931"/>
+                <TextEquiv>
+                    <Unicode>FPN -20 828</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_26" custom="readingOrder {index:23;}">
+                <Coords points="378,2069 423,2075 454,2067 474,2076 488,2065 515,2065 544,2072 543,2037 532,2037 515,2019 505,2025 486,2007 451,2014 420,2012 415,2018 377,2016"/>
+                <Baseline points="385,2057 411,2057 438,2057 465,2057 492,2058 519,2060 546,2057"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_27" custom="readingOrder {index:24;} person {offset:0; length:10; continued:true;}">
+                <Coords points="376,2121 570,2122 588,2106 623,2129 720,2130 720,2077 661,2073 642,2054 588,2075 566,2064 532,2077 503,2067 376,2076"/>
+                <Baseline points="382,2107 408,2107 434,2107 460,2107 486,2107 512,2107 538,2107 565,2107 591,2105 617,2104 643,2104 669,2105 695,2107 722,2107"/>
+                <TextEquiv>
+                    <Unicode>Ganter Max</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_28" custom="readingOrder {index:25;}">
+                <Coords points="381,2222 849,2216 859,2150 781,2134 739,2153 698,2134 662,2152 628,2131 558,2131 529,2148 462,2137 382,2154"/>
+                <Baseline points="388,2182 414,2188 440,2185 467,2182 493,2182 519,2183 546,2185 572,2185 598,2185 625,2185 651,2185 677,2185 704,2184 730,2182 756,2180 783,2180 809,2181 835,2181 862,2179"/>
+                <TextEquiv>
+                    <Unicode>z.Zt. Murg/Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_29" custom="readingOrder {index:26;}">
+                <Coords points="379,2318 400,2323 430,2317 470,2330 485,2317 497,2323 545,2321 544,2272 516,2270 511,2264 497,2272 481,2256 460,2272 448,2262 421,2264 407,2253 378,2259"/>
+                <Baseline points="385,2307 411,2307 438,2307 465,2307 492,2308 519,2310 546,2310"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_30" custom="readingOrder {index:27;} person {offset:0; length:13; continued:true;}">
+                <Coords points="382,2389 446,2370 549,2368 608,2386 652,2361 678,2376 797,2368 797,2314 731,2322 666,2302 643,2324 382,2318"/>
+                <Baseline points="388,2355 413,2357 439,2358 465,2358 491,2358 516,2358 542,2358 568,2358 594,2358 619,2358 645,2356 671,2354 697,2352 722,2353 748,2355 774,2355 800,2358"/>
+                <TextEquiv>
+                    <Unicode>Gerspach Pius</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l" custom="readingOrder {index:28;}">
+                <Coords points="383,2399 404,2390 445,2377 764,2385 769,2482 391,2489"/>
+                <Baseline points="391,2427 416,2427 442,2430 467,2433 493,2433 519,2435 544,2440 570,2443 595,2445 621,2446 687,2445 691,2444 717,2448 743,2450 770,2448"/>
+                <TextEquiv>
+                    <Unicode>FPN - 27 787</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_33" custom="readingOrder {index:29;}">
+                <Coords points="376,2562 389,2562 402,2573 409,2567 484,2566 505,2577 515,2568 526,2574 544,2571 543,2537 524,2537 482,2506 474,2512 445,2502 412,2501 375,2525"/>
+                <Baseline points="382,2555 409,2555 436,2555 464,2555 491,2558 518,2561 546,2561"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_34" custom="readingOrder {index:30;} person {offset:0; length:18; continued:true;}">
+                <Coords points="385,2617 943,2622 943,2561 925,2554 750,2577 660,2540 575,2575 385,2569"/>
+                <Baseline points="391,2606 418,2608 446,2609 474,2609 502,2609 529,2609 557,2609 585,2608 613,2606 640,2606 668,2606 696,2606 724,2607 751,2609 779,2609 807,2609 835,2609 862,2609 890,2609 918,2609 946,2612"/>
+                <TextEquiv>
+                    <Unicode>Holzapfel Heinrich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_35" custom="readingOrder {index:31;}">
+                <Coords points="382,2662 459,2678 769,2660 792,2681 821,2675 821,2617 764,2643 714,2617 658,2617 630,2636 536,2617 506,2630 485,2616 382,2621"/>
+                <Baseline points="388,2657 413,2655 439,2655 464,2657 490,2659 516,2660 541,2658 567,2658 593,2660 618,2659 644,2657 670,2657 695,2657 721,2659 747,2659 772,2657 798,2656 824,2654"/>
+                <TextEquiv>
+                    <Unicode>Inf.Ers.Abt. 9</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_36" custom="readingOrder {index:32;} place {offset:0; length:12; continued:true;}">
+                <Coords points="382,2720 400,2732 420,2720 532,2721 560,2738 653,2721 708,2734 756,2723 756,2691 721,2673 439,2680 381,2663"/>
+                <Baseline points="388,2704 414,2706 440,2708 467,2709 493,2710 520,2710 546,2710 573,2710 599,2710 625,2710 652,2710 678,2711 705,2713 731,2713 758,2713"/>
+                <TextEquiv>
+                    <Unicode>Verfüg.Komp.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_37" custom="readingOrder {index:33;} place {offset:0; length:6; continued:true;}">
+                <Coords points="400,2813 642,2813 662,2826 734,2813 733,2743 716,2732 674,2757 606,2735 564,2765 530,2742 493,2761 461,2740 399,2737"/>
+                <Baseline points="406,2785 431,2783 456,2782 482,2782 507,2783 533,2785 558,2786 584,2788 609,2788 635,2788 660,2788 686,2787 711,2786 737,2785"/>
+                <TextEquiv>
+                    <Unicode>Kassel</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_38" custom="readingOrder {index:34;} place {offset:0; length:14; continued:true;}">
+                <Coords points="382,2862 450,2903 484,2878 567,2890 702,2869 825,2874 823,2824 805,2819 382,2820"/>
+                <Baseline points="388,2857 413,2855 439,2854 465,2856 491,2857 516,2857 542,2858 568,2860 594,2860 619,2860 645,2860 671,2860 697,2860 722,2860 748,2860 774,2860 800,2861 826,2863"/>
+                <TextEquiv>
+                    <Unicode>Wittichkaserne</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion orientation="0.0" id="tr_2" custom="readingOrder {index:1;}">
+            <Coords points="1439,385 1439,2480 2170,2480 2170,385"/>
+            <TextLine id="tr_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1433,422 1728,423 1728,391 1678,360 1662,376 1515,362 1496,373 1471,359 1433,371"/>
+                <Baseline points="1439,409 1465,409 1492,410 1518,411 1545,411 1571,409 1598,409 1624,409 1651,411 1677,412 1704,412 1731,412"/>
+                <TextEquiv>
+                    <Unicode>H.Z.Bass.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_2" custom="readingOrder {index:1;} person {offset:0; length:12; continued:true;}">
+                <Coords points="1438,468 1593,476 1617,461 1656,478 1830,468 1830,430 1796,420 1733,432 1662,422 1627,439 1567,420 1438,422"/>
+                <Baseline points="1444,459 1469,459 1495,459 1521,461 1547,462 1573,462 1599,462 1625,462 1651,462 1677,462 1703,462 1729,462 1755,462 1781,462 1807,462 1833,462"/>
+                <TextEquiv>
+                    <Unicode>Laule Albert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_3" custom="readingOrder {index:2;} place {offset:6; length:10;}">
+                <Coords points="1439,572 1479,584 1525,565 1911,570 1910,508 1846,498 1811,508 1755,488 1735,508 1669,508 1643,490 1587,506 1532,486 1438,507"/>
+                <Baseline points="1444,528 1470,532 1496,535 1522,536 1548,537 1574,537 1600,539 1626,540 1652,540 1678,540 1704,540 1730,540 1756,540 1782,540 1808,540 1834,540 1860,540 1886,540 1913,540"/>
+                <TextEquiv>
+                    <Unicode>z.Zt. Murg/Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="1435,666 1462,676 1601,676 1609,674 1609,639 1588,641 1572,627 1552,626 1539,612 1523,628 1480,622 1467,611 1452,626 1434,626"/>
+                <Baseline points="1442,659 1470,661 1498,662 1527,662 1555,664 1583,664 1612,662"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_5" custom="readingOrder {index:4;} person {offset:0; length:14; continued:true;}">
+                <Coords points="1432,727 1535,738 1726,730 1742,716 1769,730 1885,730 1886,677 1861,673 1816,685 1795,673 1745,685 1641,670 1433,676"/>
+                <Baseline points="1439,713 1464,713 1489,713 1514,713 1539,713 1564,713 1589,713 1614,713 1639,713 1664,713 1689,711 1714,710 1739,710 1764,710 1789,710 1814,711 1839,713 1864,714 1889,716"/>
+                <TextEquiv>
+                    <Unicode>Malzacher Paul</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_2" custom="readingOrder {index:5;}">
+                <Coords points="1441,742 1457,739 1550,729 1566,729 1648,730 1770,735 1840,750 1846,826 1572,831 1472,831 1446,826"/>
+                <Baseline points="1450,794 1481,788 1512,790 1543,794 1636,796 1644,798 1669,794 1695,791 1720,793 1746,795 1771,796 1797,801 1822,806 1848,812"/>
+                <TextEquiv>
+                    <Unicode>FPN -  40 833</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_8" custom="readingOrder {index:6;}">
+                <Coords points="1438,928 1564,931 1593,943 1611,928 1725,934 1725,884 1676,884 1653,872 1639,885 1625,874 1616,883 1511,887 1462,867 1438,877"/>
+                <Baseline points="1444,916 1469,916 1495,916 1521,916 1547,917 1573,919 1598,919 1624,919 1650,917 1676,917 1702,918 1728,916"/>
+                <TextEquiv>
+                    <Unicode>Obergefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_9" custom="readingOrder {index:7;} person {offset:0; length:10; continued:true;}">
+                <Coords points="1441,979 1546,979 1566,994 1587,973 1609,986 1662,988 1770,977 1770,934 1648,938 1612,928 1588,945 1564,931 1442,926"/>
+                <Baseline points="1447,970 1472,968 1497,970 1522,970 1547,970 1572,970 1597,970 1622,970 1647,969 1672,968 1697,967 1722,967 1747,967 1773,967"/>
+                <TextEquiv>
+                    <Unicode>Mohr Benno</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_10" custom="readingOrder {index:8;}">
+                <Coords points="1438,1068 1466,1088 1490,1080 1519,1091 1556,1074 1657,1074 1713,1090 1793,1070 1793,988 1649,997 1621,1023 1557,995 1494,1002 1465,988 1438,999"/>
+                <Baseline points="1444,1044 1469,1052 1495,1052 1519,1049 1546,1045 1569,1040 1594,1041 1619,1042 1644,1042 1669,1041 1694,1042 1719,1044 1744,1039 1769,1036 1794,1038"/>
+                <TextEquiv>
+                    <Unicode>FPN - 06234</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_11" custom="readingOrder {index:9;}">
+                <Coords points="1443,1167 1464,1181 1490,1179 1511,1191 1541,1179 1600,1183 1600,1132 1575,1113 1540,1120 1531,1113 1509,1129 1483,1129 1472,1118 1443,1117"/>
+                <Baseline points="1450,1167 1475,1169 1501,1170 1526,1168 1552,1168 1577,1169 1603,1170"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_12" custom="readingOrder {index:10;} person {offset:0; length:13; continued:true;}">
+                <Coords points="1438,1243 1477,1232 1510,1256 1592,1233 1631,1258 1673,1229 1854,1258 1854,1163 1823,1184 1743,1153 1723,1173 1655,1163 1603,1186 1511,1191 1438,1173"/>
+                <Baseline points="1444,1218 1469,1218 1495,1218 1521,1218 1547,1218 1573,1218 1598,1218 1624,1218 1650,1218 1676,1218 1702,1218 1727,1218 1753,1218 1779,1218 1805,1218 1831,1220 1857,1218"/>
+                <TextEquiv>
+                    <Unicode>Muffler Fritz</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_13" custom="readingOrder {index:11;}">
+                <Coords points="1442,1317 1485,1331 1823,1322 1820,1286 1759,1249 1646,1251 1608,1270 1566,1266 1542,1247 1439,1259"/>
+                <Baseline points="1447,1292 1472,1292 1497,1292 1522,1294 1547,1296 1572,1300 1597,1302 1622,1304 1648,1304 1673,1304 1698,1304 1723,1304 1748,1306 1773,1309 1798,1312 1824,1313"/>
+                <TextEquiv>
+                    <Unicode>FPN - 00309</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_14" custom="readingOrder {index:12;}">
+                <Coords points="1438,1425 1460,1431 1489,1426 1502,1436 1518,1426 1539,1433 1547,1426 1580,1426 1594,1433 1594,1387 1557,1383 1543,1371 1538,1377 1505,1371 1493,1385 1478,1372 1471,1380 1458,1371 1438,1386"/>
+                <Baseline points="1444,1415 1469,1417 1495,1418 1520,1418 1546,1418 1571,1418 1597,1418"/>
+                <TextEquiv>
+                    <Unicode>Gefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_15" custom="readingOrder {index:13;} person {offset:0; length:13; continued:true;}">
+                <Coords points="1447,1471 1661,1480 1717,1463 1735,1480 1854,1480 1854,1436 1815,1424 1656,1436 1623,1423 1502,1436 1447,1426"/>
+                <Baseline points="1453,1465 1478,1465 1503,1465 1528,1463 1554,1462 1579,1462 1604,1462 1629,1462 1655,1462 1680,1462 1705,1462 1730,1463 1756,1464 1781,1465 1806,1465 1831,1466 1857,1468"/>
+                <TextEquiv>
+                    <Unicode>Schächer Hans</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_16" custom="readingOrder {index:14;}">
+                <Coords points="1443,1525 1912,1527 1953,1551 2167,1524 2167,1482 2136,1466 1443,1485"/>
+                <Baseline points="1450,1516 1486,1516 1522,1516 1558,1516 1594,1516 1630,1513 1666,1515 1702,1516 1738,1516 1774,1516 1810,1516 1846,1516 1882,1516 1918,1516 1954,1516 1990,1516 2026,1516 2062,1514 2098,1513 2134,1512 2170,1510"/>
+                <TextEquiv>
+                    <Unicode>Ausb.Komp.f.Pi.Züge 104</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_17" custom="readingOrder {index:15;} place {offset:0; length:10;}">
+                <Coords points="1448,1623 1772,1624 1797,1617 1795,1549 1723,1538 1700,1554 1658,1534 1596,1556 1574,1542 1528,1542 1504,1557 1489,1543 1444,1540"/>
+                <Baseline points="1453,1591 1479,1589 1506,1588 1533,1588 1559,1588 1586,1588 1613,1588 1639,1588 1666,1590 1693,1592 1719,1594 1746,1599 1773,1604 1800,1609"/>
+                <TextEquiv>
+                    <Unicode>Heidelberg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_18" custom="readingOrder {index:16;} place {offset:0; length:8;}">
+                <Coords points="1448,1687 1485,1705 1500,1696 1536,1707 1575,1701 1598,1681 1665,1674 1732,1703 1731,1644 1704,1636 1631,1619 1595,1634 1447,1626"/>
+                <Baseline points="1453,1662 1478,1660 1504,1659 1529,1659 1555,1659 1580,1659 1606,1660 1631,1662 1657,1662 1682,1662 1708,1664 1734,1668"/>
+                <TextEquiv>
+                    <Unicode>Bren-Kas.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_19" custom="readingOrder {index:17;}">
+                <Coords points="1444,1778 1726,1774 1735,1771 1735,1703 1715,1699 1696,1711 1613,1693 1603,1703 1532,1707 1517,1697 1443,1708"/>
+                <Baseline points="1450,1761 1476,1759 1502,1758 1528,1758 1554,1758 1580,1758 1606,1758 1632,1758 1658,1760 1684,1762 1710,1763 1737,1761"/>
+                <TextEquiv>
+                    <Unicode>Obergefr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_20" custom="readingOrder {index:18;} person {offset:0; length:17; continued:true;}">
+                <Coords points="1443,1817 1610,1817 1669,1840 1733,1817 1971,1824 1971,1776 1947,1772 1443,1778"/>
+                <Baseline points="1450,1812 1476,1810 1502,1809 1528,1809 1554,1809 1580,1809 1606,1810 1633,1812 1659,1812 1685,1812 1711,1812 1737,1812 1763,1812 1789,1812 1816,1812 1842,1812 1868,1812 1894,1812 1920,1811 1946,1810 1973,1815"/>
+                <TextEquiv>
+                    <Unicode>Strittmatter Kurt</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_21" custom="readingOrder {index:19;}">
+                <Coords points="1516,1893 1561,1883 1610,1889 1621,1878 1656,1878 1671,1893 1718,1888 1731,1900 1759,1889 1792,1893 1793,1834 1711,1847 1694,1835 1679,1846 1653,1835 1631,1856 1571,1862 1549,1842 1516,1835"/>
+                <Baseline points="1464,1890 1549,1885 1576,1882 1603,1878 1630,1877 1658,1877 1685,1879 1712,1879 1739,1877 1766,1882 1822,1891"/>
+                <TextEquiv>
+                    <Unicode>FPN - 34 565</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_23" custom="readingOrder {index:20;}">
+                <Coords points="1441,2025 1650,2030 1715,2009 1731,2025 1812,2032 1848,2023 1847,1954 1811,1950 1789,1973 1738,1947 1663,1971 1440,1958"/>
+                <Baseline points="1447,2003 1472,2005 1497,2006 1522,2006 1548,2006 1573,2006 1598,2007 1623,2009 1649,2008 1674,2006 1699,2006 1724,2007 1750,2008 1775,2010 1800,2012 1825,2012 1851,2012"/>
+                <TextEquiv>
+                    <Unicode>Leutnant M.A.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_24" custom="readingOrder {index:21;} person {offset:0; length:11; continued:true;}">
+                <Coords points="1443,2077 1582,2080 1603,2067 1663,2080 1700,2072 1759,2096 1799,2090 1799,2029 1779,2024 1443,2025"/>
+                <Baseline points="1450,2057 1475,2059 1500,2060 1525,2060 1550,2061 1575,2062 1600,2062 1625,2060 1650,2060 1675,2060 1700,2058 1725,2057 1750,2059 1775,2061 1800,2063"/>
+                <TextEquiv>
+                    <Unicode>Wolf Walter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_3" custom="readingOrder {index:22;}">
+                <Coords points="1443,2094 1474,2086 1489,2085 1799,2090 1874,2096 1881,2161 1822,2180 1465,2169 1444,2163"/>
+                <Baseline points="1450,2131 1475,2131 1500,2131 1525,2131 1550,2133 1609,2135 1619,2136 1645,2135 1671,2134 1698,2132 1724,2131 1751,2131 1777,2132 1803,2134 1830,2136 1856,2137 1883,2137"/>
+                <TextEquiv>
+                    <Unicode>FPN -  31 447 4</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_27" custom="readingOrder {index:23;}">
+                <Coords points="1447,2272 1794,2270 1794,2221 1758,2202 1712,2205 1693,2223 1658,2195 1628,2214 1602,2195 1578,2220 1554,2203 1533,2220 1502,2198 1447,2198"/>
+                <Baseline points="1453,2254 1479,2254 1505,2254 1532,2254 1558,2254 1585,2254 1611,2254 1638,2254 1664,2254 1691,2254 1717,2254 1744,2254 1770,2254 1797,2254"/>
+                <TextEquiv>
+                    <Unicode>Werkmeister</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_28" custom="readingOrder {index:24;} person {offset:0; length:10; continued:true;}">
+                <Coords points="1447,2322 1574,2322 1592,2307 1609,2322 1773,2320 1773,2284 1720,2270 1654,2278 1610,2267 1586,2280 1563,2269 1544,2283 1480,2267 1447,2272"/>
+                <Baseline points="1453,2310 1479,2307 1506,2307 1533,2307 1560,2307 1587,2307 1614,2306 1641,2304 1668,2306 1695,2307 1722,2307 1749,2306 1776,2304"/>
+                <TextEquiv>
+                    <Unicode>Denz Fritz</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_29" custom="readingOrder {index:25;} place {offset:0; length:12; continued:true;}">
+                <Coords points="1444,2415 1800,2412 1799,2349 1730,2326 1708,2337 1669,2321 1625,2346 1555,2351 1536,2332 1490,2337 1443,2321"/>
+                <Baseline points="1450,2379 1475,2379 1500,2379 1525,2377 1550,2377 1575,2378 1600,2379 1625,2379 1650,2379 1675,2379 1700,2379 1725,2379 1750,2381 1775,2382 1800,2382"/>
+                <TextEquiv>
+                    <Unicode>Eckernförde.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_30" custom="readingOrder {index:26;} place {offset:0; length:22; continued:true;}">
+                <Coords points="1443,2468 2096,2490 2078,2404 1933,2429 1833,2409 1799,2429 1443,2422"/>
+                <Baseline points="1450,2457 1482,2457 1514,2457 1547,2457 1579,2457 1612,2457 1644,2457 1676,2457 1709,2457 1741,2457 1774,2457 1806,2457 1838,2457 1871,2458 1903,2460 1936,2463 1968,2463 2000,2464 2033,2466 2065,2466 2098,2463"/>
+                <TextEquiv>
+                    <Unicode>Lager Luisenberg 27/3.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

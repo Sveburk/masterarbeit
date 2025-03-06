@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=08_02_2025_15:55</Creator>
+        <Created>2025-01-23T13:12:31.264+01:00</Created>
+        <LastChange>2025-02-08T18:43:20.888+01:00</LastChange>
+        <TranskribusMetadata docId="6490203" pageId="89844405" pageNr="1" tsid="227388426" status="GT" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=YKVUKMWLSTTNGWZKSREVCEPR&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=GHWIAHXLVPXDYHQTGKCDXAJZ" imageId="74859070"/>
+    </Metadata>
+    <Page imageFilename="p001.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262787480" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1573,2196 3480,2196 3480,2336 1573,2336"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:0; length:11;}">
+                <Coords points="1588,2271 3449,2308 3424,2225 1588,2234"/>
+                <Baseline points="1601,2276 3452,2304"/>
+                <TextEquiv>
+                    <Unicode>Königshütte O-S. - Bergwerksdirektion am Adolf-Hitler-Platz</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

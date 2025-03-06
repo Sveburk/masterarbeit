@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:49.263+01:00</Created>
+        <LastChange>2025-02-11T22:15:50.782+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798978" pageNr="15" tsid="228134707" status="GT" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=VRYBMREMWZJIXCAXUVCPFGTO&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=LPAHLXWDKSSOYVQUYZCEUJNL" imageId="74816123"/>
+    </Metadata>
+    <Page imageFilename="p022.jpg" imageWidth="2479" imageHeight="3508">
+        <TableRegion id="t" custom="readingOrder {index:0;}">
+            <Coords points="344,306 344,838 2154,838 2154,306"/>
+            <TableCell row="0" col="0" rowSpan="1" colSpan="1" id="c">
+                <Coords points="344,306 344,838 2154,838 2154,306"/>
+                <TextLine id="l" custom="readingOrder {index:0;}">
+                    <Coords points="567,828 800,707 1013,621 1377,593 1937,781 1947,752 1380,563 1006,592 787,680 553,802"/>
+                    <Baseline points="567,828 800,707 1013,621 1377,593 1937,781"/>
+                    <TextEquiv>
+                        <Unicode>Weihnachten</Unicode>
+                    </TextEquiv>
+                </TextLine>
+                <CornerPts>0 1 2 3</CornerPts>
+            </TableCell>
+        </TableRegion>
+        <TableRegion id="t_2" custom="readingOrder {index:1;}">
+            <Coords points="462,2323 462,2951 2065,2951 2065,2323"/>
+            <TableCell row="0" col="0" rowSpan="1" colSpan="1" id="c_3">
+                <Coords points="462,2323 462,2951 2065,2951 2065,2323"/>
+                <TextLine id="l_28" custom="readingOrder {index:0;} place {offset:0; length:8;}">
+                    <Coords points="500,2584 1348,2613 1915,2610 1915,2580 1348,2583 501,2554"/>
+                    <Baseline points="500,2584 1348,2613 1915,2610"/>
+                    <TextEquiv>
+                        <Unicode>Russland</Unicode>
+                    </TextEquiv>
+                </TextLine>
+                <TextLine id="l_37" custom="readingOrder {index:1;} date {offset:0; length:4;}">
+                    <Coords points="730,2845 1045,2868 1749,2868 1749,2838 1046,2838 732,2816"/>
+                    <Baseline points="730,2845 1045,2868 1749,2868"/>
+                    <TextEquiv>
+                        <Unicode>1942</Unicode>
+                    </TextEquiv>
+                </TextLine>
+                <CornerPts>0 1 2 3</CornerPts>
+            </TableCell>
+        </TableRegion>
+    </Page>
+</PcGts>
