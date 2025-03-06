@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_15:08</Creator>
+        <Created>2025-01-23T13:10:34.753+01:00</Created>
+        <LastChange>2025-02-20T16:45:57.861+01:00</LastChange>
+        <TranskribusMetadata docId="6490191" pageId="89843225" pageNr="1" tsid="230388971" status="DONE" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=MHCOXUVXIPSANGJPDHWSGKAS&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=NFWGNFCDIKCVSIXEYHSBQYWZ" imageId="74857850"/>
+    </Metadata>
+    <Page imageFilename="p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262836840" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+                <RegionRefIndexed index="3" regionRef="r_4"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1258,195 1868,195 1868,332 1258,332"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1281,318 1325,316 1354,335 1421,318 1465,342 1585,320 1636,325 1631,226 1587,234 1542,200 1508,217 1484,200 1431,190 1419,200 1392,181 1344,219 1279,236"/>
+                <Baseline points="1292,271 1337,271 1382,274 1427,277 1471,280 1516,280 1561,280 1606,280 1639,280"/>
+                <TextEquiv>
+                    <Unicode>Abschrift !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="359,399 1848,399 1848,852 359,852"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="884,552 935,576 990,552 1038,578 1166,552 1243,576 1277,554 1412,573 1409,434 1315,417 1175,475 1098,448 1045,458 1026,438 968,458 935,426 882,443"/>
+                <Baseline points="898,510 943,510 988,510 1032,510 1077,510 1122,513 1167,510 1212,513 1256,516 1301,516 1346,516 1391,522 1415,525"/>
+                <TextEquiv>
+                    <Unicode>Ehrungs - Antrag</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;} organization {offset:4; length:21; continued:true;}">
+                <Coords points="590,706 684,701 730,730 1055,703 1175,747 1216,715 1375,713 1375,612 1175,636 1139,605 1103,634 845,653 764,609 735,636 590,602"/>
+                <Baseline points="603,686 647,686 692,686 737,689 782,686 826,689 871,689 916,689 961,689 1006,689 1050,689 1095,692 1140,692 1185,695 1230,695 1274,695 1319,695 1364,695 1382,695"/>
+                <TextEquiv>
+                    <Unicode>Der Männerchor Murg/Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;} place {offset:3; length:10;}">
+                <Coords points="1108,807 1202,812 1241,843 1286,817 1325,850 1392,814 1493,850 1520,845 1520,754 1414,727 1385,737 1344,711 1303,732 1267,713 1236,737 1207,723 1183,747 1149,725 1106,725"/>
+                <Baseline points="1122,794 1167,797 1212,797 1256,800 1301,800 1346,800 1391,800 1436,803 1480,803 1525,803 1528,800"/>
+                <TextEquiv>
+                    <Unicode>in Murg/Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="469,903 2379,903 2379,1551 469,1551"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="508,983 593,973 658,1004 819,971 843,995 1038,990 1036,884 980,901 951,874 841,896 819,882 795,908 612,867 559,894 506,872"/>
+                <Baseline points="522,955 567,955 612,958 656,961 701,961 746,964 791,961 835,964 880,964 925,964 970,967 1015,964 1044,964"/>
+                <TextEquiv>
+                    <Unicode>beantragt hiermit</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="723,1079 1802,1098 1848,1091 1845,978 1192,1031 884,988 720,1016"/>
+                <Baseline points="737,1059 782,1062 826,1062 871,1062 916,1062 961,1065 1006,1065 1050,1068 1095,1068 1140,1068 1185,1068 1230,1071 1274,1071 1319,1071 1364,1071 1409,1068 1453,1071 1498,1071 1543,1071 1588,1074 1633,1074 1677,1074 1722,1074 1767,1074 1812,1074 1854,1074"/>
+                <TextEquiv>
+                    <Unicode>Stück Ehrenurkunde für 40 Sängerjahre</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="788,1146 2047,1168 2014,1101 790,1093"/>
+                <Baseline points="801,1130 964,1137 1009,1137 1053,1140 1098,1143 1143,1143 1188,1143 1233,1143 1277,1143 1322,1143 1367,1146 1412,1146 1456,1146 1501,1146 1546,1146 1591,1149 1636,1146 1680,1149 1725,1146 1770,1149 1815,1149 1859,1149 1904,1152 1949,1149 1994,1149 2039,1149 2054,1152"/>
+                <TextEquiv>
+                    <Unicode>" Silberne Ehrennadel für 25 Sängerjahre</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="634,1226 2016,1245 1999,1180 1616,1144 1530,1185 629,1152"/>
+                <Baseline points="797,1207 964,1215 1009,1218 1053,1218 1098,1218 1143,1218 1188,1221 1233,1218 1277,1221 1322,1221 1367,1224 1412,1221 1456,1224 1501,1224 1546,1224 1591,1221 1636,1221 1680,1221 1725,1224 1770,1224 1815,1224 1859,1224 1904,1224 1949,1227 1994,1224 2021,1227"/>
+                <TextEquiv>
+                    <Unicode>1 " Goldene Ehrennadel für 5e Sängerjahre</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="775,1299 2088,1344 2103,1238 767,1237"/>
+                <Baseline points="784,1285 964,1289 1009,1292 1053,1292 1098,1292 1143,1295 1188,1295 1233,1295 1277,1295 1322,1295 1367,1295 1412,1298 1456,1298 1501,1298 1546,1298 1591,1298 1636,1298 1680,1298 1725,1298 1770,1298 1815,1301 1859,1301 1904,1301 1949,1304 1994,1304 2039,1301 2083,1304 2110,1301"/>
+                <TextEquiv>
+                    <Unicode>" Ehrenbrief des D.S.B. für 50 Sängerjahre</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="762,1407 1055,1399 1233,1399 1265,1426 1346,1397 1664,1412 1662,1330 1602,1354 1554,1320 1462,1349 1387,1330 1308,1356 1161,1318 992,1344 768,1317"/>
+                <Baseline points="793,1352 967,1388 1012,1388 1056,1391 1101,1391 1146,1391 1191,1391 1236,1391 1280,1394 1325,1394 1370,1394 1415,1394 1459,1397 1504,1397 1549,1394 1594,1397 1639,1394 1668,1397"/>
+                <TextEquiv>
+                    <Unicode>" Ehrenbrief des D.S.B. für</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="1021,1460 2274,1489 2274,1407 2108,1378 1021,1407"/>
+                <Baseline points="1035,1447 1080,1444 1125,1444 1170,1447 1215,1450 1259,1447 1304,1447 1349,1447 1394,1444 1439,1447 1483,1447 1528,1447 1573,1447 1618,1447 1662,1450 1707,1450 1752,1450 1797,1447 1842,1450 1886,1450 1931,1450 1976,1450 2021,1450 2065,1450 2110,1450 2155,1450 2200,1450 2245,1453 2280,1453"/>
+                <TextEquiv>
+                    <Unicode>50, 75 , 100jähriges Bestehen des Vereins.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;}">
+                <Coords points="783,1536 1291,1522 1416,1563 1814,1544 1896,1578 2004,1539 1973,1469 1674,1498 1462,1460 743,1458"/>
+                <Baseline points="798,1501 964,1513 1009,1513 1053,1513 1098,1516 1143,1513 1188,1516 1233,1516 1277,1516 1322,1516 1367,1519 1412,1516 1456,1519 1501,1519 1546,1519 1591,1519 1636,1519 1680,1519 1725,1522 1770,1522 1815,1522 1859,1522 1904,1522 1949,1522 1994,1525 2009,1522"/>
+                <TextEquiv>
+                    <Unicode>" Ehrenzeichen für leitende Amtswalter.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_4" custom="readingOrder {index:3;}">
+            <Coords points="109,1571 2422,1571 2422,3259 109,3259"/>
+            <TextLine id="l_1" custom="readingOrder {index:0;}">
+                <Coords points="195,1621 648,1614 1431,1621 2211,1631 2283,1648 2283,1713 988,1742 236,1717 198,1705"/>
+                <Baseline points="208,1674 253,1677 298,1680 343,1680 388,1683 432,1680 477,1680 522,1680 567,1683 612,1683 656,1683 698,1686 973,1683 1018,1680 1062,1686 1107,1689 1143,1689 1444,1689 1489,1689 1534,1692 1579,1692 1624,1692 1668,1692 1713,1692 1758,1692 1803,1695 1848,1695 1892,1695 1937,1695 1982,1692 2027,1695 2071,1695 2116,1695 2161,1698 2206,1698 2251,1698 2289,1701"/>
+                <TextEquiv>
+                    <Unicode>Zuname, Vorname Beruf Aktive Sängerzeit in welchen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_10" custom="readingOrder {index:1;}">
+                <Coords points="1440,1751 2332,1758 2310,1693 2079,1722 2050,1698 1758,1722 1440,1701"/>
+                <Baseline points="1453,1737 1498,1737 1543,1740 1588,1740 1633,1740 1677,1740 1722,1743 1767,1746 1812,1743 1857,1743 1901,1743 1946,1743 1991,1746 2036,1743 2080,1746 2125,1743 2170,1746 2215,1749 2260,1749 2304,1746 2337,1749"/>
+                <TextEquiv>
+                    <Unicode>Vereinen ? Heute noch Sänger ?</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_15" custom="readingOrder {index:2;} person {offset:0; length:11; continued:true;}">
+                <Coords points="193,1893 224,1908 251,1893 282,1908 407,1888 436,1915 506,1888 552,1901 552,1819 484,1828 443,1807 426,1823 347,1814 304,1826 287,1811 229,1831 193,1814"/>
+                <Baseline points="206,1871 250,1871 295,1874 340,1871 385,1874 429,1874 474,1874 519,1874 555,1874"/>
+                <TextEquiv>
+                    <Unicode>Asal Eduard</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_16" custom="readingOrder {index:3;}">
+                <Coords points="1457,1893 2185,1901 2185,1838 2038,1845 1966,1816 1845,1850 1739,1819 1611,1860 1518,1814 1457,1833"/>
+                <Baseline points="1471,1880 1516,1883 1561,1883 1606,1880 1650,1880 1695,1883 1740,1883 1785,1886 1830,1886 1874,1886 1919,1886 1964,1889 2009,1889 2054,1889 2098,1889 2143,1889 2188,1892 2191,1892"/>
+                <TextEquiv>
+                    <Unicode>Seit 40 Jahren bis heute</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_17" custom="readingOrder {index:4;}">
+                <Coords points="1462,1968 1782,1953 1925,1990 1999,1961 2276,1961 2310,1987 2382,1961 2380,1898 2259,1884 2134,1910 1460,1898"/>
+                <Baseline points="1474,1931 1519,1934 1564,1934 1609,1934 1653,1934 1698,1937 1743,1937 1788,1940 1833,1940 1877,1943 1922,1937 1967,1940 2012,1943 2057,1943 2101,1943 2146,1940 2191,1943 2236,1946 2280,1949 2325,1946 2370,1949 2388,1949"/>
+                <TextEquiv>
+                    <Unicode>aktiver Sänger unseres Vereins.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_18" custom="readingOrder {index:5;}">
+                <Coords points="275,2170 1636,2185 1636,2086 1510,2069 1431,2120 1337,2072 980,2108 853,2052 747,2103 528,2033 400,2108 275,2069"/>
+                <Baseline points="289,2140 334,2140 379,2140 423,2140 468,2143 513,2143 558,2143 603,2143 647,2146 692,2146 737,2143 782,2143 826,2143 871,2143 916,2143 961,2143 1006,2146 1050,2143 1095,2143 1140,2146 1185,2146 1230,2149 1274,2149 1319,2149 1364,2152 1409,2149 1453,2152 1498,2152 1543,2152 1588,2152 1633,2155 1642,2155"/>
+                <TextEquiv>
+                    <Unicode>Die Nadel wird gewünscht so bald wie möglich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_19" custom="readingOrder {index:6;}">
+                <Coords points="287,2255 2226,2293 2223,2204 2038,2214 1913,2163 1751,2216 1648,2178 1460,2211 1135,2211 1031,2168 947,2202 506,2161 287,2190"/>
+                <Baseline points="301,2233 346,2239 391,2239 435,2239 480,2239 525,2239 570,2242 615,2242 659,2242 704,2242 749,2245 794,2242 838,2242 883,2242 928,2242 973,2242 1018,2242 1062,2245 1107,2245 1152,2248 1197,2248 1241,2248 1286,2248 1331,2251 1376,2251 1421,2248 1465,2248 1510,2251 1555,2251 1600,2254 1645,2251 1689,2251 1734,2254 1779,2254 1824,2254 1868,2257 1913,2257 1958,2260 2003,2260 2048,2260 2092,2263 2137,2263 2182,2263 2227,2263"/>
+                <TextEquiv>
+                    <Unicode>Für die Richtigkeit vorstehender Angaben haftet der unterzeichnte</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_20" custom="readingOrder {index:7;}">
+                <Coords points="287,2300 354,2336 369,2329 397,2356 412,2341 429,2353 453,2329 547,2344 706,2293 737,2308 737,2271 686,2255 525,2247 388,2262 284,2247"/>
+                <Baseline points="301,2286 346,2289 391,2292 435,2292 480,2292 525,2292 570,2292 615,2292 659,2295 704,2292 743,2295"/>
+                <TextEquiv>
+                    <Unicode>Vereinsführer.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_21" custom="readingOrder {index:8;} place {offset:0; length:10;} date {offset:16; length:18;when:19.09.1941;}">
+                <Coords points="1007,2467 1168,2522 1224,2483 1404,2510 1522,2467 1616,2500 1725,2467 2064,2495 2062,2402 1980,2377 1773,2411 1686,2363 1585,2397 1527,2353 1424,2411 1004,2382"/>
+                <Baseline points="1018,2442 1062,2445 1107,2445 1152,2448 1197,2448 1241,2448 1286,2448 1331,2451 1376,2448 1421,2451 1465,2451 1510,2451 1555,2451 1600,2451 1645,2454 1689,2454 1734,2454 1779,2454 1824,2454 1868,2457 1913,2457 1958,2457 2003,2460 2048,2460 2065,2460"/>
+                <TextEquiv>
+                    <Unicode>Murg/Baden, dem 19. September 1941.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_22" custom="readingOrder {index:9;}">
+                <Coords points="867,2616 913,2604 995,2638 1041,2613 1077,2630 1231,2606 1380,2633 1378,2546 1192,2532 1132,2503 1055,2548 954,2508 867,2520"/>
+                <Baseline points="880,2591 925,2588 970,2591 1015,2591 1059,2591 1104,2594 1149,2594 1194,2594 1238,2594 1283,2597 1328,2597 1373,2597 1385,2594"/>
+                <TextEquiv>
+                    <Unicode>Der Kreisführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_23" custom="readingOrder {index:10;}">
+                <Coords points="1684,2621 1980,2611 2202,2645 2247,2626 2247,2570 2084,2546 2062,2524 1920,2553 1835,2515 1681,2532"/>
+                <Baseline points="1698,2600 1743,2600 1788,2600 1833,2600 1877,2603 1922,2606 1967,2603 2012,2606 2057,2606 2101,2606 2146,2609 2191,2612 2236,2612 2251,2612"/>
+                <TextEquiv>
+                    <Unicode>Der Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_24" custom="readingOrder {index:11;} Signature {offset:0; length:10;}">
+                <Coords points="1831,2717 1951,2688 1982,2705 2009,2681 2120,2712 2182,2712 2202,2693 2240,2700 2240,2638 2072,2640 1980,2611 1922,2621 1831,2669"/>
+                <Baseline points="1845,2689 1889,2681 1934,2678 1979,2672 2024,2672 2068,2672 2113,2672 2158,2675 2203,2681 2245,2689"/>
+                <TextEquiv>
+                    <Unicode>Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_25" custom="readingOrder {index:12;}">
+                <Coords points="308,2845 359,2866 397,2842 434,2859 441,2852 511,2850 511,2789 472,2780 460,2787 434,2760 397,2782 308,2777"/>
+                <Baseline points="322,2833 367,2836 412,2836 456,2836 501,2833 516,2833"/>
+                <TextEquiv>
+                    <Unicode>An das</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_26" custom="readingOrder {index:13;}">
+                <Coords points="308,2977 665,2924 942,2968 1026,2927 1233,2963 1231,2857 1188,2845 1106,2874 783,2833 600,2869 306,2850"/>
+                <Baseline points="319,2907 364,2907 409,2910 453,2910 498,2910 543,2910 588,2910 632,2910 677,2910 722,2910 767,2910 812,2910 856,2913 901,2913 946,2913 991,2913 1035,2913 1080,2916 1125,2916 1170,2916 1215,2916 1238,2919"/>
+                <TextEquiv>
+                    <Unicode>Bundesamt des Bad.Sängerbundes.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_15:10</Creator>
+        <Created>2025-01-23T13:10:04.823+01:00</Created>
+        <LastChange>2025-02-20T16:58:40.066+01:00</LastChange>
+        <TranskribusMetadata docId="6490122" pageId="89842945" pageNr="1" tsid="230390938" status="DONE" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=VUMXGXNIADWPAYLNJLARYMUG&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=EMTSPQGWRQJIVJYMSFNSPHPB" imageId="74857510"/>
+    </Metadata>
+    <Page imageFilename="p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262845948" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="792,364 1806,364 1806,591 792,591"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="908,444 1010,464 1085,450 1110,467 1157,454 1338,464 1350,462 1348,379 1257,369 1228,386 1190,367 1134,402 1027,402 971,369 906,396"/>
+                <Baseline points="919,441 964,441 1009,438 1053,441 1098,438 1143,441 1188,441 1233,441 1277,444 1322,444 1355,444"/>
+                <TextEquiv>
+                    <Unicode>Tagesordnung !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="1207,539 1234,541 1257,523 1278,537 1315,510 1354,510 1354,465 1340,465 1329,456 1321,464 1278,469 1253,458 1207,456"/>
+                <Baseline points="1218,486 1262,486 1307,486 1352,486 1358,486"/>
+                <TextEquiv>
+                    <Unicode></Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:2;}">
+                <Coords points="813,483 848,481 1640,458 1684,462 1746,481 1742,585 1665,593 948,603 840,591 813,576"/>
+                <Baseline points="824,546 856,543 901,540 946,537 991,537 1035,540 1080,540 1125,537 1170,540 1253,543 1277,543 1322,540 1367,543 1412,543 1456,540 1501,540 1552,549 1570,546 1615,543 1659,543 1704,540 1749,540"/>
+                <TextEquiv>
+                    <Unicode>Neujahrs-Treffen 1941</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="368,573 2444,573 2444,2532 368,2532"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="421,641 487,666 547,643 637,668 666,653 713,664 759,653 759,587 736,581 686,599 639,576 608,585 533,568 498,585 421,570"/>
+                <Baseline points="432,632 477,635 522,635 567,635 612,635 656,632 701,632 746,635 764,638"/>
+                <TextEquiv>
+                    <Unicode>1.) Marsch</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="427,716 516,744 545,724 641,744 726,720 879,742 879,684 815,680 790,660 691,655 647,674 597,659 548,680 523,659 427,657"/>
+                <Baseline points="438,707 483,713 528,713 573,713 618,713 662,704 707,710 752,713 797,713 841,713 883,719"/>
+                <TextEquiv>
+                    <Unicode>2.) Begrüssung.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="645,771 761,782 813,780 811,726 786,726 778,732 772,726 747,728 736,720 715,728 691,722 643,738"/>
+                <Baseline points="656,755 701,761 746,761 791,764 818,764"/>
+                <TextEquiv>
+                    <Unicode>aller</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="645,829 850,819 885,834 1120,840 1120,763 1016,778 933,755 867,786 830,765 807,782 645,771"/>
+                <Baseline points="656,812 701,812 746,812 791,812 835,812 880,812 925,812 970,815 1015,815 1059,815 1104,815 1125,818"/>
+                <TextEquiv>
+                    <Unicode>Sänger-Soldaten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_5" custom="readingOrder {index:4;} place {offset:0; length:10;}">
+                <Coords points="645,871 718,890 757,879 788,900 817,877 885,892 921,886 935,900 973,888 971,827 846,821 798,829 780,846 763,830 645,829"/>
+                <Baseline points="656,865 701,859 746,859 791,859 835,856 880,859 925,859 970,865 976,868"/>
+                <TextEquiv>
+                    <Unicode>Laufenburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="556,956 599,975 633,952 672,987 763,960 832,981 941,964 1033,989 1033,908 971,888 929,902 892,888 869,900 838,877 792,898 556,890"/>
+                <Baseline points="567,937 612,937 656,937 701,937 746,937 791,934 835,937 880,937 925,937 970,937 1015,943 1038,943"/>
+                <TextEquiv>
+                    <Unicode>Neujahrswünsche</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="643,1070 668,1068 691,1089 730,1082 800,1099 823,1085 863,1099 885,1095 885,983 852,989 827,979 811,995 792,987 776,998 689,977 676,989 643,983"/>
+                <Baseline points="653,1041 665,1038 710,1038 755,1038 800,1038 844,1038 889,1038"/>
+                <TextEquiv>
+                    <Unicode>Lied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_8" custom="readingOrder {index:7;} place {offset:28; length:10;}">
+                <Coords points="433,1161 1647,1178 1618,1087 1159,1114 433,1062"/>
+                <Baseline points="444,1137 489,1140 534,1140 579,1137 623,1137 668,1137 713,1137 758,1137 803,1137 847,1137 892,1137 937,1137 982,1137 1027,1137 1071,1137 1116,1140 1161,1140 1206,1140 1250,1140 1295,1140 1340,1137 1385,1137 1430,1137 1474,1137 1519,1137 1564,1140 1609,1143 1650,1146"/>
+                <TextEquiv>
+                    <Unicode>3.) Gemütliches Treffen mit Laufenburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_9" custom="readingOrder {index:8;}">
+                <Coords points="649,1222 2095,1226 2095,1170 2036,1157 649,1165"/>
+                <Baseline points="659,1212 668,1212 713,1212 758,1212 803,1209 847,1209 892,1212 937,1212 982,1212 1027,1212 1071,1212 1116,1212 1161,1215 1206,1215 1250,1212 1295,1212 1340,1212 1385,1212 1430,1212 1474,1212 1519,1212 1564,1212 1609,1212 1653,1212 1698,1212 1743,1209 1788,1209 1833,1209 1877,1209 1922,1209 1967,1209 2012,1209 2057,1209 2101,1206"/>
+                <TextEquiv>
+                    <Unicode>gleichzeitig kurzer Tätigkeitsbericht an Stelle</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_10" custom="readingOrder {index:9;}">
+                <Coords points="641,1325 863,1334 925,1286 954,1307 987,1292 1014,1307 1031,1288 1151,1298 1149,1226 639,1226"/>
+                <Baseline points="650,1259 695,1259 740,1262 785,1259 829,1259 874,1259 919,1262 964,1262 1009,1265 1053,1262 1098,1265 1143,1268 1152,1268"/>
+                <TextEquiv>
+                    <Unicode>Hauptversammlung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_11" custom="readingOrder {index:10;}">
+                <Coords points="1197,1344 1221,1338 1226,1346 1240,1348 1282,1333 1302,1334 1307,1340 1315,1334 1844,1310 1782,1224 1436,1225 1290,1244 1273,1230 1248,1238 1240,1230 1203,1236"/>
+                <Baseline points="1212,1289 1244,1286 1289,1283 1780,1278"/>
+                <TextEquiv>
+                    <Unicode>Protokollführer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_12" custom="readingOrder {index:11;}">
+                <Coords points="633,1433 668,1427 713,1392 732,1406 821,1408 844,1394 859,1408 890,1394 919,1410 1004,1410 1004,1346 962,1334 929,1346 894,1327 863,1346 846,1331 821,1348 772,1329 742,1346 695,1325 633,1344"/>
+                <Baseline points="644,1385 689,1385 734,1388 779,1388 824,1385 868,1388 913,1385 958,1385 1003,1391 1009,1391"/>
+                <TextEquiv>
+                    <Unicode>Marsch</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_13" custom="readingOrder {index:12;}">
+                <Coords points="427,1514 556,1547 593,1530 655,1545 688,1524 863,1553 913,1535 913,1468 686,1462 649,1435 566,1468 498,1445 427,1481"/>
+                <Baseline points="438,1504 483,1510 528,1510 573,1510 618,1507 662,1510 707,1510 752,1510 797,1510 841,1507 886,1507 919,1504"/>
+                <TextEquiv>
+                    <Unicode>4.) Kurzbericht</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_14" custom="readingOrder {index:13;}">
+                <Coords points="639,1618 871,1653 981,1626 1159,1634 1157,1562 1097,1559 1070,1537 1039,1560 954,1555 896,1576 780,1555 676,1570 637,1541"/>
+                <Baseline points="650,1603 695,1609 740,1609 785,1609 829,1612 874,1612 919,1612 964,1609 1009,1609 1053,1612 1098,1612 1143,1615 1161,1618"/>
+                <TextEquiv>
+                    <Unicode>a) Kassenprüfung.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="645,1757 886,1738 952,1771 1116,1721 1168,1740 1309,1713 1487,1742 1462,1657 645,1651"/>
+                <Baseline points="656,1704 701,1707 746,1710 791,1710 835,1707 880,1707 925,1707 970,1707 1015,1710 1059,1710 1104,1710 1149,1710 1194,1710 1238,1710 1283,1710 1328,1710 1373,1713 1418,1710 1462,1710 1492,1707"/>
+                <TextEquiv>
+                    <Unicode>b) Zusammentritte des Chors</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_16" custom="readingOrder {index:15;}">
+                <Coords points="633,1817 809,1825 838,1848 886,1825 1051,1823 1095,1866 1159,1842 1232,1858 1232,1769 1170,1757 950,1771 865,1742 798,1765 676,1756 633,1783"/>
+                <Baseline points="644,1806 689,1809 734,1809 779,1812 824,1812 868,1812 913,1809 958,1809 1003,1809 1047,1809 1092,1809 1137,1809 1182,1812 1227,1812 1236,1812"/>
+                <TextEquiv>
+                    <Unicode>d) Mitgliederstand.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_17" custom="readingOrder {index:16;}">
+                <Coords points="633,1978 655,1970 684,1978 718,1943 730,1952 784,1943 815,1951 830,1937 861,1958 892,1939 894,1881 863,1881 842,1864 829,1877 784,1881 753,1860 726,1879 635,1869"/>
+                <Baseline points="644,1928 689,1931 734,1931 779,1931 824,1928 868,1931 895,1928"/>
+                <TextEquiv>
+                    <Unicode>Lied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_18" custom="readingOrder {index:17;}">
+                <Coords points="643,2063 686,2082 736,2066 763,2092 817,2074 859,2109 885,2099 925,2113 939,2099 1004,2095 1004,1997 856,2014 778,1999 747,2018 711,2001 643,2018"/>
+                <Baseline points="653,2051 698,2054 743,2057 788,2057 832,2057 877,2057 922,2057 967,2054 1009,2054"/>
+                <TextEquiv>
+                    <Unicode>e) Ehrungen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_19" custom="readingOrder {index:18;}">
+                <Coords points="419,2242 1968,2246 1968,2186 1895,2157 1338,2188 971,2130 823,2175 419,2165"/>
+                <Baseline points="429,2236 450,2236 495,2230 540,2227 585,2227 629,2224 674,2227 719,2224 764,2221 809,2221 853,2224 898,2224 943,2224 988,2224 1032,2224 1077,2224 1122,2224 1167,2224 1212,2224 1256,2221 1301,2224 1346,2224 1391,2224 1436,2224 1480,2224 1525,2224 1570,2224 1615,2224 1659,2224 1704,2224 1749,2224 1794,2227 1839,2227 1883,2230 1928,2230 1973,2227"/>
+                <TextEquiv>
+                    <Unicode>5.) Schluss des offiziellen Teils mit Dank an alle</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_20" custom="readingOrder {index:19;}">
+                <Coords points="637,2310 689,2316 711,2298 730,2308 769,2298 792,2314 844,2292 923,2316 948,2296 962,2306 1016,2289 1016,2246 991,2236 941,2248 908,2234 844,2246 809,2231 784,2248 767,2236 637,2244"/>
+                <Baseline points="647,2283 662,2283 707,2277 752,2277 797,2280 841,2277 886,2277 931,2277 976,2277 1021,2277"/>
+                <TextEquiv>
+                    <Unicode>Mitarbeiter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_21" custom="readingOrder {index:20;} person {offset:14; length:28;}">
+                <Coords points="1124,2312 2435,2312 2435,2244 2128,2211 1848,2263 1124,2256"/>
+                <Baseline points="1134,2283 1179,2280 1224,2277 1268,2277 1313,2277 1358,2277 1403,2277 1447,2277 1492,2277 1537,2277 1582,2280 1627,2280 1671,2280 1716,2283 1761,2283 1806,2286 1851,2286 1895,2286 1940,2286 1985,2286 2030,2286 2074,2286 2119,2289 2164,2289 2209,2289 2254,2289 2298,2289 2343,2289 2388,2292 2433,2292 2439,2292"/>
+                <TextEquiv>
+                    <Unicode>ganz besonders Kassier, Notenwart Brutsche</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_22" custom="readingOrder {index:21;}">
+                <Coords points="545,2453 730,2443 807,2486 1004,2455 1076,2480 1110,2458 1151,2491 1228,2464 1213,2372 545,2374"/>
+                <Baseline points="555,2427 561,2427 606,2427 650,2427 695,2427 740,2427 785,2424 829,2424 874,2427 919,2424 964,2427 1009,2424 1053,2424 1098,2421 1143,2424 1188,2421 1233,2424"/>
+                <TextEquiv>
+                    <Unicode>Auf zur Neuen Arbeit !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

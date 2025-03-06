@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=30_01_2025_14:21</Creator>
+        <Created>2025-01-22T16:49:50.476+01:00</Created>
+        <LastChange>2025-02-11T22:38:19.005+01:00</LastChange>
+        <TranskribusMetadata docId="6478651" pageId="89798961" pageNr="24" tsid="228137086" status="FINAL" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=TSYXBVDBVIMLREBNVEBHRLDL&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=RTZPESFXQPOSORMEZKPLOMVD" imageId="74816146"/>
+    </Metadata>
+    <Page imageFilename="p035.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1741262697586" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+                <RegionRefIndexed index="1" regionRef="r_386"/>
+                <RegionRefIndexed index="2" regionRef="r"/>
+                <RegionRefIndexed index="3" regionRef="tr_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="166,1779 140,3335 2104,3335 2109,1781"/>
+            <TextLine id="tr_1_tl_13" custom="readingOrder {index:0;}">
+                <Coords points="187,2045 300,2052 390,1997 525,2082 605,2049 641,2078 704,2059 771,2090 818,2056 919,2080 957,2061 962,1832 756,1860 726,1830 612,1832 496,1867 418,1938 189,1929"/>
+                <Baseline points="200,1997 238,1995 276,1996 314,1996 352,1994 391,1994 429,1994 467,1994 505,1996 543,1997 582,1997 620,1997 658,1997 696,1997 734,1997 773,1990 811,1984 849,1979 887,1976 925,1976 964,1979"/>
+                <TextEquiv>
+                    <Unicode>Absender. O. Gfr.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_14" custom="readingOrder {index:1;} person {offset:0; length:16;}">
+                <Coords points="201,2194 414,2267 638,2215 775,2255 941,2175 1338,2246 1477,2198 1638,2236 1865,2184 1981,2250 2101,2184 2101,2061 1997,2028 1818,2094 1600,2052 1518,2085 1463,2035 1359,2134 1106,2071 882,2120 702,2061 522,2082 371,2002 201,2059"/>
+                <Baseline points="214,2173 308,2170 403,2166 497,2171 592,2176 686,2171 781,2167 875,2167 970,2167 1064,2164 1159,2167 1253,2174 1348,2172 1442,2173 1537,2176 1631,2168 1726,2165 1820,2167 1915,2170 2009,2170 2104,2179"/>
+                <TextEquiv>
+                    <Unicode>Hugo Baumgartner. No 56601. B.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l" custom="readingOrder {index:2;}">
+                <Coords points="194,3238 532,3203 799,3184 896,3217 896,3283 659,3295 340,3302 194,3297"/>
+                <Baseline points="208,3281 233,3282 259,3284 284,3284 310,3284 335,3284 361,3284 386,3284 412,3283 437,3281 463,3280 533,3278 546,3275 571,3277 596,3278 622,3278 647,3278 672,3278 698,3277 723,3275 748,3275 774,3275 799,3275 824,3275 850,3275 875,3274 901,3272"/>
+                <TextEquiv>
+                    <Unicode>Vor dem Zukleben erst falzen und </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_17" custom="readingOrder {index:3;}">
+                <Coords points="203,3342 381,3349 442,3378 480,3349 560,3371 745,3345 898,3404 882,3281 340,3302 203,3283"/>
+                <Baseline points="217,3325 251,3322 285,3322 320,3322 354,3322 388,3321 423,3319 457,3319 491,3319 526,3319 560,3318 594,3316 629,3316 663,3316 697,3316 732,3316 766,3316 800,3316 835,3315 869,3313 904,3313"/>
+                <TextEquiv>
+                    <Unicode>dann nur eine Hälfte anfeuchten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_386" custom="readingOrder {index:1;}">
+            <Coords points="2418,1699 2243,1699 2243,859 2418,859"/>
+            <TextLine id="l_390" custom="readingOrder {index:0;}">
+                <Coords points="2348,1163 2348,1649 2378,1649 2378,1163"/>
+                <Baseline points="2348,1163 2348,1649"/>
+                <TextEquiv>
+                    <Unicode>Gummierung hier lösen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_394" custom="readingOrder {index:1;}">
+                <Coords points="2300,1220 2305,1649 2335,1648 2330,1220"/>
+                <Baseline points="2300,1220 2305,1649"/>
+                <TextEquiv>
+                    <Unicode>mit Bleistift aufrollen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:2;}">
+            <Coords points="2200,1773 90,1773 90,238 2200,238"/>
+            <TextLine id="l_471" custom="readingOrder {index:0;}">
+                <Coords points="663,1590 594,1635 528,1662 454,1664 407,1629 366,1580 322,1518 297,1536 343,1599 387,1651 445,1693 534,1692 608,1662 679,1615"/>
+                <Baseline points="663,1590 594,1635 528,1662 454,1664 407,1629 366,1580 322,1518"/>
+                <TextEquiv>
+                    <Unicode>Feldpost</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_475" custom="readingOrder {index:1;} date {offset:0; length:7; continued:true;}">
+                <Coords points="540,1467 339,1423 333,1452 533,1497"/>
+                <Baseline points="540,1467 339,1423"/>
+                <TextEquiv>
+                    <Unicode>09.5.44</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_398" custom="readingOrder {index:2;}">
+                <Coords points="2109,1430 1707,1427 1707,1457 2108,1460"/>
+                <Baseline points="2109,1430 1707,1427"/>
+                <TextEquiv>
+                    <Unicode>Feldpost</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_402" custom="readingOrder {index:3;}">
+                <Coords points="2099,1158 316,1163 316,1193 2099,1188"/>
+                <Baseline points="2099,1158 316,1163"/>
+                <TextEquiv>
+                    <Unicode>An den Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_406" custom="readingOrder {index:4;} person {offset:7; length:17;}">
+                <Coords points="2050,857 522,867 522,897 2050,887"/>
+                <Baseline points="2050,857 522,867"/>
+                <TextEquiv>
+                    <Unicode>z.H.a. Alfons Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_422" custom="readingOrder {index:5;} place {offset:0; length:16;}">
+                <Coords points="1269,544 836,542 624,538 296,534 158,507 152,536 293,564 623,568 836,572 1269,574"/>
+                <Baseline points="1269,544 836,542 624,538 296,534 158,507"/>
+                <TextEquiv>
+                    <Unicode>Murg a/Hochrhein</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_426" custom="readingOrder {index:6;} unclear {offset:0; length:9;}">
+                <Coords points="1391,347 325,341 325,371 1391,377"/>
+                <Baseline points="1391,347 325,341"/>
+                <TextEquiv>
+                    <Unicode>Haugststr. Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_442" custom="readingOrder {index:7;}">
+                <Coords points="2097,345 1980,355 1941,327 1896,347 1764,353 1765,383 1903,376 1938,360 1972,384 2099,375"/>
+                <Baseline points="2097,345 1980,355 1941,327 1896,347 1764,353"/>
+                <TextEquiv>
+                    <Unicode>Pan B Papier</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion orientation="0.0" id="tr_2" custom="readingOrder {index:3;}">
+            <Coords points="2057,3231 2057,3329 2271,3329 2271,3231"/>
+            <TextLine id="tr_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="2071,3264 2082,3264 2092,3274 2104,3267 2130,3290 2142,3283 2175,3281 2177,3193 2153,3186 2118,3208 2073,3198"/>
+                <Baseline points="2083,3260 2115,3258 2147,3257 2247,3266"/>
+                <TextEquiv>
+                    <Unicode>M/0252</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_2_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="2045,3335 2085,3338 2106,3321 2146,3349 2196,3323 2227,3323 2267,3342 2267,3281 2246,3271 2222,3288 2168,3288 2160,3281 2130,3288 2101,3267 2082,3283 2059,3271 2045,3274"/>
+                <Baseline points="2057,3316 2083,3314 2110,3313 2137,3313 2164,3313 2190,3313 2217,3313 2244,3313 2271,3313"/>
+                <TextEquiv>
+                    <Unicode>ges. gesch.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>
