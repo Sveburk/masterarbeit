@@ -4,7 +4,6 @@ import xml.etree.ElementTree as ET
 import openai
 import re
 import time
-from io import BytesIO
 
 # Save the start time, set the image and output directories
 start_time = time.time()
@@ -13,7 +12,6 @@ total_in_tokens = 0
 total_out_tokens = 0
 input_cost_per_mio_in_dollars = 2.5
 output_cost_per_mio_in_dollars = 10
-
 
 # OpenAI API & Verzeichnisse
 api_key = "sk-OUnUKfiRurjwDl4pHMgNS6YBYhTFv65_L4jqhxZgelT3BlbkFJ2BP4s-8K1L37Ccs3a6JfiE843sUsjAXBcNRIjDPbQA"
@@ -54,12 +52,9 @@ for seven_digit_folder in os.listdir(base_input_directory):
 
             total_files += 1
 
-            # 🟢    # ✅ Seitenzahl-Erkennung und Korrektur (beginnend bei 1)
+            # 🟢 Seitenzahl-Erkennung und Korrektur (beginnend bei 1)
             page_number_match = re.search(r"P(\d+)", xml_file)
             page_number = f"{int(page_number_match.group(1)) + 1:03d}" if page_number_match else "001"
-
-
-
 
             transcript_text = ""
             metadata_info = {}
@@ -101,73 +96,71 @@ for seven_digit_folder in os.listdir(base_input_directory):
                     "tsid": "",
                     "imgUrl": "",
                     "xmlUrl": "",
-                    },
-                    "author": {
-                        "forename": "",
-                        "familyname": "",
-                        "role": "",
-                        "associated_place": "",
-                        "associated_organisation": ""
-                    },
-                    "recipient": {
-                        "forename": "",
-                        "familyname": "",
-                        "role": "",
-                        "associated_place": "",
-                        "associated_organisation": ""
-                    },
-                    "mentioned_persons": [],
-                    "mentioned_organizations": [],
-                    "mentioned_events": [],
-                    "creation_date": "",
-                    "creation_place": "",
-                    "mentioned_dates": [],
-                    "mentioned_places": [],
-                    "content_tags_in_german": [],
-                    "content_transcription": transcript_text.strip(),
-                    "document_type_options": [
-                        "Brief", "Protokoll", "Postkarte", "Rechnung",
-                        "Regierungsdokument", "Karte", "Noten", "Zeitungsartikel",
-                        "Liste", "Website", "Notizzettel", "Offerte"
-                    ],
-                    "document_format_options": ["Handschrift", "Maschinell", "mitUnterschrift", "Bild"]
-                }
+                },
+                "author": {
+                    "forename": "",
+                    "familyname": "",
+                    "role": "",
+                    "associated_place": "",
+                    "associated_organisation": ""
+                },
+                "recipient": {
+                    "forename": "",
+                    "familyname": "",
+                    "role": "",
+                    "associated_place": "",
+                    "associated_organisation": ""
+                },
+                "mentioned_persons": [],
+                "mentioned_organizations": [],
+                "mentioned_events": [],
+                "creation_date": "",
+                "creation_place": "",
+                "mentioned_dates": [],
+                "mentioned_places": [],
+                "content_tags_in_german": [],
+                "content_transcription": transcript_text.strip(),
+                "document_type_options": [
+                    "Brief", "Protokoll", "Postkarte", "Rechnung",
+                    "Regierungsdokument", "Karte", "Noten", "Zeitungsartikel",
+                    "Liste", "Website", "Notizzettel", "Offerte"
+                ],
+                "document_format_options": ["Handschrift", "Maschinell", "mitUnterschrift", "Bild"]
+            }
 
-            # 🟢 API-Prompt 
+            # 🟢 API-Prompt
             prompt = f"""
-            
-I am providing a text transcript from the Männerchor Murg corpus (Germany), covering 1925–1945, including the Third Reich period, which may influence language and context.
+            I am providing a text transcript from the Männerchor Murg corpus (Germany), covering 1925–1945, including the Third Reich period, which may influence language and context.
 
-**Your role:** Historian. Analyze each image, extract the text, and compare relevant information with absolute accuracy (**temperature = 0.0**).
+            **Your role:** Historian. Analyze each image, extract the text, and compare relevant information with absolute accuracy (**temperature = 0.0**).
 
-**Instructions:**  
-- Identify the correct **document type** from `"document_type_options"`—choose only the best match.  
-- Extract and structure metadata in JSON:  
-  - **Author, recipient, mentioned persons**  
-  - **Locations, dates (format: "yyyy.mm.dd")**  
-  - **Events, sender/recipient, geographical references**  
-  - **Content tags**  
-  - Select ONLY ONE correct **document type** from the `"document_type_options"` list and write it under `"document_type"`.  
-  - Select ONLY ONE correct **document format** from the `"document_format_options"` list and write it under `"document_format"`.  
+            **Instructions:**
+            - Identify the correct **document type** from `"document_type_options"`—choose only the best match.
+            - Extract and structure metadata in JSON:
+              - **Author, recipient, mentioned persons**
+              - **Locations, dates (format: "yyyy.mm.dd")**
+              - **Events, sender/recipient, geographical references**
+              - **Content tags**
+              - Select ONLY ONE correct **document type** from the `"document_type_options"` list and write it under `"document_type"`.
+              - Select ONLY ONE correct **document format** from the `"document_format_options"` list and write it under `"document_format"`.
 
+            **Formatting requirements:**
+            - Output **UTF-8** text, preserving **German umlauts (ä, ö, ü, ß)**—no HTML entities.
+            - Keep real **line breaks**, not `\n`.
+            - Extract and include **image tags**: `"Handschrift"`, `"Maschinell"`, `"mitUnterschrift"`, `"Bild"`.
 
-**Formatting requirements:**  
-- Output **UTF-8** text, preserving **German umlauts (ä, ö, ü, ß)**—no HTML entities.  
-- Keep real **line breaks**, not `\n`.  
-- Extract and include **image tags**: `"Handschrift"`, `"Maschinell"`, `"mitUnterschrift"`, `"Bild"`.  
+            Text:
+            {transcript_text}
 
-Text:
-{transcript_text}
-
-{json.dumps(json_structure, indent=4, ensure_ascii=False)}
-"""
-try:
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "You are a historian analyzing historical documents with precision."},
-            {"role": "user", "content": prompt}
-        ],
+            {json.dumps(json_structure, indent=4, ensure_ascii=False)}
+            """
+            try:
+                response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "You are a historian analyzing historical documents with precision."},
+                    {"role": "user", "content": prompt}
+            ],
         temperature=temperature,
     )
 
@@ -184,16 +177,46 @@ try:
     else:
         print("> Warnung: Keine Token-Informationen erhalten!")
 
-except Exception as e:
-    print(f"> ❌ Fehler bei API-Anfrage für {xml_file}: {e}")
-    pass
-# Prüfe zuerst, ob response_text existiert, bevor es genutzt wird
-if response and response.choices:
-    response_text = response.choices[0].message.content.strip()
-else:
-    print("> ❌ Keine Antwort von der API erhalten.")
-    response_text = None  # Setze response_text explizit auf None
+    # Prüfe zuerst, ob response_text existiert, bevor es genutzt wird
+    if response and response.choices:
+        response_text = response.choices[0].message.content.strip()
+    else:
+        print("> ❌ Keine Antwort von der API erhalten.")
+        response_text = None  # Setze response_text explizit auf None
 
+    # Falls response_text None ist, abbrechen und zur nächsten Datei übergehen
+    if response_text is None:
+        continue
+
+    # 🟢 JSON-Extraktion mit Regex, falls OpenAI Markdown zurückgibt
+    pattern = r"`json\s*(.*?)\s*`"
+    match = re.search(pattern, response_text, re.DOTALL)
+    if match:
+        response_text = match.group(1).strip()
+
+    # 🟢 JSON-Parsing mit Fehlerbehandlung
+    try:
+        json_structure = json.loads(response_text)
+    except json.JSONDecodeError as e:
+        print(f"> Fehler beim Parsen der API-Antwort: {e}")
+        print(f"> Antwort war: {response_text[:500]}")
+        continue
+
+    # 🟢 JSON-Datei speichern (pro Seite)
+    output_filename = f"Akte_{akte_number}_P{page_number}.json"
+    output_file = os.path.join(output_directory, f"Akte_{akte_number}_P{page_number}.json")
+    print(f">  Debug: Speichere Datei unter {output_file}")
+
+    try:
+        with open(output_file, "w", encoding="utf-8") as json_out:
+            json.dump(json_structure, json_out, indent=4, ensure_ascii=False)
+        print(f"> JSON gespeichert: {output_file}")
+    except Exception as e:
+        print(f"> Fehler beim Speichern von {output_file}: {e}")
+
+    except Exception as e:
+        print(f"> ❌ Fehler bei API-Anfrage für {xml_file}: {e}")
+    continue  # Springe zur nächsten XML-Datei in der Schleife
 # Falls response_text None ist, abbrechen und zur nächsten Datei übergehen
 if response_text is None:
     pass
