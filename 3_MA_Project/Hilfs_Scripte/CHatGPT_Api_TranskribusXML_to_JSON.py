@@ -87,14 +87,24 @@ Text to analyze:
 {transcript_text}
 """
             
-            response = client.completions.create(
-                model=model,
-                prompt=prompt,
-                temperature=temperature,
-                max_tokens=2048
+            response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=temperature,
             )
 
-            json_structure = json.loads(response.choices[0].text.strip())
+            response_text = response.choices[0].text.strip()
+            if not response_text:
+                print("> ❌ API hat keine Antwort geliefert. Überspringe...")
+                continue
+
+            try:
+                json_structure = json.loads(response_text)
+            except json.JSONDecodeError as e:
+                print(f"> ❌ Fehler beim JSON-Parsing: {e}")
+                print(f"> Antwort war: {response_text[:500]}")
+                continue
+
 
             try:
                 json_string = json.dumps(json_structure, indent=4, ensure_ascii=False)
@@ -104,6 +114,7 @@ Text to analyze:
                 continue
 
             output_file = os.path.join(output_directory, os.path.basename(xml_path).replace(".xml", ".json"))
+
             with open(output_file, "w", encoding="utf-8") as json_out:
                 json_out.write(json_string)
 
