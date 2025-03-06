@@ -143,7 +143,6 @@ for root, _, filenames in os.walk(image_directory):
             "content_tags": [
                 ""
             ],
-            "content_transcription": "",
             "document_type_options": [
                 "Brief",
                 "Protokoll",
