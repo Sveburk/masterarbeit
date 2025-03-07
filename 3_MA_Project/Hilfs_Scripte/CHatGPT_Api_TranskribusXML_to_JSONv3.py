@@ -20,7 +20,7 @@ input_cost_per_mio_in_dollars = 2.5
 output_cost_per_mio_in_dollars = 10
 
 # OpenAI API
-api_key = "sk-OUnUKfiRurjwDl4pHMgNS6YBYhTFv65_L4jqhxZgelT3BlbkFJ2BP4s-8K1L37Ccs3a6JfiE843sUsjAXBcNRIjDPbQA"
+api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=api_key)
 model = "gpt-4"       # Oder was Du verwenden möchtest
 temperature = 0.0
