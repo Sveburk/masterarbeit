@@ -59,6 +59,7 @@ for seven_digit_folder in os.listdir(base_input_directory):
         page_folder = os.path.join(subdir_path, "page")
         if not os.path.isdir(page_folder):
             # Falls kein "page"-Ordner vorhanden ist, überspringen
+            print (f"❌ kein Page Ordner in {subdir_path}")
             continue
 
         # ---------------------------------------------------------
@@ -212,11 +213,14 @@ for seven_digit_folder in os.listdir(base_input_directory):
             if not response or not response.choices:
                 print("> ❌ Keine Antwort von der API erhalten.")
                 continue
+            
 
             response_text = response.choices[0].message.content.strip()
             if not response_text:
                 print("> ❌ Leere Antwort vom Modell erhalten.")
                 continue
+
+            else: print("> 🟢 Antwort von der API für {xml_file} erhalten.")
 
             # ---------------------------------------------------------
             # 3) JSON PARSEN & SPEICHERN
@@ -243,7 +247,7 @@ for seven_digit_folder in os.listdir(base_input_directory):
             try:
                 with open(output_file, "w", encoding="utf-8") as json_out:
                     json.dump(parsed_json, json_out, indent=4, ensure_ascii=False)
-                print(f"> JSON gespeichert: {output_file}")
+                print(f"> 🟢 JSON gespeichert: {output_file}")
             except Exception as e:
                 print(f"> Fehler beim Speichern von {output_file}: {e}")
                 continue
