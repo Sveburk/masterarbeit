@@ -1,3 +1,5 @@
+#für den API Key " code . " im terminal eingeben, um dort VS Code zu starten. Dieser befindet sich dann im richtigen Verzeichnis.
+
 import json
 import os
 import xml.etree.ElementTree as ET

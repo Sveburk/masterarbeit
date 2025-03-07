@@ -42,6 +42,100 @@ Hier kurze Zusammenfassung einfügen.
 
 %___________________________________________________________________________
 \newpage % Nach dem Inhaltsverzeichnis eine neue Seite
+
+
+\section{Überblick Hilfscript CHatGPT_Api_TranskribusXML_to_JSONv3.py}
+Dieses Skript verarbeitet XML-Dateien aus einer definierten Ordnerstruktur und sendet deren Inhalt an die OpenAI-API zur automatischen Analyse und Extraktion relevanter Metadaten. Das generierte Ergebnis wird als JSON-Datei gespeichert.
+
+Das Skript ist speziell auf historische Dokumente (z. B. aus dem Männerchor Murg Corpus, 1925-1945) zugeschnitten. Es analysiert und strukturiert die Daten, um relevante Informationen wie Autoren, Empfänger, Orte, Ereignisse und Zeitangaben zu extrahieren.
+
+\section{Voraussetzungen & Einrichtung}
+
+\subsection{API Key setzen}
+Bevor das Skript ausgeführt wird, muss der OpenAI-API-Schlüssel als Umgebungsvariable gesetzt werden. Dies kann dauerhaft in der ~/.zshrc-Datei erfolgen:
+
+\begin{minted}{bash}
+export OPENAI_API_KEY="sk-..."
+source ~/.zshrc
+\end{minted}
+
+Alternativ kann das Skript mit VS Code gestartet werden, indem es aus dem Terminal mit folgendem Befehl aufgerufen wird:
+
+\begin{minted}{bash}
+code .
+\end{minted}
+
+\subsection{Python-Bibliotheken installieren}
+Folgende Bibliotheken werden benötigt:
+
+\begin{minted}{bash}
+pip install openai
+\end{minted}
+
+Falls weitere Module fehlen, kann ein allgemeiner Installationsbefehl helfen:
+
+\begin{minted}{bash}
+pip install -r requirements.txt
+\end{minted}
+
+\section{Funktionsweise}
+
+Das Skript ist in folgende Hauptbestandteile gegliedert:
+
+\subsection{Basis-Einstellungen}
+\begin{itemize}
+\item Zähler zur Erfassung der verarbeiteten Dateien und Token-Kosten.
+\item API-Schlüssel wird aus der Umgebungsvariable geladen.
+\item Pfad-Definitionen für Input- und Output-Verzeichnisse.
+\end{itemize}
+
+\subsection{Verzeichnisstruktur durchlaufen}
+Das Skript iteriert über alle 7-stelligen Ordner im Basisverzeichnis (base_input_directory). In diesen Ordnern sucht es nach Unterordnern mit Namen Akte_xxx_pdf oder Akte_xxx, die wiederum einen page-Ordner enthalten.
+
+Falls kein page-Ordner gefunden wird, wird die Verarbeitung dieser Akte übersprungen.
+
+\subsection{Verarbeitung der XML-Dateien}
+Jede XML-Datei im page-Ordner wird eingelesen und analysiert:
+\begin{itemize}
+\item Seitennummer extrahieren: Die Dateinamen haben das Muster p001.xml, p002.xml usw.
+\item XML-Daten einlesen: Nutzung von xml.etree.ElementTree zur Extraktion von TranskribusMetadata und TextEquiv-Daten.
+\item Fehlermanagement: Falls eine Datei nicht geparst werden kann oder keinen verwertbaren Text enthält, wird sie übersprungen.
+\end{itemize}
+
+\subsection{Strukturierung der Daten in JSON}
+Die extrahierten Informationen werden in einem JSON-Format gespeichert. Dazu gehören:
+\begin{itemize}
+\item Metadaten (Dokument-ID, Seiten-ID, Bild- und XML-URL)
+\item Autor und Empfänger mit Name, Rolle und zugehöriger Organisation
+\item Erwähnte Personen, Organisationen, Ereignisse und Orte
+\item Dokumentart (z. B. Brief, Protokoll, Rechnung)
+\item Dokumentformat (z. B. Handschrift, maschinell, mit Unterschrift, Bild)
+\end{itemize}
+
+\subsection{API-Anfrage an OpenAI}
+Ein Prompt wird erstellt, um die Inhalte durch die OpenAI-API analysieren zu lassen. Dabei wird explizit vorgegeben:
+\begin{itemize}
+\item Die historische Relevanz der Dokumente (1925-1945).
+\item Die Aufgabenstellung (Identifikation von Dokumenttypen, Metadaten und Inhalten).
+\item Die genaue Formatierung der JSON-Antwort.
+\end{itemize}
+
+\section{Fehlerbehandlung}
+Das Skript enthält mehrere Mechanismen zur Fehlerbehandlung:
+\begin{itemize}
+\item Fehlermeldungen beim XML-Einlesen (try-except beim Parsen)
+\item Fehlermeldungen bei API-Anfragen (try-except um den OpenAI-Aufruf)
+\item Fehlermeldungen bei JSON-Speicherung (try-except beim Schreiben der Datei)
+\item Logging von Problemen (print(f"> ❌ Fehler beim Parsen der API-Antwort: {e}"))
+\end{itemize}
+
+Falls Fehler auftreten, werden sie ausgegeben und das Skript setzt die Verarbeitung der nächsten Datei fort, anstatt komplett abzubrechen.
+
+\section{Fazit}
+Dieses Skript automatisiert die Verarbeitung von XML-Dokumenten, extrahiert deren Inhalte und strukturiert die Daten in JSON-Format, das von OpenAI-API analysiert wird. Die Ergebnisse werden gespeichert und abschließend statistisch ausgewertet. Durch Fehlerbehandlung und Logging wird sichergestellt, dass auch bei Problemen das Skript robust bleibt.
+
+Falls du Fragen hast oder Anpassungen benötigst, kannst du einfach den relevanten Abschnitt im Code ändern!
+
 %___________________________________________________________________________
 \noindent\hrulefill
 \section{Tagging der JPGEGs im AppleFinder \small 26.10.24 } % Kurztitel
@@ -78,6 +172,8 @@ Dokumente, die sowohl maschinell erstellten Text als auch handschriftliche Eleme
 
 \subsection*{Offene Fragen}
 \ding{113} Sollen die Bilder gelöscht werden?\\
+%-------------------------------------------------------
+
 
 %___________________________________________________________________________
 
