@@ -9,6 +9,7 @@ Before using this LaTeX project, ensure you have the following installed:
 - **TeX Live** (Recommended for full package support) or **MiKTeX**
 - **Biber** (For bibliography management)
 - **Python** (For `minted` package, which requires Pygments)
+- **Visual Studio Code** with the **Visual Studio Code LaTeX** extension (Recommended for LaTeX editing and compilation)
 
 ### Required LaTeX Packages
 The following LaTeX packages are used in this project:
@@ -38,6 +39,13 @@ The following LaTeX packages are used in this project:
 \usepackage{xcolor} % Colors for syntax highlighting
 ```
 
+## Required Python Packages
+The repository also contains Python scripts that require the following dependencies:
+
+```sh
+pip install pandas openai pillow base64 xml json os csv time re xattr plistlib io
+```
+
 ## Installation Instructions
 ### 1. Clone the Repository
 ```sh
@@ -63,7 +71,10 @@ Since the `minted` package requires **Pygments**, install it via:
 pip install pygments
 ```
 
-### 4. Compile the LaTeX Document
+### 4. Install VS Code LaTeX Extension
+If you are using **VS Code**, install the **Visual Studio Code LaTeX** extension for improved LaTeX editing and compilation.
+
+### 5. Compile the LaTeX Document
 If you are using **TeX Live** with `pdflatex`, run:
 ```sh
 pdflatex -shell-escape main.tex
@@ -72,29 +83,4 @@ pdflatex -shell-escape main.tex
 pdflatex -shell-escape main.tex
 ```
 
-Alternatively, using **latexmk**:
-```sh
-latexmk -pdf -shell-escape main.tex
-```
-
-## Project Structure
-```
-📂 your-latex-repo/
- ├── 📄 main.tex  # Main LaTeX document
- ├── 📂 assets/  # Images, bibliography files, etc.
- │   ├── 📂 Figures/  # Figures and graphics
- │   ├── 📂 Literature_Bib/  # Bibliography file
- │   │   └── literatur.bib  # BibLaTeX bibliography
- ├── 📂 build/  # Compiled outputs (ignored in .gitignore)
- ├── 📄 README.md  # This file
- ├── 📄 .gitignore  # Git ignored files
-```
-
-## Notes
-- Ensure `-shell-escape` is enabled for compiling with `minted`.
-- Use **Biber** for bibliography management instead of BibTeX.
-- The default document language is **German** (`ngerman`).
-
----
-Happy TeXing! 😊
-
+Alternati
