@@ -83,4 +83,30 @@ pdflatex -shell-escape main.tex
 pdflatex -shell-escape main.tex
 ```
 
-Alternati
+Alternatively, using **latexmk**:
+```sh
+latexmk -pdf -shell-escape main.tex
+```
+
+## Project Structure
+```
+📂 your-latex-repo/
+ ├── 📄 main.tex  # Main LaTeX document
+ ├── 📂 assets/  # Images, bibliography files, etc.
+ │   ├── 📂 CodeSnippets/
+ │   ├── 📂 Logos/
+ │   ├── 📂 Images/
+ │   ├── 📂 Literature_Bib/  # Bibliography file
+ │   │   └── literatur.bib  # BibLaTeX bibliography
+ ├── 📂 build/  # Compiled outputs (ignored in .gitignore)
+ ├── 📄 README.md  # This file
+ ├── 📄 .gitignore  # Git ignored files
+ ├── 📂 scripts/  # Python scripts for processing LaTeX or metadata
+```
+
+## Notes
+- Ensure `-shell-escape` is enabled for compiling with `minted`.
+- Use **Biber** for bibliography management instead of BibTeX.
+- The default document language is **German** (`ngerman`).
+
+---
