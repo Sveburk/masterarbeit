@@ -46,6 +46,7 @@
 \definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
 \definecolor{LightGray}{gray}{0.9}
+\definecolor{VeryLightGray}{gray}{0.95} % Sehr helles Grau
 \definecolor{abbrev}{RGB}{255,153,153}              % Rot für Tags
 \definecolor{add}{RGB}{204,255,238}                 % Hellgrün/Türkis für Tags
 \definecolor{sic}{RGB}{255,255,153}                 % Hellgelb für Tags
@@ -55,7 +56,8 @@
 \definecolor{place}{RGB}{204,153,255}               % Lila für Tags
 \definecolor{person}{RGB}{153,255,153}              % Hellgrün für Tags
 \definecolor{signature}{RGB}{153,255,153}           % Hellgrün (gleiche Farbe wie Person) für Tags
-
+\definecolor{eventTag}{HTML}{05A9FF}                % Blau für Tags
+\definecolor{oldLetter}{RGB}{246,238,227}           % Beige für Hintergrund  
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{booktabs}
@@ -447,15 +449,52 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
     Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
     
+    \subsubsection{Strukturelle Tags}
     \begin{description}
+
+    % Abbreviations
+    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+        
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
     
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind: „\textbf{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater }“.\\
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine ausgeschriebene Variante im selben Dokument vorhanden ist, bleibt die Abkürzung getaggt:\\
+    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß\textless /person\textgreater}
+
+    
+    % Unclear    
+    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    
+
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: \\
+    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}\\
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:\\
+    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater }“.}\\
+    
+%Sic   
+    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
+
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. \\
+
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: \\
+    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}\\
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: \\
+    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}\\
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
+    \end{description}
+
+    \subsubsection{Inhaltliche Tags}
+    \begin{description}
     % Person      
     \item \textbf{\colorbox{person}{\texttt{person}}}
         
     Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
     
     \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. \\
-    \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc., wenn Ort, Name oder Organisation bekannt. \\
+    \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc., wenn Ort, Name oder Organisation bekannt. 
     
     Eine Person kann sowohl mit ihrem Namen als auch ihrer Funktion (wie Dirigent) getaggt werden.  
     Aus der Korrespondenz ist in der Regel eine zugehörige Organisation ersichtlich, mit deren Verknüpfung eine namentlich nicht genannte Person identifiziert werden könnte.
@@ -467,20 +506,20 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
     Er dient zur \textbf{graduellen Unterscheidung}, ob ein Name im Fließtext als gesichert leserlich oder handschriftlich als Signatur vorliegt.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
-    \texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}. \\  
+    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  \\
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. \\
     
-    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert:  
-    \texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}. \\  
+    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: \\ 
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}. \\  
     
-    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:  
-    \texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}. \\  
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:\\  
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}.} \\  
     
-    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
-    \texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}. \\  
+    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: \\ 
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} \\  
     
     \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
-    \texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}. \\  
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} \\  
     
     % Organization    
     \item \textbf{\colorbox{organization}{\texttt{organization}}}
@@ -496,37 +535,28 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
     
     \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.\\
-    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  
-    \texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}. \\
+    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  \\
+    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} \\
     
     % Date    
     \item \textbf{\colorbox{date}{\texttt{date}}}
         
     Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}: 9. Oktober 1940, 20.10.1940, den 3. Mai 1938, etc.\\
+    \noindent \textbf{\ding{43} Beispiel 1}:  29.05.1936  \\
+    \textbf{\ding{43} Beispiel 2}: 29. Mai 1936 \\
+    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:\\
+    \colorbox{VeryLightGray}{\texttt{\textless date when="29.05.1936 "\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
+
+% Event
+    \item \textbf{\colorbox{eventTag}{\texttt{event}}}
     
-    % Abbreviations
-    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
-        
-    Mit dem Tag \texttt{\colorbox{abbrev}{abbrev}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.  
-    
-    % Unclear    
-    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
-    
-    Mit dem Tag \texttt{\colorbox{unclear}{unclear}} werden unleserliche oder schwer entzifferbare Textstellen markiert.  
-    
-    % Sic   
-    \item \textbf{\colorbox{sic}{\texttt{sic}}} 
-    
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.  
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen:  
-    „Wir haben \textbf{\textless sic\textgreater einen \textless /sic\textgreater} große Freude.“\\
-    
-    \textbf{\ding{43} Beispiel 2}: Veraltete oder falsche Schreibweisen:  
-    „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater}“ für Februar.\\
-    
+    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
+    \noindent \textbf{\ding{43} Beispiel 1}: "Jubiläumskonzert"\\
+    \textbf{\ding{43} Beispiel 2} "Gründung des Vereins" \\ 
+    \textbf{\ding{43} Beispiel 2}"Kriegsausbruch" oder "Kriegsende"\\
+
+    Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
     \end{description}
     
 
@@ -545,7 +575,11 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     mit diesem Modell transkribiert. \\
   
     Beispiel für handschriftlicen Text erkannt von Transkribus in Akte\_076: \\
-    "Murg. 15. Aug 41 \\
+
+    \includegraphics[width=\paperwidth]{./assets/Images/Akte_076_S001.jpg}
+
+  \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
+    Murg. 15. Aug 41 \\
     \\
     Mein lieber Alfons! \\
     Sehen lunge Lreitt es mich dem Männer- \\
@@ -567,10 +601,12 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     Leides unmöglich, dann freu Nall. \\
     Mit herzl. Grüße \\
     Dein \\
-    Carl" \\
-
+    Carl \\
+  \end{tcolorbox}
     ChatGPT produziert daraus:
 
+
+    \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
     Murg, 15. Aug. 41\\
     \\
 Mein lieber Alfons!\\
@@ -585,19 +621,38 @@ Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn b
 
 Mit herzlichen Grüßen\\
 Dein\\
-
-
-Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{sic}{sic}}}}} werden Wörter markiert, die absichtlich in einer falschen oder ungewöhnlichen Schreibweise beibehalten werden. \\
-
-\textbf{\ding{43} Beispiel 1}: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen:  
-„Er hatt \texttt{\textless sic\textgreater} einen \texttt{\textless /sic\textgreater} große Freude.“\\
-\textbf{\ding{43} Beispiel 2}: Veraltete oder falsche Schreibweisen: „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater}“ für Februar.\\
-\textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
 Carl\\
+\end{tcolorbox}
 
+Durch CHatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das "Venstadler Liedchen" ist eigendlich eines aus "Neustadt". Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkribtion.
 
-
-
+Korrigiert und getagt lautet der Brief nun:
+\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
+  \textbf{\colorbox{place}{\texttt{Murg}}}.  \textbf{\colorbox{date}{\texttt{15. Aug 41}}} \\
+\\
+Mein lieber  \textbf{\colorbox{person}{\texttt{Alfons}}}!\\
+Seit langem treibt es mich dem  \textbf{\colorbox{organization}{\texttt{Männer-}}}\\
+\textbf{\colorbox{organization}{\texttt{chor}}} wieder einmal ein Liedchen zu stiften.\\
+und kam mir die günstige Gelegenheit passend.\\
+Ich schrieb vergangenes Jahhr an den\\
+Männechor Vorstand um den Titel das Liedchen\\
+zu erhalten, wo sie zum Abschied am Auto \\
+sangen "auf Wiederschen" Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
+marke beifügte, keine Antwort. Vielleicht\\
+gelingt es Dir diesen Titel zu erhalten.\\
+Weiterhin sänge ich das Lied nur\\
+"Das alte Lied" von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
+Es wurde \textbf{\colorbox{date}{\texttt{1928}}} am \textbf{\colorbox{eventTag}{\texttt{10. Deutsch. Sängerb. Fest}}}\\
+am Begrüßungsabend in \textbf{\colorbox{place}{\texttt{Wien}}} gesungen.\\
+und erntete überaus großen Beifall.\\
+Es ich schwer das Richtige zu finden.\\
+Also \textbf{\colorbox{person}{\texttt{Alfons}}}! zuerst das \textbf{\colorbox{place}{\texttt{Neustadter}}} Liedchen.\\
+alsdann das \textbf{\colorbox{place}{\texttt{Wiener}}} Liedchen und wenn\\
+Beides unmöglich, dann freie Wahl.\\
+Mit herzl. Grüßen \\
+Dein\\
+\textbf{\colorbox{person}{\texttt{Carl}}}\\
+\end{tcolorbox}
 
 
 
