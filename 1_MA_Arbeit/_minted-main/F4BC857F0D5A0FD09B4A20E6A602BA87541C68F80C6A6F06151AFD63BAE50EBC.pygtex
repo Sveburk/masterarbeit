@@ -1,8 +1,8 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{os}
-\PYG{k+kn}{import} \PYG{n+nn}{fitz}  \PYG{c+c1}{\PYGZsh{} PyMuPDF}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{os}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{fitz}  \PYG{c+c1}{\PYGZsh{} PyMuPDF}
 
-\PYG{k}{def} \PYG{n+nf}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{,} \PYG{n}{dest\PYGZus{}folder}\PYG{p}{):}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg}\PYG{p}{(}\PYG{n}{src\PYGZus{}folder}\PYG{p}{,} \PYG{n}{dest\PYGZus{}folder}\PYG{p}{):}
     \PYG{c+c1}{\PYGZsh{} Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen}
     \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{exists}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{):}
         \PYG{n}{os}\PYG{o}{.}\PYG{n}{makedirs}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{)}
@@ -25,8 +25,8 @@
                     \PYG{n}{filename\PYGZus{}without\PYGZus{}extension} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{splitext}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
                     \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die}
                     \PYG{c+c1}{\PYGZsh{} Seitennummer}
-                    \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}
-                    \PYG{p}{\PYGZob{}}\PYG{n}{page\PYGZus{}num} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{:}\PYG{l+m+mi}{03}\PYG{n}{d}\PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{jpg}\PYG{l+s+s2}{\PYGZdq{}}
+                    \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{page\PYGZus{}num}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{l+s+si}{:}\PYG{l+s+s2}{03d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.jpg\PYGZdq{}}
+
 
                     \PYG{c+c1}{\PYGZsh{} Vollständigen Pfad zur Ausgabedatei erstellen}
                     \PYG{n}{output\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{,} \PYG{n}{output\PYGZus{}filename}\PYG{p}{)}

@@ -5,6 +5,16 @@
 \usepackage{minted}  % Für Python-Code
 \usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
 \definecolor{LightGray}{gray}{0.9}
+\definecolor{abbrev}{RGB}{255,153,153}      % Rot
+\definecolor{add}{RGB}{204,255,238}         % Hellgrün/Türkis
+\definecolor{sic}{RGB}{255,255,153}         % Hellgelb
+\definecolor{unclear}{RGB}{255,230,184}     % Hellorange
+\definecolor{date}{RGB}{153,153,255}        % Blau
+\definecolor{organization}{RGB}{255,153,255}% Pink
+\definecolor{place}{RGB}{204,153,255}       % Lila
+\definecolor{person}{RGB}{153,255,153}      % Hellgrün
+\definecolor{signature}{RGB}{153,255,153}   % Hellgrün (gleiche Farbe wie Person)
+
 \usepackage[hidelinks]{hyperref} % Für die Hyperlinks im Inhaltsverzeichnis
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=2cm, bottom=2cm]{geometry}
 
@@ -14,7 +24,8 @@
 
 \begin{document}
 \maketitle
-\noindent\hrulefill
+\noindent
+\hrulefill
 
 \newpage % Neue Seite für das Inhaltsverzeichnis
 \tableofcontents
@@ -24,7 +35,7 @@
 %___________________________________________________________________________
 % Vorlage 
 \noindent\hrulefill
-\section{Vorlage \small dd.mm.yyyy } % Kurztitel
+
 
 \subsection*{Kurzbeschreibung}
 Hier kurze Zusammenfassung einfügen.
@@ -39,25 +50,114 @@ Hier kurze Zusammenfassung einfügen.
 
 \subsection*{Offene Fragen}
 \ding{113} Beschreibung der offenen Frage.
+%___________________________________________________________________________
+% Vorlage 
+\noindent\hrulefill
+\section{Festlegung Tagging Regeln \small 11.03.2025 } % Kurztitel
+
+\subsection*{Kurzbeschreibung}
+Hier werden die Tagging Regeln in Transkribus beschrieben
+ 
+\section*{Personen \texttt{\texttt{\textbf{{\colorbox{person}{person}}}}}}
+
+Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{person}{person}}}}}} sollen alle strings getaggt werden, die eine direkte Zuordnung eier Person ermöglichen. \\
+
+\noindent\ding{43} Beispiel 1: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A.Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc \\
+\ding{43} Beispiel 2: Gauleitung, Gauleiter, Gauleiter Max Mustermann, Gauleiter M., Gauleiter Mustermann, etc\\
+\ding{43} Beispiel 3: Oberlehrer, Chorleiter, etc, wenn Ort, Name oder Organisation bekannt. \\
+
+\section*{Signaturen \texttt{\texttt{\textbf{{\colorbox{signature}{signature}}}}}}
+
+Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{signature}{signature}}}}}} sollen alle Strings getaggt werden, die eine handschriftliche Unterschrift darstellen. Dieses Tag dient dazu, Unterschriften von klar erkennbaren Personennamen im Fließtext zu unterscheiden. \\
+
+\noindent\ding{43} Beispiel 1: **Eindeutig lesbare Signaturen** werden direkt getaggt:  
+\texttt{\textbf{\textless signature\textgreater R. Weiss\textless /signature\textgreater}}.\\  
+
+\ding{43} Beispiel 2: **Teilweise unleserliche Signaturen** werden mit dem Tag \texttt{unclear} innerhalb von \texttt{signature} markiert:  
+\texttt{\textbf{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}.\\  
+
+\ding{43} Beispiel 3: **Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt**, sollte die Unterschrift vollständig im Tag \texttt{unclear} innerhalb von \texttt{signature} stehen:  
+\texttt{\textbf{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}}.\\  
+
+\ding{43} Beispiel 4: **Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird nicht als „Person“ getaggt**:  
+\texttt{\textbf{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}.\\  
+
+\section*{Organisationen \texttt{\texttt{\textbf{{\colorbox{organization}{organization}}}}}}
+
+
+Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{organization}{organization}}}}} sollen alle Strings getaggt werden, die eine direkte Zuordnung einer Organisation ermöglichen. \\
+
+\noindent\ding{43} Beispiel 1: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.\\
+\ding{43} Beispiel 2: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.\\
+\ding{43} Beispiel 3: Wenn der Organisationsname mit einer Positionsangabe kombiniert ist, wird nur der Organisationsname getaggt: „\textless person\textgreater Vereinsleiter \textless person\textgreater des \textbf{\textless organisation\textgreater Männerchor Murg\textless /organisation\textgreater}“. \\
+
+\section*{Orte \texttt{\texttt{\textbf{{\colorbox{place}{place}}}}}}
+
+
+Mit dem Tag\texttt{\texttt{\textbf{{\colorbox{place}{place}}}}} sollen alle Strings getaggt werden, die sich auf einen geografischen Ort beziehen. \\
+\indent\textit{Hintergund ist Fehlervermeidung: Manche Organisationen haben mehrere Standorte (z. B. "Badischer Sängergau" kann in Karlsruhe oder Mannheim sein). Ein explizites Tagging vermeidet Verwechslungen.
+Flexibilität: Falls sich eine Organisation an mehreren Orten befindet oder in einem bestimmten Kontext mit einem anderen Ort assoziiert wird, bleibt die Information strukturiert erhalten.} \\
+
+\noindent\ding{43} Beispiel 1: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.\\
+\ding{43} Beispiel 2: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“, "Mayerhof Nebenzimmer" werden getaggt, und die nähere Bestimmung muss innerhalb des Tags. Beispiel: „ \textbf{\textless place\textgreater  im Murgtal\textless /place\textgreater }“.\\
+\ding{43} Beispiel 3: Adressen oder Ortsangaben in Verbindung mit Organisationen, z.B. „\textless organisation\textgreater Universität \textbf{\textless place\textgreater  Basel\textless /place\textgreater} \textless /organisation\textgreater“ oder „Postfach 6, \textbf{\textless place\textgreater  Murg \textless /place\textgreater }“. \\
+
+\section*{Datum \texttt{\texttt{\textbf{{\colorbox{date}{date}}}}}}
+
+
+Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{date}{date}}}}}} werden alle expliziten Datumsangaben markiert und bereits im Tag um das format dd.mm.yyyy ergänzt.\\
+
+\noindent\ding{43} Beispiel 1: 9. Oktober 1940, 20.10.1940, den 3. Mai 1938, etc.\\
+\ding{43} Beispiel 2: Relative Datumsangaben („gestern“, „letzten Freitag“) werden getaggt.\\
+\ding{43} Beispiel 3: Falls ein Datum in Kombination mit einem Ort steht, wird nur das Datum getaggt: „\textbf{\textless place\textgreater Murg (Baden)\textless /place\textgreater }, den \textbf{\textless date\textgreater 9. Oktober 1940\textless /date\textgreater }“. \\
+
+\section*{Abkürzungen \texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}}
+
+
+Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
+
+\noindent\ding{43} Beispiel 1: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
+\ding{43} Beispiel 2: Organisationskürzel, wenn sie eindeutig sind: „\textbf{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater }“.\\
+\ding{43} Beispiel 3: Falls eine ausgeschriebene Variante im selben Dokument vorhanden ist, bleibt die Abkürzung getaggt: \textbf{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß\textless /person\textgreater}
+
+
+\section*{Unclear\texttt{\textbf{{\colorbox{unclear}{unclear}}}}}
+
+
+Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
+
+\noindent\ding{43} Beispiel 1: Unklare Zeichen oder fehlende Buchstaben: „Er wohnte in \textbf{\textless unclear\textgreater [...]\textless unclear\textgreater }“.\\
+\ding{43} Beispiel 2: Teilweise lesbare Wörter: „\textbf{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater }“.\\
+
+
+\section*{Sic \texttt{\textbf{{\colorbox{sic}{sic}}}}}
+
+
+Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{sic}{sic}}}}} werden Wörter markiert, die absichtlich in einer falschen oder ungewöhnlichen Schreibweise beibehalten werden. \\
+
+\noindent\ding{43} Beispiel 1: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: „Er hatt \textbf{\textless sic\textgreater einen\textless /sic\textgreater } große Freude.“\\
+\ding{43} Beispiel 2: Veraltete oder falsche Schreibweisen: „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater }“ für Februar.\\
+\ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
+
 
 %___________________________________________________________________________
 \newpage % Nach dem Inhaltsverzeichnis eine neue Seite
 
 
-\section{Überblick Hilfscript CHatGPT_Api_TranskribusXML_to_JSONv3.py}
+\section{Überblick Hilfscript\\CHatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}
 Dieses Skript verarbeitet XML-Dateien aus einer definierten Ordnerstruktur und sendet deren Inhalt an die OpenAI-API zur automatischen Analyse und Extraktion relevanter Metadaten. Das generierte Ergebnis wird als JSON-Datei gespeichert.
 
 Das Skript ist speziell auf historische Dokumente (z. B. aus dem Männerchor Murg Corpus, 1925-1945) zugeschnitten. Es analysiert und strukturiert die Daten, um relevante Informationen wie Autoren, Empfänger, Orte, Ereignisse und Zeitangaben zu extrahieren.
 
-\section{Voraussetzungen & Einrichtung}
+\section{Voraussetzungen \& Einrichtung}
 
 \subsection{API Key setzen}
 Bevor das Skript ausgeführt wird, muss der OpenAI-API-Schlüssel als Umgebungsvariable gesetzt werden. Dies kann dauerhaft in der ~/.zshrc-Datei erfolgen:
 
 \begin{minted}{bash}
-export OPENAI_API_KEY="sk-..."
-source ~/.zshrc
-\end{minted}
+    export OPENAI\_API\_KEY=''sk-...''
+    source ~/.zshrc
+\end{minted}    
 
 Alternativ kann das Skript mit VS Code gestartet werden, indem es aus dem Terminal mit folgendem Befehl aufgerufen wird:
 
@@ -72,10 +172,15 @@ Folgende Bibliotheken werden benötigt:
 pip install openai
 \end{minted}
 
-Falls weitere Module fehlen, kann ein allgemeiner Installationsbefehl helfen:
+folgende Module werden gebraucht:
 
 \begin{minted}{bash}
-pip install -r requirements.txt
+    import json
+    import os
+    import xml.etree.ElementTree as ET
+    import openai
+    import re
+    import time
 \end{minted}
 
 \section{Funktionsweise}
@@ -90,7 +195,7 @@ Das Skript ist in folgende Hauptbestandteile gegliedert:
 \end{itemize}
 
 \subsection{Verzeichnisstruktur durchlaufen}
-Das Skript iteriert über alle 7-stelligen Ordner im Basisverzeichnis (base_input_directory). In diesen Ordnern sucht es nach Unterordnern mit Namen Akte_xxx_pdf oder Akte_xxx, die wiederum einen page-Ordner enthalten.
+Das Skript iteriert über alle 7-stelligen Ordner im Basisverzeichnis (base\_input\_directory). In diesen Ordnern sucht es nach Unterordnern mit Namen Akte\_xxx\_pdf oder Akte\_xxx, die wiederum einen page-Ordner enthalten.
 
 Falls kein page-Ordner gefunden wird, wird die Verarbeitung dieser Akte übersprungen.
 
@@ -126,15 +231,13 @@ Das Skript enthält mehrere Mechanismen zur Fehlerbehandlung:
 \item Fehlermeldungen beim XML-Einlesen (try-except beim Parsen)
 \item Fehlermeldungen bei API-Anfragen (try-except um den OpenAI-Aufruf)
 \item Fehlermeldungen bei JSON-Speicherung (try-except beim Schreiben der Datei)
-\item Logging von Problemen (print(f"> ❌ Fehler beim Parsen der API-Antwort: {e}"))
+\item Logging von Problemen (print(f''Fehler beim Parsen der API-Antwort: {e} ''))
 \end{itemize}
 
 Falls Fehler auftreten, werden sie ausgegeben und das Skript setzt die Verarbeitung der nächsten Datei fort, anstatt komplett abzubrechen.
 
 \section{Fazit}
-Dieses Skript automatisiert die Verarbeitung von XML-Dokumenten, extrahiert deren Inhalte und strukturiert die Daten in JSON-Format, das von OpenAI-API analysiert wird. Die Ergebnisse werden gespeichert und abschließend statistisch ausgewertet. Durch Fehlerbehandlung und Logging wird sichergestellt, dass auch bei Problemen das Skript robust bleibt.
-
-Falls du Fragen hast oder Anpassungen benötigst, kannst du einfach den relevanten Abschnitt im Code ändern!
+Dieses Skript automatisiert die Verarbeitung von XML-Dokumenten, extrahiert deren Inhalte und strukturiert die Daten in JSON-Format, das von OpenAI-API analysiert wird. Die Ergebnisse werden gespeichert und abschließend statistisch ausgewertet. Durch Fehlerbehandlung und Logging wird sichergestellt, dass auch bei Problemen das Skript robust bleibt. Dokumentation geschrieben mit ChatGPT.
 
 %___________________________________________________________________________
 \noindent\hrulefill
@@ -143,7 +246,7 @@ Falls du Fragen hast oder Anpassungen benötigst, kannst du einfach den relevant
 \subsection*{Kurzbeschreibung}
 
 Überlegung:
-JPEGs sollen bereits im Apple Finder mit Tags versehen werden, um eine effiziente, automatisierte Transkription der Chorunterlagen des Männerchors Murg zu ermöglichen. Geplant ist die Kombination von ChatGPT und Transkribus zur Erkennung unterschiedlicher Dokumententypen. Ein Tag-System, bestehend aus \textbf{„Maschinell“} für maschinengeschriebene und \textbf{„Handschrift“} für handschriftliche Dokumente, gewährleistet die gezielte Zuordnung zur jeweils geeigneten OCR-Software \textit{(Maschinenschrift mit ChatGPT, Handschrift mit Transkribus "German Giant")}.
+JPEGs sollen bereits im Apple Finder mit Tags versehen werden, um eine effiziente, automatisierte Transkription der Chorunterlagen des Männerchors Murg zu ermöglichen. Geplant ist die Kombination von ChatGPT und Transkribus zur Erkennung unterschiedlicher Dokumententypen. Ein Tag-System, bestehend aus \textbf{„Maschinell“} für maschinengeschriebene und \textbf{„Handschrift“} für handschriftliche Dokumente, gewährleistet die gezielte Zuordnung zur jeweils geeigneten OCR-Software \textit{(Maschinenschrift mit ChatGPT, Handschrift mit Transkribus ''German Giant'')}.
 
 Dokumente, die sowohl maschinell erstellten Text als auch handschriftliche Elemente enthalten, werden entsprechend ihrer Hauptinformationsgehalt getaggt. Zusätzlich erhalten alle Dokumente mit Unterschriften den Tag \textbf{„Unterschrift“}, um eine gezielte Verarbeitung dieser Elemente sicherzustellen.
 

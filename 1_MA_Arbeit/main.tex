@@ -45,6 +45,17 @@
 \definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
 \definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{abbrev}{RGB}{255,153,153}              % Rot für Tags
+\definecolor{add}{RGB}{204,255,238}                 % Hellgrün/Türkis für Tags
+\definecolor{sic}{RGB}{255,255,153}                 % Hellgelb für Tags
+\definecolor{unclear}{RGB}{255,230,184}             % Hellorange für Tags
+\definecolor{date}{RGB}{153,153,255}                % Blau für Tags
+\definecolor{organization}{RGB}{255,153,255}        % Pink für Tags
+\definecolor{place}{RGB}{204,153,255}               % Lila für Tags
+\definecolor{person}{RGB}{153,255,153}              % Hellgrün für Tags
+\definecolor{signature}{RGB}{153,255,153}           % Hellgrün (gleiche Farbe wie Person) für Tags
+
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{booktabs}
@@ -69,7 +80,7 @@
 \@ifundefined{KOMAClassName}{% if non-KOMA class
   \IfFileExists{parskip.sty}{%
     \usepackage{parskip}
-  }{% else
+ }{% else
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{0pt}}
 }{% if KOMA class
@@ -88,7 +99,7 @@
     \@ifstar%
       \xxxParagraphStar%
       \xxxParagraphNoStar%
-  }
+ }
   \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
   \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
@@ -98,7 +109,7 @@
     \@ifstar%
       \xxxSubParagraphStar%
       \xxxSubParagraphNoStar%
-  }
+ }
   \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
   \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
@@ -260,7 +271,7 @@
     
 % Setzt die Schriftfarbe auf Weiß
 \color{white}
-\pagecolor[HTML]{46505A } %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
+\pagecolor[HTML]{46505A} %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
 \pagenumbering{gobble}    % Verhindert die Anzeige der Seitennummer auf dem Titelblatt
 \date{}
 \author{}
@@ -275,7 +286,7 @@
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
   mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ % chktex 8 %logo Unibas + Link + Immatrikulationsnummer
     
-    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025} % chktex 8
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}% chktex 8
   \end{figure}
   \setcounter{figure}{0}
 \end{center}
@@ -286,25 +297,25 @@
 \AddToShipoutPictureBG*{%
     \put(0,-40){%
         \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
-    }
+  }
 }
 \centering
 \AddToShipoutPictureBG*{%
     \put(0,810){%
         \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
-    }
+   }
 }
 \centering
 \AddToShipoutPictureBG*{%
     \put(33,752){%
         \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
-    }
+   }
 }
 \centering
 \AddToShipoutPictureBG*{%
     \put(-99,752){%
         \includegraphics[width=\paperwidth]{./assets/Logos/Hexagon_Deko}
-    }
+   }
 }
 
 
@@ -417,21 +428,121 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     \newpage
 
     \href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Methodik        ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
-
+    %--------------------------------------------------------------------------------------%
+    %--------------------------------------------------------------------------------------%
+    %------------------------          Methodik        ----------------------------%
+    %--------------------------------------------------------------------------------------%
+    %--------------------------------------------------------------------------------------% 
     
-\section{Methodischer Zugang}
-
-\subsection{Digitale Erfassung und Strukturierung der Quellen}
+    
+    \section{Methodischer Zugang}
+    
+    \subsection{Digitale Erfassung und Strukturierung der Quellen}
     \subsubsection{Gliederung in Akten}
     \subsubsection{Digitalisierung und Transkription}
-    \subsection{Digitalisierungsprozess und Herausforderungen}
-    Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,und eine Korrektur beigefügt.\\
-    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch mit diesem Modell transkribiert. \\
+    
+    \subsection{Tagging in Transkribus} 
+
+    Transkribus und seine Modelle unterstützen nicht nur beim Transkribieren der Texte, sondern erlauben auch das Taggen von \textit{Named Entities}.  
+    Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
+    Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
+    
+    \begin{description}
+    
+    % Person      
+    \item \textbf{\colorbox{person}{\texttt{person}}}
+        
+    Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. \\
+    \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc., wenn Ort, Name oder Organisation bekannt. \\
+    
+    Eine Person kann sowohl mit ihrem Namen als auch ihrer Funktion (wie Dirigent) getaggt werden.  
+    Aus der Korrespondenz ist in der Regel eine zugehörige Organisation ersichtlich, mit deren Verknüpfung eine namentlich nicht genannte Person identifiziert werden könnte.
+    
+    % Signature    
+    \item \textbf{\colorbox{signature}{\texttt{signature}}}
+        
+    Mit dem Tag \texttt{\colorbox{signature}{signature}} werden alle Strings getaggt, die eine handschriftliche Unterschrift darstellen.  
+    Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
+    Er dient zur \textbf{graduellen Unterscheidung}, ob ein Name im Fließtext als gesichert leserlich oder handschriftlich als Signatur vorliegt.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
+    \texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}. \\  
+    
+    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert:  
+    \texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}. \\  
+    
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:  
+    \texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}. \\  
+    
+    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
+    \texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}. \\  
+    
+    \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
+    \texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}. \\  
+    
+    % Organization    
+    \item \textbf{\colorbox{organization}{\texttt{organization}}}
+        
+    Mit dem Tag \texttt{\colorbox{organization}{organization}} werden alle Strings getaggt, die eine direkte Zuordnung einer Organisation ermöglichen.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.\\
+    \textbf{\ding{43} Beispiel 2}: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.\\
+    
+    % Place    
+    \item \textbf{\colorbox{place}{\texttt{place}}}
+        
+    Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.\\
+    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  
+    \texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}. \\
+    
+    % Date    
+    \item \textbf{\colorbox{date}{\texttt{date}}}
+        
+    Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: 9. Oktober 1940, 20.10.1940, den 3. Mai 1938, etc.\\
+    
+    % Abbreviations
+    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+        
+    Mit dem Tag \texttt{\colorbox{abbrev}{abbrev}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.  
+    
+    % Unclear    
+    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    
+    Mit dem Tag \texttt{\colorbox{unclear}{unclear}} werden unleserliche oder schwer entzifferbare Textstellen markiert.  
+    
+    % Sic   
+    \item \textbf{\colorbox{sic}{\texttt{sic}}} 
+    
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.  
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen:  
+    „Wir haben \textbf{\textless sic\textgreater einen \textless /sic\textgreater} große Freude.“\\
+    
+    \textbf{\ding{43} Beispiel 2}: Veraltete oder falsche Schreibweisen:  
+    „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater}“ für Februar.\\
+    
+    \end{description}
+    
+
+\subsection{Digitalisierungsprozess und Herausforderungen}
+    Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. 
+    Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. 
+    Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
+    die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden 
+    (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. 
+    Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth 
+    für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die 
+    Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,
+    und eine Korrektur beigefügt.\\
+    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell 
+    (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch 
+    mit diesem Modell transkribiert. \\
   
     Beispiel für handschriftlicen Text erkannt von Transkribus in Akte\_076: \\
     "Murg. 15. Aug 41 \\
@@ -474,7 +585,18 @@ Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn b
 
 Mit herzlichen Grüßen\\
 Dein\\
+
+
+Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{sic}{sic}}}}} werden Wörter markiert, die absichtlich in einer falschen oder ungewöhnlichen Schreibweise beibehalten werden. \\
+
+\textbf{\ding{43} Beispiel 1}: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen:  
+„Er hatt \texttt{\textless sic\textgreater} einen \texttt{\textless /sic\textgreater} große Freude.“\\
+\textbf{\ding{43} Beispiel 2}: Veraltete oder falsche Schreibweisen: „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater}“ für Februar.\\
+\textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
 Carl\\
+
+
+
 
 
 
@@ -528,8 +650,8 @@ def convert_pdf_to_jpg(src_folder, dest_folder):
                     filename_without_extension = os.path.splitext(file)[0]
                     # Ausgabedateinamen erstellen mit führenden Nullen für die 
                     # Seitennummer
-                    output_filename = f"{filename_without_extension}_S
-                    {page_num + 1:03d}.jpg"
+                    output_filename = f"{filename_without_extension}_S{page_num + 1:03d}.jpg"
+
 
                     # Vollständigen Pfad zur Ausgabedatei erstellen
                     output_path = os.path.join(dest_folder, output_filename)
@@ -574,7 +696,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %------------------------          Analyse der Netzwerke         ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-\section{Analyse der Netzwerke }
+\section{Analyse der Netzwerke}
   \subsection{Soziale Netzwerke des Vereinslebens}
     \subsubsection{Verbindungen zwischen Mitgliedern}
     \subsubsection{ Kooperationen mit anderen Vereinen}
