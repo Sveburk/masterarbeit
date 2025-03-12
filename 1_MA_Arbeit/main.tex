@@ -24,7 +24,7 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage{afterpage}
-\usepackage{hyperref}
+\usepackage{hyperref} 
 \usepackage{graphicx}
 \usepackage{subcaption}  % Für die Verwendung von subfigure
 \usepackage{setspace}  % Für den Befehl \setstretch
@@ -35,6 +35,16 @@
 \usepackage{csquotes}    % Nach fvextra laden
 \usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
 \addbibresource{assets/Literature_Bib/literatur.bib}
+\renewcommand{\cite}{\footcite}
+\renewbibmacro*{date}{% 
+    \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
+        \printtext[parens]{Zugriff am \usebibmacro{urldate}}%
+    }{% Falls nicht online, nimm das normale Datum
+        \printdate
+    }%
+    
+}
+
 \usepackage{minted} % Für Python-Code im Text
 
 \usepackage[ngerman]{babel}
@@ -426,10 +436,40 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------% 
 \section{Quellenbeschreibung und Korpusaufbau}
-  \subsection{Beschreibung des Archivbestands}
-    \newpage
+In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
+wurden im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
+Für diese Arbeit wurde ein Ordner mit der Aufschrift \textit{``Männerchor Akten 1925-1944''} gewählt, da er neben dem Ordner 
+\textit{``Männerchor Akten 1946-1950‘‘} den größten Zeitraum abdeckt. Zudem verspricht er interessante Einblicke 
+in die Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
+Der Ordner umfasst insgesamt 780 Seiten und kann als ``Protokoll'', ``Brief'', ``Postkarte'', ``Rechnung'', ``Regierungsdokument'', ``Noten'', ``Zeitungsartikel'', ``Liste'', ``Notizzettel'' oder ``Offerte'' kategorisiert werden.
 
-    \href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
+
+
+
+
+
+
+In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{``Männerchor Akten 1925-1944''} bereits 2018 und 2022 ein 
+erster Korpus von 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Eine Akte stellt dabei das Pendant zu zusammengehörigen Schriftstücken dar, wie sie
+vom Ersteller des Ordners angelegt wurden. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasste 96 Seiten, 
+während andere Akten nur aus einer einzelnen Seite bestehen können. So entsteht 2018 eine handschriftliche Liste aus der Lage im Ordner, 
+einem Kurztitel und einem Entstehungsdatum. 2022 wird im Rahmen eines zweiten Seminars die Feldpost untersucht.
+Zu diesem Zeitpunkt erfolgt die Transkiption mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
+ist.
+Zur Vorbereitung der vorliegenden Arbeit sollten die Feldpostbriefe mit weiteren Daten versehen werden.\\ \textit{Welche Einheiten 
+verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben wurde?}\\
+Hierzu werden Nachschlagetabellen Fachliteratur \footnote{vgl.:\cite{tessin_verbande_1977},\cite{hartmann_wehrmacht_2010}, \cite{rass_deutsche_2009}},
+die Bestände des \textit{Bundesarchives -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025}, 
+des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}, sowie Citizen Scientist Projekte\footnote{vgl. 
+Wikidata (Beispiel:\cite{burkhardt_78th_2024}),\\\indent{\cite{altenburger_lexikon_nodate-1}},\\\indent{\cite{hermans_forum_nodate}}} konsultiert.
+
+Für diese Arbeit wird die Kategorisierung von 2018 übernommen und nun auf den gesamten Ordner erweitert. 
+
+\subsection{Beschreibung des Archivbestands}
+\newpage
+
+\href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
+
     %--------------------------------------------------------------------------------------%
     %--------------------------------------------------------------------------------------%
     %------------------------          Methodik        ----------------------------%
@@ -441,6 +481,9 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
     
     \subsection{Digitale Erfassung und Strukturierung der Quellen}
     \subsubsection{Gliederung in Akten}
+
+    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die „Dateien“-App von Apple benutzt, da sie gleichzeitig einen Cloud-Speicher und eine OCR-Erkennung liefert. Die mit der Schreibmaschine geschriebenen Texte sind so schnell auffindbar. Die Dateien werden entsprechend der ersten Übersicht von 2018 und darüber hinaus benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Digitalisierung findet also auf Blatt-Ebene statt, und die Archivierung ebenfalls.\\
+    Zur Digitalisierung der Akten werden diese aus den Ordnern genommen und vorsichtig von Heftklammern, Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefraß durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
     \subsubsection{Digitalisierung und Transkription}
     
     \subsection{Tagging in Transkribus} 
@@ -735,7 +778,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 
-\section{Aufbau der Datenbank}
+     \section{Aufbau der Datenbank}
     \subsection{Konzeption der Datenmodelieung}
       \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
       \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
@@ -788,12 +831,9 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 \section{Bibliographie}
-
-
-\newpage{}
-%\printbibliography[
-%heading=bibintoc,
-%title={References} % title of the 'references' section, change this if necessary
-%]
+\printbibliography[
+heading=bibintoc,
+title={References} % title of the 'references' section, change this if necessary
+]
 
 \end{document}
