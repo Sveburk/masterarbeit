@@ -53,6 +53,35 @@ Hier kurze Zusammenfassung einfügen.
 %___________________________________________________________________________
 % Vorlage 
 \noindent\hrulefill
+
+\section{Implementierung der Datenextraktions-Pipeline \small 03.04.2025}
+\small\textit{{Diese Implementierung wurde mit Unterstützung von Claude Code und Sorin von RISE durchgeführt. Erster Einsatz von Claude Code}}\\
+\subsection*{Kurzbeschreibung}
+
+
+Implemntierung der Datenkonvertierungspipeline vom Transkribus XML-Format in das projektspezifische JSON-Basisschema. Es wurden zwei Python-Module entwickelt: ein Schema-Modul und ein Konvertierungsmodul, die zusammen die Grundlage für die strukturierte Datenhaltung bilden.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Definition des Basis-Schemas}
+\ding{51} Erstellung des \textbf{\textit{document\_schemas.py}} Moduls mit Klassen für verschiedene Dokumenttypen.\\
+\textbf{Ergebnis}: Implementierung der Basisklassen \texttt{Person}, \texttt{Organization}, \texttt{Place}, \texttt{Event} und \texttt{BaseDocument} sowie spezialisierte Klassen für \texttt{Brief}, \texttt{Postkarte} und \texttt{Protokoll} mit Validierungsfunktionen.
+
+\subsubsection*{\small Konvertierungs-Pipeline}
+\ding{51} Implementierung des \textbf{\textit{transkribus\_to\_base\_schema.py}} Skripts für die XML-Verarbeitung.\\
+\textbf{Ergebnis}: Vollständige Pipeline für die Extraktion von Metadaten und Text aus Transkribus XML-Dateien sowie Konvertierung in das JSON-Basisschema mit automatischer Erkennung von benannten Entitäten (Personen, Organisationen, Orte, Daten).
+
+\subsection*{Nächste Schritte}
+\ding{113} Integration der Tag-Regeln aus der Transkribus-Anleitung in die Konvertierungspipeline. \\
+\ding{113} Erweitern der automatischen Metadatenextraktion für komplexere Inhaltsanalysen.\\
+\ding{113} Ausführen der Pipeline auf dem vollständigen Datensatz und Prüfung der Ergebnisse.\\
+
+\subsection*{Offene Fragen}
+\ding{113} Sollen zusätzliche spezialisierte Dokumenttypen implementiert werden?\\
+\ding{113} Wie können Entitätsreferenzen zwischen verschiedenen Dokumenten hergestellt werden?
+
+\textit{Diese Implementierung wurde mit Unterstützung von Claude Code und Sorin von RISE durchgeführt.}
+
+\noindent\hrulefill
 \section{Festlegung Tagging Regeln \small 11.03.2025 } % Kurztitel
 
 \subsection*{Kurzbeschreibung}
