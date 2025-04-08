@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=10_02_2025_18:04</Creator>
+        <Created>2025-01-23T13:10:48.339+01:00</Created>
+        <LastChange>2025-03-14T14:40:24.982+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120234826" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1199,428 2190,428 2190,586 1199,586"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:0; length:5;} date {offset:10; length:17;when:27.10.1941;}">
+                <Coords points="1226,562 1500,581 1568,536 1706,571 1782,540 1848,575 1943,536 2060,573 2124,542 2124,484 1928,488 1873,457 1514,492 1467,459 1374,499 1224,464"/>
+                <Baseline points="1236,536 2128,542"/>
+                <TextEquiv>
+                    <Unicode>Rhina, den 27. Oktober 1941.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="451,654 2425,654 2425,2898 451,2898"/>
+            <TextLine id="l_9" custom="readingOrder {index:0;} person {offset:0; length:5; continued:true;}">
+                <Coords points="529,791 548,787 569,801 589,791 620,803 643,826 684,803 713,824 744,822 746,729 725,725 694,746 676,737 639,750 626,737 591,744 573,729 531,735"/>
+                <Baseline points="540,797 746,793"/>
+                <TextEquiv>
+                    <Unicode>Herrn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_13" custom="readingOrder {index:1;} person {offset:0; length:13; continued:true;}">
+                <Coords points="542,865 1075,873 1075,805 1026,830 972,826 851,785 713,824 686,808 643,826 606,799 542,822"/>
+                <Baseline points="553,864 1081,860"/>
+                <TextEquiv>
+                    <Unicode>Jakob Küpfer </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_17" custom="readingOrder {index:2;} organization {offset:0; length:14;}">
+                <Coords points="540,937 587,950 622,923 670,950 690,931 737,948 886,937 911,950 948,921 981,921 978,867 622,878 538,861"/>
+                <Baseline points="551,913 986,915"/>
+                <TextEquiv>
+                    <Unicode>"zum Meyerhof“</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_21" custom="readingOrder {index:3;} place {offset:0; length:12; continued:true;}">
+                <Coords points="538,1007 624,1032 725,1014 816,1032 1026,1020 1024,970 970,954 925,976 849,943 818,964 760,941 717,968 694,948 608,964 536,946"/>
+                <Baseline points="549,1016 1032,1018"/>
+                <TextEquiv>
+                    <Unicode>M u r g /Baden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_25" custom="readingOrder {index:4;} person {offset:7; length:11;}">
+                <Coords points="538,1178 744,1203 876,1191 904,1168 1001,1195 1092,1170 1139,1184 1137,1090 1090,1086 1057,1112 941,1088 766,1127 674,1096 637,1123 536,1106"/>
+                <Baseline points="549,1161 1144,1165"/>
+                <TextEquiv>
+                    <Unicode>Lieber Herr Küpfer!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_29" custom="readingOrder {index:5;} date {offset:11; length:13;when:25.10.1941;}">
+                <Coords points="542,1263 2054,1261 2023,1189 1547,1226 1415,1184 840,1222 542,1189"/>
+                <Baseline points="553,1257 2058,1262"/>
+                <TextEquiv>
+                    <Unicode>Als ich am Samstag Abend von einer Geschäftsreise</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_33" custom="readingOrder {index:6;}">
+                <Coords points="536,1316 2114,1310 2085,1257 536,1265"/>
+                <Baseline points="547,1312 2119,1306"/>
+                <TextEquiv>
+                    <Unicode>nach Hause kam, sagte mir meine Frau, dass Sie mich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_37" custom="readingOrder {index:7;} sic {offset:41; length:3;correction:Ihren;}">
+                <Coords points="536,1366 1252,1401 2105,1372 2105,1312 536,1310"/>
+                <Baseline points="547,1356 2111,1363"/>
+                <TextEquiv>
+                    <Unicode>besuchen wollten und gab mir gleichzeitig Ihr Brief.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_41" custom="readingOrder {index:8;} date {offset:4; length:6;when:24.10.1941;}">
+                <Coords points="542,1411 624,1428 655,1411 717,1411 791,1444 822,1426 913,1442 948,1419 948,1376 888,1362 820,1355 775,1370 713,1358 676,1380 604,1360 542,1362"/>
+                <Baseline points="553,1409 952,1415"/>
+                <TextEquiv>
+                    <Unicode>vom 24. d.M.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_45" custom="readingOrder {index:9;} person {offset:33; length:17;} organization {offset:33; length:10;wikiData:Q133269730;}">
+                <Coords points="540,1477 2062,1485 2033,1409 540,1444"/>
+                <Baseline points="551,1476 2067,1482"/>
+                <TextEquiv>
+                    <Unicode>Während meiner Amtstätigkeit als Männerchor Führer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_49" custom="readingOrder {index:10;}">
+                <Coords points="523,1539 2052,1535 2031,1491 1932,1485 523,1475"/>
+                <Baseline points="534,1522 2056,1527"/>
+                <TextEquiv>
+                    <Unicode>habe ich schon so oft Ihr offenes Herz für unsere</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_53" custom="readingOrder {index:11;}">
+                <Coords points="513,1582 2060,1605 2060,1531 513,1545"/>
+                <Baseline points="524,1577 2065,1579"/>
+                <TextEquiv>
+                    <Unicode>Sängersache kennen gelernt. Ich weis, dass keiner</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_57" custom="readingOrder {index:12;}">
+                <Coords points="540,1640 1955,1632 1955,1582 540,1582"/>
+                <Baseline points="551,1630 1960,1630"/>
+                <TextEquiv>
+                    <Unicode>mehr wie Sie unsere Opfer um das deutsche Lied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_61" custom="readingOrder {index:13;}">
+                <Coords points="554,1687 2056,1685 1949,1627 554,1648"/>
+                <Baseline points="566,1678 2061,1680"/>
+                <TextEquiv>
+                    <Unicode>achtet und schätzt. Dies stellen Sie nun wieder</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_65" custom="readingOrder {index:14;}">
+                <Coords points="544,1724 2025,1735 2025,1685 1971,1679 544,1702"/>
+                <Baseline points="555,1724 2029,1733"/>
+                <TextEquiv>
+                    <Unicode>erneut unter Beweis. Schon seit einiger Zeit be-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_69" custom="readingOrder {index:15;}">
+                <Coords points="550,1778 2165,1786 2147,1716 1893,1749 550,1724"/>
+                <Baseline points="561,1775 2170,1783"/>
+                <TextEquiv>
+                    <Unicode>schäftige ich mich mit dem Gedanken, wie wir unseren</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_73" custom="readingOrder {index:16;}">
+                <Coords points="550,1842 2186,1829 2149,1782 550,1778"/>
+                <Baseline points="561,1825 2191,1827"/>
+                <TextEquiv>
+                    <Unicode>Kameraden in Felde zu Weihnachten, dem Fest der Liebe</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_77" custom="readingOrder {index:17;}">
+                <Coords points="542,1873 2179,1899 2159,1823 542,1844"/>
+                <Baseline points="553,1867 2180,1882"/>
+                <TextEquiv>
+                    <Unicode>und des Gebens, eine Freude machen können, welche die</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_81" custom="readingOrder {index:18;}">
+                <Coords points="538,1936 2072,1920 2072,1881 538,1873"/>
+                <Baseline points="549,1918 2077,1920"/>
+                <TextEquiv>
+                    <Unicode>Soldaten, wie Sie richtig schreiben, wirklich ver-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_85" custom="readingOrder {index:19;}">
+                <Coords points="544,1971 2044,1994 2118,1982 2116,1918 542,1934"/>
+                <Baseline points="555,1964 2122,1983"/>
+                <TextEquiv>
+                    <Unicode>dienen. Erst vor zwei Wochen habe ich die Sänger um</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_89" custom="readingOrder {index:20;}">
+                <Coords points="546,2021 1992,2021 1932,1980 546,1973"/>
+                <Baseline points="557,2019 1997,2021"/>
+                <TextEquiv>
+                    <Unicode>Unterstützung beim Zustandekommen der Feldpost-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_93" custom="readingOrder {index:21;}">
+                <Coords points="542,2066 2147,2083 2134,2006 1776,2044 542,2019"/>
+                <Baseline points="553,2065 2149,2065"/>
+                <TextEquiv>
+                    <Unicode>Päckchen gebeten. Nun nehmen Sie mir mit Ihrer hoch-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_97" custom="readingOrder {index:22;}">
+                <Coords points="550,2122 1908,2140 1908,2072 1860,2068 550,2066"/>
+                <Baseline points="561,2109 1913,2115"/>
+                <TextEquiv>
+                    <Unicode>herzigen Spende von RM. 100.-- alle Sorge ab.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_101" custom="readingOrder {index:23;} organization {offset:13; length:5;wikiData:Q20515962;}">
+                <Coords points="546,2177 2151,2192 2149,2138 2058,2116 1224,2155 544,2120"/>
+                <Baseline points="557,2174 2155,2193"/>
+                <TextEquiv>
+                    <Unicode>Im Namen des Chors hiermit meinen aufrichtigen Dank.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_105" custom="readingOrder {index:24;} organization {offset:14; length:14;wikiData:Q133269730;} organization {offset:39; length:6;wikiData:Q53361238;}">
+                <Coords points="546,2233 2068,2254 2068,2200 2011,2192 546,2175"/>
+                <Baseline points="557,2233 2073,2235"/>
+                <TextEquiv>
+                    <Unicode>Ich werde die Vorstandschaft sowie den Verein über-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_109" custom="readingOrder {index:25;}">
+                <Coords points="569,2293 2029,2291 2029,2254 1918,2237 569,2237"/>
+                <Baseline points="580,2288 2035,2292"/>
+                <TextEquiv>
+                    <Unicode>Ihre edle Handlungsweise am kommenden Donnerstag</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_113" custom="readingOrder {index:26;}">
+                <Coords points="546,2340 719,2375 865,2332 1413,2373 1535,2338 2198,2355 2198,2303 2039,2276 546,2289"/>
+                <Baseline points="557,2330 2204,2340"/>
+                <TextEquiv>
+                    <Unicode>orientieren und das Geld dem gedachten Zweck zuführen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_117" custom="readingOrder {index:27;}">
+                <Coords points="544,2420 628,2447 810,2408 952,2445 1061,2410 1473,2414 1473,2363 1263,2334 1220,2367 983,2334 719,2375 674,2342 544,2346"/>
+                <Baseline points="555,2410 1478,2405"/>
+                <TextEquiv>
+                    <Unicode>mit herzlichem Sängergruss und</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_121" custom="readingOrder {index:28;}">
+                <Coords points="1323,2563 1448,2530 1551,2550 1570,2536 1623,2565 1681,2530 1724,2546 1770,2521 1815,2534 1815,2488 1730,2486 1704,2466 1607,2484 1506,2451 1320,2474"/>
+                <Baseline points="1331,2527 1821,2536"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_125" custom="readingOrder {index:29;} person {offset:0; length:17;}">
+                <Coords points="1230,2635 1399,2670 1458,2639 1613,2670 1753,2635 1893,2643 1893,2587 1813,2565 1693,2596 1594,2556 1559,2587 1461,2589 1399,2559 1230,2585"/>
+                <Baseline points="1241,2632 1899,2637"/>
+                <TextEquiv>
+                    <Unicode>Der Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:00</Creator>
+        <Created>2025-01-22T16:58:33.555+01:00</Created>
+        <LastChange>2025-03-16T16:42:38.606+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120192852" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_4"/>
+                <RegionRefIndexed index="2" regionRef="r_5"/>
+                <RegionRefIndexed index="3" regionRef="r_6"/>
+                <RegionRefIndexed index="4" regionRef="r_2"/>
+                <RegionRefIndexed index="5" regionRef="r_3"/>
+                <RegionRefIndexed index="6" regionRef="r_7"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="118,60 1587,60 1587,793 118,793"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:8; continued:true;}">
+                <Coords points="576,246 906,239 1098,264 1170,246 1170,127 1116,127 1094,149 1058,116 996,134 974,116 956,134 576,127"/>
+                <Baseline points="597,229 642,232 686,229 731,229 776,226 821,229 866,229 910,226 955,226 1000,229 1045,229 1090,229 1134,226 1176,229"/>
+                <TextEquiv>
+                    <Unicode>HELVETIA</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:46; continued:true;}">
+                <Coords points="185,308 319,341 1540,322 1540,250 1402,235 1293,272 185,254"/>
+                <Baseline points="203,307 247,304 292,304 337,304 382,307 427,304 471,307 516,304 561,307 606,304 651,307 695,304 740,304 785,304 830,304 875,304 919,304 964,304 1009,307 1054,307 1099,307 1143,307 1188,304 1233,307 1278,307 1323,307 1367,304 1412,304 1457,304 1502,304 1547,301"/>
+                <TextEquiv>
+                    <Unicode>Schweizerische Feuerversicherungs-Gesellschaft</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:2;} organization {offset:0; length:37; continued:true;}">
+                <Coords points="388,384 1362,380 1362,330 1329,326 388,326"/>
+                <Baseline points="406,370 450,367 495,367 540,367 585,367 630,367 675,367 719,367 764,367 809,367 854,367 899,367 943,367 988,367 1033,367 1078,367 1123,367 1167,367 1212,370 1257,370 1302,370 1347,370 1367,373"/>
+                <TextEquiv>
+                    <Unicode>Bezirksdirektion für Baden. Saarpfalz</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_4" custom="readingOrder {index:3;} place {offset:14; length:5;} person {offset:21; length:13;}">
+                <Coords points="391,431 525,460 677,424 1358,456 1358,384 391,384"/>
+                <Baseline points="412,421 456,421 501,418 546,418 591,418 636,421 680,418 725,418 770,418 815,418 860,415 904,418 949,418 994,421 1039,418 1084,424 1128,421 1173,421 1218,421 1263,421 1308,421 1352,421 1367,421"/>
+                <TextEquiv>
+                    <Unicode>und Reg.-Bez. Trier. Dr. jur. Bock</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_5" custom="readingOrder {index:4;} organization {offset:12; length:15;}">
+                <Coords points="569,493 1170,489 1170,431 1148,427 1127,449 1040,427 993,446 884,427 826,449 790,431 627,449 569,431"/>
+                <Baseline points="588,480 633,480 677,477 722,477 767,477 812,477 857,477 901,477 946,474 991,477 1036,477 1081,480 1126,480 1170,483 1179,480"/>
+                <TextEquiv>
+                    <Unicode>Bank-Konten: Deutsche Bank,</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_6" custom="readingOrder {index:5;} organization {offset:0; length:13;} place {offset:15; length:14;}">
+                <Coords points="572,543 1174,540 1174,489 572,493"/>
+                <Baseline points="594,528 639,528 683,528 728,528 773,528 818,528 863,528 907,528 952,528 997,528 1042,528 1087,528 1131,531 1176,531 1182,528"/>
+                <TextEquiv>
+                    <Unicode>Dresdner Bank, Karlsruhe l. B.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_7" custom="readingOrder {index:6;} place {offset:18; length:9;}">
+                <Coords points="467,609 594,587 1268,590 1268,529 1217,522 1134,547 634,547 467,507"/>
+                <Baseline points="489,579 516,576 561,579 606,579 651,579 695,579 740,579 785,576 830,576 875,579 919,579 964,576 1009,576 1054,579 1099,579 1143,579 1188,576 1233,579 1278,576"/>
+                <TextEquiv>
+                    <Unicode>Postscheck-Konto: Karlsruhe Nr. 6838</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_8" custom="readingOrder {index:7;}">
+                <Coords points="565,634 1177,641 1177,590 1127,583 565,590"/>
+                <Baseline points="585,627 630,627 675,627 719,627 764,627 809,627 854,627 899,627 943,627 988,627 1033,627 1078,627 1123,627 1167,627 1185,627"/>
+                <TextEquiv>
+                    <Unicode>Fernruf Nr. 176/ Postfach Nr. 193.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_9" custom="readingOrder {index:8;} organization {offset:11; length:18;}">
+                <Coords points="569,685 677,703 703,688 1181,688 1181,638 569,638"/>
+                <Baseline points="588,677 603,677 648,677 692,677 737,677 782,677 827,677 872,677 916,677 961,677 1006,677 1051,677 1096,677 1140,677 1185,675"/>
+                <TextEquiv>
+                    <Unicode>Telegramme:Helvetia-Karlsruhe</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_4" custom="readingOrder {index:1;}">
+            <Coords points="94,1330 325,1330 325,1495 94,1495"/>
+            <TextLine id="r_4_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="130,1456 149,1456 152,1463 159,1456 188,1463 217,1442 225,1453 232,1449 239,1456 257,1456 261,1369 243,1369 210,1348 196,1358 174,1348 156,1322 138,1322"/>
+                <Baseline points="149,1445 176,1442 221,1442 265,1436"/>
+                <TextEquiv>
+                    <Unicode>./.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_5" custom="readingOrder {index:2;}">
+            <Coords points="162,2276 380,2276 380,2346 162,2346"/>
+            <TextLine id="r_5_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="174,2311 192,2311 206,2326 228,2333 239,2329 246,2340 268,2337 275,2344 286,2344 308,2326 326,2326 326,2253 286,2253 264,2235 235,2253 210,2228 199,2235 178,2235"/>
+                <Baseline points="194,2311 200,2314 244,2311 289,2308 334,2308"/>
+                <TextEquiv>
+                    <Unicode>O/1396</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_6" custom="readingOrder {index:3;}">
+            <Coords points="403,2001 1731,2001 1731,2386 403,2386"/>
+            <TextLine id="r_6_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="409,2177 739,2177 743,2029 641,2083 572,2076 543,2047 514,2072 475,2079 460,2061 435,2083 409,2079"/>
+                <Baseline points="430,2144 436,2141 480,2141 525,2138 570,2138 615,2138 660,2135 704,2135 749,2138"/>
+                <TextEquiv>
+                    <Unicode>Anlagen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_6_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="409,2264 1674,2250 1674,2137 1456,2181 888,2163 840,2210 757,2163 409,2181"/>
+                <Baseline points="430,2246 474,2246 519,2246 564,2246 609,2243 654,2243 698,2243 743,2243 788,2240 833,2243 878,2243 922,2243 967,2240 1012,2240 1057,2240 1102,2240 1146,2240 1191,2240 1236,2243 1281,2240 1326,2240 1370,2240 1415,2240 1460,2240 1505,2240 1550,2240 1594,2240 1639,2240 1684,2243"/>
+                <TextEquiv>
+                    <Unicode>Die erste Ausfertigung bitten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_6_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="406,2315 648,2347 699,2318 753,2369 819,2318 1166,2329 1166,2246 743,2250 706,2282 605,2250 406,2257"/>
+                <Baseline points="427,2314 459,2314 504,2314 549,2314 594,2314 639,2314 683,2314 728,2311 773,2314 818,2311 863,2311 907,2311 952,2311 997,2308 1042,2308 1087,2308 1131,2308 1176,2311"/>
+                <TextEquiv>
+                    <Unicode>wir zu vernichten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:4;}">
+            <Coords points="1535,52 3347,52 3347,961 1535,961"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:0; length:9;} date {offset:15; length:15;when:01.02.1944;}">
+                <Coords points="1884,123 3210,105 3246,109 3271,112 3271,239 2239,243 1884,225"/>
+                <Baseline points="1902,206 1947,209 1992,209 2036,212 2081,209 2126,209 2171,209 2216,212 2260,212 2305,212 2350,212 2395,212 2440,212 2484,209 2529,209 2574,206 2619,209 2664,209 2708,209 2753,209 2798,209 2810,206 3079,209 3124,206 3168,206 3213,206 3258,206 3276,209"/>
+                <TextEquiv>
+                    <Unicode>KARLSRUHE, den 1. Februar 1944.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:1;} place {offset:0; length:5; continued:true;}">
+                <Coords points="1608,228 1627,228 1674,254 1732,235 1753,254 1782,232 1815,235 1815,130 1797,130 1782,145 1753,145 1739,130 1724,145 1699,145 1670,120 1605,98"/>
+                <Baseline points="1630,215 1675,212 1720,218 1765,215 1809,215 1824,215"/>
+                <TextEquiv>
+                    <Unicode>(17a)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_4" custom="readingOrder {index:2;} place {offset:0; length:16; continued:true;}">
+                <Coords points="1884,283 1924,293 1956,279 2235,279 2235,228 2206,221 2177,232 2141,221 2108,232 1884,225"/>
+                <Baseline points="1905,265 1929,262 1974,262 2019,262 2063,262 2108,259 2153,262 2198,262 2243,262"/>
+                <TextEquiv>
+                    <Unicode>Leopoldstraße 48</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_5" custom="readingOrder {index:3;} place {offset:16; length:27;}">
+                <Coords points="1869,449 2677,442 2797,485 2851,442 2967,475 3097,442 3097,384 2905,384 2862,341 2626,388 1869,384"/>
+                <Baseline points="1890,430 1935,433 1980,430 2025,430 2069,430 2114,433 2159,433 2204,433 2249,433 2293,433 2338,433 2383,433 2428,430 2473,430 2517,430 2562,433 2607,433 2652,433 2697,433 2741,433 2786,433 2831,433 2876,430 2921,430 2965,430 3010,430 3055,430 3100,430 3103,430"/>
+                <TextEquiv>
+                    <Unicode>Abs.: HELVETIA. Karlsruhe, Leopoldstraße 48</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_6" custom="readingOrder {index:4;}">
+                <Coords points="1837,536 1869,536 1895,551 1960,529 1982,551 2007,536 2130,536 2130,453 2105,446 2061,449 2043,467 2003,446 1978,471 1934,449 1887,449 1858,471 1837,471"/>
+                <Baseline points="1857,522 1902,522 1947,522 1992,519 2036,519 2081,519 2126,519 2138,522"/>
+                <TextEquiv>
+                    <Unicode>An den</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_7" custom="readingOrder {index:5;} organization {offset:0; length:15; continued:true;wikiData:Q133269730;}">
+                <Coords points="1844,641 2322,627 2503,659 2503,569 2405,572 2376,543 2318,569 2271,543 2217,572 2181,547 2145,572 1844,547"/>
+                <Baseline points="1863,627 1908,627 1953,630 1998,627 2042,627 2087,627 2132,627 2177,627 2222,627 2266,624 2311,627 2356,624 2401,624 2446,627 2490,624 2514,630"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_8" custom="readingOrder {index:6;} organization {offset:0; length:28; continued:true;wikiData:Q133269730;}">
+                <Coords points="1855,714 3065,714 3068,601 2938,641 2902,605 2797,641 1858,641"/>
+                <Baseline points="1878,701 1914,701 1959,698 2004,695 2048,695 2093,695 2138,698 2183,695 2228,695 2272,695 2317,692 2362,692 2407,692 2452,692 2496,695 2541,692 2586,692 2631,692 2676,692 2720,689 2765,689 2810,689 2855,689 2900,689 2944,689 2989,689 3034,692 3079,692"/>
+                <TextEquiv>
+                    <Unicode>(Alter Schweizer Männerchor)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_9" custom="readingOrder {index:7;} place {offset:0; length:4;} organization {offset:7; length:13;}">
+                <Coords points="1844,837 2858,830 2858,724 2557,746 2500,721 2434,750 2246,714 2188,772 1844,721"/>
+                <Baseline points="1863,800 1881,800 1926,803 1971,803 2016,803 2060,806 2105,803 2150,803 2195,806 2240,806 2284,806 2329,803 2374,800 2419,803 2464,803 2508,800 2553,800 2598,797 2643,797 2688,797 2732,797 2777,797 2822,797 2867,797"/>
+                <TextEquiv>
+                    <Unicode>Murg / Amt Säckingen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_10" custom="readingOrder {index:8;}">
+                <Coords points="1561,848 1594,844 1616,859 1648,862 1699,815 1721,819 1746,844 1764,844 1761,724 1742,724 1721,746 1666,706 1648,717 1558,724"/>
+                <Baseline points="1582,806 1627,803 1672,803 1717,803 1762,806 1774,809"/>
+                <TextEquiv>
+                    <Unicode>(17a)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_11" custom="readingOrder {index:9;}">
+                <Coords points="1840,920 1934,953 2047,916 2271,906 2300,927 2416,924 2416,844 2384,833 2297,833 2253,877 2152,837 1840,840"/>
+                <Baseline points="1860,901 1905,904 1950,904 1995,904 2039,901 2084,904 2129,907 2174,904 2219,904 2263,907 2308,907 2353,907 2398,904 2422,907"/>
+                <TextEquiv>
+                    <Unicode>Hauptstr. 55.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:5;}">
+            <Coords points="246,995 3475,995 3475,1893 246,1893"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="406,1123 2471,1127 2413,1036 2097,1069 1945,1011 1652,1061 1583,1014 1290,1061 967,1040 916,1076 721,1036 627,1072 493,1014 406,1047"/>
+                <Baseline points="427,1120 445,1120 489,1120 534,1120 579,1120 624,1123 669,1117 686,1117 731,1120 776,1117 821,1120 866,1117 910,1117 955,1117 1000,1114 1045,1114 1090,1114 1134,1114 1179,1114 1224,1114 1269,1114 1314,1114 1358,1114 1403,1114 1448,1114 1493,1114 1538,1114 1582,1114 1627,1114 1672,1111 1717,1114 1762,1111 1806,1111 1851,1111 1896,1111 1941,1111 1986,1114 2030,1111 2075,1111 2120,1111 2165,1111 2210,1114 2254,1111 2299,1111 2344,1111 2389,1111 2434,1114 2479,1117"/>
+                <TextEquiv>
+                    <Unicode>Betr. Ihren Feuerversicherungsschein Nr. 405121.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;} date {offset:18; length:9;when:29.01.1944;}">
+                <Coords points="670,1221 1782,1221 1753,1119 1598,1148 1532,1116 670,1130"/>
+                <Baseline points="689,1188 716,1185 761,1185 806,1188 851,1191 896,1188 940,1185 985,1185 1030,1188 1075,1185 1120,1185 1164,1185 1209,1182 1254,1185 1299,1188 1344,1185 1388,1182 1433,1191 1478,1185 1523,1185 1568,1188 1612,1191 1657,1188 1702,1185 1747,1182 1792,1182"/>
+                <TextEquiv>
+                    <Unicode>Ihr Schreiben vom 29. v. M.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="674,1297 3322,1297 3322,1221 3170,1203 2836,1239 1282,1221 1098,1264 982,1221 674,1221"/>
+                <Baseline points="695,1290 731,1290 776,1290 821,1290 866,1287 910,1290 955,1287 1000,1290 1045,1287 1090,1290 1134,1290 1179,1287 1224,1290 1269,1287 1314,1287 1358,1287 1403,1287 1448,1287 1493,1287 1538,1287 1582,1287 1627,1287 1672,1287 1717,1284 1762,1287 1806,1287 1851,1287 1896,1284 1941,1284 1986,1284 2030,1284 2075,1287 2120,1284 2165,1284 2210,1284 2254,1284 2299,1284 2344,1284 2389,1287 2434,1284 2479,1284 2523,1284 2568,1287 2613,1284 2658,1284 2703,1284 2747,1284 2792,1284 2837,1284 2882,1284 2927,1284 2971,1284 3016,1284 3061,1284 3106,1284 3151,1284 3195,1287 3240,1284 3285,1287 3330,1287"/>
+                <TextEquiv>
+                    <Unicode>Unter den geschilderten Umständen wollen wir Ihnen noch weiter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;} textStyle {offset:41; length:3;superscript:true;}">
+                <Coords points="420,1373 3325,1366 3325,1297 3047,1282 420,1311"/>
+                <Baseline points="439,1361 468,1364 513,1364 558,1364 603,1358 648,1358 692,1361 737,1361 782,1361 827,1361 872,1358 916,1358 961,1358 1006,1358 1051,1358 1096,1358 1140,1358 1185,1358 1230,1358 1275,1355 1320,1355 1364,1355 1409,1355 1454,1355 1499,1358 1544,1355 1588,1355 1633,1358 1678,1358 1723,1355 1768,1355 1812,1352 1857,1352 1902,1352 1947,1352 1992,1355 2036,1355 2081,1355 2126,1355 2171,1358 2216,1355 2260,1355 2305,1355 2350,1355 2395,1358 2440,1355 2484,1355 2529,1355 2574,1355 2619,1355 2664,1355 2708,1355 2753,1352 2798,1355 2843,1352 2888,1355 2932,1352 2977,1352 3022,1352 3067,1355 3112,1358 3156,1358 3201,1355 3246,1352 3291,1347 3336,1344"/>
+                <TextEquiv>
+                    <Unicode>entgegenkommen und die Grundprämie von 1 1/2 auf 1‰  herabsetzen. Mit-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="420,1449 3112,1442 3228,1427 3231,1377 424,1369"/>
+                <Baseline points="439,1430 459,1430 504,1430 549,1430 594,1433 639,1433 683,1430 728,1430 773,1430 818,1430 863,1427 907,1430 952,1430 997,1427 1042,1427 1087,1427 1131,1427 1176,1427 1221,1427 1266,1427 1311,1427 1355,1427 1400,1424 1445,1424 1490,1424 1535,1424 1579,1424 1624,1424 1669,1424 1714,1424 1759,1424 1803,1427 1848,1424 1893,1424 1938,1424 1983,1421 2028,1421 2072,1421 2117,1421 2162,1421 2207,1421 2252,1421 2296,1421 2341,1421 2386,1421 2431,1421 2476,1421 2520,1421 2565,1421 2610,1421 2655,1421 2700,1421 2744,1421 2789,1424 2834,1424 2879,1421 2924,1424 2968,1424 3013,1421 3058,1424 3103,1421 3148,1421 3192,1421 3237,1415"/>
+                <TextEquiv>
+                    <Unicode>folgend übersenden wir Ihnen entsprechend umgearbeiteten Versiche-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="409,1514 2753,1496 3036,1507 3083,1547 3257,1514 3257,1431 409,1453"/>
+                <Baseline points="430,1499 442,1499 486,1502 531,1502 576,1502 621,1502 666,1502 710,1499 755,1499 800,1499 845,1499 890,1499 934,1496 979,1499 1024,1499 1069,1496 1114,1496 1158,1496 1203,1499 1248,1496 1293,1496 1338,1496 1382,1499 1427,1496 1472,1493 1517,1493 1562,1493 1606,1493 1651,1493 1696,1496 1741,1493 1786,1493 1830,1493 1875,1493 1920,1496 1965,1493 2010,1493 2054,1493 2099,1493 2144,1493 2189,1493 2234,1493 2278,1490 2323,1490 2368,1493 2413,1493 2458,1493 2502,1493 2547,1493 2592,1490 2637,1493 2682,1493 2726,1496 2771,1496 2816,1496 2861,1493 2906,1496 2950,1496 2995,1496 3040,1496 3085,1496 3130,1496 3174,1496 3219,1496 3264,1496"/>
+                <TextEquiv>
+                    <Unicode>rungsschein Nr. 405121, wodurch wir auch die sonstigen angezeigten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="413,1594 1616,1576 1616,1511 1478,1500 576,1525 475,1496 413,1532"/>
+                <Baseline points="433,1574 459,1574 504,1571 549,1571 594,1571 639,1571 683,1571 728,1571 773,1568 818,1568 863,1568 907,1568 952,1568 997,1565 1042,1565 1087,1565 1131,1565 1176,1565 1221,1565 1266,1565 1311,1565 1355,1565 1400,1565 1445,1565 1490,1562 1535,1565 1579,1565 1624,1568"/>
+                <TextEquiv>
+                    <Unicode>Änderungen berücksichtigten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;}">
+                <Coords points="670,1670 2858,1648 2858,1550 1974,1579 1670,1543 1561,1601 670,1579"/>
+                <Baseline points="689,1636 716,1636 761,1636 806,1639 851,1639 896,1639 940,1639 985,1636 1030,1633 1075,1633 1120,1633 1164,1633 1209,1633 1254,1633 1299,1633 1344,1633 1388,1630 1433,1633 1478,1633 1523,1630 1568,1633 1612,1633 1657,1633 1702,1633 1747,1633 1792,1630 1836,1630 1881,1630 1926,1630 1971,1633 2016,1633 2060,1630 2105,1630 2150,1630 2195,1627 2240,1630 2284,1630 2329,1630 2374,1630 2419,1630 2464,1630 2508,1633 2553,1633 2598,1633 2643,1633 2688,1633 2732,1630 2777,1630 2822,1630 2867,1630"/>
+                <TextEquiv>
+                    <Unicode>Unser Netto-Guthaben ermässigt sich von RM 3.65 auf</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_9" custom="readingOrder {index:8;}">
+                <Coords points="1558,1775 1601,1786 1627,1771 1666,1793 1710,1775 1891,1775 1891,1663 1793,1666 1771,1688 1750,1666 1692,1666 1666,1645 1616,1666 1558,1666"/>
+                <Baseline points="1577,1738 1621,1738 1666,1741 1711,1738 1756,1741 1801,1738 1845,1738 1890,1738 1899,1741"/>
+                <TextEquiv>
+                    <Unicode>RM 2.10</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_10" custom="readingOrder {index:9;}">
+                <Coords points="424,1876 692,1891 761,1851 924,1895 1058,1855 1123,1884 1210,1847 1742,1844 1963,1851 2039,1905 2188,1840 2286,1876 2818,1858 2818,1724 2699,1786 2652,1750 2329,1779 2289,1739 1674,1793 424,1761"/>
+                <Baseline points="442,1848 453,1848 498,1848 543,1848 588,1848 633,1848 677,1848 722,1848 767,1851 812,1848 857,1848 901,1848 946,1848 991,1851 1036,1851 1081,1848 1126,1848 1170,1845 1215,1845 1260,1845 1305,1842 1350,1842 1394,1842 1439,1842 1484,1842 1529,1842 1574,1845 1618,1842 1663,1845 1708,1842 1753,1842 1798,1842 1842,1842 1887,1842 1932,1842 1977,1839 2022,1842 2066,1839 2111,1842 2156,1839 2201,1839 2246,1839 2290,1842 2335,1842 2380,1842 2425,1842 2470,1842 2514,1842 2559,1842 2604,1842 2649,1842 2694,1842 2738,1842 2783,1842 2828,1845"/>
+                <TextEquiv>
+                    <Unicode>welchen Betrag Sie uns nunmehr überweisen lassen wollen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_7" custom="readingOrder {index:6;}">
+            <Coords points="1773,1885 3231,1885 3231,2430 1773,2430"/>
+            <TextLine id="r_7_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="2141,1985 2297,2007 2322,1985 2351,2000 2384,1978 2456,2039 2536,2014 2568,2025 2605,1989 2644,2003 2644,1916 2557,1920 2529,1895 2478,1916 2308,1898 2260,1920 2141,1916"/>
+                <Baseline points="2162,1983 2207,1980 2252,1986 2296,1983 2341,1986 2386,1983 2431,1986 2476,1986 2520,1986 2565,1986 2610,1983 2763,1983"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_7_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:8; continued:true;}">
+                <Coords points="2087,2083 2192,2054 2706,2068 2742,2054 2749,1905 2626,1996 2423,1996 2380,1974 2351,2003 2326,1985 2188,2000 2166,1978 2087,2032"/>
+                <Baseline points="2105,2066 2129,2063 2174,2051 2219,2051 2263,2051 2308,2051 2353,2051 2398,2051 2443,2048 2487,2051 2532,2045 2577,2039 2622,2042 2667,2039 2711,2028 2756,2022"/>
+                <TextEquiv>
+                    <Unicode>HELVETIA</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_7_tl_3" custom="readingOrder {index:2;} organization {offset:0; length:46; continued:true;}">
+                <Coords points="1768,2145 2749,2137 3079,2184 3079,2087 2960,2054 2858,2090 2782,2054 2742,2090 2666,2058 1768,2072"/>
+                <Baseline points="1789,2132 1833,2129 1878,2132 1923,2132 1968,2132 2013,2132 2057,2132 2102,2132 2147,2132 2192,2132 2237,2132 2281,2132 2326,2132 2371,2132 2416,2132 2461,2132 2505,2132 2550,2132 2595,2132 2640,2132 2685,2132 2729,2129 2774,2132 2819,2129 2864,2129 2909,2129 2953,2129 2998,2129 3043,2129 3088,2132"/>
+                <TextEquiv>
+                    <Unicode>Schweizerische Feuerversicherungs-Gesellschaft</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_7_tl_4" custom="readingOrder {index:3;} organization {offset:0; length:16; continued:true;}">
+                <Coords points="2155,2202 2253,2231 2329,2206 2681,2199 2775,2224 2775,2163 2423,2145 2369,2170 2329,2130 2268,2163 2155,2148"/>
+                <Baseline points="2177,2198 2222,2198 2266,2198 2311,2195 2356,2195 2401,2195 2446,2195 2490,2195 2535,2195 2580,2198 2625,2198 2670,2198 2714,2204 2759,2207 2783,2207"/>
+                <TextEquiv>
+                    <Unicode>Bezirkedirektion</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_7_tl_5" custom="readingOrder {index:4;} organization {offset:0; length:36; continued:true;}">
+                <Coords points="1804,2279 3039,2297 3039,2224 2960,2181 2909,2228 2836,2181 2786,2228 2688,2195 2659,2228 1804,2221"/>
+                <Baseline points="1824,2263 1869,2266 1914,2266 1959,2269 2004,2269 2048,2266 2093,2269 2138,2269 2183,2269 2228,2269 2272,2269 2317,2269 2362,2269 2407,2269 2452,2269 2496,2269 2541,2269 2586,2269 2631,2269 2676,2272 2720,2269 2765,2269 2810,2269 2855,2269 2900,2269 2944,2266 2989,2266 3034,2266 3049,2263"/>
+                <TextEquiv>
+                    <Unicode>für Baden-Saarpfalz-Regierungsbezirk</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_7_tl_6" custom="readingOrder {index:5;} unclear {offset:0; length:4;} Signature {offset:0; length:4;}">
+                <Coords points="2340,2315 2358,2311 2384,2333 2413,2315 2485,2315 2597,2347 2677,2337 2673,2279 2634,2286 2619,2308 2583,2279 2481,2286 2394,2268 2340,2282"/>
+                <Baseline points="2359,2308 2404,2311 2449,2314 2493,2317 2538,2323 2583,2329 2628,2335 2673,2335 2685,2332"/>
+                <TextEquiv>
+                    <Unicode>mmly</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

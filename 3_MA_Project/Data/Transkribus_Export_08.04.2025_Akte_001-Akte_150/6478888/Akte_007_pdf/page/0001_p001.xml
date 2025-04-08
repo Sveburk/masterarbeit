@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:22</Creator>
+        <Created>2025-01-22T16:57:21.784+01:00</Created>
+        <LastChange>2025-03-31T13:42:50.463+02:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120185230" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r_4"/>
+                <RegionRefIndexed index="1" regionRef="r_5"/>
+                <RegionRefIndexed index="2" regionRef="r_6"/>
+                <RegionRefIndexed index="3" regionRef="r_2"/>
+                <RegionRefIndexed index="4" regionRef="r_3"/>
+                <RegionRefIndexed index="5" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_4" custom="readingOrder {index:0;}">
+            <Coords points="170,170 873,170 873,438 170,438"/>
+            <TextLine id="r_4_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:18;}">
+                <Coords points="194,286 356,312 385,293 808,298 808,235 774,218 707,235 656,211 624,237 525,206 457,235 370,218 336,240 300,211 194,215"/>
+                <Baseline points="208,280 253,280 298,280 343,283 388,280 432,280 477,277 522,280 567,280 612,277 656,277 701,277 746,280 791,277 815,280"/>
+                <TextEquiv>
+                    <Unicode>Sängergau XV Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_2" custom="readingOrder {index:1;} organization {offset:3; length:24;} abbrev {offset:3; length:3;expansion:National;} abbrev {offset:8; length:3;expansion:sozialistischen;}">
+                <Coords points="235,348 803,353 803,298 726,317 607,298 235,307"/>
+                <Baseline points="247,337 292,340 337,340 382,343 426,343 471,340 516,340 561,340 606,340 650,337 695,340 740,340 785,340 809,340"/>
+                <TextEquiv>
+                    <Unicode>im Nat. soz. Volkskulturwerk.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_3" custom="readingOrder {index:2;} organization {offset:1; length:23;}">
+                <Coords points="273,397 404,394 440,419 491,402 617,404 639,421 702,399 755,407 755,351 649,365 424,348 273,358"/>
+                <Baseline points="286,391 331,391 376,391 420,391 465,391 510,391 555,391 600,394 644,391 689,391 734,394 761,394"/>
+                <TextEquiv>
+                    <Unicode>(Bad. Sängerbund, e. V.)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_5" custom="readingOrder {index:1;}">
+            <Coords points="1389,39 2304,39 2304,206 1389,206"/>
+            <TextLine id="r_5_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1421,152 1609,167 1786,136 1905,174 2001,133 2173,152 2173,102 2057,97 2001,39 1931,90 1846,63 1757,94 1675,34 1512,58 1486,36 1423,75"/>
+                <Baseline points="1433,146 1462,143 1507,143 1552,143 1597,140 1642,140 1686,140 1731,137 1776,137 1821,134 1865,134 1910,131 1955,134 2000,134 2045,134 2089,134 2134,134 2179,137"/>
+                <TextEquiv>
+                    <Unicode>Aufbewahren.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_6" custom="readingOrder {index:2;}">
+            <Coords points="1445,224 2325,224 2325,355 1445,355"/>
+            <TextLine id="r_6_tl_1" custom="readingOrder {index:0;} place {offset:0; length:8;wikiData:Q7059;} place {offset:8; length:15;} date {offset:28; length:12;when:31.05.1944;}">
+                <Coords points="1442,259 1883,269 2067,332 2142,295 2178,315 2277,290 2275,230 2028,230 1999,254 1909,215 1764,235 1684,213 1653,242 1607,206 1440,208"/>
+                <Baseline points="1456,256 1501,256 1546,256 1591,256 1636,259 1680,259 1725,259 1770,259 1815,259 1859,262 1904,265 1949,274 1994,277 2039,280 2083,280 2128,280 2173,280 2218,280 2263,280 2280,280"/>
+                <TextEquiv>
+                    <Unicode>Bruchsal. Kaiserstr. 10 den 31 Mai 1944.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_6_tl_2" custom="readingOrder {index:1;} place {offset:0; length:22;}">
+                <Coords points="1445,312 1646,329 1667,317 1679,329 1866,322 1866,273 1445,273"/>
+                <Baseline points="1459,307 1504,307 1549,307 1594,307 1639,307 1683,307 1728,307 1773,307 1818,307 1862,307 1871,310"/>
+                <TextEquiv>
+                    <Unicode>Karlsruhe, Klosestr. I</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:3;}">
+            <Coords points="638,542 2009,542 2009,805 638,805"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="656,622 707,617 724,634 753,629 762,620 811,622 811,561 789,561 757,537 748,537 726,559 714,554 702,561 656,561"/>
+                <Baseline points="668,606 713,609 758,609 803,606 815,606"/>
+                <TextEquiv>
+                    <Unicode>An alle</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="656,697 1372,731 1861,692 1895,724 1917,636 1268,629 1215,668 656,634"/>
+                <Baseline points="668,680 713,686 758,686 803,686 847,689 892,689 937,689 982,692 1027,692 1071,695 1116,695 1161,692 1206,692 1250,692 1295,689 1340,689 1385,689 1430,686 1474,686 1519,686 1564,686 1609,683 1653,686 1698,686 1743,683 1788,683 1833,683 1877,683 1922,680"/>
+                <TextEquiv>
+                    <Unicode>Sängerkreisgruppen, Sängerkreise und Chörer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;} organization {offset:3; length:18;}">
+                <Coords points="646,760 726,777 753,757 806,808 1067,765 1128,803 1181,770 1307,803 1365,791 1365,728 1292,704 1016,731 770,697 733,726 646,707"/>
+                <Baseline points="659,758 704,758 749,755 794,758 838,761 883,758 928,761 973,761 1018,761 1062,761 1107,764 1152,761 1197,758 1241,761 1286,758 1331,758 1370,758"/>
+                <TextEquiv>
+                    <Unicode>im Sängergau XV Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:4;}">
+            <Coords points="238,829 2396,829 2396,2626 238,2626"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="385,917 472,953 532,924 581,951 656,929 709,970 760,929 1137,937 1135,845 1089,876 869,862 828,883 796,854 733,886 382,852"/>
+                <Baseline points="397,910 441,913 486,913 531,913 576,916 620,916 665,919 710,916 755,919 800,919 844,922 889,922 934,922 979,922 1024,925 1068,925 1113,925 1143,925"/>
+                <TextEquiv>
+                    <Unicode>Liebe Sangeskameraden!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;} Event {offset:30; length:38;}">
+                <Coords points="392,1041 2258,1031 2258,978 2086,953 2038,987 1946,941 1868,997 1583,961 1534,1002 1130,1002 1087,961 975,1004 612,985 559,941 494,987 392,980"/>
+                <Baseline points="406,1021 450,1021 495,1021 540,1021 585,1024 629,1024 674,1027 719,1027 764,1027 809,1027 853,1027 898,1030 943,1032 988,1032 1032,1030 1077,1032 1122,1032 1167,1030 1212,1032 1256,1030 1301,1030 1346,1030 1391,1032 1436,1030 1480,1030 1525,1030 1570,1030 1615,1030 1659,1030 1704,1030 1749,1030 1794,1030 1839,1027 1883,1027 1928,1027 1973,1027 2018,1027 2063,1027 2107,1024 2152,1024 2197,1021 2242,1021 2263,1021"/>
+                <TextEquiv>
+                    <Unicode>Da die Abhaltung der üblichen Jahres-Hauptversammlung (Gausängertag) aus kriegsbedingten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="315,1089 2238,1096 2238,1028 1159,1067 315,1033"/>
+                <Baseline points="328,1074 373,1080 417,1080 462,1080 507,1080 552,1077 597,1080 641,1080 686,1083 731,1083 776,1083 821,1086 865,1086 910,1086 955,1089 1000,1089 1044,1089 1089,1089 1134,1089 1179,1089 1224,1089 1268,1089 1313,1089 1358,1089 1403,1086 1447,1089 1492,1089 1537,1089 1582,1089 1627,1089 1671,1086 1716,1086 1761,1086 1806,1086 1851,1083 1895,1083 1940,1083 1985,1083 2030,1083 2074,1077 2119,1080 2164,1080 2209,1080 2245,1077"/>
+                <TextEquiv>
+                    <Unicode>Gründen (Reise-Einschränkungen) auch in diesem Jahre nicht stattfinden kann, wollen wir mit</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;} Event {offset:65; length:25;date:27.09.1942;}">
+                <Coords points="317,1145 2263,1152 2263,1099 2195,1091 1670,1125 317,1096"/>
+                <Baseline points="331,1137 376,1140 420,1140 465,1140 510,1140 555,1140 600,1140 644,1140 689,1140 734,1143 779,1143 824,1146 868,1146 913,1146 958,1146 1003,1146 1047,1146 1092,1146 1137,1146 1182,1146 1227,1146 1271,1146 1316,1143 1361,1146 1406,1146 1450,1146 1495,1146 1540,1146 1585,1146 1630,1146 1674,1146 1719,1146 1764,1146 1809,1146 1854,1146 1898,1146 1943,1143 1988,1143 2033,1143 2077,1143 2122,1140 2167,1140 2212,1140 2257,1140 2266,1140"/>
+                <TextEquiv>
+                    <Unicode>sem Kundschreiben die wichtigsten Begebenheiten seit dem letzten Gausängertag am 27.9.1942</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;} date {offset:56; length:11;when:03.10.1942;}">
+                <Coords points="315,1210 530,1251 603,1200 1041,1244 1181,1208 1897,1217 1897,1169 1701,1154 315,1174"/>
+                <Baseline points="328,1194 373,1197 417,1197 462,1200 507,1200 552,1200 597,1200 641,1203 686,1203 731,1203 776,1203 821,1203 865,1203 910,1206 955,1206 1000,1206 1044,1206 1089,1203 1134,1206 1179,1203 1224,1206 1268,1206 1313,1203 1358,1203 1403,1200 1447,1200 1492,1203 1537,1203 1582,1206 1627,1203 1671,1206 1716,1203 1761,1203 1806,1203 1851,1203 1895,1206 1901,1206"/>
+                <TextEquiv>
+                    <Unicode>bekanntgeben und nehmen hierbei auf das Rundschreiben vom 3.10.1942 Bezug.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="1031,1341 1094,1338 1113,1358 1147,1341 1179,1362 1220,1341 1321,1343 1341,1362 1413,1341 1505,1353 1544,1343 1546,1278 1314,1275 1285,1300 1266,1275 1079,1285 1033,1258"/>
+                <Baseline points="1044,1331 1089,1331 1134,1331 1179,1331 1224,1331 1268,1331 1313,1331 1358,1331 1403,1331 1447,1331 1492,1328 1537,1328 1549,1331"/>
+                <TextEquiv>
+                    <Unicode>I. Organisatorisches</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;} organization {offset:30; length:11;}">
+                <Coords points="392,1418 2241,1421 2241,1348 1263,1384 1036,1338 961,1382 881,1346 828,1382 392,1387"/>
+                <Baseline points="406,1406 450,1409 495,1409 540,1409 585,1409 629,1412 674,1412 719,1412 764,1412 809,1409 853,1409 898,1412 943,1409 988,1412 1032,1409 1077,1409 1122,1412 1167,1409 1212,1409 1256,1412 1301,1412 1346,1412 1391,1412 1436,1412 1480,1412 1525,1412 1570,1412 1615,1412 1659,1412 1704,1412 1749,1412 1794,1412 1839,1412 1883,1412 1928,1412 1973,1412 2018,1409 2063,1412 2107,1412 2152,1409 2197,1409 2242,1406 2245,1406"/>
+                <TextEquiv>
+                    <Unicode>a) In der Zusammensetzung des Führerrates und der Führung der Geschäftsstelle</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;} date {offset:41; length:10;when:03.10.1942;}">
+                <Coords points="363,1469 1041,1512 1336,1469 1880,1483 1929,1515 2084,1474 2084,1423 433,1445 363,1413"/>
+                <Baseline points="376,1459 420,1465 465,1468 510,1468 555,1468 600,1468 644,1468 689,1468 734,1468 779,1468 824,1468 868,1468 913,1471 958,1471 1003,1471 1047,1468 1092,1468 1137,1468 1182,1468 1227,1468 1271,1468 1316,1468 1361,1468 1406,1471 1450,1471 1495,1468 1540,1471 1585,1468 1630,1471 1674,1471 1719,1471 1764,1471 1809,1471 1854,1471 1898,1471 1943,1471 1988,1468 2033,1468 2077,1468 2089,1468"/>
+                <TextEquiv>
+                    <Unicode>s. Abschn. I. Ziff. 1.-6. des Rdschr. v. 3.10. 1942 — sind Änderungen nicht eingetreten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_9" custom="readingOrder {index:8;} organization {offset:21; length:11;}">
+                <Coords points="392,1556 581,1578 632,1563 675,1588 724,1558 1055,1571 1055,1512 985,1491 881,1486 849,1510 578,1491 549,1510 453,1486 392,1505"/>
+                <Baseline points="406,1543 450,1546 495,1546 540,1549 585,1549 629,1549 674,1549 719,1546 764,1549 809,1549 853,1552 898,1552 943,1552 988,1552 1032,1552 1062,1552"/>
+                <TextEquiv>
+                    <Unicode>b) Neueinteilung des Sängergaues.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_10" custom="readingOrder {index:9;} organization {offset:49; length:3;}">
+                <Coords points="399,1626 2238,1624 2238,1561 1551,1595 399,1563"/>
+                <Baseline points="412,1612 453,1612 498,1612 543,1612 588,1615 632,1615 677,1615 722,1615 767,1615 812,1615 856,1615 901,1615 946,1618 991,1618 1035,1615 1080,1618 1125,1618 1170,1618 1215,1618 1259,1618 1304,1618 1349,1618 1394,1618 1439,1615 1483,1618 1528,1618 1573,1618 1618,1618 1662,1618 1707,1618 1752,1618 1797,1618 1842,1618 1886,1618 1931,1618 1976,1618 2021,1618 2065,1615 2110,1615 2155,1615 2200,1615 2245,1609"/>
+                <TextEquiv>
+                    <Unicode>Entsprechend der Forderung der neuen Satzung des DSB, daß die bisherigen Sängerkreise</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_11" custom="readingOrder {index:10;} organization {offset:32; length:5;wikiData:Q7320;}">
+                <Coords points="324,1694 2234,1689 2234,1631 324,1621"/>
+                <Baseline points="337,1671 382,1668 426,1668 471,1671 516,1671 561,1671 606,1671 650,1671 695,1671 740,1671 785,1671 829,1671 874,1674 919,1674 964,1674 1009,1674 1053,1674 1098,1671 1143,1674 1188,1671 1233,1674 1277,1674 1322,1674 1367,1674 1412,1671 1456,1674 1501,1674 1546,1674 1591,1674 1636,1671 1680,1674 1725,1674 1770,1671 1815,1674 1859,1674 1904,1674 1949,1671 1994,1674 2039,1674 2083,1671 2128,1674 2173,1674 2218,1671 2239,1671"/>
+                <TextEquiv>
+                    <Unicode>gebietlich nach den Kreisen der NSDAP ausgerichtet werden, mußten unsere bisherigen 14 Sänger-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_12" custom="readingOrder {index:11;}">
+                <Coords points="315,1750 2226,1750 2226,1689 315,1692"/>
+                <Baseline points="328,1725 373,1725 417,1725 462,1725 507,1725 552,1728 597,1725 641,1725 686,1728 731,1725 776,1728 821,1728 865,1731 910,1731 955,1731 1000,1731 1044,1731 1089,1731 1134,1731 1179,1731 1224,1734 1268,1731 1313,1731 1358,1731 1403,1731 1447,1731 1492,1731 1537,1731 1582,1731 1627,1731 1671,1731 1716,1731 1761,1731 1806,1731 1851,1731 1895,1731 1940,1731 1985,1731 2030,1731 2074,1731 2119,1728 2164,1731 2209,1728 2233,1725"/>
+                <TextEquiv>
+                    <Unicode>kreise so aufgeteilt werden, daß deren Gebiete genau mit den Gebieten der politischen Kreise über-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_13" custom="readingOrder {index:12;}">
+                <Coords points="322,1793 2236,1808 2236,1747 2193,1742 322,1762"/>
+                <Baseline points="334,1785 379,1785 423,1785 468,1785 513,1785 558,1785 603,1785 647,1788 692,1785 737,1785 782,1785 826,1788 871,1785 916,1788 961,1788 1006,1788 1050,1788 1095,1788 1140,1788 1185,1788 1230,1788 1274,1788 1319,1788 1364,1788 1409,1788 1453,1788 1498,1788 1543,1788 1588,1788 1633,1788 1677,1788 1722,1791 1767,1791 1812,1788 1857,1791 1901,1788 1946,1788 1991,1788 2036,1788 2080,1788 2125,1788 2170,1788 2215,1788 2242,1785"/>
+                <TextEquiv>
+                    <Unicode>einstimmten. Dadurch war die Aufteilung bzw. Abgrenzung in 27 Sängerkreise und eine teilweise</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_14" custom="readingOrder {index:13;}">
+                <Coords points="312,1856 2236,1859 2212,1800 312,1788"/>
+                <Baseline points="325,1842 370,1845 414,1842 459,1842 504,1839 549,1842 594,1842 638,1845 683,1842 728,1845 773,1842 818,1845 862,1845 907,1845 952,1845 997,1845 1041,1845 1086,1845 1131,1845 1176,1845 1221,1845 1265,1845 1310,1845 1355,1845 1400,1845 1444,1845 1489,1848 1534,1845 1579,1848 1624,1848 1668,1848 1713,1848 1758,1848 1803,1848 1848,1848 1892,1848 1937,1845 1982,1845 2027,1845 2071,1845 2116,1845 2161,1848 2206,1845 2242,1842"/>
+                <TextEquiv>
+                    <Unicode>Zusammenfassung in Sängerkreisgruppen notwendig und damit auch die Zuteilung einzelner Chöre</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="322,1909 2231,1914 2231,1863 2183,1861 322,1851"/>
+                <Baseline points="334,1898 355,1901 400,1901 444,1901 489,1898 534,1895 579,1898 623,1901 668,1901 713,1898 758,1901 803,1901 847,1901 892,1901 937,1901 982,1901 1027,1901 1071,1901 1116,1904 1161,1901 1206,1901 1250,1901 1295,1901 1340,1901 1385,1901 1430,1901 1474,1904 1519,1901 1564,1904 1609,1904 1653,1904 1698,1901 1743,1901 1788,1901 1833,1901 1877,1901 1922,1901 1967,1901 2012,1901 2057,1901 2101,1901 2146,1901 2191,1901 2236,1895"/>
+                <TextEquiv>
+                    <Unicode>zu anderen Sängerkreisen erforderlich. Hierüber wurden den Sängerkreisen von der Sängergaufüh-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_16" custom="readingOrder {index:15;} date {offset:31; length:8;when:01.01.1944;}">
+                <Coords points="315,1967 2236,1965 2217,1914 315,1921"/>
+                <Baseline points="328,1958 361,1958 406,1955 450,1958 495,1958 540,1958 585,1958 629,1958 674,1958 719,1958 764,1958 809,1958 853,1958 898,1958 943,1958 988,1961 1032,1961 1077,1961 1122,1961 1167,1961 1212,1961 1256,1958 1301,1958 1346,1958 1391,1961 1436,1961 1480,1961 1525,1961 1570,1958 1615,1961 1659,1961 1704,1961 1749,1958 1794,1958 1839,1961 1883,1958 1928,1958 1973,1958 2018,1955 2063,1958 2107,1955 2152,1955 2197,1955 2242,1955"/>
+                <TextEquiv>
+                    <Unicode>rung namentliche Listen der ab 1.1.1944 in ihren Bereich fallenden Chöre übergeben, worin die</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_17" custom="readingOrder {index:16;}">
+                <Coords points="322,2045 2069,2026 2050,1963 1186,1996 322,1963"/>
+                <Baseline points="334,2012 379,2015 423,2012 468,2012 513,2012 558,2012 603,2012 647,2015 692,2015 737,2015 782,2015 826,2015 871,2015 916,2015 961,2018 1006,2015 1050,2018 1095,2018 1140,2018 1185,2018 1230,2018 1274,2015 1319,2015 1364,2018 1409,2018 1453,2018 1498,2018 1543,2015 1588,2015 1633,2018 1677,2018 1722,2018 1767,2015 1812,2015 1857,2018 1901,2018 1946,2015 1991,2015 2036,2015 2074,2015"/>
+                <TextEquiv>
+                    <Unicode>Chöre über den Zu- bzw. Abgang zu einem anderen Sängerkreis verständigt worden sind.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_18" custom="readingOrder {index:17;}">
+                <Coords points="399,2093 2236,2088 2212,2026 399,2033"/>
+                <Baseline points="412,2068 456,2068 501,2071 546,2071 591,2071 635,2071 680,2071 725,2071 770,2071 815,2071 859,2074 904,2071 949,2074 994,2074 1038,2074 1083,2074 1128,2074 1173,2074 1218,2074 1262,2074 1307,2074 1352,2074 1397,2074 1442,2074 1486,2074 1531,2074 1576,2071 1621,2074 1665,2074 1710,2074 1755,2074 1800,2074 1845,2074 1889,2074 1934,2074 1979,2071 2024,2074 2068,2074 2113,2074 2158,2074 2203,2074 2239,2077"/>
+                <TextEquiv>
+                    <Unicode>Die Durchführung dieser Veränderungen brachte naturgemäß Wünsche über den Verbleib beim</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_19" custom="readingOrder {index:18;}">
+                <Coords points="317,2139 2229,2142 2229,2091 2147,2081 673,2108 317,2069"/>
+                <Baseline points="331,2128 376,2128 420,2125 465,2128 510,2128 555,2128 600,2128 644,2128 689,2128 734,2128 779,2128 824,2128 868,2128 913,2128 958,2131 1003,2131 1047,2131 1092,2131 1137,2128 1182,2128 1227,2128 1271,2131 1316,2131 1361,2131 1406,2131 1450,2131 1495,2131 1540,2131 1585,2131 1630,2131 1674,2131 1719,2131 1764,2131 1809,2131 1854,2128 1898,2131 1943,2131 1988,2131 2033,2131 2077,2131 2122,2131 2167,2131 2212,2131 2236,2134"/>
+                <TextEquiv>
+                    <Unicode>alten Sängerkreis, die aber in Anbetracht der einheitlichen Ausrichtung nicht erfüllbar sind. Die</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_20" custom="readingOrder {index:19;}">
+                <Coords points="315,2195 2236,2205 2236,2142 315,2166"/>
+                <Baseline points="328,2182 373,2185 417,2185 462,2185 507,2185 552,2185 597,2185 641,2185 686,2182 731,2182 776,2185 821,2185 865,2185 910,2188 955,2185 1000,2188 1044,2188 1089,2188 1134,2185 1179,2188 1224,2188 1268,2188 1313,2188 1358,2188 1403,2188 1447,2188 1492,2188 1537,2188 1582,2188 1627,2185 1671,2188 1716,2188 1761,2188 1806,2188 1851,2188 1895,2188 1940,2188 1985,2188 2030,2188 2074,2188 2119,2188 2164,2191 2209,2191 2239,2191"/>
+                <TextEquiv>
+                    <Unicode>neuen Sängerkreise werden ebenfalls alles einsetzen, um ein ersprießliches Zusammenarbeiten auch</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_21" custom="readingOrder {index:20;}">
+                <Coords points="315,2268 2224,2277 2224,2205 2134,2200 315,2207"/>
+                <Baseline points="328,2242 373,2245 417,2242 462,2242 507,2242 552,2242 597,2242 641,2242 686,2245 731,2242 776,2245 821,2245 865,2245 910,2245 955,2245 1000,2245 1044,2245 1089,2245 1134,2245 1179,2245 1224,2245 1268,2245 1313,2248 1358,2248 1403,2245 1447,2245 1492,2245 1537,2245 1582,2245 1627,2248 1671,2248 1716,2248 1761,2248 1806,2245 1851,2248 1895,2245 1940,2248 1985,2248 2030,2248 2074,2248 2119,2248 2164,2248 2209,2248 2230,2248"/>
+                <TextEquiv>
+                    <Unicode>und erst recht nach dem vollzogenen Wechsel zu gewährleisten, und an die Chöre ergeht die Auf-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_22" custom="readingOrder {index:21;}">
+                <Coords points="315,2318 1600,2316 1566,2263 315,2268"/>
+                <Baseline points="328,2295 373,2298 417,2298 462,2301 507,2301 552,2301 597,2301 641,2301 686,2301 731,2298 776,2298 821,2301 865,2301 910,2301 955,2301 1000,2301 1044,2301 1089,2301 1134,2301 1179,2301 1224,2298 1268,2301 1313,2301 1358,2301 1403,2301 1447,2301 1492,2301 1537,2301 1582,2301 1606,2301"/>
+                <TextEquiv>
+                    <Unicode>forderung, auch ihrerseits alles zu tun, um dieses Ziel zu erreichen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_23" custom="readingOrder {index:22;}">
+                <Coords points="397,2367 2236,2369 2236,2318 2178,2301 2081,2338 1675,2297 397,2318"/>
+                <Baseline points="409,2358 453,2358 498,2358 543,2358 588,2358 632,2358 677,2358 722,2358 767,2358 812,2361 856,2361 901,2358 946,2358 991,2358 1035,2358 1080,2361 1125,2361 1170,2358 1215,2358 1259,2358 1304,2358 1349,2358 1394,2361 1439,2361 1483,2361 1528,2361 1573,2361 1618,2361 1662,2361 1707,2361 1752,2361 1797,2361 1842,2361 1886,2361 1931,2361 1976,2361 2021,2361 2065,2364 2110,2361 2155,2361 2200,2361 2242,2364"/>
+                <TextEquiv>
+                    <Unicode>Über die durchgeführte Neueinteilung und die Besetzung in den Führungsstellen gibt die nach-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_24" custom="readingOrder {index:23;}">
+                <Coords points="312,2422 2226,2430 2226,2381 2021,2369 566,2396 312,2364"/>
+                <Baseline points="325,2415 370,2415 414,2415 459,2418 504,2415 549,2415 594,2415 638,2415 683,2418 728,2418 773,2415 818,2415 862,2415 907,2415 952,2415 997,2415 1041,2415 1086,2415 1131,2415 1176,2415 1221,2415 1265,2415 1310,2415 1355,2415 1400,2415 1444,2418 1489,2418 1534,2418 1579,2418 1624,2418 1668,2418 1713,2421 1758,2421 1803,2418 1848,2421 1892,2421 1937,2421 1982,2421 2027,2421 2071,2421 2116,2421 2161,2421 2206,2421 2233,2418"/>
+                <TextEquiv>
+                    <Unicode>stehende Aufstellung Kenntnis; aus ihr ist ersichtlich, zu welchen Sängerkreisen bzw Grup-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_25" custom="readingOrder {index:24;} date {offset:17; length:10;when:01.01.1944;}">
+                <Coords points="312,2522 469,2476 653,2524 2047,2490 2047,2444 1989,2432 685,2422 474,2456 312,2425"/>
+                <Baseline points="325,2477 370,2475 414,2475 459,2475 504,2475 549,2475 594,2475 638,2475 683,2475 728,2475 773,2472 818,2475 862,2475 907,2475 952,2475 997,2475 1041,2475 1086,2475 1131,2472 1176,2472 1221,2472 1265,2472 1310,2475 1355,2475 1400,2472 1444,2475 1489,2475 1534,2475 1579,2475 1624,2475 1668,2475 1713,2475 1758,2475 1803,2477 1848,2477 1892,2477 1937,2477 1982,2477 2027,2480 2054,2480"/>
+                <TextEquiv>
+                    <Unicode>pen die Chöre ab 1.1.1944 gehören, und unter welcher Führung die neuen Gebilde stehen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_26" custom="readingOrder {index:25;}">
+                <Coords points="387,2604 537,2599 583,2568 845,2604 878,2580 908,2611 966,2572 1033,2602 1067,2575 1239,2577 1239,2519 1191,2500 1096,2529 1002,2505 767,2536 544,2500 494,2534 390,2512"/>
+                <Baseline points="403,2561 447,2564 492,2564 537,2564 582,2564 626,2564 671,2564 716,2564 761,2564 806,2564 850,2561 895,2564 940,2561 985,2561 1030,2561 1074,2561 1119,2561 1164,2564 1209,2564 1244,2564"/>
+                <TextEquiv>
+                    <Unicode>Über den Dienstweg ist folgendes festgelegt:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:5;}">
+            <Coords points="390,2527 2202,2527 2202,3275 390,3275"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:9;}">
+                <Coords points="1108,2669 1157,2662 1203,2684 1222,2672 1244,2681 1273,2655 1287,2662 1297,2652 1333,2689 1348,2674 1382,2691 1416,2677 1413,2604 1343,2604 1329,2616 1302,2602 1270,2614 1208,2597 1106,2602"/>
+                <Baseline points="1122,2645 1167,2645 1212,2645 1256,2648 1301,2648 1346,2648 1391,2648 1421,2648"/>
+                <TextEquiv>
+                    <Unicode>Sängergau</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:1;} organization {offset:0; length:12;} abbrev {offset:0; length:12;expansion:Sänger-Kreis-Gruppe;} organization {offset:17; length:13;} abbrev {offset:17; length:13;expansion:Haupt-Sänger-Kreis;}">
+                <Coords points="915,2805 1101,2831 1169,2807 1227,2831 1300,2817 1316,2834 1353,2812 1522,2827 1522,2754 1367,2764 1316,2739 1258,2764 1203,2727 1154,2754 1067,2737 1028,2773 992,2744 915,2752"/>
+                <Baseline points="928,2803 946,2803 991,2803 1035,2803 1080,2803 1125,2803 1170,2803 1215,2803 1259,2803 1304,2803 1349,2803 1394,2803 1439,2803 1483,2803 1528,2800"/>
+                <TextEquiv>
+                    <Unicode>S.Kr. Gruppe od. Haupt-S.Kreis.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_4" custom="readingOrder {index:2;} organization {offset:0; length:11;}">
+                <Coords points="745,2969 774,2972 794,2962 852,2979 891,2950 910,2962 932,2960 944,2972 963,2960 987,2962 987,2911 966,2904 922,2911 864,2897 840,2911 808,2902 789,2909 772,2899 745,2914"/>
+                <Baseline points="758,2943 803,2943 847,2946 892,2943 937,2943 982,2943 994,2946"/>
+                <TextEquiv>
+                    <Unicode>Sängerkreis</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_5" custom="readingOrder {index:3;}">
+                <Coords points="1246,2989 1319,2998 1379,2955 1592,2989 1665,2957 2042,2972 2040,2885 1980,2860 1880,2916 1779,2877 1730,2909 1590,2904 1529,2860 1433,2904 1246,2914"/>
+                <Baseline points="1259,2943 1304,2943 1349,2946 1394,2946 1439,2946 1483,2946 1528,2946 1573,2946 1618,2949 1662,2949 1707,2949 1752,2949 1797,2949 1842,2949 1886,2949 1931,2949 1976,2949 2021,2952 2048,2952"/>
+                <TextEquiv>
+                    <Unicode>Chor (Z. B. in Rechnungsangelegenheiten)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_7" custom="readingOrder {index:4;}">
+                <Coords points="816,3086 828,3086 837,3095 854,3098 927,3098 927,3047 886,3052 874,3044 866,3049 842,3044 830,3056 816,3056"/>
+                <Baseline points="829,3081 874,3084 919,3084 934,3081"/>
+                <TextEquiv>
+                    <Unicode>Chor</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_8" custom="readingOrder {index:5;}">
+                <Coords points="973,3173 1024,3168 1072,3136 1123,3153 1220,3144 1237,3156 1249,3144 1278,3144 1278,3061 1249,3064 1222,3090 1195,3083 1123,3100 1048,3042 1009,3052 973,3040"/>
+                <Baseline points="985,3131 1030,3134 1074,3131 1119,3134 1164,3134 1209,3134 1253,3131 1283,3134"/>
+                <TextEquiv>
+                    <Unicode>und umgekehrt</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

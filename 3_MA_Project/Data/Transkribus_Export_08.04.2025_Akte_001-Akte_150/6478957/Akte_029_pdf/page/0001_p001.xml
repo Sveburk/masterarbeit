@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=50870:lm=none:date=01_03_2025_16:07</Creator>
+        <Created>2025-01-22T17:02:23.756+01:00</Created>
+        <LastChange>2025-03-16T15:55:34.773+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120317456" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="14,319 14,3461 2107,3498 2107,319"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;} Event {offset:18; length:20;} date {offset:34; length:4;when:1943;} place {offset:42; length:8;}">
+                <Coords points="433,354 932,368 998,329 1036,362 2047,387 2101,364 2101,308 745,279 582,314 431,277"/>
+                <Baseline points="444,340 527,343 610,343 693,343 776,342 859,341 942,343 1026,346 1109,346 1192,346 1275,346 1358,346 1441,347 1524,349 1608,352 1691,352 1774,354 1857,353 1940,355 2023,356 2107,364"/>
+                <TextEquiv>
+                    <Unicode>Anwesenheitsliste Neujahrstreffen 1943 im Meyerhof !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:1;} Signature {offset:5; length:12;firstname:Alfons; lastname:Zimmermann;}">
+                <Coords points="15,555 87,587 196,522 220,547 329,512 632,499 628,453 399,462 312,414 21,420"/>
+                <Baseline points="29,513 59,513 89,513 120,513 150,516 181,512 211,513 242,513 272,511 303,508 333,506 363,502 394,501 424,500 455,498 485,498 516,497 546,495 577,495 607,495 863,502"/>
+                <TextEquiv>
+                    <Unicode>1) ✓ A.Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:2;} Signature {offset:5; length:8;firstname:Otto; lastname:Bolliger;}">
+                <Coords points="102,609 231,651 275,612 385,612 414,589 528,691 597,634 630,639 632,499 589,522 501,499 449,543 435,528 358,551 327,514 106,557"/>
+                <Baseline points="113,609 139,609 165,608 191,606 218,602 244,599 270,595 296,593 323,591 349,588 375,585 401,583 428,581 454,579 480,579 506,579 533,579 559,578 585,577 611,576 761,580"/>
+                <TextEquiv>
+                    <Unicode>2. ✓ Bolliger</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_7" custom="readingOrder {index:3;} Signature {offset:5; length:5;lastname:Habig;}">
+                <Coords points="71,738 156,738 254,799 364,743 422,761 485,736 535,755 603,734 716,782 697,605 659,643 593,636 528,693 464,639 322,645 275,612 231,651 133,649 71,691"/>
+                <Baseline points="83,725 114,722 146,719 177,720 209,721 241,725 272,729 304,731 336,731 367,731 399,730 431,728 462,728 494,728 526,728 557,728 589,728 621,728 652,728 684,726 716,722"/>
+                <TextEquiv>
+                    <Unicode>3. ✓ Habig</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_8" custom="readingOrder {index:4;} Signature {offset:5; length:9; continued:true;firstname:Emil; lastname:Durst;}">
+                <Coords points="44,924 106,903 150,934 260,940 312,984 374,942 468,961 566,942 560,859 516,849 489,867 426,817 354,849 285,820 214,859 162,817 129,828 98,807 35,830"/>
+                <Baseline points="50,892 76,899 102,904 128,907 154,905 180,908 206,924 232,928 258,931 284,933 310,935 336,937 362,936 388,934 414,932 440,931 466,931 492,931 518,931 544,932 570,934"/>
+                <TextEquiv>
+                    <Unicode>4. ✓ E. Döbele</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_9" custom="readingOrder {index:5;} Signature {offset:5; length:10;firstname:Emil; lastname:Durst;}">
+                <Coords points="125,1050 168,1073 193,1048 327,1059 395,1107 480,1067 555,1096 720,1071 716,971 666,1005 584,1007 491,951 456,969 410,944 360,998 320,1003 272,998 218,951 125,1003"/>
+                <Baseline points="137,1027 166,1035 195,1041 225,1047 254,1047 284,1048 313,1050 342,1050 372,1051 401,1053 431,1053 460,1054 489,1056 519,1056 548,1056 578,1056 607,1056 636,1056 666,1056 695,1056 725,1056"/>
+                <TextEquiv>
+                    <Unicode>5. ✓ Emil Durst</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_10" custom="readingOrder {index:6;} Signature {offset:2; length:15;firstname:Hans; lastname:Schlageter;} unclear {offset:2; length:4;}">
+                <Coords points="102,1156 364,1161 539,1229 705,1204 699,1069 601,1113 480,1067 374,1129 302,1065 100,1102"/>
+                <Baseline points="113,1146 142,1148 172,1150 202,1152 231,1154 261,1155 291,1155 320,1159 350,1162 380,1164 410,1164 439,1166 469,1170 499,1172 528,1172 558,1170 588,1170 617,1170 647,1170 677,1174 707,1173"/>
+                <TextEquiv>
+                    <Unicode>✓ Hans Schlageter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_11" custom="readingOrder {index:7;} Signature {offset:2; length:15;} unclear {offset:2; length:13;}">
+                <Coords points="94,1335 279,1267 747,1296 747,1196 659,1219 607,1200 539,1229 503,1213 470,1238 416,1184 258,1179 227,1154 198,1186 94,1211"/>
+                <Baseline points="106,1281 138,1282 170,1279 202,1273 235,1269 267,1266 299,1265 332,1265 364,1269 396,1272 429,1274 461,1274 493,1276 525,1277 558,1277 590,1275 622,1272 655,1272 687,1274 719,1278 752,1286"/>
+                <TextEquiv>
+                    <Unicode>✓ F Burkartsmeyer.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_6" custom="readingOrder {index:8;} Signature {offset:5; length:10;firstname:Otto; lastname:Lüthy;}">
+                <Coords points="33,1425 46,1310 210,1281 535,1275 688,1329 699,1439 453,1439 46,1427"/>
+                <Baseline points="47,1406 97,1399 122,1397 125,1385 155,1383 185,1382 216,1382 246,1382 277,1384 307,1389 338,1397 368,1404 399,1410 429,1416 460,1419 490,1421 521,1421 551,1419 582,1419 612,1421 643,1423 673,1427 704,1436"/>
+                <TextEquiv>
+                    <Unicode>8. ✓ Otto Lüthy</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_14" custom="readingOrder {index:9;} Signature {offset:5; length:11;firstname:Hermann; lastname:Binkert;}">
+                <Coords points="31,1560 77,1541 112,1562 191,1508 316,1587 408,1520 428,1539 493,1525 562,1560 560,1452 520,1433 472,1429 406,1481 329,1489 268,1485 220,1439 171,1462 96,1419 29,1427"/>
+                <Baseline points="41,1516 67,1516 93,1513 119,1510 145,1506 171,1504 197,1504 224,1504 250,1504 276,1507 302,1510 328,1510 354,1511 380,1513 407,1513 433,1513 459,1513 485,1512 511,1511 537,1511 564,1513"/>
+                <TextEquiv>
+                    <Unicode>9. ✓ He. Binkert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_15" custom="readingOrder {index:10;} unclear {offset:5; length:5;} Signature {offset:5; length:5;firstname:Josef; lastname:Albiez;}">
+                <Coords points="15,1647 104,1629 150,1633 202,1674 250,1645 270,1664 300,1645 329,1666 352,1647 414,1670 458,1664 451,1566 418,1556 368,1556 343,1583 293,1566 245,1612 210,1595 185,1610 150,1581 116,1600 58,1552 10,1564"/>
+                <Baseline points="23,1621 48,1623 74,1624 100,1626 126,1628 152,1630 177,1631 203,1633 229,1635 255,1637 281,1638 307,1640 332,1642 358,1643 384,1645 410,1648 436,1651 462,1653"/>
+                <TextEquiv>
+                    <Unicode>10 ✓ Abiez</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_16" custom="readingOrder {index:11;} Signature {offset:6; length:7;firstname:Albrecht; lastname:Hirtler;}">
+                <Coords points="23,1787 77,1776 137,1801 175,1764 198,1764 327,1803 453,1789 449,1747 387,1741 291,1662 254,1666 200,1716 171,1701 146,1716 56,1674 17,1697"/>
+                <Baseline points="35,1764 61,1762 88,1762 114,1763 141,1764 167,1764 194,1764 220,1765 247,1768 273,1772 300,1775 326,1777 353,1779 379,1781 406,1783 432,1785 459,1785"/>
+                <TextEquiv>
+                    <Unicode>11. ✓ Hirtler</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_5" custom="readingOrder {index:12;} Signature {offset:5; length:4;firstname:Hans; lastname:Haiss;}">
+                <Coords points="37,1785 62,1776 243,1768 374,1787 433,1797 431,1845 360,1887 85,1868 67,1866 40,1851"/>
+                <Baseline points="50,1839 77,1839 104,1839 131,1839 158,1842 200,1845 252,1845 278,1845 304,1845 330,1843 356,1843 382,1844 408,1844 435,1842"/>
+                <TextEquiv>
+                    <Unicode>12 ✓ Haiß</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_4" custom="readingOrder {index:13;} unclear {offset:6; length:6;} Signature {offset:6; length:6;}">
+                <Coords points="10,1934 15,1882 42,1874 89,1862 272,1849 560,1835 562,1949 532,1957 277,1972 106,1966"/>
+                <Baseline points="23,1925 50,1925 77,1924 104,1923 131,1918 158,1913 194,1916 220,1920 247,1922 273,1922 327,1925 353,1925 380,1925 407,1927 433,1928 460,1928 487,1926 513,1925 540,1927 567,1931"/>
+                <TextEquiv>
+                    <Unicode>13. ✓ Senmrt</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_3" custom="readingOrder {index:14;} unclear {offset:5; length:10;} Signature {offset:5; length:10;}">
+                <Coords points="27,2045 29,1953 79,1945 208,1936 410,1930 632,1955 634,2053 595,2055 460,2061 75,2053"/>
+                <Baseline points="38,2006 65,2006 93,2005 121,2003 149,2006 188,2024 213,2022 238,2021 263,2023 288,2025 338,2028 363,2030 388,2031 413,2033 438,2033 463,2033 488,2031 513,2030 538,2030 563,2029 588,2027 613,2030 638,2033"/>
+                <TextEquiv>
+                    <Unicode>14 x A. Binkert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_23" custom="readingOrder {index:15;} unclear {offset:6; length:8;} Signature {offset:6; length:8;}">
+                <Coords points="15,2151 256,2138 304,2174 451,2163 501,2207 599,2186 684,2221 678,2080 584,2099 508,2061 333,2036 295,2053 258,2022 10,2088"/>
+                <Baseline points="23,2122 56,2122 89,2123 122,2126 156,2128 189,2126 222,2128 256,2132 289,2134 322,2138 356,2139 389,2137 422,2140 455,2142 489,2144 522,2147 555,2148 589,2149 622,2151 655,2158 689,2161"/>
+                <TextEquiv>
+                    <Unicode>15. ! Aefücheg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_24" custom="readingOrder {index:16;} Signature {offset:4; length:13;firstname:Hermann; lastname:Binkert;}">
+                <Coords points="12,2296 210,2259 397,2300 668,2269 792,2307 926,2265 926,2205 655,2226 532,2184 399,2217 254,2142 10,2155"/>
+                <Baseline points="23,2245 68,2251 113,2251 158,2254 204,2257 249,2260 294,2260 339,2266 385,2266 430,2263 475,2263 520,2266 566,2266 611,2266 656,2266 701,2266 747,2263 792,2260 837,2259 882,2258 928,2266"/>
+                <TextEquiv>
+                    <Unicode>16. Herm. Binkert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_25" custom="readingOrder {index:17;} Signature {offset:6; length:13;firstname:Ludwig; lastname:Döbele;}">
+                <Coords points="69,2409 214,2421 243,2394 275,2415 308,2398 418,2475 514,2423 547,2450 618,2421 674,2448 668,2361 537,2292 437,2292 372,2355 335,2325 283,2325 210,2261 58,2282"/>
+                <Baseline points="77,2377 106,2382 136,2384 166,2382 196,2386 226,2389 256,2391 285,2394 315,2398 345,2400 375,2402 405,2404 435,2406 465,2410 494,2412 524,2412 554,2414 584,2416 614,2418 644,2422 674,2424"/>
+                <TextEquiv>
+                    <Unicode>17. ✓ Ludwig Döbele</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_26" custom="readingOrder {index:18;} Signature {offset:6; length:8;firstname:Gustav; lastname:Weber;}">
+                <Coords points="10,2552 114,2569 164,2612 258,2533 362,2567 453,2538 580,2554 607,2546 605,2498 487,2450 412,2475 333,2425 275,2446 229,2411 196,2436 92,2425 33,2473 4,2469"/>
+                <Baseline points="20,2510 49,2510 79,2511 108,2513 138,2513 168,2518 197,2530 227,2533 256,2533 286,2531 316,2533 345,2534 375,2534 404,2536 434,2537 464,2537 493,2539 523,2539 552,2537 582,2540 612,2549"/>
+                <TextEquiv>
+                    <Unicode>18. ✓ G. Weber</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_27" custom="readingOrder {index:19;} Signature {offset:6; length:9;firstname:Julius; lastname:Suter;}">
+                <Coords points="81,2689 187,2706 233,2687 268,2708 343,2687 391,2716 480,2694 505,2714 726,2704 724,2652 678,2627 595,2640 424,2560 329,2544 166,2608 77,2563"/>
+                <Baseline points="92,2677 125,2678 159,2679 192,2681 226,2683 260,2685 293,2686 327,2687 361,2689 394,2691 428,2693 461,2694 495,2692 529,2690 562,2689 596,2690 630,2692 663,2698 697,2701 731,2701"/>
+                <TextEquiv>
+                    <Unicode>19. ✓ Jul Suter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_28" custom="readingOrder {index:20;} Signature {offset:3; length:10;firstname:Max; lastname:Ganter;}">
+                <Coords points="2,2810 73,2837 131,2810 252,2837 283,2816 341,2843 410,2814 472,2850 620,2833 620,2712 566,2750 522,2712 487,2735 399,2712 335,2733 206,2689 127,2752 69,2719 2,2741"/>
+                <Baseline points="14,2806 44,2806 75,2808 105,2810 136,2812 167,2814 197,2814 228,2812 258,2810 289,2809 320,2809 350,2811 381,2814 411,2815 442,2815 473,2815 503,2815 534,2815 564,2811 595,2806 626,2800"/>
+                <TextEquiv>
+                    <Unicode>20 Ganter Max</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_29" custom="readingOrder {index:21;} Signature {offset:4; length:11;firstname:Walter; lastname:Wolf;}">
+                <Coords points="29,2983 241,3001 302,2962 412,2991 591,2962 688,2999 776,2964 778,2902 612,2820 505,2900 447,2854 401,2875 285,2816 241,2848 187,2812 127,2860 31,2860"/>
+                <Baseline points="41,2967 78,2970 115,2969 152,2969 189,2972 226,2965 263,2959 300,2958 337,2958 374,2958 411,2958 448,2961 485,2961 522,2961 559,2961 596,2961 633,2961 670,2961 707,2961 744,2962 782,2964"/>
+                <TextEquiv>
+                    <Unicode>21. Wolf Walter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_30" custom="readingOrder {index:22;} Signature {offset:6; length:11;}">
+                <Coords points="17,3095 231,3049 372,3083 441,3053 491,3095 557,3053 601,3089 651,3062 684,3087 728,3053 805,3083 805,3020 753,2999 699,3024 653,2981 543,2981 501,3014 435,2968 412,2993 233,2987 206,3014 17,2993"/>
+                <Baseline points="29,3057 68,3056 107,3052 146,3049 185,3051 224,3051 263,3049 302,3048 341,3048 380,3048 419,3049 458,3051 497,3051 536,3051 575,3053 614,3054 653,3054 692,3053 731,3052 770,3054 809,3054"/>
+                <TextEquiv>
+                    <Unicode>22. ✓ Baumgärtner</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_31" custom="readingOrder {index:23;} Signature {offset:5; length:9;firstname:Emil; lastname:Suter;}">
+                <Coords points="50,3222 144,3151 235,3189 302,3170 354,3172 389,3203 439,3182 589,3195 582,3074 489,3095 428,3060 335,3112 268,3091 208,3118 123,3074 44,3091"/>
+                <Baseline points="59,3161 85,3159 112,3156 139,3151 166,3151 192,3155 219,3162 246,3167 273,3167 299,3168 326,3170 353,3172 380,3173 406,3175 433,3176 460,3176 487,3176 513,3176 540,3174 567,3175 594,3179"/>
+                <TextEquiv>
+                    <Unicode>23. ✓ E. Suter</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_2" custom="readingOrder {index:24;} Signature {offset:5; length:10;firstname:Fritz; lastname:Bähr;}">
+                <Coords points="37,3178 69,3174 293,3168 562,3180 560,3305 537,3313 46,3334"/>
+                <Baseline points="53,3257 107,3263 134,3263 161,3263 188,3263 213,3260 238,3262 263,3263 288,3263 313,3263 338,3263 363,3265 388,3266 413,3266 438,3265 463,3261 488,3259 513,3257 538,3256 564,3254"/>
+                <TextEquiv>
+                    <Unicode>24.✓ Bähr Fritz</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_34" custom="readingOrder {index:25;} Signature {offset:5; length:13;firstname:Helmut; lastname:Völkle;}">
+                <Coords points="198,3392 320,3365 416,3390 543,3378 564,3399 612,3365 770,3365 772,3282 709,3288 659,3255 582,3272 537,3313 495,3276 443,3299 349,3270 316,3270 268,3318 200,3309"/>
+                <Baseline points="30,3358 236,3361 264,3361 293,3362 321,3364 350,3365 378,3367 406,3367 435,3368 463,3370 492,3368 520,3367 548,3367 577,3365 605,3364 634,3364 662,3361 690,3357 719,3354 747,3351 776,3349"/>
+                <TextEquiv>
+                    <Unicode>25 ✓ Völkle Helmut</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:26;} Signature {offset:4; length:13;firstname:Pius; lastname:Gerspach;}">
+                <Coords points="54,3419 616,3365 686,3361 730,3361 768,3368 765,3444 743,3453 682,3474 647,3476 605,3478 54,3449"/>
+                <Baseline points="54,3449 554,3449 579,3442 606,3442 633,3442 660,3442 688,3441 715,3439 742,3437 770,3442"/>
+                <TextEquiv>
+                    <Unicode>16. Gerspach Pius</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:27;} unclear {offset:0; length:11; continued:true;} Signature {offset:4; length:7;firstname:Richard; lastname:Fricker;}">
+                <Coords points="1481,609 1516,616 1537,597 1562,612 1602,570 1629,564 1701,609 1751,578 1801,601 1843,599 1832,458 1791,460 1731,414 1647,487 1595,453 1548,474 1504,458 1471,470"/>
+                <Baseline points="1301,562 1514,562 1539,561 1565,559 1590,559 1616,560 1641,562 1667,564 1692,566 1717,567 1743,569 1768,572 1794,577 1819,582 1845,588"/>
+                <TextEquiv>
+                    <Unicode>17. Fricker</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l" custom="readingOrder {index:28;} unclear {offset:0; length:14;} Signature {offset:3; length:10;}">
+                <Coords points="1230,3474 1805,3484 1805,3454 1231,3444"/>
+                <Baseline points="1230,3474 1805,3484"/>
+                <TextEquiv>
+                    <Unicode>- (Dispan Gim.)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=08_02_2025_15:54</Creator>
+        <Created>2025-01-22T17:04:16.414+01:00</Created>
+        <LastChange>2025-03-15T12:53:51.728+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120327535" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1135,190 2099,190 2099,301 1135,301"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:10; length:16;when:10.11.1942;}">
+                <Coords points="1194,261 1576,306 1678,269 1789,298 1827,267 2040,275 2040,209 2007,197 1957,221 1771,201 1398,225 1194,194"/>
+                <Baseline points="1206,256 1250,259 1295,259 1340,262 1385,259 1430,259 1474,259 1519,259 1564,259 1609,259 1653,256 1698,256 1743,256 1788,256 1833,256 1877,259 1922,259 1967,259 2012,259 2042,259"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 10.November 1942.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="397,525 1299,525 1299,927 397,927"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} person {offset:0; length:5; continued:true;}">
+                <Coords points="492,637 505,637 538,666 550,654 585,674 596,668 619,674 629,685 672,664 672,567 656,561 637,571 610,546 594,544 538,581 515,581 492,569"/>
+                <Baseline points="504,626 549,626 594,626 638,626 677,626"/>
+                <TextEquiv>
+                    <Unicode>Herrn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;} person {offset:0; length:15; continued:true;}">
+                <Coords points="492,736 629,768 751,724 809,745 859,732 997,749 997,664 927,687 869,685 836,658 749,693 683,691 660,668 616,693 579,670 492,693"/>
+                <Baseline points="504,728 510,725 555,722 600,722 644,722 689,722 734,725 779,722 824,722 868,722 913,725 958,722 1003,719"/>
+                <TextEquiv>
+                    <Unicode>Hermann Binkert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;} person {offset:0; length:11; continued:true;}">
+                <Coords points="503,817 525,809 559,823 614,807 672,844 755,832 811,861 856,836 854,732 689,768 629,768 610,755 596,765 569,741 546,753 501,736"/>
+                <Baseline points="513,794 558,794 603,794 647,794 692,791 737,794 782,797 826,797 859,800"/>
+                <TextEquiv>
+                    <Unicode>Postmeister</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_4" custom="readingOrder {index:3;} place {offset:0; length:10;}">
+                <Coords points="490,927 525,927 546,906 563,923 594,908 621,925 652,900 728,906 751,929 782,916 823,921 823,859 776,867 666,842 637,869 490,852"/>
+                <Baseline points="501,898 546,898 591,898 635,898 680,895 725,895 770,895 815,901 829,901"/>
+                <TextEquiv>
+                    <Unicode>Murg/Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="448,993 2306,993 2306,1977 448,1977"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;} person {offset:25; length:7;}">
+                <Coords points="499,1084 854,1082 923,1123 1036,1084 1535,1107 1516,1030 1421,1047 1239,995 1144,1039 954,1005 809,1028 736,983 679,1024 577,995 499,1028"/>
+                <Baseline points="510,1065 555,1068 600,1071 644,1071 689,1074 734,1074 779,1071 824,1071 868,1071 913,1074 958,1077 1003,1077 1047,1077 1092,1077 1137,1077 1182,1077 1227,1077 1271,1077 1316,1077 1361,1077 1406,1080 1450,1080 1495,1080 1540,1083 1543,1080"/>
+                <TextEquiv>
+                    <Unicode>Mein lieber Sangesbruder Binkert !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="492,1233 2067,1241 2067,1161 1912,1119 1771,1183 1556,1200 1378,1163 1125,1202 898,1163 492,1179"/>
+                <Baseline points="504,1221 549,1218 594,1221 638,1218 683,1218 728,1221 773,1218 818,1221 862,1221 907,1224 952,1224 997,1224 1041,1227 1086,1224 1131,1224 1176,1224 1221,1227 1265,1224 1310,1224 1355,1224 1400,1227 1444,1230 1489,1230 1534,1230 1579,1230 1624,1233 1668,1233 1713,1230 1758,1233 1803,1233 1848,1233 1892,1233 1937,1230 1982,1233 2027,1233 2071,1230"/>
+                <TextEquiv>
+                    <Unicode>Für Ihre hochherzige Spende von RM. 60.-- danke ich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;} sic {offset:29; length:9;correction:vielmals;}">
+                <Coords points="503,1326 683,1291 2125,1330 2123,1258 2071,1239 1914,1270 1787,1237 1672,1283 1297,1235 1225,1268 1024,1235 950,1281 848,1229 755,1266 501,1247"/>
+                <Baseline points="513,1292 558,1289 603,1289 647,1292 692,1289 737,1292 782,1292 826,1295 871,1295 916,1295 961,1295 1006,1295 1050,1295 1095,1295 1140,1295 1185,1298 1230,1295 1274,1295 1319,1298 1364,1295 1409,1298 1453,1298 1498,1298 1543,1301 1588,1301 1633,1301 1677,1301 1722,1301 1767,1301 1812,1304 1857,1304 1901,1304 1946,1307 1991,1307 2036,1304 2080,1304 2125,1307 2128,1307"/>
+                <TextEquiv>
+                    <Unicode>Ihnen im Namen der Kameraden vielsmals. Ich werde den</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="492,1392 1783,1378 2096,1421 2096,1330 2009,1320 492,1318"/>
+                <Baseline points="504,1361 549,1361 594,1364 638,1364 683,1364 728,1364 773,1367 818,1367 862,1367 907,1367 952,1367 997,1367 1041,1370 1086,1370 1131,1370 1176,1367 1221,1370 1265,1373 1310,1373 1355,1373 1400,1373 1444,1373 1489,1373 1534,1373 1579,1373 1624,1373 1668,1376 1713,1376 1758,1376 1803,1376 1848,1376 1892,1376 1937,1376 1982,1376 2027,1376 2071,1373 2101,1373"/>
+                <TextEquiv>
+                    <Unicode>Betrag zur Finanzierung der diesjährigen Weihnachts-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="490,1448 2149,1461 2125,1407 490,1394"/>
+                <Baseline points="501,1436 546,1436 591,1436 635,1436 680,1436 725,1436 770,1439 815,1439 859,1439 904,1439 949,1439 994,1442 1038,1442 1083,1442 1128,1442 1173,1444 1218,1444 1262,1444 1307,1444 1352,1444 1397,1444 1442,1444 1486,1444 1531,1444 1576,1444 1621,1447 1665,1447 1710,1447 1755,1450 1800,1450 1845,1450 1889,1450 1934,1453 1979,1453 2024,1453 2068,1450 2113,1450 2155,1450"/>
+                <TextEquiv>
+                    <Unicode>Pakete an unsere Soldaten mitverwenden. Einem besseren</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="501,1543 2071,1535 2071,1479 1998,1467 501,1467"/>
+                <Baseline points="511,1503 558,1504 603,1507 647,1507 692,1507 737,1507 782,1513 826,1513 871,1513 916,1513 961,1513 1006,1513 1050,1516 1095,1516 1140,1516 1185,1516 1230,1513 1274,1519 1319,1519 1364,1519 1409,1519 1453,1522 1498,1522 1543,1522 1588,1522 1633,1519 1677,1525 1722,1522 1767,1525 1812,1525 1857,1528 1901,1528 1946,1528 1991,1528 2036,1528 2074,1528"/>
+                <TextEquiv>
+                    <Unicode>Zweck kann das Geld wohl kaum zugeführt werden. Ich</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="486,1591 668,1587 788,1655 910,1593 1103,1653 1185,1603 1305,1655 1680,1605 1866,1634 1843,1547 1589,1529 1343,1570 486,1537"/>
+                <Baseline points="498,1582 543,1582 588,1582 632,1585 677,1585 722,1585 767,1585 812,1588 856,1591 901,1591 946,1591 991,1591 1035,1591 1080,1591 1125,1591 1170,1594 1215,1594 1259,1594 1304,1594 1349,1594 1394,1597 1439,1597 1483,1597 1528,1600 1573,1600 1618,1600 1662,1600 1707,1600 1752,1603 1797,1603 1842,1603 1871,1600"/>
+                <TextEquiv>
+                    <Unicode>hoffe deshalb ganz in Ihrem Sinne zu handeln.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;}">
+                <Coords points="1332,1746 1411,1763 1496,1746 1566,1779 1622,1754 1740,1756 1738,1669 1698,1682 1587,1667 1566,1688 1508,1682 1421,1707 1330,1694"/>
+                <Baseline points="1343,1743 1388,1746 1433,1743 1477,1743 1522,1743 1567,1746 1612,1746 1656,1746 1701,1746 1746,1749"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_9" custom="readingOrder {index:8;} person {offset:4; length:13;}">
+                <Coords points="1245,1876 1320,1899 1407,1858 1483,1876 1518,1852 1607,1852 1709,1899 1744,1866 1833,1858 1831,1816 1645,1794 1537,1810 1401,1756 1243,1802"/>
+                <Baseline points="1256,1845 1301,1842 1346,1842 1391,1839 1436,1842 1480,1842 1525,1842 1570,1842 1615,1842 1659,1842 1704,1845 1749,1845 1794,1848 1839,1848"/>
+                <TextEquiv>
+                    <Unicode>Der Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

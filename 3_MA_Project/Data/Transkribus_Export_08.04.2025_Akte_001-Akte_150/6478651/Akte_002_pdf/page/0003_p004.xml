@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:47.569+01:00</Created>
+        <LastChange>2025-01-31T12:38:32.476+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0003_p004.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120143849" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="128,2114 1547,2114 1547,2272 128,2272"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:0; length:8;wikiData:Q3806;}">
+                <Coords points="150,2221 1511,2212 1511,2182 150,2191"/>
+                <Baseline points="150,2221 1511,2212"/>
+                <TextEquiv>
+                    <Unicode>Tübingen. Neckaransicht mit Platenallee</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

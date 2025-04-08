@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_17:36</Creator>
+        <Created>2025-01-23T13:07:41.733+01:00</Created>
+        <LastChange>2025-03-13T13:04:50.097+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0005_p009.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120297711" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_99"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1111,174 1363,174 1363,278 1111,278"/>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_99" custom="readingOrder {index:1;}">
+            <Coords points="1182,2548 2293,2548 2293,3013 1182,3013"/>
+            <TextLine id="r_99_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:9; length:18;when:31.12.1939;}">
+                <Coords points="1255,2705 2156,2711 2144,2622 1973,2656 1501,2615 1450,2656 1255,2635"/>
+                <Baseline points="1268,2683 1313,2683 1358,2683 1403,2689 1447,2689 1492,2689 1537,2689 1582,2689 1627,2689 1671,2689 1716,2686 1761,2689 1806,2689 1851,2689 1895,2689 1940,2692 1985,2692 2030,2692 2074,2692 2119,2695 2161,2695"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 31. Dezember 1939.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_99_tl_2" custom="readingOrder {index:1;} person {offset:4; length:14; continued:true;}">
+                <Coords points="1411,2799 1475,2816 1537,2795 1714,2803 1757,2822 1998,2803 1998,2722 1973,2714 1892,2752 1565,2726 1411,2743"/>
+                <Baseline points="1424,2782 1468,2782 1513,2785 1558,2785 1603,2788 1648,2788 1692,2788 1737,2788 1782,2788 1827,2785 1871,2788 1916,2788 1961,2788 2003,2791"/>
+                <TextEquiv>
+                    <Unicode>Der Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_99_tl_3" custom="readingOrder {index:2;} person {offset:0; length:12; continued:true;} Signature {offset:0; length:12;}">
+                <Coords points="1484,2906 1539,2906 1588,2876 1680,2906 1898,2880 2069,2895 2069,2840 1836,2848 1804,2820 1593,2799 1484,2833"/>
+                <Baseline points="1495,2878 1540,2884 1585,2887 1630,2884 1674,2884 1719,2881 1764,2881 1809,2878 1854,2878 1898,2875 1943,2875 1988,2875 2033,2875 2074,2878"/>
+                <TextEquiv>
+                    <Unicode>A Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=08_02_2025_15:57</Creator>
+        <Created>2025-01-23T13:11:59.751+01:00</Created>
+        <LastChange>2025-03-14T15:09:20.315+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120217915" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="559,38 2303,38 2303,202 559,202"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} person {offset:0; length:36;} place {offset:38; length:17;}">
+                <Coords points="577,93 720,126 1003,99 1053,139 1465,112 1523,149 1614,112 1820,151 2238,126 2236,56 1949,27 1649,74 1154,48 1103,8 575,14"/>
+                <Baseline points="588,89 632,89 677,89 722,92 767,92 812,92 856,92 901,92 946,92 991,95 1035,95 1080,98 1125,101 1170,101 1215,101 1259,104 1304,104 1349,101 1394,101 1439,101 1483,104 1528,107 1573,107 1618,113 1662,113 1707,116 1752,116 1797,119 1842,119 1886,119 1931,119 1976,119 2021,119 2065,119 2110,116 2155,119 2200,119 2242,116"/>
+                <TextEquiv>
+                    <Unicode>Herrn Karl Bächle, Sängerkreisführer, Tiengen/Hochrhein</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="978,501 1654,501 1654,700 978,700"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:10; length:8;when:31.12.1941;}">
+                <Coords points="1030,641 1142,679 1175,643 1316,674 1394,633 1452,658 1481,635 1506,652 1614,637 1614,548 1547,577 1469,579 1423,546 1349,561 1305,538 1221,590 1179,567 1152,583 1123,554 1080,581 1030,577"/>
+                <Baseline points="1041,618 1086,620 1131,626 1176,629 1221,626 1265,626 1310,629 1355,629 1400,629 1444,629 1489,629 1534,629 1579,629 1618,626"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 31.12.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="371,741 2231,741 2231,1338 371,1338"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;} date {offset:13; length:10;when:04.1942;}">
+                <Coords points="501,871 1870,881 1938,867 1936,788 1800,823 1616,763 1452,836 1384,794 1260,821 1119,784 799,823 666,778 499,801"/>
+                <Baseline points="510,850 555,850 600,853 644,853 689,850 734,853 779,853 824,850 868,850 913,850 958,850 1003,853 1047,853 1092,856 1137,853 1182,856 1227,859 1271,856 1316,856 1361,859 1406,859 1450,862 1495,862 1540,862 1585,859 1630,862 1674,859 1719,862 1764,859 1809,859 1854,859 1898,859 1941,855"/>
+                <TextEquiv>
+                    <Unicode>Wir haben im April 1942 wieder einen Sänger für</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="501,919 2019,925 1974,859 1696,892 1235,852 501,873"/>
+                <Baseline points="513,901 558,904 603,904 647,904 692,904 737,904 782,904 826,901 871,901 916,904 961,901 1006,901 1050,904 1095,904 1140,907 1185,907 1230,910 1274,907 1319,910 1364,910 1409,910 1453,910 1498,907 1543,913 1588,913 1633,910 1677,910 1722,913 1767,910 1812,913 1857,910 1901,910 1946,910 1991,910 2024,907"/>
+                <TextEquiv>
+                    <Unicode>40 jährige Mitgliedschaft zu ehren. Ich möchte für</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="501,966 1936,970 1936,921 501,919"/>
+                <Baseline points="513,955 558,955 603,955 647,955 692,955 737,952 782,952 826,955 871,952 916,952 961,952 1006,955 1050,958 1095,955 1140,958 1185,958 1230,958 1274,958 1319,961 1364,961 1409,961 1453,961 1498,961 1543,964 1588,964 1633,961 1677,961 1722,961 1767,961 1812,964 1857,961 1901,958 1940,961"/>
+                <TextEquiv>
+                    <Unicode>ihn die Goldene Nadel des Gaues beantragen und</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="505,1012 1401,1055 1500,1018 1750,1059 2025,1026 2023,968 505,964"/>
+                <Baseline points="516,1003 561,1003 606,1006 650,1006 695,1003 740,1003 785,1003 829,1003 874,1003 919,1003 964,1003 1009,1006 1053,1009 1098,1009 1143,1009 1188,1009 1233,1012 1277,1012 1322,1018 1367,1015 1412,1015 1456,1015 1501,1015 1546,1015 1591,1015 1636,1015 1680,1015 1725,1015 1770,1015 1815,1018 1859,1018 1904,1015 1949,1015 1994,1015 2030,1015"/>
+                <TextEquiv>
+                    <Unicode>bitte deshalb um Zustellung eines diesbezüglichen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="499,1067 552,1065 598,1101 637,1101 676,1065 716,1061 736,1082 759,1065 817,1065 817,1018 724,1026 687,999 654,1020 637,1010 608,1026 573,1014 556,1024 523,1012 499,1018"/>
+                <Baseline points="510,1056 555,1053 600,1056 644,1053 689,1053 734,1056 779,1056 821,1056"/>
+                <TextEquiv>
+                    <Unicode>Formulars.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="1204,1171 1285,1158 1299,1169 1328,1154 1380,1173 1419,1150 1506,1171 1568,1144 1589,1152 1587,1088 1558,1078 1514,1092 1392,1078 1349,1103 1278,1061 1204,1107"/>
+                <Baseline points="1215,1140 1259,1140 1304,1140 1349,1143 1394,1143 1439,1143 1483,1143 1528,1143 1573,1143 1594,1140"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;} person {offset:0; length:13;firstname:Alfons; lastname:Zimmermann;}">
+                <Coords points="1167,1237 1202,1233 1237,1256 1266,1227 1384,1225 1440,1250 1500,1227 1545,1239 1595,1223 1595,1169 1566,1161 1502,1171 1432,1150 1372,1183 1343,1158 1272,1183 1233,1163 1167,1181"/>
+                <Baseline points="1179,1212 1224,1212 1268,1215 1313,1215 1358,1215 1403,1218 1447,1215 1492,1218 1537,1218 1582,1218 1600,1218"/>
+                <TextEquiv>
+                    <Unicode>Vereinsführer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

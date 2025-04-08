@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:01</Creator>
+        <Created>2025-01-22T16:58:20.544+01:00</Created>
+        <LastChange>2025-03-17T13:34:20.379+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120189777" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+                <RegionRefIndexed index="3" regionRef="r_4"/>
+                <RegionRefIndexed index="5" regionRef="r_5"/>
+                <RegionRefIndexed index="7" regionRef="r_6"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="116,134 1937,134 1937,384 116,384"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:30;}">
+                <Coords points="164,216 926,221 973,214 976,140 164,154"/>
+                <Baseline points="176,206 217,206 262,208 307,208 352,208 397,206 441,206 486,208 531,206 576,208 620,206 665,206 710,206 755,203 800,203 844,203 889,203 934,200 979,203"/>
+                <TextEquiv>
+                    <Unicode>Sänzerkreisgruppe II Hochrhein</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;} place {offset:0; length:7;} date {offset:12; length:10;when:03.1944;}">
+                <Coords points="1313,259 1823,252 1823,190 1766,204 1719,188 1685,204 1636,180 1600,202 1420,214 1313,171"/>
+                <Baseline points="1325,241 1370,241 1415,244 1459,244 1504,244 1549,244 1594,241 1639,241 1683,241 1728,241 1773,241 1818,241 1830,241"/>
+                <TextEquiv>
+                    <Unicode>Tiengen, im März 1944.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:2;} place {offset:3; length:15;} organization {offset:22; length:6;}">
+                <Coords points="209,280 297,263 451,297 479,273 914,268 897,216 209,228"/>
+                <Baseline points="223,262 247,262 292,262 337,262 382,259 426,259 471,259 516,256 561,256 606,256 650,259 695,259 740,256 785,256 829,253 874,256 919,256"/>
+                <TextEquiv>
+                    <Unicode>im Gau XV (Baden) des D. S.B.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="560,513 1448,513 1448,623 560,623"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="586,584 790,617 1367,586 1370,513 589,532"/>
+                <Baseline points="600,579 612,582 656,579 701,582 746,582 791,585 835,585 880,582 925,579 970,579 1015,579 1059,579 1104,576 1149,576 1194,576 1238,576 1283,576 1328,576 1373,573"/>
+                <TextEquiv>
+                    <Unicode>Sängerkameraden!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="295,620 2372,620 2372,1508 295,1508"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;} date {offset:16; length:9;when:01.01.1944;} organization {offset:32; length:7;} organization {offset:43; length:28;}">
+                <Coords points="449,693 2281,684 2281,639 451,643"/>
+                <Baseline points="465,680 495,683 540,680 585,680 629,683 674,683 719,686 764,683 809,683 853,683 898,683 943,680 988,680 1032,680 1077,680 1122,680 1167,680 1212,680 1256,680 1301,677 1346,677 1391,677 1436,677 1480,671 1525,671 1570,671 1615,671 1659,671 1704,674 1749,671 1794,671 1839,671 1883,671 1928,671 1973,668 2018,671 2063,671 2107,671 2152,671 2197,674 2242,671 2286,671"/>
+                <TextEquiv>
+                    <Unicode>Mit Wirkung vom 1. I. 44 ist im Gau XV des D.S.B., Badischer Sängerbund, die Neueinteilung der</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="377,738 2248,733 2284,684 380,688"/>
+                <Baseline points="391,725 409,725 453,728 498,731 543,728 588,725 632,728 677,728 722,728 767,728 812,731 856,725 901,725 946,725 991,725 1035,725 1080,725 1125,722 1170,722 1215,719 1259,722 1304,722 1349,719 1394,719 1439,719 1483,719 1528,716 1573,716 1618,716 1662,719 1707,716 1752,716 1797,719 1842,716 1886,716 1931,716 1976,716 2021,713 2065,716 2110,716 2155,719 2200,716 2245,716 2289,713"/>
+                <TextEquiv>
+                    <Unicode>Sängerkreise in Kraft getreten. Nach dieser Einteilung entsprechen die Sängerkreisgebiete in Zukunft</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="385,783 2276,776 2276,731 2167,729 385,743"/>
+                <Baseline points="397,773 403,770 447,770 492,770 537,770 582,770 626,770 671,770 716,770 761,770 806,770 850,770 895,767 940,767 985,767 1030,770 1074,770 1119,767 1164,767 1209,767 1253,770 1298,767 1343,764 1388,764 1433,764 1477,764 1522,761 1567,761 1612,764 1656,764 1701,761 1746,761 1791,761 1836,761 1880,761 1925,758 1970,761 2015,761 2060,761 2104,761 2149,764 2194,761 2239,761 2283,761"/>
+                <TextEquiv>
+                    <Unicode>dem Gebiet der politischen Kreise. Unser bisheriger Sängerkreis trägt jetzt die Bezeichnung "Sänger-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;} place {offset:57; length:8;} place {offset:70; length:9;}">
+                <Coords points="375,819 1975,819 1975,776 1871,769 375,783"/>
+                <Baseline points="388,815 412,818 456,818 501,818 546,818 591,815 635,815 680,815 725,815 770,815 815,815 859,815 904,815 949,815 994,812 1038,812 1083,815 1128,812 1173,812 1218,812 1262,812 1307,812 1352,809 1397,806 1442,809 1486,806 1531,806 1576,806 1621,806 1665,806 1710,806 1755,806 1800,806 1845,806 1889,806 1934,806 1979,806"/>
+                <TextEquiv>
+                    <Unicode>Kreisgruppe Hochrhein" und besteht aus den Sängerkreisen Waldshut und Säckingen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;} organization {offset:40; length:23;} organization {offset:72; length:26; continued:true;}">
+                <Coords points="470,883 2284,881 2284,821 470,836"/>
+                <Baseline points="483,871 495,868 540,865 585,865 629,865 674,862 719,865 764,865 809,865 853,865 898,865 943,865 988,865 1032,865 1077,865 1122,865 1167,865 1212,865 1256,865 1301,862 1346,859 1391,859 1436,862 1480,859 1525,859 1570,859 1615,859 1659,859 1704,859 1749,859 1794,859 1839,859 1883,859 1928,859 1973,859 2018,859 2063,859 2107,859 2152,856 2197,859 2242,859 2286,856"/>
+                <TextEquiv>
+                    <Unicode>Durch die Neueinteilung mußten wir den „Liederkranz St. Blasien" an die Sängerkreisgruppe Freiburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;} organization {offset:0; length:22; continued:true;}">
+                <Coords points="380,923 477,938 973,926 973,885 952,881 380,881"/>
+                <Baseline points="394,913 438,913 483,913 528,913 573,913 618,910 662,910 707,913 752,913 797,913 841,910 886,910 931,910 976,913 979,913"/>
+                <TextEquiv>
+                    <Unicode>(Sängerkreis Neustadt) abtreten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;} organization {offset:63; length:23;}">
+                <Coords points="470,978 2276,966 2276,926 2198,912 470,931"/>
+                <Baseline points="483,964 492,964 537,964 582,964 626,964 671,964 716,961 761,964 806,964 850,964 895,964 940,964 985,964 1030,961 1074,961 1119,961 1164,961 1209,961 1253,961 1298,958 1343,961 1388,961 1433,958 1477,958 1522,955 1567,958 1612,955 1656,958 1701,955 1746,958 1791,958 1836,958 1880,958 1925,955 1970,958 2015,958 2060,958 2104,958 2149,955 2194,955 2239,955 2283,952"/>
+                <TextEquiv>
+                    <Unicode>Wir möchten es daher nicht versäumen, den Sängerkameraden des „Liederkranz St. Blasien" un-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;}">
+                <Coords points="377,1018 2276,1014 2276,966 2210,959 377,976"/>
+                <Baseline points="391,1009 403,1009 447,1009 492,1012 537,1009 582,1009 626,1009 671,1009 716,1009 761,1006 806,1006 850,1006 895,1006 940,1006 985,1006 1030,1006 1074,1006 1119,1006 1164,1006 1209,1006 1253,1003 1298,1003 1343,1006 1388,1003 1433,1003 1477,1003 1522,1003 1567,1003 1612,1000 1656,1003 1701,1003 1746,1003 1791,1003 1836,1003 1880,1003 1925,1003 1970,1003 2015,1000 2060,1000 2104,1000 2149,1000 2194,1000 2239,1000 2283,1000"/>
+                <TextEquiv>
+                    <Unicode>sern herzlichen Dank für ihre Treue während der Zeit, in der wir mit ihnen arbeiten durf-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_9" custom="readingOrder {index:8;}">
+                <Coords points="389,1068 1752,1061 1697,1011 389,1023"/>
+                <Baseline points="403,1053 414,1053 459,1056 504,1056 549,1053 594,1053 638,1050 683,1050 728,1053 773,1053 818,1053 862,1053 907,1050 952,1047 997,1050 1041,1047 1086,1050 1131,1047 1176,1047 1221,1047 1265,1047 1310,1047 1355,1047 1400,1047 1444,1047 1489,1047 1534,1044 1579,1047 1624,1047 1668,1044 1713,1044 1758,1044"/>
+                <TextEquiv>
+                    <Unicode>ten, zu danken und ihnen alles Gute für die fernere Zukunft zu wünschen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_10" custom="readingOrder {index:9;} organization {offset:35; length:21;} place {offset:76; length:12;}">
+                <Coords points="470,1125 2284,1106 2284,1056 470,1068"/>
+                <Baseline points="483,1104 495,1104 540,1104 585,1101 629,1104 674,1104 719,1101 764,1104 809,1104 853,1104 898,1101 943,1101 988,1104 1032,1104 1077,1104 1122,1101 1167,1101 1212,1101 1256,1101 1301,1098 1346,1098 1391,1098 1436,1098 1480,1101 1525,1098 1570,1098 1615,1098 1659,1098 1704,1101 1749,1101 1794,1098 1839,1098 1883,1098 1928,1098 1973,1098 2018,1098 2063,1095 2107,1095 2152,1095 2197,1095 2242,1095 2286,1092"/>
+                <TextEquiv>
+                    <Unicode>Neu erhält die Sängerkreisgruppe im Sängerkreis Waldshut die Männerchöre in Bettmaringen und</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_11" custom="readingOrder {index:10;} place {offset:0; length:11;} organization {offset:17; length:21;} place {offset:60; length:11;} place {offset:73; length:9;} place {offset:84; length:4;} place {offset:90; length:3; continued:true;}">
+                <Coords points="385,1163 2276,1149 2276,1104 385,1118"/>
+                <Baseline points="397,1149 403,1146 447,1149 492,1149 537,1149 582,1149 626,1152 671,1152 716,1152 761,1149 806,1149 850,1149 895,1149 940,1149 985,1146 1030,1146 1074,1146 1119,1146 1164,1146 1209,1146 1253,1146 1298,1146 1343,1146 1388,1146 1433,1143 1477,1146 1522,1143 1567,1143 1612,1143 1656,1143 1701,1143 1746,1143 1791,1143 1836,1143 1880,1143 1925,1143 1970,1143 2015,1143 2060,1143 2104,1140 2149,1140 2194,1143 2239,1140 2283,1140"/>
+                <TextEquiv>
+                    <Unicode>Schwaningen. Zum Sängerkreis Säckingen kommen die Chöre von Rheinfelden, Nollingen, Wehr, Öf-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_12" custom="readingOrder {index:11;} place {offset:0; length:6; continued:true;} place {offset:11; length:6;}">
+                <Coords points="394,1211 748,1211 748,1168 394,1163"/>
+                <Baseline points="406,1194 450,1194 495,1194 540,1194 585,1191 629,1194 674,1191 719,1194 752,1194"/>
+                <TextEquiv>
+                    <Unicode>lingen und Karsau.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_13" custom="readingOrder {index:12;}">
+                <Coords points="458,1253 2284,1244 2284,1201 2196,1189 458,1222"/>
+                <Baseline points="471,1244 495,1241 540,1241 585,1241 629,1241 674,1241 719,1244 764,1244 809,1244 853,1244 898,1244 943,1244 988,1241 1032,1244 1077,1244 1122,1244 1167,1241 1212,1241 1256,1241 1301,1241 1346,1241 1391,1241 1436,1241 1480,1241 1525,1238 1570,1241 1615,1238 1659,1238 1704,1238 1749,1238 1794,1241 1839,1238 1883,1238 1928,1238 1973,1238 2018,1238 2063,1236 2107,1236 2152,1236 2197,1236 2242,1236 2286,1233"/>
+                <TextEquiv>
+                    <Unicode>Diesen Vereinen gilt unser herzlicher Willkommengruß und die Bitte um eifrige Mitarbeit im</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_14" custom="readingOrder {index:13;} person {offset:89; length:6; continued:true;}">
+                <Coords points="387,1301 2276,1291 2276,1244 387,1253"/>
+                <Baseline points="400,1286 403,1286 447,1286 492,1289 537,1286 582,1286 626,1283 671,1283 716,1286 761,1286 806,1286 850,1283 895,1283 940,1283 985,1283 1030,1286 1074,1286 1119,1286 1164,1283 1209,1283 1253,1283 1298,1283 1343,1283 1388,1283 1433,1280 1477,1280 1522,1283 1567,1283 1612,1283 1656,1280 1701,1280 1746,1283 1791,1280 1836,1283 1880,1283 1925,1283 1970,1283 2015,1280 2060,1280 2104,1280 2149,1280 2194,1280 2239,1277 2283,1277"/>
+                <TextEquiv>
+                    <Unicode>Dienste unseres herrlichen deutschen Liedes. Mit der Führung der Sängerkreisgruppe wurde Photo-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_15" custom="readingOrder {index:14;} person {offset:0; length:17; continued:true;} place {offset:21; length:7;} person {offset:64; length:22;}">
+                <Coords points="389,1351 2281,1334 2281,1294 2177,1289 389,1303"/>
+                <Baseline points="403,1334 406,1334 450,1334 495,1331 540,1331 585,1328 629,1328 674,1328 719,1328 764,1331 809,1331 853,1328 898,1328 943,1328 988,1328 1032,1328 1077,1328 1122,1328 1167,1328 1212,1328 1256,1325 1301,1328 1346,1328 1391,1325 1436,1325 1480,1328 1525,1328 1570,1325 1615,1325 1659,1325 1704,1325 1749,1325 1794,1322 1839,1322 1883,1325 1928,1325 1973,1325 2018,1325 2063,1325 2107,1322 2152,1322 2197,1322 2242,1322 2286,1319"/>
+                <TextEquiv>
+                    <Unicode>graph Carl Bächle in Tiengen betraut. Er leitet gleichzeitig den Sängerkreis Waldshut. Zum Führer </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_16" custom="readingOrder {index:15;} organization {offset:4; length:23;} person {offset:34; length:23;} place {offset:61; length:10;}">
+                <Coords points="380,1384 2276,1379 2276,1336 2053,1329 380,1355"/>
+                <Baseline points="394,1373 403,1373 447,1376 492,1376 537,1373 582,1376 626,1373 671,1373 716,1373 761,1373 806,1373 850,1373 895,1373 940,1373 985,1373 1030,1373 1074,1373 1119,1373 1164,1373 1209,1373 1253,1370 1298,1373 1343,1373 1388,1370 1433,1370 1477,1370 1522,1370 1567,1370 1612,1370 1656,1373 1701,1370 1746,1370 1791,1370 1836,1373 1880,1370 1925,1370 1970,1370 2015,1367 2060,1370 2104,1367 2149,1367 2194,1367 2239,1367 2283,1367"/>
+                <TextEquiv>
+                    <Unicode>des Sängerkreises Säckingen wurde Apotheker Gustav Schwer in Laufenburg, ein bewährter, treuer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_17" custom="readingOrder {index:16;}">
+                <Coords points="389,1429 463,1441 515,1429 679,1441 698,1429 852,1431 852,1384 698,1401 677,1386 389,1389"/>
+                <Baseline points="403,1418 447,1421 492,1418 537,1418 582,1418 626,1418 671,1418 716,1418 761,1418 806,1418 850,1421 859,1421"/>
+                <TextEquiv>
+                    <Unicode>Sängerkamerad, ernannt.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_18" custom="readingOrder {index:17;}">
+                <Coords points="458,1488 1234,1476 1275,1507 1424,1484 1424,1431 1386,1420 458,1441"/>
+                <Baseline points="471,1471 489,1471 534,1471 579,1471 623,1471 668,1471 713,1471 758,1471 803,1471 847,1471 892,1471 937,1468 982,1468 1027,1468 1071,1471 1116,1468 1161,1468 1206,1468 1250,1468 1295,1468 1340,1468 1385,1468 1430,1468"/>
+                <TextEquiv>
+                    <Unicode>Die Arbeitsgebiete sind wie folgt aufgeteilt:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_4" custom="readingOrder {index:3;}">
+            <Coords points="1144,1520 1583,1520 1583,1594 1144,1594"/>
+            <TextLine id="r_4_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1132,1567 1168,1586 1289,1576 1317,1593 1522,1574 1522,1526 1446,1531 1427,1512 1393,1529 1341,1529 1317,1505 1277,1522 1249,1510 1206,1526 1132,1524"/>
+                <Baseline points="1146,1564 1191,1567 1236,1564 1280,1564 1325,1564 1370,1564 1415,1564 1459,1564 1504,1564 1528,1564"/>
+                <TextEquiv>
+                    <Unicode>1. Arbeitsgebiete:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_5" custom="readingOrder {index:5;}">
+            <Coords points="1171,2110 1520,2110 1520,2176 1171,2176"/>
+            <TextLine id="r_5_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1173,2179 1203,2184 1249,2158 1360,2174 1379,2160 1405,2167 1424,2158 1486,2179 1488,2120 1386,2120 1372,2106 1355,2120 1341,2106 1322,2120 1263,2110 1218,2077 1175,2082"/>
+                <Baseline points="1185,2152 1224,2152 1268,2149 1313,2149 1358,2149 1403,2149 1447,2149 1492,2149"/>
+                <TextEquiv>
+                    <Unicode>2. Dienstweg:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_6" custom="readingOrder {index:7;}">
+            <Coords points="453,2509 1845,2509 1845,2664 453,2664"/>
+            <TextLine id="r_6_tl_1" custom="readingOrder {index:0;} organization {offset:8; length:17;}">
+                <Coords points="458,2566 1792,2561 1761,2504 1636,2488 1583,2521 458,2504"/>
+                <Baseline points="471,2546 516,2546 561,2546 606,2546 650,2546 695,2549 740,2549 785,2549 829,2546 874,2546 919,2546 964,2543 1009,2546 1053,2543 1098,2546 1143,2543 1188,2543 1233,2543 1277,2543 1322,2543 1367,2543 1412,2543 1456,2543 1501,2543 1546,2543 1591,2543 1636,2543 1680,2543 1725,2546 1770,2546 1797,2549"/>
+                <TextEquiv>
+                    <Unicode>Für die Hauptsängerkreise verbleibt es bei dem bisherigen Verfahren.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_6_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="1118,2656 1149,2663 1180,2647 1218,2668 1284,2654 1486,2666 1503,2651 1550,2651 1550,2604 1469,2599 1448,2611 1398,2590 1367,2606 1253,2609 1199,2580 1177,2602 1118,2599"/>
+                <Baseline points="1131,2639 1176,2642 1221,2639 1265,2639 1310,2639 1355,2642 1400,2639 1444,2642 1489,2639 1534,2642 1555,2642"/>
+                <TextEquiv>
+                    <Unicode>3. Veranstaltungen:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

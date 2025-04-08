@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:03</Creator>
+        <Created>2025-01-22T16:58:58.628+01:00</Created>
+        <LastChange>2025-03-16T16:35:59.199+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0003_p003.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120196042" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="997,190 1295,190 1295,295 997,295"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1076,274 1092,272 1119,290 1146,288 1164,270 1180,282 1213,284 1213,239 1195,233 1182,246 1158,245 1131,217 1125,221 1121,217 1096,243 1076,241"/>
+                <Baseline points="1086,271 1131,274 1176,271 1218,271"/>
+                <TextEquiv>
+                    <Unicode>2</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="403,354 2344,354 2340,2347 434,2344"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} date {offset:18; length:10;when:13.12.1943;}">
+                <Coords points="536,513 1033,479 2105,516 2105,450 1896,432 536,440"/>
+                <Baseline points="546,492 591,489 635,489 680,489 725,486 770,486 815,486 859,486 904,486 949,486 994,489 1038,486 1083,486 1128,486 1173,486 1218,486 1262,486 1307,486 1352,489 1397,486 1442,486 1486,486 1531,489 1576,489 1621,486 1665,486 1710,489 1755,486 1800,489 1845,489 1889,492 1934,495 1979,498 2024,498 2068,501 2110,501"/>
+                <TextEquiv>
+                    <Unicode>Mitgliederstand am 31.12.43 unter Berücksichtigung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="601,558 638,585 669,561 773,577 996,542 1092,567 1356,565 1356,505 1313,501 1027,485 939,511 601,509"/>
+                <Baseline points="612,543 656,540 701,543 746,543 791,543 835,540 880,540 925,540 970,540 1015,540 1059,540 1104,540 1149,540 1194,540 1238,543 1283,543 1328,543 1361,546"/>
+                <TextEquiv>
+                    <Unicode>vorgenannter Änderungen:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="559,653 595,667 638,649 655,667 683,667 702,649 741,667 759,649 794,675 820,653 855,667 886,649 927,665 953,649 953,622 931,622 910,599 872,622 779,571 712,603 606,591 559,626"/>
+                <Baseline points="570,650 600,647 644,650 689,647 734,647 779,650 824,647 868,647 913,647 958,647"/>
+                <TextEquiv>
+                    <Unicode>Aktive</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_4" custom="readingOrder {index:3;} organization {offset:37; length:9;wikiData:Q128781;}">
+                <Coords points="691,741 1467,726 1520,775 1626,724 2166,738 2168,679 1408,665 1330,710 1277,671 1007,673 957,712 693,677"/>
+                <Baseline points="701,734 737,728 782,728 826,728 871,728 916,731 961,731 1006,731 1050,728 1095,728 1140,728 1185,728 1230,728 1274,728 1319,728 1364,731 1409,731 1453,725 1498,725 1543,725 1588,725 1633,722 1677,722 1722,722 1767,725 1812,722 1857,722 1901,722 1946,722 1991,725 2036,725 2080,722 2125,719 2170,716"/>
+                <TextEquiv>
+                    <Unicode>37 Mann, davon z.Zt. 16 Mann bei der Wehrmacht</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="1620,818 1663,798 1714,812 1735,790 1770,806 1790,786 1808,804 1890,782 2087,802 2195,788 2195,726 1620,739"/>
+                <Baseline points="1630,776 1674,776 1719,776 1764,776 1809,779 1854,773 1898,773 1943,773 1988,776 2033,776 2077,776 2122,776 2167,776 2200,776"/>
+                <TextEquiv>
+                    <Unicode>1 " dienstverpflichtet.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="908,890 2213,888 2214,831 2175,827 910,839"/>
+                <Baseline points="919,886 964,883 1009,883 1053,883 1098,883 1143,886 1188,886 1233,883 1277,883 1322,883 1367,880 1412,880 1456,880 1501,880 1546,880 1591,880 1636,880 1680,880 1725,880 1770,883 1815,880 1859,880 1904,880 1949,880 1994,877 2039,877 2083,877 2128,877 2173,877 2218,877"/>
+                <TextEquiv>
+                    <Unicode>20 Mann stehen also zur Singstunde bereit.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="571,1037 708,1060 765,1017 802,1041 876,1019 917,1035 947,1011 1041,1041 1088,1033 1090,953 1023,984 949,964 880,980 839,951 702,990 573,939"/>
+                <Baseline points="582,1021 600,1021 644,1018 689,1018 734,1018 779,1018 824,1015 868,1018 913,1018 958,1015 1003,1018 1047,1015 1092,1018"/>
+                <TextEquiv>
+                    <Unicode>Passive:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_8" custom="readingOrder {index:7;} organization {offset:30; length:9;wikiData:Q128781;}">
+                <Coords points="706,1101 1234,1135 1291,1099 1391,1137 1487,1092 1958,1096 1896,1033 1635,1017 1495,1056 706,1054"/>
+                <Baseline points="716,1095 755,1092 800,1095 844,1098 889,1095 934,1095 979,1095 1024,1095 1068,1095 1113,1095 1158,1095 1203,1092 1247,1092 1292,1092 1337,1092 1382,1089 1427,1089 1471,1089 1516,1089 1561,1089 1606,1086 1650,1086 1695,1086 1740,1086 1785,1086 1830,1086 1874,1086 1919,1086 1964,1086"/>
+                <TextEquiv>
+                    <Unicode>58 Mann, davon 9 Mann bei der Wehrmacht.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_9" custom="readingOrder {index:8;}">
+                <Coords points="407,1332 522,1330 610,1364 1090,1346 1090,1283 1013,1268 753,1285 616,1256 536,1301 479,1256 407,1285"/>
+                <Baseline points="417,1322 420,1322 465,1322 510,1325 555,1322 600,1322 644,1322 689,1322 734,1325 779,1319 824,1322 868,1319 913,1316 958,1316 1003,1316 1047,1319 1092,1316"/>
+                <TextEquiv>
+                    <Unicode>3.) Feldpostpäckchen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_10" custom="readingOrder {index:9;} date {offset:26; length:9;when:07.1943;}">
+                <Coords points="712,1403 2148,1418 2148,1332 1956,1354 1898,1319 1487,1367 1365,1334 712,1350"/>
+                <Baseline points="722,1391 764,1391 809,1391 853,1391 898,1388 943,1388 988,1391 1032,1388 1077,1391 1122,1391 1167,1391 1212,1391 1256,1391 1301,1388 1346,1391 1391,1388 1436,1388 1480,1388 1525,1388 1570,1388 1615,1388 1659,1388 1704,1388 1749,1388 1794,1385 1839,1388 1883,1385 1928,1388 1973,1385 2018,1385 2063,1385 2107,1385 2152,1385"/>
+                <TextEquiv>
+                    <Unicode>zum Geburtstag seit Mitte Juli 1943 eingestellt</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_11" custom="readingOrder {index:10;} person {offset:1; length:14;}">
+                <Coords points="906,1459 2117,1459 2095,1395 908,1401"/>
+                <Baseline points="916,1444 958,1444 1003,1442 1047,1444 1092,1442 1137,1442 1182,1442 1227,1442 1271,1442 1316,1442 1361,1439 1406,1442 1450,1442 1495,1442 1540,1442 1585,1442 1630,1439 1674,1442 1719,1439 1764,1439 1809,1439 1854,1439 1898,1439 1943,1436 1988,1439 2033,1436 2077,1436 2122,1433"/>
+                <TextEquiv>
+                    <Unicode>(Malzacher Paul erhielt das letzte Paket</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_12" custom="readingOrder {index:11;}">
+                <Coords points="720,1522 2107,1528 2107,1477 2038,1463 720,1481"/>
+                <Baseline points="731,1516 767,1516 812,1513 856,1510 901,1513 946,1516 991,1513 1035,1513 1080,1513 1125,1516 1170,1516 1215,1519 1259,1516 1304,1516 1349,1516 1394,1516 1439,1516 1483,1516 1528,1516 1573,1516 1618,1513 1662,1510 1707,1513 1752,1513 1797,1513 1842,1513 1886,1510 1931,1510 1976,1510 2021,1510 2065,1513 2110,1510"/>
+                <TextEquiv>
+                    <Unicode>zu Weihnachten ging jedoch jedem Sänger wieder</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_13" custom="readingOrder {index:12;}">
+                <Coords points="896,1581 2111,1571 2111,1530 1915,1514 1381,1522 1346,1555 896,1526"/>
+                <Baseline points="907,1567 952,1567 997,1564 1041,1564 1086,1564 1131,1564 1176,1567 1221,1564 1265,1564 1310,1567 1355,1567 1400,1567 1444,1567 1489,1564 1534,1567 1579,1567 1624,1564 1668,1564 1713,1564 1758,1564 1803,1564 1848,1561 1892,1561 1937,1558 1982,1561 2027,1564 2071,1564 2116,1564"/>
+                <TextEquiv>
+                    <Unicode>1 Päckchen zu. Dank an die Sänger wegen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_14" custom="readingOrder {index:13;}">
+                <Coords points="900,1630 2140,1641 2113,1571 900,1575"/>
+                <Baseline points="910,1618 934,1615 979,1615 1024,1612 1068,1615 1113,1615 1158,1615 1203,1615 1247,1615 1292,1615 1337,1615 1382,1615 1427,1615 1471,1615 1516,1615 1561,1615 1606,1615 1650,1615 1695,1618 1740,1615 1785,1615 1830,1615 1874,1612 1919,1612 1964,1615 2009,1615 2054,1615 2098,1612 2143,1615"/>
+                <TextEquiv>
+                    <Unicode>Bereitstellung von Füllgut und vorallem</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="896,1667 931,1684 1017,1673 1049,1692 1078,1671 1178,1673 1205,1690 1229,1678 1244,1692 1274,1671 1373,1673 1373,1630 1334,1622 896,1632"/>
+                <Baseline points="907,1662 952,1662 997,1659 1041,1659 1086,1662 1131,1659 1176,1659 1221,1662 1265,1659 1310,1659 1355,1662 1379,1662"/>
+                <TextEquiv>
+                    <Unicode>Geschäftsleuten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_16" custom="readingOrder {index:15;}">
+                <Coords points="421,1796 464,1823 550,1786 622,1825 1107,1811 1107,1753 976,1729 957,1749 884,1718 759,1723 734,1749 589,1729 552,1766 493,1725 421,1741"/>
+                <Baseline points="432,1782 477,1785 522,1788 567,1788 612,1785 656,1785 701,1785 746,1782 791,1785 835,1785 880,1788 925,1785 970,1782 1015,1782 1059,1785 1104,1788 1113,1788"/>
+                <TextEquiv>
+                    <Unicode>4.) Chorleiter-Posten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_17" custom="readingOrder {index:16;} person {offset:0; length:4;} date {offset:19; length:7;}">
+                <Coords points="714,1864 1827,1872 1827,1829 1753,1794 1596,1825 1436,1772 1277,1829 714,1813"/>
+                <Baseline points="725,1854 770,1854 815,1857 859,1857 904,1859 949,1857 994,1857 1038,1857 1083,1857 1128,1857 1173,1857 1218,1857 1262,1857 1307,1857 1352,1857 1397,1857 1442,1857 1486,1857 1531,1857 1576,1857 1621,1857 1665,1857 1710,1857 1755,1857 1800,1857 1830,1857"/>
+                <TextEquiv>
+                    <Unicode>Wolf mit Brief vom 28.9.43 abgedankt.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_18" custom="readingOrder {index:17;} person {offset:0; length:5;}">
+                <Coords points="712,1937 775,1919 874,1945 968,1907 1041,1931 1117,1913 1399,1929 1399,1870 1356,1862 712,1866"/>
+                <Baseline points="722,1907 767,1907 812,1907 856,1910 901,1913 946,1910 991,1907 1035,1907 1080,1907 1125,1907 1170,1907 1215,1907 1259,1907 1304,1907 1349,1910 1394,1910 1403,1910"/>
+                <TextEquiv>
+                    <Unicode>Habig / Entschädigung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_19" custom="readingOrder {index:18;}">
+                <Coords points="419,2031 450,2050 473,2036 511,2054 536,2034 601,2072 669,2054 712,2068 739,2054 822,2058 822,1980 792,1966 755,1982 724,1956 669,1988 626,1954 581,1986 526,1993 511,1978 479,1993 452,1970 419,1974"/>
+                <Baseline points="429,2030 474,2033 519,2033 564,2033 609,2027 641,2030 641,2030 686,2030 731,2030 776,2033 821,2030 826,2033"/>
+                <TextEquiv>
+                    <Unicode>5.) Spender:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_20" custom="readingOrder {index:19;}">
+                <Coords points="657,2115 696,2126 781,2103 820,2119 925,2105 1099,2115 1099,2062 1025,2036 957,2064 906,2066 872,2038 818,2060 657,2064"/>
+                <Baseline points="668,2101 713,2101 758,2098 803,2098 847,2098 892,2101 937,2101 982,2101 1027,2101 1071,2098 1104,2101"/>
+                <TextEquiv>
+                    <Unicode>Aus Wohlwollen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_21" custom="readingOrder {index:20;}">
+                <Coords points="1843,2160 1870,2169 1929,2162 1950,2177 1970,2160 2005,2154 2040,2166 2087,2152 2107,2168 2128,2164 2124,2107 2099,2123 2076,2099 1997,2095 1950,2128 1921,2107 1874,2095 1843,2105"/>
+                <Baseline points="1854,2149 1865,2149 1910,2152 1955,2149 2000,2152 2045,2149 2089,2146 2134,2143"/>
+                <TextEquiv>
+                    <Unicode>RM. 50.--</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l" custom="readingOrder {index:21;} person {offset:0; length:22;} date {offset:26; length:7;when:13.05.1943;}">
+                <Coords points="751,2109 1365,2079 1545,2072 1751,2089 1751,2158 1704,2168 751,2160"/>
+                <Baseline points="761,2152 800,2149 844,2149 889,2149 934,2149 979,2149 1024,2149 1068,2146 1113,2149 1158,2149 1203,2149 1247,2149 1292,2149 1337,2146 1382,2149 1427,2149 1471,2146 1516,2146 1561,2149 1606,2149 1650,2149 1695,2149 1740,2149 1755,2149"/>
+                <TextEquiv>
+                    <Unicode>Ehrenführer Suter Emil am 13.5.43</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_24" custom="readingOrder {index:22;}">
+                <Coords points="1929,2199 1970,2220 1978,2213 2001,2220 2042,2209 2074,2224 2101,2203 2132,2207 2132,2160 2111,2171 1978,2160 1948,2183 1929,2183"/>
+                <Baseline points="1940,2197 1985,2200 2030,2197 2074,2197 2119,2194 2137,2197"/>
+                <TextEquiv>
+                    <Unicode>" 20.--</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:23;} person {offset:0; length:24;} date {offset:24; length:6;when:01.01.1943;}">
+                <Coords points="747,2162 1647,2154 1768,2158 1768,2236 871,2234 747,2211"/>
+                <Baseline points="758,2200 776,2200 821,2200 865,2200 910,2197 955,2197 1000,2197 1044,2197 1089,2200 1134,2200 1179,2200 1224,2200 1268,2197 1313,2197 1358,2197 1403,2197 1447,2197 1582,2197 1627,2197 1671,2197 1716,2197 1761,2200 1773,2200"/>
+                <TextEquiv>
+                    <Unicode>Feldwebel Glocker Franz 1.1.43</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_27" custom="readingOrder {index:24;}">
+                <Coords points="419,2322 561,2363 616,2344 869,2355 904,2328 939,2332 939,2273 878,2304 808,2273 667,2283 632,2256 559,2277 501,2236 419,2232"/>
+                <Baseline points="429,2313 474,2319 519,2322 564,2322 609,2319 653,2319 698,2322 743,2319 788,2322 832,2322 877,2328 922,2322 943,2322"/>
+                <TextEquiv>
+                    <Unicode>6.) Kasse:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

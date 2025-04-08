@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:03</Creator>
+        <Created>2025-01-22T16:58:58.787+01:00</Created>
+        <LastChange>2025-03-16T16:34:38.134+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0004_p004.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120196049" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_1578"/>
+                <RegionRefIndexed index="3" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_2" custom="readingOrder {index:0;}">
+            <Coords points="1013,209 1317,209 1317,367 1013,367"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="1077,295 1098,295 1116,306 1138,298 1166,300 1188,278 1216,295 1233,292 1233,251 1180,245 1148,223 1135,226 1110,251 1077,250"/>
+                <Baseline points="1086,280 1131,283 1176,280 1221,280 1238,283"/>
+                <TextEquiv>
+                    <Unicode>- 3 -</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_1578" custom="readingOrder {index:2;}">
+            <Coords points="671,1669 2107,1669 2107,2003 671,2003"/>
+            <TextLine id="r_1578_tl_1" custom="readingOrder {index:0;} organization {offset:20; length:3;}">
+                <Coords points="726,1753 1791,1770 1791,1722 1711,1683 1212,1681 1172,1720 1085,1674 726,1700"/>
+                <Baseline points="734,1740 779,1740 824,1743 868,1740 913,1743 958,1743 1003,1743 1047,1743 1092,1743 1137,1743 1182,1740 1227,1743 1271,1743 1316,1740 1361,1743 1406,1743 1450,1743 1495,1743 1540,1746 1585,1746 1630,1746 1674,1746 1719,1746 1764,1743 1794,1743"/>
+                <TextEquiv>
+                    <Unicode>Ehrenbrief ist beim Gau beantragt.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_1578_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="729,1849 1938,1872 1938,1791 729,1797"/>
+                <Baseline points="737,1839 782,1839 826,1839 871,1839 916,1833 961,1836 1006,1836 1050,1836 1095,1836 1140,1836 1185,1836 1230,1833 1274,1836 1319,1836 1364,1839 1409,1839 1453,1842 1498,1839 1543,1842 1588,1842 1633,1842 1677,1842 1722,1845 1767,1845 1812,1845 1857,1845 1901,1845 1940,1845"/>
+                <TextEquiv>
+                    <Unicode>Sängerring kann erst nach Beendigung des</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_1578_tl_3" custom="readingOrder {index:2;} Event {offset:0; length:7;}">
+                <Coords points="729,1897 877,1913 966,1889 1135,1930 1268,1886 1460,1939 1513,1922 1513,1870 1454,1852 729,1852"/>
+                <Baseline points="737,1892 773,1889 818,1889 862,1889 907,1889 952,1886 997,1886 1041,1886 1086,1883 1131,1883 1177,1882 1177,1882 1224,1883 1268,1883 1313,1886 1358,1889 1403,1892 1447,1892 1492,1892 1516,1892"/>
+                <TextEquiv>
+                    <Unicode>Krieges beschafft werden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:3;}">
+            <Coords points="1890,3281 2271,3281 2271,3454 1890,3454"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} date {offset:0; length:8;when:31.12.1943;}">
+                <Coords points="1925,3358 1978,3375 2019,3361 2066,3363 2081,3377 2100,3363 2126,3377 2155,3377 2172,3364 2184,3368 2183,3294 2144,3293 2098,3319 2075,3304 2062,3313 2027,3290 2000,3310 1980,3299 1970,3308 1923,3304"/>
+                <Baseline points="1934,3349 1979,3352 2024,3352 2068,3352 2113,3352 2158,3355 2188,3358"/>
+                <TextEquiv>
+                    <Unicode>31.12.43</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

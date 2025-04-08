@@ -8,6 +8,7 @@ für die Weiterverarbeitung der extrahierten Informationen.
 
 import json
 from typing import Dict, List, Optional, Union, Any
+import re
 from datetime import datetime
 
 class Person:
@@ -298,10 +299,7 @@ class BaseDocument:
                     errors["mentioned_dates"] = []
                 errors["mentioned_dates"].append(f"Ungültiges Datum an Index {i}: {date}. Format sollte YYYY.MM.DD sein")
         
-        # Validiere Personen
-        if not self.author.is_valid():
-            errors["author"] = ["Autor muss mindestens Vor- oder Nachnamen haben"]
-        
+        # Validiere Empfänger für Briefe und Postkarten
         if not self.recipient.is_valid() and self.document_type in ["Brief", "Postkarte"]:
             errors["recipient"] = ["Empfänger muss für Briefe und Postkarten angegeben werden"]
         
