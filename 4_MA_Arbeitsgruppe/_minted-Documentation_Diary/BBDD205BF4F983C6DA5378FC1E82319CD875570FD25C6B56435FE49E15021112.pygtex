@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Alter Ansatz:}
+\PYG{n}{result} \PYG{o}{=} \PYG{n}{create\PYGZus{}base\PYGZus{}schema}\PYG{p}{(}\PYG{n}{metadata\PYGZus{}info}\PYG{p}{,} \PYG{n}{transcript\PYGZus{}text}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Neuer objektorientierter Ansatz:}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{document\PYGZus{}schemas}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{BaseDocument}\PYG{p}{,} \PYG{n}{Person}\PYG{p}{,} \PYG{n}{Place}\PYG{p}{,} \PYG{n}{Event}\PYG{p}{,} \PYG{n}{Organization}
+
+\PYG{n}{doc} \PYG{o}{=} \PYG{n}{BaseDocument}\PYG{p}{(}
+    \PYG{n}{attributes}\PYG{o}{=}\PYG{n}{metadata\PYGZus{}info}\PYG{p}{,}
+    \PYG{n}{content\PYGZus{}transcription}\PYG{o}{=}\PYG{n}{transcript\PYGZus{}text}\PYG{p}{,}
+    \PYG{n}{mentioned\PYGZus{}persons}\PYG{o}{=}\PYG{p}{[}\PYG{n}{Person}\PYG{p}{(}\PYG{o}{**}\PYG{n}{p}\PYG{p}{)} \PYG{k}{for} \PYG{n}{p} \PYG{o+ow}{in} \PYG{n}{custom\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}persons\PYGZdq{}}\PYG{p}{]],}
+    \PYG{n}{mentioned\PYGZus{}organizations}\PYG{o}{=}\PYG{p}{[}\PYG{n}{Organization}\PYG{p}{(}\PYG{o}{**}\PYG{n}{o}\PYG{p}{)} \PYG{k}{for} \PYG{n}{o} \PYG{o+ow}{in} \PYG{n}{custom\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}organizations\PYGZdq{}}\PYG{p}{]],}
+    \PYG{n}{mentioned\PYGZus{}places}\PYG{o}{=}\PYG{p}{[}\PYG{n}{Place}\PYG{p}{(}\PYG{o}{**}\PYG{n}{pl}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pl} \PYG{o+ow}{in} \PYG{n}{custom\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}places\PYGZdq{}}\PYG{p}{]],}
+    \PYG{n}{mentioned\PYGZus{}dates}\PYG{o}{=}\PYG{n}{custom\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}dates\PYGZdq{}}\PYG{p}{]}
+\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Mit Validierung}
+\PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{doc}\PYG{o}{.}\PYG{n}{is\PYGZus{}valid}\PYG{p}{():}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Fehler in Dokument: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{doc}\PYG{o}{.}\PYG{n}{validate}\PYG{p}{()}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:02</Creator>
+        <Created>2025-01-22T17:00:42.386+01:00</Created>
+        <LastChange>2025-03-16T16:08:19.329+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120312379" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r_2"/>
+                <RegionRefIndexed index="1" regionRef="r"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+                <RegionRefIndexed index="3" regionRef="r_4"/>
+                <RegionRefIndexed index="4" regionRef="r_10"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_2" custom="readingOrder {index:0;}">
+            <Coords points="1284,181 2132,181 2132,311 1284,311"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:10; length:13;when:10.07.1943;}">
+                <Coords points="1287,264 1411,305 1493,264 1554,301 1626,264 1767,267 1798,298 1927,271 2084,296 2084,206 1743,233 1704,194 1629,233 1394,191 1340,221 1287,191"/>
+                <Baseline points="1301,265 1346,265 1391,268 1436,268 1480,268 1525,268 1570,268 1615,268 1659,268 1704,268 1749,268 1794,268 1839,268 1883,268 1928,268 1973,268 2018,268 2063,268 2089,268"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 10. Juli 1943.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:1;}">
+            <Coords points="33,78 711,78 711,283 33,283"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:15; continued:true;wikiData:Q133269730;}">
+                <Coords points="46,194 162,216 250,194 286,213 325,189 376,211 492,175 657,201 686,194 688,119 562,95 490,131 330,99 264,133 153,63 48,90"/>
+                <Baseline points="59,185 65,182 110,182 155,182 200,182 244,182 289,182 334,179 379,176 423,176 468,173 513,170 558,170 603,170 647,173 692,179"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:28; continued:true;wikiData:Q133269730;}">
+                <Coords points="46,284 95,264 216,303 298,257 381,257 424,303 516,267 553,308 608,313 652,279 696,298 700,194 325,191 286,213 48,196"/>
+                <Baseline points="59,247 74,247 119,244 164,244 208,244 253,244 298,241 343,241 388,235 432,232 477,232 522,232 567,229 612,229 656,235 701,232"/>
+                <TextEquiv>
+                    <Unicode>(Alter Schweizer-Männerchor)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="477,416 1236,416 1236,537 477,537"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="473,514 574,482 596,502 693,482 795,531 843,499 880,524 948,490 1154,511 1197,502 1195,434 1054,448 960,410 873,439 826,400 730,451 652,419 557,451 470,414"/>
+                <Baseline points="486,480 531,483 576,480 620,483 665,483 710,480 755,483 800,480 844,480 889,480 934,480 979,480 1024,483 1068,483 1113,483 1158,483 1200,486"/>
+                <TextEquiv>
+                    <Unicode>An die aktiven Sänger !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_4" custom="readingOrder {index:3;}">
+            <Coords points="444,564 2470,564 2470,1545 444,1545"/>
+            <TextLine id="l" custom="readingOrder {index:0;} person {offset:13; length:14;} date {offset:32; length:13;when:09.07.1943;}">
+                <Coords points="473,550 722,536 2215,555 2213,650 1954,654 1840,654 473,645"/>
+                <Baseline points="486,635 531,635 576,635 620,635 665,632 710,632 755,632 800,635 844,635 889,635 934,635 979,635 1024,635 1068,635 1113,635 1158,635 1203,635 1247,635 1292,635 1337,632 1382,635 1427,638 1471,638 1516,635 1561,635 1576,635 1683,635 1728,635 1773,635 1818,635 1862,635 1907,635 1952,632 1997,632 2042,632 2086,632 2131,629 2176,632 2221,635"/>
+                <TextEquiv>
+                    <Unicode>Sangesbruder Albert Hirtler ist gestern Abend.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_3" custom="readingOrder {index:1;} Event {offset:46; length:10;date:13.07.1943; place:Tiengen;}">
+                <Coords points="487,698 1891,683 2213,720 2213,650 2043,635 487,652"/>
+                <Baseline points="501,686 546,680 591,680 635,683 680,680 725,683 770,683 815,683 859,683 904,683 949,686 994,686 1038,686 1083,686 1128,686 1173,686 1218,686 1262,686 1307,686 1352,689 1397,689 1442,686 1486,686 1531,686 1576,686 1621,686 1665,686 1710,683 1755,686 1800,686 1845,686 1889,683 1934,683 1979,680 2024,683 2068,686 2113,683 2158,683 2203,686 2218,689"/>
+                <TextEquiv>
+                    <Unicode>seiner schweren Krankheit leider erlegen. Die Beerdigung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_4" custom="readingOrder {index:2;} date {offset:22; length:8;when:13.07.1943;}">
+                <Coords points="482,747 2145,747 2145,700 1893,688 482,698"/>
+                <Baseline points="495,737 540,737 585,734 629,734 674,731 719,737 764,734 809,737 853,737 898,737 943,740 988,740 1032,737 1077,740 1122,740 1167,740 1212,740 1256,740 1301,737 1346,737 1391,740 1436,740 1480,737 1525,737 1570,737 1615,734 1659,734 1704,734 1749,737 1794,737 1839,734 1883,734 1928,731 1973,731 2018,734 2063,734 2107,731 2152,734"/>
+                <TextEquiv>
+                    <Unicode>findet am Montag, den 13. Juli, nachmittags 3 Uhr, in</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:3;} place {offset:0; length:7;}">
+                <Coords points="485,747 654,744 793,742 2135,742 2174,744 2174,797 982,805 628,807 519,805 485,800"/>
+                <Baseline points="498,785 543,785 588,785 632,785 677,785 722,788 767,788 812,788 856,785 901,791 922,788 994,791 1015,791 1059,788 1104,788 1149,788 1194,788 1238,791 1283,788 1328,788 1373,788 1418,788 1462,791 1507,791 1552,788 1597,788 1642,788 1686,788 1731,788 1776,785 1821,785 1865,785 1910,785 1955,782 2000,785 2045,782 2089,785 2134,785 2179,782"/>
+                <TextEquiv>
+                    <Unicode>Tiengen statt. Wir werden mit Fahne daran teil-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_7" custom="readingOrder {index:4;}">
+                <Coords points="482,858 2087,856 2087,802 2036,793 482,800"/>
+                <Baseline points="495,832 540,832 585,832 629,832 674,835 719,838 764,838 809,835 853,832 898,838 943,838 988,835 1032,838 1077,838 1122,838 1167,838 1212,838 1256,841 1301,841 1346,838 1391,838 1436,838 1480,838 1525,841 1570,838 1615,838 1659,835 1704,835 1749,835 1794,835 1839,835 1883,835 1928,835 1973,832 2018,829 2063,832 2092,835"/>
+                <TextEquiv>
+                    <Unicode>nehmen. Ich wäre dankbar, wenn möglichst eine grosse</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_8" custom="readingOrder {index:5;}">
+                <Coords points="482,904 2184,902 2184,843 482,858"/>
+                <Baseline points="495,889 540,889 585,886 629,886 674,886 719,889 764,886 809,889 853,889 898,892 943,889 988,889 1032,892 1077,892 1122,892 1167,892 1212,892 1256,892 1301,889 1346,889 1391,892 1436,892 1480,892 1525,892 1570,892 1615,892 1659,892 1704,889 1749,892 1794,892 1839,889 1883,889 1928,889 1973,889 2018,889 2063,886 2107,886 2152,886 2191,889"/>
+                <TextEquiv>
+                    <Unicode>Anzahl Sängerkameraden den verstorbenen Sangesbruder zu</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_9" custom="readingOrder {index:6;}">
+                <Coords points="487,967 1566,957 1563,904 1459,899 485,909"/>
+                <Baseline points="498,934 543,937 588,940 632,937 677,937 722,940 767,940 812,943 856,940 901,943 946,940 991,943 1035,940 1080,943 1125,943 1170,946 1215,946 1259,943 1304,943 1349,940 1394,943 1439,943 1483,943 1528,943 1570,943"/>
+                <TextEquiv>
+                    <Unicode>seiner Ruhestätte begleiten würden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_10" custom="readingOrder {index:7;}">
+                <Coords points="477,1025 979,1020 1037,1062 1093,1020 1474,1054 1849,1020 1924,1062 2259,1035 2259,977 2094,962 477,977"/>
+                <Baseline points="492,1015 537,1015 582,1015 626,1015 671,1018 716,1018 761,1018 806,1018 850,1018 895,1018 940,1018 985,1015 1030,1015 1074,1018 1119,1018 1164,1018 1209,1018 1253,1018 1298,1018 1343,1018 1388,1018 1433,1018 1477,1018 1522,1018 1567,1015 1612,1018 1656,1015 1701,1018 1746,1015 1791,1015 1836,1015 1880,1015 1925,1012 1970,1015 2015,1015 2060,1015 2104,1015 2149,1015 2194,1015 2239,1015 2266,1015"/>
+                <TextEquiv>
+                    <Unicode>Die Fahrtkosten für die Teilnehmer trägt die Vereinskasse.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_11" custom="readingOrder {index:8;} date {offset:11; length:14;when:11.07.1943;} place {offset:55; length:9;}">
+                <Coords points="482,1132 2426,1129 2426,1045 2320,1074 2281,1035 1580,1093 1517,1057 1294,1076 1229,1033 1180,1079 482,1069"/>
+                <Baseline points="495,1110 540,1110 585,1113 629,1113 674,1113 719,1116 764,1113 809,1116 853,1116 898,1116 943,1116 988,1116 1032,1116 1077,1116 1122,1119 1167,1119 1212,1119 1256,1119 1301,1116 1346,1116 1391,1116 1436,1116 1480,1116 1525,1113 1570,1113 1615,1113 1659,1113 1704,1116 1749,1113 1794,1113 1839,1116 1883,1116 1928,1113 1973,1113 2018,1113 2063,1113 2107,1113 2152,1113 2197,1113 2242,1113 2286,1113 2331,1113 2376,1113 2421,1113 2433,1116"/>
+                <TextEquiv>
+                    <Unicode>Wir wollen morgen Sonntag um 11 Uhr vormittags kurz im Schulhaus</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_12" custom="readingOrder {index:9;}">
+                <Coords points="487,1173 2193,1195 2193,1139 2130,1127 487,1134"/>
+                <Baseline points="501,1161 546,1164 591,1167 635,1167 680,1164 725,1164 770,1167 815,1167 859,1167 904,1167 949,1170 994,1167 1038,1167 1083,1167 1128,1170 1173,1170 1218,1167 1262,1167 1307,1167 1352,1167 1397,1167 1442,1167 1486,1164 1531,1164 1576,1164 1621,1167 1665,1167 1710,1167 1755,1167 1800,1167 1845,1167 1889,1164 1934,1164 1979,1164 2024,1164 2068,1167 2113,1164 2158,1164 2200,1173"/>
+                <TextEquiv>
+                    <Unicode>zusammenkommen und alles nähere besprechen. Ich erwarte,</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_13" custom="readingOrder {index:10;}">
+                <Coords points="487,1246 2014,1253 2017,1173 1958,1163 490,1173"/>
+                <Baseline points="501,1212 546,1215 591,1215 635,1215 680,1215 725,1215 770,1215 815,1218 859,1215 904,1215 949,1218 994,1218 1038,1218 1083,1218 1128,1218 1173,1218 1218,1218 1262,1215 1307,1218 1352,1218 1397,1218 1442,1215 1486,1215 1531,1215 1576,1215 1621,1215 1665,1215 1710,1215 1755,1215 1800,1215 1845,1215 1889,1212 1934,1212 1979,1215 2021,1215"/>
+                <TextEquiv>
+                    <Unicode>dass jeder Sänger an dieser Besprechung teilnimmt.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_14" custom="readingOrder {index:11;} person {offset:4; length:14; continued:true;}">
+                <Coords points="1394,1348 1430,1369 1457,1350 1505,1360 1527,1338 1551,1355 1963,1348 1963,1297 1917,1285 1869,1302 1728,1275 1709,1292 1677,1263 1648,1292 1394,1289"/>
+                <Baseline points="1406,1337 1450,1340 1495,1340 1540,1337 1585,1337 1630,1337 1674,1340 1719,1340 1764,1340 1809,1337 1854,1337 1898,1334 1943,1337 1970,1337"/>
+                <TextEquiv>
+                    <Unicode>Der Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_4_tl_15" custom="readingOrder {index:12;} person {offset:0; length:10; continued:true;}">
+                <Coords points="1687,1418 1733,1428 1798,1406 1844,1420 1864,1403 2009,1401 2048,1420 2075,1411 2077,1372 1934,1362 1757,1379 1733,1355 1689,1352"/>
+                <Baseline points="1701,1409 1725,1406 1770,1403 1815,1400 1859,1397 1904,1394 1949,1391 1994,1394 2039,1397 2083,1403"/>
+                <TextEquiv>
+                    <Unicode>Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_10" custom="readingOrder {index:4;}">
+            <Coords points="299,1639 926,1639 926,1750 299,1750"/>
+            <TextLine id="r_10_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="305,1726 456,1714 502,1735 582,1711 667,1740 691,1716 766,1733 875,1721 875,1663 797,1660 778,1641 664,1668 625,1643 574,1658 458,1643 431,1660 368,1626 305,1651"/>
+                <Baseline points="319,1707 364,1704 409,1707 453,1704 498,1704 543,1707 588,1707 632,1707 677,1707 722,1707 767,1704 812,1707 856,1707 880,1707"/>
+                <TextEquiv>
+                    <Unicode>Kenntnis genommen:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

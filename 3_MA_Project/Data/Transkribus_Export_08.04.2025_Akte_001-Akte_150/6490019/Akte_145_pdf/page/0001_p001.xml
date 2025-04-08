@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_17:32</Creator>
+        <Created>2025-01-23T13:06:07.690+01:00</Created>
+        <LastChange>2025-02-25T16:19:19.279+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120307658" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1215,132 2241,132 2241,291 1215,291"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:10; length:18;when:26.09.1939;}">
+                <Coords points="1291,264 1489,228 1580,256 1678,226 1806,272 2174,240 2174,157 2145,151 1832,183 1688,144 1584,179 1291,163"/>
+                <Baseline points="1301,217 1346,220 1391,220 1436,223 1480,223 1525,220 1570,220 1615,220 1659,220 1704,220 1749,220 1794,217 1839,217 1883,220 1928,217 1973,220 2018,220 2063,220 2107,217 2152,217 2179,220"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 26. September 1939.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="492,337 2325,337 2325,1506 492,1506"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="571,451 606,441 647,451 675,431 698,437 712,427 750,435 763,447 785,445 785,346 756,358 698,319 636,340 610,317 571,331"/>
+                <Baseline points="582,420 609,420 653,420 698,420 743,420 788,417"/>
+                <TextEquiv>
+                    <Unicode>An die</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:23; continued:true;}">
+                <Coords points="576,512 695,533 740,508 891,508 998,539 1137,502 1208,541 1293,527 1291,437 1112,456 954,409 878,439 820,419 575,449"/>
+                <Baseline points="588,489 632,489 677,489 722,495 767,495 812,495 856,495 901,498 946,498 991,498 1035,498 1080,498 1125,498 1170,498 1215,498 1259,501 1298,501"/>
+                <TextEquiv>
+                    <Unicode>NSDAP - Ortsgruppe Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_3" custom="readingOrder {index:2;} place {offset:0; length:15;}">
+                <Coords points="575,575 787,592 1060,584 1060,533 1037,527 998,537 887,508 799,527 728,515 695,533 659,508 575,519"/>
+                <Baseline points="585,564 629,567 674,570 719,573 764,573 809,573 853,576 898,573 943,576 988,573 1032,576 1065,573"/>
+                <TextEquiv>
+                    <Unicode>M u r g / Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_5" custom="readingOrder {index:3;}">
+                <Coords points="582,797 2141,803 2141,752 1863,724 1582,765 986,698 791,759 582,720"/>
+                <Baseline points="594,794 638,794 683,794 728,794 773,797 818,794 862,794 907,794 952,794 997,797 1041,794 1086,794 1131,794 1176,794 1221,794 1265,797 1310,797 1355,797 1400,797 1444,797 1489,797 1534,797 1579,797 1624,797 1668,800 1713,797 1758,800 1803,797 1848,800 1892,797 1937,797 1982,797 2027,794 2071,794 2116,791 2146,794"/>
+                <TextEquiv>
+                    <Unicode>Auf Ihr gestriges Schreiben teile ich mit, dass wir</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_6" custom="readingOrder {index:4;}">
+                <Coords points="586,844 2164,866 2141,803 586,799"/>
+                <Baseline points="597,838 641,841 686,841 731,844 776,841 821,841 865,844 910,844 955,841 1000,844 1044,844 1089,844 1134,844 1179,844 1224,844 1268,847 1313,847 1358,847 1403,844 1447,847 1492,847 1537,847 1582,847 1627,847 1671,847 1716,847 1761,850 1806,847 1851,847 1895,847 1940,844 1985,841 2030,844 2074,844 2119,841 2164,841 2170,838"/>
+                <TextEquiv>
+                    <Unicode>Ihrem Wunsche gerne entsprechen und morgen Abend an-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_7" custom="readingOrder {index:5;} place {offset:28; length:7;}">
+                <Coords points="580,911 976,895 1232,950 1358,909 1627,948 1859,909 1962,944 2084,907 2084,858 578,846"/>
+                <Baseline points="591,889 635,889 680,889 725,892 770,892 815,892 859,892 904,895 949,892 994,892 1038,892 1083,892 1128,895 1173,895 1218,895 1262,898 1307,901 1352,898 1397,898 1442,898 1486,898 1531,898 1576,898 1621,898 1665,898 1710,898 1755,898 1800,901 1845,901 1889,898 1934,898 1979,895 2024,895 2068,895 2089,895"/>
+                <TextEquiv>
+                    <Unicode>lässlich der Versammlung im Murgtal einige Lieder</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_8" custom="readingOrder {index:6;}">
+                <Coords points="582,980 734,982 779,952 862,1001 962,960 1096,1005 1200,996 1200,925 1143,905 582,913"/>
+                <Baseline points="594,943 638,943 683,943 728,943 773,943 818,946 862,946 907,946 952,946 997,946 1041,946 1086,949 1131,949 1176,952 1203,955"/>
+                <TextEquiv>
+                    <Unicode>zum Vortrag bringen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_9" custom="readingOrder {index:7;}">
+                <Coords points="1383,1165 1485,1175 1537,1147 1655,1188 1712,1171 1753,1188 1786,1177 1786,1053 1739,1068 1651,1053 1580,1090 1539,1062 1474,1102 1452,1084 1419,1104 1383,1088"/>
+                <Baseline points="1394,1146 1439,1146 1483,1146 1528,1149 1573,1146 1618,1146 1662,1146 1707,1146 1752,1146 1791,1146"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_2_tl_10" custom="readingOrder {index:8;} person {offset:5; length:25;}">
+                <Coords points="1060,1251 1208,1289 1279,1257 1322,1295 1806,1265 1899,1291 1938,1265 1938,1190 1891,1173 1851,1198 1714,1169 1625,1214 1060,1180"/>
+                <Baseline points="1071,1241 1116,1241 1161,1241 1206,1241 1250,1244 1295,1244 1340,1244 1385,1244 1430,1244 1474,1244 1519,1244 1564,1247 1609,1247 1653,1244 1698,1244 1743,1247 1788,1244 1833,1247 1877,1247 1922,1247 1943,1247"/>
+                <TextEquiv>
+                    <Unicode>Der stellvertr. Vereinsführer:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,12 +1,6 @@
 {
     "object_type": "Dokument",
-    "attributes": {
-        "docId": "6490200",
-        "pageId": "89844265",
-        "tsid": "227392577",
-        "imgUrl": "https://files.transkribus.eu/Get?id=MUBDXIVHSPJPWYWMWMRQTYSQ&fileType=view",
-        "xmlUrl": "https://files.transkribus.eu/Get?id=MJXMFQNHSGODIBIJECKGLYVR"
-    },
+    "attributes": {},
     "author": {
         "forename": "",
         "familyname": "",
@@ -31,6 +25,13 @@
         },
         {
             "forename": "",
+            "familyname": "MALERMEISTER",
+            "role": "",
+            "associated_place": "",
+            "associated_organisation": ""
+        },
+        {
+            "forename": "",
             "familyname": "Alfons",
             "role": "",
             "associated_place": "",
@@ -44,14 +45,22 @@
             "associated_organisation": ""
         }
     ],
-    "mentioned_organizations": [],
+    "mentioned_organizations": [
+        {
+            "name": "Bezirksparkasse Murg",
+            "location": "",
+            "type": ""
+        }
+    ],
     "mentioned_events": [],
     "creation_date": "",
     "creation_place": "",
-    "mentioned_dates": [],
+    "mentioned_dates": [
+        "1942.07.23"
+    ],
     "mentioned_places": [
         {
-            "name": "Murg",
+            "name": "Murg a. Rh.",
             "country": "Deutschland",
             "type": ""
         }

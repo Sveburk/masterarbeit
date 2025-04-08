@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=07_02_2025_22:41</Creator>
+        <Created>2025-01-22T16:51:37.590+01:00</Created>
+        <LastChange>2025-03-19T13:59:08.257+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0114_p116.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120069313" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1449,324 1910,324 1910,515 1449,515"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} place {offset:0; length:4;} date {offset:6; length:10;when:31.05.1930;}">
+                <Coords points="1487,468 1571,499 1639,456 1661,458 1686,485 1723,474 1764,437 1840,458 1844,378 1489,390"/>
+                <Baseline points="1498,447 1534,450 1579,450 1624,450 1668,447 1713,444 1758,441 1803,435 1848,435"/>
+                <TextEquiv>
+                    <Unicode>Wehr, 31. V. 30.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="839,577 1595,577 1595,747 839,747"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} person {offset:14; length:12;}">
+                <Coords points="856,713 904,746 963,713 1064,748 1146,702 1193,746 1343,696 1423,737 1466,698 1538,696 1540,635 1419,637 1386,614 1296,637 980,635 949,604 858,635"/>
+                <Baseline points="868,689 874,686 919,686 964,689 1009,689 1053,692 1098,692 1143,692 1188,695 1233,692 1277,692 1322,686 1367,686 1412,686 1456,683 1501,686 1546,683"/>
+                <TextEquiv>
+                    <Unicode>Sehr geehrter Herr Burger!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="370,768 2213,768 2213,1703 370,1703"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="832,924 980,934 1047,992 1103,941 1230,941 1275,986 1448,934 1754,939 1803,986 1885,947 2105,961 2105,836 1994,891 1857,817 1553,889 1331,854 1142,906 1076,840 1029,885 895,842 832,883"/>
+                <Baseline points="844,925 889,925 934,922 979,925 1024,928 1068,928 1113,928 1158,928 1203,928 1247,928 1292,925 1337,925 1382,925 1427,925 1471,925 1516,925 1561,922 1606,925 1650,925 1695,925 1740,925 1785,928 1830,928 1874,925 1919,928 1964,928 2009,931 2054,928 2098,928 2110,925"/>
+                <TextEquiv>
+                    <Unicode>Wenn ich nicht falsch orientiert bin, sucht Ihr</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:10;}">
+                <Coords points="520,1049 830,1111 959,1052 1164,1093 1370,1056 1470,1105 1680,1056 1733,1101 1865,1049 2031,1095 2095,1049 2158,1091 2169,996 1906,965 1855,1015 1793,978 1715,1029 1614,971 1553,1025 1462,971 1197,967 846,1023 581,965 518,1000"/>
+                <Baseline points="531,1047 561,1047 606,1047 650,1047 695,1047 740,1047 785,1047 829,1044 874,1044 919,1041 964,1044 1009,1044 1053,1044 1098,1047 1143,1047 1188,1047 1233,1047 1277,1047 1322,1044 1367,1044 1412,1047 1456,1050 1501,1050 1546,1050 1591,1053 1636,1053 1680,1053 1725,1053 1770,1050 1815,1050 1859,1050 1904,1047 1949,1047 1994,1047 2039,1044 2083,1044 2128,1041 2173,1038"/>
+                <TextEquiv>
+                    <Unicode>Männerchor z. Zt. einen Chorleiter. Ich wäre zur Übernahme</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="518,1179 1017,1171 1154,1216 1464,1175 1581,1228 1643,1179 1787,1224 1982,1171 2062,1216 2152,1169 2152,1115 1768,1146 1588,1095 1353,1146 1251,1093 1134,1148 1068,1095 665,1086 518,1148"/>
+                <Baseline points="528,1170 546,1167 591,1164 635,1164 680,1167 725,1161 770,1164 815,1161 859,1164 904,1161 949,1164 994,1164 1038,1161 1083,1161 1128,1167 1173,1167 1218,1167 1262,1167 1307,1167 1352,1167 1397,1167 1442,1167 1486,1167 1531,1167 1576,1170 1621,1170 1665,1167 1710,1170 1755,1170 1800,1167 1845,1167 1889,1164 1934,1164 1979,1161 2024,1161 2068,1161 2113,1161 2158,1161"/>
+                <TextEquiv>
+                    <Unicode>dieses Amtes bereit, sofern natürlich eine gegenseitige</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="505,1337 661,1290 834,1339 1023,1284 1349,1333 1411,1304 1446,1339 1596,1292 1906,1296 1906,1243 1768,1208 1522,1218 1454,1261 1409,1218 1154,1243 1107,1199 1052,1240 610,1218 505,1265"/>
+                <Baseline points="516,1286 522,1286 567,1283 612,1283 656,1283 701,1283 746,1283 791,1283 835,1283 880,1280 925,1283 970,1283 1015,1283 1059,1286 1104,1286 1149,1286 1194,1286 1238,1286 1283,1286 1328,1286 1373,1286 1418,1283 1462,1283 1507,1283 1552,1283 1597,1283 1642,1283 1686,1283 1731,1283 1776,1283 1821,1283 1865,1280 1910,1283"/>
+                <TextEquiv>
+                    <Unicode>zufriedenstellende Übereinkunft Zustande käme.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="1321,1436 1514,1419 1565,1466 1639,1466 1680,1429 1727,1458 1768,1417 1820,1468 1850,1446 1894,1468 1920,1442 1970,1458 2013,1415 2093,1481 2146,1458 2146,1351 2041,1310 1963,1360 1935,1335 1842,1364 1622,1337 1544,1370 1415,1335 1321,1360"/>
+                <Baseline points="1331,1406 1346,1406 1391,1406 1436,1406 1480,1409 1525,1406 1570,1409 1615,1409 1659,1406 1704,1409 1749,1409 1794,1409 1839,1409 1883,1406 1928,1406 1973,1406 2018,1406 2063,1403 2107,1400 2152,1397"/>
+                <TextEquiv>
+                    <Unicode>Mit vorzüglicher Hochachtung.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;} person {offset:0; length:14;} abbrev {offset:10; length:4;expansion:Hauptlehrer;}">
+                <Coords points="1489,1602 1602,1620 1703,1536 1770,1588 1852,1579 1881,1551 1922,1561 1922,1468 1881,1475 1865,1458 1799,1493 1754,1464 1701,1475 1666,1444 1590,1475 1544,1466 1489,1505"/>
+                <Baseline points="1501,1525 1546,1525 1591,1528 1636,1528 1680,1528 1725,1525 1770,1528 1815,1531 1859,1531 1904,1522 1928,1525"/>
+                <TextEquiv>
+                    <Unicode>E. Kunle, Hptl</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

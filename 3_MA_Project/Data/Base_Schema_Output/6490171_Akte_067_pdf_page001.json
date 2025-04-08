@@ -1,12 +1,6 @@
 {
     "object_type": "Dokument",
-    "attributes": {
-        "docId": "6490171",
-        "pageId": "89843545",
-        "tsid": "228125337",
-        "imgUrl": "https://files.transkribus.eu/Get?id=OZSVRYMHYHDCRNRMSZCMFZMC&fileType=view",
-        "xmlUrl": "https://files.transkribus.eu/Get?id=RFADTNZMLWJWHHWVUKWJMXYA"
-    },
+    "attributes": {},
     "author": {
         "forename": "",
         "familyname": "",
@@ -35,9 +29,27 @@
             "role": "",
             "associated_place": "",
             "associated_organisation": ""
+        },
+        {
+            "forename": "Der",
+            "familyname": "Vereinsführer",
+            "role": "",
+            "associated_place": "",
+            "associated_organisation": ""
         }
     ],
-    "mentioned_organizations": [],
+    "mentioned_organizations": [
+        {
+            "name": "Restauration Stadler.",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "Brennerei",
+            "location": "",
+            "type": ""
+        }
+    ],
     "mentioned_events": [],
     "creation_date": "",
     "creation_place": "",
@@ -55,6 +67,11 @@
         },
         {
             "name": "Stühlingen",
+            "country": "Deutschland",
+            "type": ""
+        },
+        {
+            "name": "Murger",
             "country": "Deutschland",
             "type": ""
         }

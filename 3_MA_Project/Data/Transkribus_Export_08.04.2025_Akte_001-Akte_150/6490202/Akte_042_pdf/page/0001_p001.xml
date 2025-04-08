@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=08_02_2025_15:57</Creator>
+        <Created>2025-01-23T13:13:18.585+01:00</Created>
+        <LastChange>2025-03-14T15:38:18.292+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120207672" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+                <RegionRefIndexed index="2" regionRef="r_3"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="86,106 1050,106 1050,470 86,470"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;} place {offset:0; length:18;}">
+                <Coords points="138,271 911,269 911,177 828,155 766,182 627,148 487,184 443,153 373,189 138,160"/>
+                <Baseline points="152,241 155,241 200,247 244,247 289,247 334,247 379,247 423,247 468,244 513,244 558,244 603,244 647,244 692,241 737,241 782,241 826,244 871,241 916,238"/>
+                <TextEquiv>
+                    <Unicode>Sängergau XV Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;} organization {offset:3; length:20; continued:true;}">
+                <Coords points="150,363 904,366 906,274 879,266 807,283 690,247 325,286 153,266"/>
+                <Baseline points="164,337 208,343 253,343 298,343 343,343 388,343 432,343 477,343 522,340 567,340 612,343 656,340 701,340 746,340 791,340 835,340 880,340 910,340"/>
+                <TextEquiv>
+                    <Unicode>im deutschen Sängerbund</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:2;} organization {offset:0; length:27; continued:true;}">
+                <Coords points="141,431 501,441 613,409 686,443 766,405 848,458 901,453 901,380 862,356 824,388 722,361 141,356"/>
+                <Baseline points="155,409 200,406 244,406 289,406 334,409 379,406 423,406 468,403 513,406 558,403 603,403 647,403 692,403 737,403 782,403 826,406 871,409 907,409"/>
+                <TextEquiv>
+                    <Unicode>(Badischer Sängerbund e.V.)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="1654,213 2334,213 2334,316 1654,316"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} place {offset:0; length:9;wikiData:Q1040;} date {offset:11; length:18;when:12.09.1942;}">
+                <Coords points="1657,320 1875,317 1969,288 2045,303 2076,276 2171,296 2234,276 2313,305 2311,216 1655,211"/>
+                <Baseline points="1671,262 1716,265 1761,265 1806,265 1851,265 1895,268 1940,268 1985,268 2030,271 2074,271 2119,271 2164,271 2209,271 2254,271 2298,271 2319,271"/>
+                <TextEquiv>
+                    <Unicode>Karlsruhe, 12. September 1942.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_3" custom="readingOrder {index:2;}">
+            <Coords points="271,758 2396,758 2396,3295 271,3295"/>
+            <TextLine id="r_3_tl_1" custom="readingOrder {index:0;} place {offset:18; length:17;}">
+                <Coords points="351,887 504,875 555,911 693,872 773,904 913,867 1008,921 1076,879 1468,877 1468,819 1318,775 1110,828 976,790 579,826 417,770 351,804"/>
+                <Baseline points="364,859 409,859 453,862 498,862 543,859 588,862 632,862 677,862 722,865 767,865 812,862 856,862 901,865 946,865 991,865 1035,865 1080,865 1125,868 1170,868 1215,868 1259,868 1304,868 1349,868 1394,868 1439,871 1474,868"/>
+                <TextEquiv>
+                    <Unicode>An alle Chöre des Sängergaues Baden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="359,1037 409,1025 436,1051 511,1032 572,1047 712,1020 828,1056 877,1030 877,976 828,957 780,984 671,964 557,979 475,938 438,969 359,969"/>
+                <Baseline points="373,1006 417,1006 462,1006 507,1006 552,1009 597,1009 641,1012 686,1012 731,1012 776,1012 821,1012 865,1012 883,1015"/>
+                <TextEquiv>
+                    <Unicode>Liebe Sangeskameraden!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="359,1141 2309,1172 2306,1100 2260,1093 1679,1112 1245,1056 1090,1117 938,1073 589,1102 359,1051"/>
+                <Baseline points="373,1125 417,1128 462,1131 507,1131 552,1131 597,1131 641,1131 686,1131 731,1134 776,1134 821,1134 865,1137 910,1137 955,1137 1000,1140 1044,1140 1089,1143 1134,1143 1179,1140 1224,1143 1268,1140 1313,1143 1358,1143 1403,1143 1447,1143 1492,1143 1537,1140 1582,1140 1627,1143 1671,1143 1716,1143 1761,1143 1806,1143 1851,1143 1895,1143 1940,1143 1985,1140 2030,1140 2074,1140 2119,1143 2164,1143 2209,1143 2254,1143 2298,1146 2310,1146"/>
+                <TextEquiv>
+                    <Unicode>Hierdurch werden die nachfolgenden, wichtigen Punkte — in Ermangelung unseres Gauorgans,</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_4" custom="readingOrder {index:3;} organization {offset:4; length:27;} date {offset:54; length:11;when:07.1941;}">
+                <Coords points="359,1192 1766,1202 1885,1238 2294,1206 2267,1163 2129,1153 359,1153"/>
+                <Baseline points="373,1179 417,1182 462,1185 507,1185 552,1185 597,1185 641,1185 686,1188 731,1185 776,1188 821,1191 865,1191 910,1191 955,1191 1000,1194 1044,1194 1089,1194 1134,1191 1179,1194 1224,1191 1268,1191 1313,1191 1358,1191 1403,1194 1447,1191 1492,1194 1537,1191 1582,1191 1627,1194 1671,1194 1716,1194 1761,1194 1806,1197 1851,1194 1895,1197 1940,1194 1985,1194 2030,1197 2074,1194 2119,1197 2164,1197 2209,1197 2254,1197 2298,1200 2301,1200"/>
+                <TextEquiv>
+                    <Unicode>der Süddeutschen Sängerzeitung, die, wie bekannt, seit Juni v. J. aus kriegsbedingten Ursachen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="356,1262 545,1248 644,1306 756,1255 1836,1277 1836,1214 1759,1206 1015,1228 356,1189"/>
+                <Baseline points="370,1236 414,1236 459,1236 504,1236 549,1236 594,1238 638,1238 683,1238 728,1238 773,1238 818,1241 862,1241 907,1244 952,1244 997,1244 1041,1247 1086,1244 1131,1244 1176,1244 1221,1244 1265,1244 1310,1244 1355,1247 1400,1244 1444,1247 1489,1244 1534,1244 1579,1247 1624,1247 1668,1247 1713,1247 1758,1244 1803,1247 1842,1250"/>
+                <TextEquiv>
+                    <Unicode>ihr Erscheinen einstellen mußte, durch Rundschreiben bekannt gegeben.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_6" custom="readingOrder {index:5;} Event {offset:3; length:30;} date {offset:29; length:4;}">
+                <Coords points="363,1378 618,1371 666,1403 802,1410 1034,1371 1119,1405 1172,1376 1172,1315 969,1296 799,1328 615,1289 438,1323 363,1294"/>
+                <Baseline points="376,1355 420,1355 465,1355 510,1355 555,1358 600,1358 644,1358 689,1358 734,1358 779,1358 824,1361 868,1361 913,1364 958,1364 1003,1367 1047,1364 1092,1364 1137,1367 1176,1367"/>
+                <TextEquiv>
+                    <Unicode>1. Ordentlicher Gausängertag 1942.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_7" custom="readingOrder {index:6;}">
+                <Coords points="359,1500 414,1470 550,1497 698,1458 925,1504 1187,1480 1187,1432 1136,1412 845,1434 756,1407 695,1432 492,1400 359,1427"/>
+                <Baseline points="373,1450 417,1453 462,1456 507,1456 552,1459 597,1459 641,1459 686,1456 731,1459 776,1462 821,1462 865,1465 910,1465 955,1465 1000,1465 1044,1465 1089,1465 1134,1468 1179,1465 1194,1468"/>
+                <TextEquiv>
+                    <Unicode>Der diesjährige Gausängertag findet am</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_8" custom="readingOrder {index:7;} date {offset:13; length:13;when:27.09.1942;} place {offset:43; length:9;wikiData:Q1040;}">
+                <Coords points="669,1572 1977,1587 1977,1495 1778,1533 1693,1500 1417,1536 1369,1500 669,1514"/>
+                <Baseline points="683,1561 728,1564 773,1561 818,1564 862,1564 907,1564 952,1567 997,1567 1041,1567 1086,1567 1131,1567 1176,1567 1221,1570 1265,1570 1310,1570 1355,1567 1400,1570 1444,1570 1489,1570 1534,1570 1579,1570 1624,1570 1668,1573 1713,1570 1758,1570 1803,1573 1848,1573 1892,1573 1937,1576 1982,1576"/>
+                <TextEquiv>
+                    <Unicode>Sonntag, dem 27. September um 10.30 Uhr in Karlsruhe</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_9" custom="readingOrder {index:8;} place {offset:3; length:46;}">
+                <Coords points="676,1642 1800,1659 1800,1594 676,1575"/>
+                <Baseline points="689,1633 734,1633 779,1630 824,1633 868,1636 913,1636 958,1636 1003,1636 1047,1639 1092,1639 1137,1639 1182,1642 1227,1642 1271,1642 1316,1642 1361,1639 1406,1639 1450,1639 1495,1642 1540,1639 1585,1639 1630,1642 1674,1642 1719,1642 1764,1642 1803,1645"/>
+                <TextEquiv>
+                    <Unicode>im Saale des „Friedrichshof" Karlfriedrich-Straße</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_10" custom="readingOrder {index:9;}">
+                <Coords points="361,1739 816,1732 1156,1785 1265,1732 1497,1742 1495,1686 359,1691"/>
+                <Baseline points="373,1719 417,1719 462,1719 507,1719 552,1719 597,1722 641,1722 686,1722 731,1722 776,1722 821,1725 865,1725 910,1728 955,1728 1000,1728 1044,1731 1089,1731 1134,1731 1179,1731 1224,1731 1268,1731 1313,1731 1358,1731 1403,1734 1447,1731 1492,1734 1501,1731"/>
+                <TextEquiv>
+                    <Unicode>statt. Hierzu werden unsere Chöre hiermit eingeladen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_11" custom="readingOrder {index:10;}">
+                <Coords points="363,1846 409,1863 470,1841 560,1877 659,1846 727,1870 792,1846 872,1875 1008,1865 1008,1800 969,1783 761,1807 724,1788 555,1807 475,1781 363,1790"/>
+                <Baseline points="376,1827 420,1830 465,1833 510,1833 555,1833 600,1833 644,1836 689,1836 734,1836 779,1836 824,1839 868,1839 913,1842 958,1842 1003,1842 1015,1842"/>
+                <TextEquiv>
+                    <Unicode>Die Tagesordnung ist folgende:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_12" custom="readingOrder {index:11;} person {offset:24; length:16;}">
+                <Coords points="363,1931 591,1967 749,1936 838,1969 896,1936 1131,1972 1219,1940 1216,1899 959,1865 853,1902 790,1877 363,1882"/>
+                <Baseline points="376,1919 420,1919 465,1919 510,1919 555,1922 600,1922 644,1922 689,1925 734,1925 779,1925 824,1925 868,1925 913,1928 958,1928 1003,1931 1047,1931 1092,1931 1137,1931 1182,1931 1221,1928"/>
+                <TextEquiv>
+                    <Unicode>1. Geschäftsbericht des Sängergauführers.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_13" custom="readingOrder {index:12;} person {offset:15; length:23;}">
+                <Coords points="363,2040 974,2016 1090,2049 1180,2018 1177,1982 1020,1948 361,1965"/>
+                <Baseline points="376,2000 420,2000 465,1997 510,2000 555,2000 600,2003 644,2003 689,2003 734,2003 779,2003 824,2006 868,2006 913,2006 958,2006 1003,2006 1047,2009 1092,2006 1137,2006 1182,2012 1185,2012"/>
+                <TextEquiv>
+                    <Unicode>2. Bericht des Sängergauschatzmeisters.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_14" custom="readingOrder {index:13;} person {offset:12; length:16;}">
+                <Coords points="363,2103 2030,2134 2057,2011 1686,2064 1378,2025 1284,2059 1044,2035 1010,2071 889,2025 361,2037"/>
+                <Baseline points="376,2080 420,2074 465,2074 510,2080 555,2080 600,2080 644,2080 689,2083 734,2083 779,2086 824,2083 868,2083 913,2086 958,2086 1003,2086 1047,2086 1092,2089 1137,2089 1182,2089 1227,2089 1271,2089 1316,2089 1361,2089 1406,2092 1450,2092 1495,2092 1540,2092 1585,2092 1630,2092 1674,2095 1719,2092 1764,2095 1809,2095 1854,2098 1898,2098 1943,2098 1988,2101 2033,2101 2065,2101"/>
+                <TextEquiv>
+                    <Unicode>3. Wahl des Sängergauführers, dessen Stellvertreters und zweier Rechnungsprüfer.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="366,2188 446,2166 644,2212 928,2171 1291,2200 1291,2134 1194,2122 366,2122"/>
+                <Baseline points="379,2155 423,2158 468,2158 513,2158 558,2158 603,2161 647,2161 692,2161 737,2161 782,2161 826,2161 871,2164 916,2167 961,2164 1006,2167 1050,2167 1095,2167 1140,2167 1185,2170 1230,2167 1274,2170 1298,2170"/>
+                <TextEquiv>
+                    <Unicode>4. Verschiedenes; Wünsche und Anregungen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_16" custom="readingOrder {index:15;}">
+                <Coords points="363,2267 2226,2306 2289,2297 2289,2248 1810,2241 1645,2188 1492,2243 1361,2200 1291,2234 1197,2197 1129,2231 778,2185 654,2226 361,2204"/>
+                <Baseline points="376,2248 420,2254 465,2254 510,2254 555,2257 600,2257 644,2257 689,2257 734,2260 779,2260 824,2260 868,2260 913,2263 958,2263 1003,2263 1047,2266 1092,2266 1137,2266 1182,2266 1227,2266 1271,2266 1316,2266 1361,2266 1406,2269 1450,2266 1495,2269 1540,2269 1585,2271 1630,2269 1674,2269 1719,2271 1764,2271 1809,2274 1854,2274 1898,2274 1943,2274 1988,2274 2033,2277 2077,2277 2122,2277 2167,2280 2212,2280 2257,2280 2295,2280"/>
+                <TextEquiv>
+                    <Unicode>Im Hinblick auf die Einschränkungen im Reiseverkehr erwartet die Sängergauführung vor allem</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_17" custom="readingOrder {index:16;}">
+                <Coords points="368,2323 2294,2352 2292,2306 2098,2284 368,2267"/>
+                <Baseline points="382,2307 426,2307 471,2307 516,2307 561,2307 606,2310 650,2310 695,2310 740,2313 785,2313 829,2313 874,2313 919,2316 964,2313 1009,2316 1053,2316 1098,2316 1143,2316 1188,2316 1233,2316 1277,2319 1322,2319 1367,2319 1412,2322 1456,2322 1501,2322 1546,2322 1591,2322 1636,2322 1680,2325 1725,2325 1770,2322 1815,2325 1859,2325 1904,2328 1949,2328 1994,2328 2039,2331 2083,2331 2128,2331 2173,2331 2218,2331 2263,2334 2295,2337"/>
+                <TextEquiv>
+                    <Unicode>die Vertreter aus den zum Tagungsort günstig gelegenen Plätzen. Auf die Möglichkeit der</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_18" custom="readingOrder {index:17;}">
+                <Coords points="368,2384 1364,2381 1480,2435 1635,2389 2301,2410 2299,2355 2214,2335 368,2326"/>
+                <Baseline points="382,2361 426,2361 471,2361 516,2361 561,2361 606,2364 650,2364 695,2361 740,2364 785,2364 829,2367 874,2370 919,2367 964,2370 1009,2367 1053,2370 1098,2370 1143,2370 1188,2373 1233,2373 1277,2370 1322,2373 1367,2373 1412,2373 1456,2373 1501,2373 1546,2376 1591,2376 1636,2376 1680,2376 1725,2379 1770,2379 1815,2379 1859,2379 1904,2379 1949,2382 1994,2382 2039,2385 2083,2385 2128,2385 2173,2388 2218,2388 2263,2388 2304,2388"/>
+                <TextEquiv>
+                    <Unicode>(schriftlichen) Übertragung des Stimmrechts auf einen anderen Mitgliedschor wird besonders</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_19" custom="readingOrder {index:18;}">
+                <Coords points="366,2459 455,2456 516,2425 610,2464 683,2432 812,2437 812,2376 724,2391 649,2379 618,2398 579,2379 521,2374 480,2391 422,2374 366,2393"/>
+                <Baseline points="379,2418 423,2418 468,2418 513,2418 558,2418 603,2418 647,2418 692,2418 737,2418 782,2421 815,2421"/>
+                <TextEquiv>
+                    <Unicode>aufmerksam gemacht.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_20" custom="readingOrder {index:19;}">
+                <Coords points="356,2546 422,2563 484,2546 516,2570 552,2553 637,2573 690,2556 809,2580 843,2568 843,2490 719,2483 676,2500 569,2476 550,2495 426,2502 405,2483 356,2483"/>
+                <Baseline points="370,2537 414,2537 459,2534 504,2534 549,2534 594,2537 638,2534 683,2537 728,2537 773,2537 818,2540 850,2540"/>
+                <TextEquiv>
+                    <Unicode>2. Organisatorisches.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_21" custom="readingOrder {index:20;} date {offset:4; length:11;when:06.1941;}">
+                <Coords points="356,2626 2292,2657 2292,2597 2030,2609 1822,2553 1693,2602 1567,2563 1424,2602 1248,2544 1085,2587 850,2553 356,2594"/>
+                <Baseline points="370,2621 414,2618 459,2618 504,2618 549,2621 594,2621 638,2621 683,2621 728,2624 773,2624 818,2624 862,2624 907,2624 952,2624 997,2624 1041,2624 1086,2627 1131,2627 1176,2624 1221,2624 1265,2627 1310,2627 1355,2627 1400,2630 1444,2627 1489,2630 1534,2633 1579,2630 1624,2633 1668,2633 1713,2636 1758,2636 1803,2636 1848,2636 1892,2639 1937,2639 1982,2639 2027,2639 2071,2642 2116,2642 2161,2642 2206,2642 2251,2645 2295,2645"/>
+                <TextEquiv>
+                    <Unicode>Seit Juni v. J. haben sich innerhalb einzelner Sängerkreisführungen folgende Änderungen ergeben:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_22" custom="readingOrder {index:21;} person {offset:81; length:6; continued:true;}">
+                <Coords points="356,2696 2292,2720 2292,2657 354,2636"/>
+                <Baseline points="370,2672 414,2672 459,2672 504,2675 549,2675 594,2672 638,2672 683,2675 728,2675 773,2675 818,2675 862,2678 907,2675 952,2678 997,2678 1041,2678 1086,2681 1131,2681 1176,2681 1221,2681 1265,2681 1310,2681 1355,2681 1400,2683 1444,2683 1489,2683 1534,2683 1579,2686 1624,2686 1668,2686 1713,2689 1758,2689 1803,2692 1848,2689 1892,2689 1937,2692 1982,2692 2027,2692 2071,2695 2116,2692 2161,2695 2206,2695 2251,2698 2295,2698"/>
+                <TextEquiv>
+                    <Unicode>Der an Lebensjahren älteste Sängerkreisführer unseres Sängergaues, Sangeskamerad Robert</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_23" custom="readingOrder {index:22;} person {offset:0; length:11; continued:true;} place {offset:16; length:29;}">
+                <Coords points="356,2737 2289,2771 2287,2713 2209,2706 356,2701"/>
+                <Baseline points="370,2725 414,2725 459,2725 504,2725 549,2725 594,2725 638,2725 683,2728 728,2728 773,2728 818,2728 862,2731 907,2728 952,2731 997,2728 1041,2731 1086,2731 1131,2731 1176,2734 1221,2734 1265,2734 1310,2734 1355,2734 1400,2737 1444,2734 1489,2737 1534,2737 1579,2740 1624,2740 1668,2740 1713,2743 1758,2740 1803,2743 1848,2743 1892,2743 1937,2743 1982,2746 2027,2746 2071,2746 2116,2749 2161,2749 2206,2746 2251,2749 2292,2746"/>
+                <TextEquiv>
+                    <Unicode>Müllerleile vom Sängerkreis Offenburg in Lahr, ist gestorben. Als einem Sängerführer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_24" custom="readingOrder {index:23;}">
+                <Coords points="359,2791 2292,2822 2253,2764 359,2742"/>
+                <Baseline points="373,2779 417,2782 462,2779 507,2782 552,2782 597,2782 641,2782 686,2782 731,2782 776,2782 821,2785 865,2785 910,2785 955,2782 1000,2782 1044,2782 1089,2785 1134,2788 1179,2785 1224,2788 1268,2788 1313,2788 1358,2788 1403,2791 1447,2791 1492,2791 1537,2794 1582,2794 1627,2794 1671,2794 1716,2794 1761,2794 1806,2794 1851,2797 1895,2797 1940,2797 1985,2797 2030,2800 2074,2803 2119,2803 2164,2806 2209,2803 2254,2806 2298,2806"/>
+                <TextEquiv>
+                    <Unicode>von hervorragenden Eigenschaften des Geistes und des Herzens ist ihm bei allen, die ihn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_25" custom="readingOrder {index:24;}">
+                <Coords points="356,2846 2292,2871 2292,2825 1919,2798 356,2788"/>
+                <Baseline points="370,2833 414,2833 459,2836 504,2836 549,2836 594,2836 638,2836 683,2836 728,2836 773,2839 818,2836 862,2836 907,2839 952,2839 997,2839 1041,2839 1086,2839 1131,2839 1176,2842 1221,2842 1265,2842 1310,2845 1355,2845 1400,2845 1444,2845 1489,2845 1534,2845 1579,2845 1624,2848 1668,2848 1713,2848 1758,2848 1803,2851 1848,2851 1892,2851 1937,2851 1982,2854 2027,2854 2071,2857 2116,2857 2161,2857 2206,2857 2251,2857 2295,2854"/>
+                <TextEquiv>
+                    <Unicode>kannten und schätzten, ein dauerndes, ehrendes Andenken gewiß. Mit Zustimmung des Sänger-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_26" custom="readingOrder {index:25;} Event {offset:64; length:7;}">
+                <Coords points="366,2905 2294,2926 2277,2868 366,2849"/>
+                <Baseline points="379,2892 423,2889 468,2889 513,2889 558,2887 603,2887 647,2887 692,2887 737,2889 782,2889 826,2889 871,2889 916,2889 961,2889 1006,2889 1050,2892 1095,2892 1140,2895 1185,2895 1230,2895 1274,2895 1319,2895 1364,2895 1409,2898 1453,2898 1498,2898 1543,2898 1588,2901 1633,2901 1677,2901 1722,2901 1767,2904 1812,2904 1857,2904 1901,2904 1946,2907 1991,2907 2036,2907 2080,2907 2125,2910 2170,2910 2215,2910 2260,2910 2301,2913"/>
+                <TextEquiv>
+                    <Unicode>gauführers soll von einer Neubesetzung des Postens bis Ende des Krieges abgesehen werden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_27" custom="readingOrder {index:26;} person {offset:35; length:52;}">
+                <Coords points="359,2948 2129,3001 2287,2982 2287,2926 356,2907"/>
+                <Baseline points="373,2940 417,2940 462,2940 507,2943 552,2940 597,2940 641,2940 686,2940 731,2943 776,2943 821,2943 865,2946 910,2946 955,2946 1000,2946 1044,2949 1089,2946 1134,2949 1179,2949 1224,2949 1268,2949 1313,2949 1358,2949 1403,2952 1447,2952 1492,2952 1537,2952 1582,2955 1627,2955 1671,2955 1716,2955 1761,2958 1806,2958 1851,2958 1895,2958 1940,2958 1985,2961 2030,2961 2074,2961 2119,2961 2164,2964 2209,2964 2254,2964 2292,2967"/>
+                <TextEquiv>
+                    <Unicode>Die Geschäfte führt inzwischen der Stellv. Sängerkreisführer, Sangeskamerad Max Bohnert,</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_28" custom="readingOrder {index:27;} place {offset:0; length:20;}">
+                <Coords points="359,3023 388,3014 417,3035 448,3018 506,3040 562,3016 625,3043 695,3011 734,3031 799,3011 831,3023 831,2960 753,2955 739,2970 526,2953 484,2968 453,2951 414,2965 359,2951"/>
+                <Baseline points="373,2994 417,2997 462,2997 507,2994 552,2997 597,2997 641,2997 686,2997 731,2994 776,2997 821,2997 838,2997"/>
+                <TextEquiv>
+                    <Unicode>Lahr, Bergstraße 117.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_29" custom="readingOrder {index:28;} place {offset:3; length:22;} person {offset:72; length:18;firstname:Hugo; lastname:Vierneisel;}">
+                <Coords points="354,3094 1722,3096 2103,3140 2289,3113 2287,3040 1560,3045 1410,2968 1255,3043 351,3038"/>
+                <Baseline points="364,3072 409,3075 453,3075 498,3075 543,3075 588,3078 632,3075 677,3078 722,3078 767,3075 812,3078 856,3078 901,3078 946,3081 991,3081 1035,3081 1080,3081 1125,3081 1170,3081 1215,3084 1259,3084 1304,3084 1349,3084 1394,3084 1439,3084 1483,3087 1528,3087 1573,3087 1618,3090 1662,3090 1707,3090 1752,3090 1797,3090 1842,3090 1886,3090 1931,3093 1976,3093 2021,3093 2065,3095 2110,3095 2155,3095 2200,3095 2245,3095 2289,3095 2295,3093"/>
+                <TextEquiv>
+                    <Unicode>Im Sängerkreis Main-Neckar ist an Stelle des zurückgetretenen, früheren Sängerkreisführers-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_3_tl_30" custom="readingOrder {index:29;} person {offset:33; length:16;} place {offset:53; length:5;}">
+                <Coords points="354,3195 727,3154 787,3193 899,3154 1783,3161 1781,3110 1720,3098 351,3096"/>
+                <Baseline points="364,3128 409,3128 453,3128 498,3131 543,3131 588,3131 632,3131 677,3131 722,3131 767,3131 812,3131 856,3134 901,3134 946,3134 991,3134 1035,3134 1080,3134 1125,3137 1170,3137 1215,3137 1259,3137 1304,3137 1349,3137 1394,3140 1439,3140 1483,3140 1528,3140 1573,3140 1618,3140 1662,3143 1707,3143 1752,3143 1788,3140"/>
+                <TextEquiv>
+                    <Unicode>neu berufen worden: Sangeskamerad Hugo Vierneisel in Lauda.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

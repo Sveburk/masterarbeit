@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:47.856+01:00</Created>
+        <LastChange>2025-03-19T15:36:04.415+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0005_p007.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120143861" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="752,2938 2508,2938 2508,3282 752,3282"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:0; length:12;wikiData:Q128499;} date {offset:13; length:8;when:16.05.1942;}">
+                <Coords points="864,3253 1759,3180 2157,3180 2438,3177 2437,3147 2157,3150 1758,3150 861,3223"/>
+                <Baseline points="864,3253 1759,3180 2157,3180 2438,3177"/>
+                <TextEquiv>
+                    <Unicode>Jalta (Krim) 16.05.42</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,12 +1,6 @@
 {
     "object_type": "Dokument",
-    "attributes": {
-        "docId": "6490204",
-        "pageId": "89844465",
-        "tsid": "227977451",
-        "imgUrl": "https://files.transkribus.eu/Get?id=PCMZBRFJNHANQDGJBOHOWSYD&fileType=view",
-        "xmlUrl": "https://files.transkribus.eu/Get?id=OXNHXJORQXITOFWDKCBDDYRA"
-    },
+    "attributes": {},
     "author": {
         "forename": "",
         "familyname": "",
@@ -23,6 +17,20 @@
     },
     "mentioned_persons": [
         {
+            "forename": "stellvertretender",
+            "familyname": "Sängergauführer",
+            "role": "",
+            "associated_place": "",
+            "associated_organisation": ""
+        },
+        {
+            "forename": "",
+            "familyname": "Sängergauführers",
+            "role": "",
+            "associated_place": "",
+            "associated_organisation": ""
+        },
+        {
             "forename": "Karl",
             "familyname": "Schmitt",
             "role": "",
@@ -30,14 +38,14 @@
             "associated_organisation": ""
         },
         {
-            "forename": "Helmut",
-            "familyname": "Adolf Schmitt",
+            "forename": "Helmut Adolf",
+            "familyname": "Schmitt",
             "role": "",
             "associated_place": "",
             "associated_organisation": ""
         },
         {
-            "forename": "Dr.",
+            "forename": "stellvertr. Sängergauführer: Oberstudiendirektor Dr.",
             "familyname": "Münch",
             "role": "",
             "associated_place": "",
@@ -72,21 +80,21 @@
             "associated_organisation": ""
         },
         {
-            "forename": "Helmut",
-            "familyname": "Adolf Schmitt",
+            "forename": "Helmut Adolf",
+            "familyname": "Schmitt",
             "role": "",
             "associated_place": "",
             "associated_organisation": ""
         },
         {
-            "forename": "Dr.",
-            "familyname": "Josef Münch",
+            "forename": "Stellvertr. Sängergauführer: Oberstudiendirektor Dr. Josef",
+            "familyname": "Münch",
             "role": "",
             "associated_place": "",
             "associated_organisation": ""
         },
         {
-            "forename": "Hugo",
+            "forename": "Sängergauchormeister: Oberstudienrat Hugo",
             "familyname": "Rahner",
             "role": "",
             "associated_place": "",
@@ -100,23 +108,65 @@
             "associated_organisation": ""
         }
     ],
-    "mentioned_organizations": [],
+    "mentioned_organizations": [
+        {
+            "name": "DSB",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "(Badischer Sängerbund e. V.",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "Sängergaues",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "Deutschen Sängerbundes",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "Sängergaues Baden",
+            "location": "",
+            "type": ""
+        },
+        {
+            "name": "Wehrmacht",
+            "location": "",
+            "type": ""
+        }
+    ],
     "mentioned_events": [],
     "creation_date": "",
     "creation_place": "",
     "mentioned_dates": [
         "1942.10.03",
         "1942.09.27",
+        "1942.09.27",
         "1942.09.27"
     ],
     "mentioned_places": [
         {
-            "name": "Bruchsal",
+            "name": "Sängergau XV Baden",
             "country": "Deutschland",
             "type": ""
         },
         {
-            "name": "Karlsruhe",
+            "name": "Bruchsal, Kaiserstraße 10.",
+            "country": "Deutschland",
+            "type": ""
+        },
+        {
+            "name": "Karlsruhe, Klosestraße 1.",
+            "country": "Deutschland",
+            "type": ""
+        },
+        {
+            "name": "Sängergau XV Baden",
             "country": "Deutschland",
             "type": ""
         },
@@ -166,12 +216,17 @@
             "type": ""
         },
         {
-            "name": "Karlsruhe",
+            "name": "Karlsruhe, Moltke-",
             "country": "Deutschland",
             "type": ""
         },
         {
-            "name": "Karlsruhe",
+            "name": "straße 15a",
+            "country": "Deutschland",
+            "type": ""
+        },
+        {
+            "name": "Karlsruhe, Klosestraße 1",
             "country": "Deutschland",
             "type": ""
         }

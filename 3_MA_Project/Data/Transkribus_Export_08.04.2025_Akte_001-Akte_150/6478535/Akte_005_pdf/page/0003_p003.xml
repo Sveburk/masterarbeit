@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=26_02_2025_16:05</Creator>
+        <Created>2025-01-22T16:51:10.443+01:00</Created>
+        <LastChange>2025-03-17T15:06:17.071+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0003_p003.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120180416" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="114,24 853,24 853,195 114,195"/>
+            <TextLine id="l_2" custom="readingOrder {index:0;} organization {offset:0; length:15; continued:true;}">
+                <Coords points="147,158 791,133 793,55 747,66 630,28 557,28 479,64 456,44 420,69 335,21 151,80"/>
+                <Baseline points="161,128 206,131 250,137 295,140 310,140 426,131 438,128 483,125 528,125 573,119 618,116 662,116 707,116 752,119 797,122"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:1;} organization {offset:0; length:27; continued:true;}">
+                <Coords points="179,206 371,222 509,190 566,218 617,186 681,204 809,177 812,124 674,126 651,149 633,128 552,131 511,156 438,135 376,156 181,149"/>
+                <Baseline points="191,200 223,200 268,197 313,197 358,188 426,185 453,185 498,185 543,182 588,179 632,173 677,170 722,167 767,167 812,173"/>
+                <TextEquiv>
+                    <Unicode>Alter Schweizer-Männerchor)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="371,203 2341,203 2341,325 371,325"/>
+            <TextLine id="r_2_tl_1" custom="readingOrder {index:0;} date {offset:29; length:9;when:01.01.1944;}">
+                <Coords points="378,296 2221,293 2187,211 1591,209 1550,250 1332,204 1073,250 768,202 378,234"/>
+                <Baseline points="391,280 432,277 477,277 522,277 567,277 612,277 656,274 701,274 746,274 791,274 835,274 880,274 925,271 970,274 1015,277 1059,274 1104,277 1149,277 1194,274 1238,274 1283,274 1328,274 1373,274 1418,274 1462,271 1507,274 1552,274 1597,271 1642,271 1686,271 1731,271 1776,274 1821,271 1865,271 1910,274 1955,274 2000,274 2045,274 2089,271 2134,268 2179,268 2224,271"/>
+                <TextEquiv>
+                    <Unicode>Passiv- Mitglieder (Stand vom 1.1.1944)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

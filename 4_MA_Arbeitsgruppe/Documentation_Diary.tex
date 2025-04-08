@@ -49,17 +49,71 @@ Hier kurze Zusammenfassung einfügen.
 \ding{113} Beschrieb der nächsten Aufgabe.
 
 \subsection*{Offene Fragen}
-\ding{113} Beschreibung der offenen Frage.
+\ding{113} Beschreibung der offenen Frage.\\
 %___________________________________________________________________________
 % Vorlage 
 \noindent\hrulefill
+
+\section{Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \s
+small 08.04.2025}
+\small\textit{Verbesserung des Skripts auf Basis der Empfehlungen von Claude Code}\\
+\subsection*{Kurzbeschreibung}
+
+Die bestehende Datenextraktionspipeline wurde grundlegend überarbeitet und auf eine objektorientierte Struktur umgestellt. Statt der bisherigen Dictionary-basierten Implementierung nutzen wir nun die in `document\_schemas.py` definierten Klassen wie `BaseDocument`, `Person`, `Organization` und `Place`. Diese Umstellung bringt erhebliche Vorteile bei der Datenvalidierung und -konsistenz mit sich.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Objektorientierte Umstrukturierung von transkribus\_to\_base\_schema.py}
+\ding{51} Umstellung der Datenstrukturen auf Klassen statt Dictionaries.\\
+\ding{51} Integration der Validierungsfunktionen mit Fehlerausgabe.\\
+\ding{51} Anpassung der JSON-Serialisierung mittels to\_json()-Methode.\\
+\textbf{Ergebnis}: Robusteres Skript mit automatischer Datenvalidierung und besserer Wartbarkeit.
+
+\subsection*{Details zur Umstrukturierung}
+
+\begin{minted}{python}
+# Alter Ansatz:
+result = create_base_schema(metadata_info, transcript_text)
+
+# Neuer objektorientierter Ansatz:
+from document_schemas import BaseDocument, Person, Place, Event, Organization
+
+doc = BaseDocument(
+    attributes=metadata_info,
+    content_transcription=transcript_text,
+    mentioned_persons=[Person(**p) for p in custom_data["persons"]],
+    mentioned_organizations=[Organization(**o) for o in custom_data["organizations"]],
+    mentioned_places=[Place(**pl) for pl in custom_data["places"]],
+    mentioned_dates=custom_data["dates"]
+)
+
+# Mit Validierung
+if not doc.is_valid():
+    print(f"Fehler in Dokument: {doc.validate()}")
+\end{minted}
+
+\subsection*{Vorteile der neuen Implementierung}
+\begin{itemize}
+    \item \textbf{Datenvalidierung:} Automatische Überprüfung auf strukturelle Korrektheit
+    \item \textbf{Typsicherheit:} Verbesserte Erkennung von Fehlern bereits zur Programmierzeit
+    \item \textbf{Objektorientierung:} Zusammengehörige Daten und Funktionen in einer Klasse
+    \item \textbf{Bessere Wartbarkeit:} Klare Schnittstellen und Kapselung von Implementierungsdetails
+    \item \textbf{Erweiterbarkeit:} Einfachere Anpassung an neue Anforderungen durch Vererbung
+\end{itemize}
+
+\subsection*{Nächste Schritte}
+\ding{113} Überprüfung aller generierten JSON-Dateien auf Validität.\\
+\ding{113} Integration von fortgeschrittenen Informationsextraktionsmethoden für Entitäten.\\
+\ding{113} Automatisierte Tests für die Datenverarbeitung entwickeln.
+
+\subsection*{Offene Fragen}
+\ding{113} Wie können wir die Qualität der Entitätserkennung verbessern?\\
+\ding{113} Sollen zusätzliche spezialisierte Dokumentklassen implementiert werden?
 
 \section{Implementierung der Datenextraktions-Pipeline \small 03.04.2025}
 \small\textit{{Diese Implementierung wurde mit Unterstützung von Claude Code und Sorin von RISE durchgeführt. Erster Einsatz von Claude Code}}\\
 \subsection*{Kurzbeschreibung}
 
-
-Implemntierung der Datenkonvertierungspipeline vom Transkribus XML-Format in das projektspezifische JSON-Basisschema. Es wurden zwei Python-Module entwickelt: ein Schema-Modul und ein Konvertierungsmodul, die zusammen die Grundlage für die strukturierte Datenhaltung bilden.
+Implementierung der Datenkonvertierungspipeline vom Transkribus XML-Format in das projektspezifische JSON-Basisschema. Es wurden zwei Python-Module entwickelt: ein Schema-Modul und ein Konvertierungsmodul, die zusammen die Grundlage für die strukturierte Datenhaltung bilden.
 
 \subsection*{Erledigte Aufgaben}
 \subsubsection*{\small Definition des Basis-Schemas}

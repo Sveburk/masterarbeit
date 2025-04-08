@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_17:36</Creator>
+        <Created>2025-01-23T13:07:40.166+01:00</Created>
+        <LastChange>2025-03-13T13:01:59.780+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120297671" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="895,159 2097,159 2097,509 895,509"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="959,266 1993,262 2009,177 1394,210 1321,158 1223,200 1125,164 959,208"/>
+                <Baseline points="970,268 982,265 1027,262 1071,259 1116,259 1161,259 1206,262 1250,262 1295,259 1340,256 1385,253 1430,250 1474,250 1519,250 1564,250 1609,250 1653,250 1698,250 1743,250 1788,250 1833,250 1877,247 1922,247 1967,244 2012,244"/>
+                <TextEquiv>
+                    <Unicode>Tätigkeitsbericht</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_2" custom="readingOrder {index:1;} person {offset:4; length:14;}">
+                <Coords points="1171,404 1756,401 1756,324 1647,333 1624,312 1514,320 1479,302 1446,322 1406,306 1377,331 1246,331 1221,312 1171,331"/>
+                <Baseline points="1182,382 1224,382 1268,382 1313,379 1358,376 1403,376 1447,376 1492,376 1537,376 1582,373 1627,373 1671,373 1716,373 1761,373"/>
+                <TextEquiv>
+                    <Unicode>des Vereinsführers</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:2;} date {offset:9; length:21;}">
+                <Coords points="988,487 1966,466 1966,408 1884,370 1572,414 990,397"/>
+                <Baseline points="1000,456 1030,459 1074,459 1119,459 1164,456 1209,459 1253,456 1298,456 1343,456 1388,456 1433,456 1477,453 1522,453 1567,453 1612,450 1656,450 1701,450 1746,450 1791,447 1836,447 1880,447 1925,450 1970,450"/>
+                <TextEquiv>
+                    <Unicode>über die Kalenderjahre 1938/39.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

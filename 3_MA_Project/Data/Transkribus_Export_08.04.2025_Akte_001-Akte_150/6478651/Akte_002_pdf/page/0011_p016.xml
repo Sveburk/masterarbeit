@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:48.733+01:00</Created>
+        <LastChange>2025-03-19T15:54:45.186+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0011_p016.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120143900" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="144,2110 1101,2110 1101,2301 144,2301"/>
+            <TextLine id="l" custom="readingOrder {index:0;} place {offset:11; length:7;}">
+                <Coords points="161,2249 1056,2237 1056,2207 161,2219"/>
+                <Baseline points="161,2249 1056,2237"/>
+                <TextEquiv>
+                    <Unicode>Das schöne Dresden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

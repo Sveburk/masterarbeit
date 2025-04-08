@@ -1,0 +1,45 @@
+;;;;;
+instance of;Military unit, wehrmacht;;;;
+Wd: part of;Wehrmacht, Grossverband;;;;
+wd: has part(s);Subeinheiten ;;;;
+W:country;Nazi Germany;;;;
+WD:URL;Für quellen;;;;
+Wd:conflict;Worldwar II, spezielle Schlachten?;;;;
+Wd:headquaterslocation;;;;;
+WD: Commanded by;;;;;
+Wd: Described URL;;;;;
+WD:reference URL;;;;;
+;;;;;
+areaServed;"AdministrativeArea  or 
+GeoShape  or 
+Place  or 
+Text";The geographic area where a service or offered item is provided. Supersedes serviceArea.;;;
+department;Organization ;A relationship between an organization and a department of that organization, also described as an organization (allowing different urls, logos, opening hours). For example: a store with a pharmacy, or a bakery with a cafe.;;;
+dissolutionDate;Date;The date that this organization was dissolved.;;;
+employee;Person;"Someone working for this organization. Supersedes employees.
+";;;
+event;Event;Upcoming or past event associated with this place, organization, or action. Supersedes events.;;;
+foundingDate;Date;The date that this organization was founded.;;;
+foundingLocation;Place;The place where the Organization was founded.;;;
+location;"Place  or 
+PostalAddress  or 
+Text  or 
+VirtualLocation
+";The location of, for example, where an event is happening, where an organization is located, or where an action takes place.;;;
+logo;"ImageObject  or 
+URL
+";An associated logo.;;;
+member;"Organization  or 
+Person";"A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals. Supersedes members, musicGroupMember. Inverse property: memberOf
+";;;
+parentOrganization;Organization ;"The larger organization that this organization is a subOrganization of, if any. Supersedes branchOf. 
+Inverse property: subOrganization
+";;;
+subOrganization;Organization ;"A relationship between two organizations where the first includes the second, e.g., as a subsidiary. See also: the more specific 'department' property. 
+Inverse property: parentOrganization
+";;;
+identifier;"PropertyValue  or 
+Text  or 
+URL
+";"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See background notes for more details.
+";;;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:49.263+01:00</Created>
+        <LastChange>2025-03-19T15:58:32.894+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0015_p022.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120143963" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="359,233 2221,233 2221,2996 359,2996"/>
+            <TextLine id="l" custom="readingOrder {index:0;} Event {offset:0; length:11;}">
+                <Coords points="567,828 800,707 1013,621 1377,593 1937,781 1947,752 1380,563 1006,592 787,680 553,802"/>
+                <Baseline points="567,828 800,707 1013,621 1377,593 1937,781"/>
+                <TextEquiv>
+                    <Unicode>Weihnachten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_28" custom="readingOrder {index:1;} place {offset:0; length:8;}">
+                <Coords points="500,2584 1348,2613 1915,2610 1915,2580 1348,2583 501,2554"/>
+                <Baseline points="500,2584 1348,2613 1915,2610"/>
+                <TextEquiv>
+                    <Unicode>Russland</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_37" custom="readingOrder {index:2;} date {offset:0; length:4;}">
+                <Coords points="730,2845 1045,2868 1749,2868 1749,2838 1046,2838 732,2816"/>
+                <Baseline points="730,2845 1045,2868 1749,2868"/>
+                <TextEquiv>
+                    <Unicode>1942</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

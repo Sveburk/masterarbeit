@@ -2,18 +2,203 @@
 Extraktion von Basisinformationen aus Transkribus XML-Dateien und Konvertierung in das Basis-Schema.
 
 Dieses Skript liest Transkribus XML-Dateien, extrahiert die Metadaten und den Text
-und konvertiert sie in das in WORKFLOW.md definierte Basis-Schema.
+und konvertiert sie in das in WORKFLOW.md definierte Basis-Schema unter Verwendung der
+in document_schemas.py definierten Klassen für Objektorientierung und Datenvalidierung.
 """
 
 import os
 import json
 import xml.etree.ElementTree as ET
 import re
-from typing import Dict, List, Any, Optional
+import time
+from typing import Dict, List, Any, Optional, Union
+import spacy
+import pandas as pd
+
+
+# Import der Schema-Klassen
+from document_schemas import BaseDocument, Person, Place, Event, Organization
+
+# Lade deutsches spaCy-Modell
+try:
+    nlp = spacy.load("de_core_news_sm")
+except:
+    # Fallback für den Fall, dass das Modell nicht installiert ist
+    print("Warnung: SpaCy-Modell 'de_core_news_sm' nicht gefunden. Verwende Fallback-Methode für Namensaufteilung.")
+    nlp = None
+
+# Stelle sicher, dass diese Zeilen *nach* allen anderen Imports eingefügt werden,
+# damit spaCy, pandas etc. schon importiert sind.
+
+CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
+
+# Logdatei für neue Personen
+LOG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/new_persons.log"
+
+def load_known_persons(csv_path: str) -> pd.DataFrame:
+    try:
+        df = pd.read_csv(csv_path, sep=";")
+        return df
+    except Exception as e:
+        print(f"Fehler beim Laden bekannter Personen: {e}")
+        return pd.DataFrame(columns=["schema:givenName", "schema:familyName"])
+
+known_persons_df = load_known_persons(CSV_PATH_KNOWN_PERSONS)
+KNOWN_PERSONS = list(zip(
+    known_persons_df["schema:givenName"].fillna("").str.strip(),
+    known_persons_df["schema:familyName"].fillna("").str.strip()
+))
+
+def person_exists_in_known_list(forename: str, familyname: str, known_list: List[tuple]) -> bool:
+    for known_forename, known_familyname in known_list:
+        if (forename == known_forename and familyname == known_familyname) or \
+           (not forename and familyname == known_familyname):
+            return True
+    return False
+
+def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
+    global known_persons_df
+    global KNOWN_PERSONS
+
+    # Leere Strings behandeln
+    forename = forename.strip() if forename else ""
+    familyname = familyname.strip() if familyname else ""
+    
+    # Prüfe, ob mindestens ein Namensbestandteil vorhanden ist
+    if not forename and not familyname:
+        return
+    
+    # Prüfe, ob die Person bereits bekannt ist
+    if person_exists_in_known_list(forename, familyname, KNOWN_PERSONS):
+        return
+
+    # Generiere die nächste Laufnummer
+    max_id = 0
+    if "Lfd. No." in known_persons_df.columns:
+        # Extrahiere numerische Werte aus der Lfd. No. Spalte
+        numeric_ids = []
+        for id_str in known_persons_df["Lfd. No."]:
+            if isinstance(id_str, str) and id_str.isdigit():
+                numeric_ids.append(int(id_str))
+            elif isinstance(id_str, str):
+                # Versuche, numerischen Teil zu extrahieren (z.B. "00001" -> 1)
+                digits_only = ''.join(c for c in id_str if c.isdigit())
+                if digits_only:
+                    numeric_ids.append(int(digits_only))
+        
+        if numeric_ids:
+            max_id = max(numeric_ids)
+
+    # Neue ID mit führenden Nullen
+    new_id = f"{max_id + 1:05d}"  # Format: 00001, 00002, ...
+
+    # Stelle sicher, dass alle erforderlichen Spalten im Dataframe vorhanden sind
+    required_columns = {
+        "Lfd. No.": new_id,
+        "schema:familyName": familyname or "None",
+        "schema:givenName": forename or "None",
+        "schema:alternateName": "None",
+        "schema:homeLocation": "None",
+        "schema:birthDate": "None",
+        "schema:deathDate": "None",
+        "db:deathPlace": "None"
+    }
+    
+    # Erstelle eine neue Zeile mit allen Spalten aus dem DataFrame
+    new_row = {}
+    for col in known_persons_df.columns:
+        if col in required_columns:
+            new_row[col] = required_columns[col]
+        else:
+            new_row[col] = "None"
+
+    # Füge die neue Zeile hinzu und aktualisiere die CSV-Datei
+    known_persons_df = pd.concat([known_persons_df, pd.DataFrame([new_row])], ignore_index=True)
+    known_persons_df.to_csv(csv_path, sep=";", index=False)
+    KNOWN_PERSONS.append((forename, familyname))
+    
+    # Logge die neue Person
+    log_message = f"Neue Person hinzugefügt: {forename} {familyname} mit ID {new_id}"
+    print(log_message)
+    
+    # Schreibe ins Log-File
+    with open(LOG_PATH, "a", encoding="utf-8") as log_file:
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        log_file.write(f"[{timestamp}] {log_message}\n")
+
+
+
+def extract_name_with_spacy(name_text: str) -> tuple:
+    """
+    Verwendet spaCy, um einen Namen in Vor- und Nachnamen zu trennen.
+    Berücksichtigt auch mittlere Namen.
+    
+    Args:
+        name_text: Der zu analysierende Namenstext
+        
+    Returns:
+        Tuple aus (Vorname, Nachname)
+    """
+    # Fallback-Werte
+    forename = ""
+    familyname = name_text
+    
+    # Leerzeichen am Anfang und Ende entfernen
+    name_text = name_text.strip()
+    
+    # Wenn kein Name oder leerer String übergeben wurde
+    if not name_text:
+        return forename, familyname
+    
+    # Standard-Methode zur Namenstrennung ohne spaCy
+    def split_name_standard(text):
+        name_parts = text.split()
+        if len(name_parts) > 1:
+            # Erster Teil ist Vorname, letzter Teil ist Nachname
+            forename = name_parts[0]
+            # Falls mittlere Namen vorhanden sind, füge sie zum Vornamen hinzu
+            if len(name_parts) > 2:
+                forename += " " + " ".join(name_parts[1:-1])
+            familyname = name_parts[-1]
+            return forename, familyname
+        return "", text  # Wenn nur ein Wort, behandle es als Nachnamen
+    
+    # Wenn spaCy nicht geladen werden konnte, verwende die Standardmethode
+    if nlp is None:
+        return split_name_standard(name_text)
+    
+    # Analysiere den Text mit spaCy
+    doc = nlp(name_text)
+    
+    # Sammle alle gefundenen Personenentitäten
+    person_entities = [ent for ent in doc.ents if ent.label_ == "PER"]
+    
+    # Wenn keine Personenentitäten gefunden wurden, versuche es mit der herkömmlichen Methode
+    if not person_entities:
+        return split_name_standard(name_text)
+    
+    # Versuche, den Namen aus den gefundenen Entitäten zu extrahieren
+    person_entity = person_entities[0]  # Nehme die erste gefundene Person
+    
+    # Prüfe, ob es mehrere Tokens im Namen gibt
+    if len(person_entity) > 1:
+        # Alle Tokens außer dem letzten sind Teil des Vornamens (einschließlich mittlerer Namen)
+        forename = " ".join([token.text for token in person_entity[:-1]])
+        # Letzter Token ist der Nachname
+        familyname = person_entity[-1].text
+    
+    # Wenn die Aufteilung nicht funktioniert hat, versuche es mit der Standardmethode
+    if not forename:
+        return split_name_standard(name_text)
+    
+    return forename, familyname
 
 # Konstanten definieren
-TRANSKRIBUS_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"
-OUTPUT_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
+#TRANSKRIBUS_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"      #alter export
+#OUTPUT_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
+
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"           #neuer export
+OUTPUT_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
 
 # XML-Namespace (für Transkribus-Dateien)
 NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
@@ -60,46 +245,8 @@ def extract_text_from_xml(root: ET.Element) -> str:
     
     return transcript_text.strip()
 
-def create_base_schema(metadata_info: Dict[str, str], transcript_text: str) -> Dict[str, Any]:
-    """
-    Erstellt die Basis-Schema-Struktur
-    
-    Args:
-        metadata_info: Metadaten aus dem XML
-        transcript_text: Extrahierter Text
-        
-    Returns:
-        Dictionary mit dem Basis-Schema
-    """
-    return {
-        "object_type": "Dokument",
-        "attributes": metadata_info,
-        "author": {
-            "forename": "",
-            "familyname": "",
-            "role": "",
-            "associated_place": "",
-            "associated_organisation": ""
-        },
-        "recipient": {
-            "forename": "",
-            "familyname": "",
-            "role": "",
-            "associated_place": "",
-            "associated_organisation": ""
-        },
-        "mentioned_persons": [],
-        "mentioned_organizations": [],
-        "mentioned_events": [],
-        "creation_date": "",
-        "creation_place": "",
-        "mentioned_dates": [],
-        "mentioned_places": [],
-        "content_tags_in_german": [],
-        "content_transcription": transcript_text,
-        "document_type": "",  # Wird später gefüllt
-        "document_format": ""  # Wird später gefüllt
-    }
+# Diese Funktion wird nicht mehr benötigt, da wir das Dokument direkt in process_transkribus_file erstellen
+# und die BaseDocument-Klasse verwenden
 
 def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]]]:
     """
@@ -139,14 +286,13 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                 length = int(person_data.get("length", 0))
                 if offset < len(text_content) and offset + length <= len(text_content):
                     person_name = text_content[offset:offset+length]
-                    # Versuche Vor- und Nachname zu trennen
-                    name_parts = person_name.split()
-                    if len(name_parts) > 1:
-                        forename = name_parts[0]
-                        familyname = " ".join(name_parts[1:])
-                    else:
-                        forename = ""
-                        familyname = person_name
+                    
+                    # Versuche mit spaCy Vor- und Nachname zu extrahieren
+                    forename, familyname = extract_name_with_spacy(person_name)
+                    
+                    # Prüfe, ob die Person bereits bekannt ist, und füge sie zur CSV hinzu, falls nicht
+                    if not person_exists_in_known_list(forename, familyname, KNOWN_PERSONS):
+                        save_new_person_to_csv(forename, familyname, CSV_PATH_KNOWN_PERSONS)
                     
                     result["persons"].append({
                         "forename": forename,
@@ -242,7 +388,7 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     
     return result
 
-def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str) -> Dict[str, Any]:
+def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str) -> Union[BaseDocument, None]:
     """
     Verarbeitet eine Transkribus XML-Datei und extrahiert die Daten
     
@@ -252,7 +398,7 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         subdir: Name des Unterordners (z.B. "Akte_001")
         
     Returns:
-        Dictionary mit dem Basis-Schema
+        BaseDocument mit den extrahierten Daten oder None bei Fehler
     """
     try:
         tree = ET.parse(xml_path)
@@ -262,19 +408,28 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         metadata_info = extract_metadata_from_xml(root)
         transcript_text = extract_text_from_xml(root)
         
-        # Basis-Schema erstellen
-        result = create_base_schema(metadata_info, transcript_text)
-        
         # Versuche, custom-Attribute zu extrahieren
         custom_data = extract_custom_attributes(root)
         
-        # Füge extrahierte Daten hinzu
-        result["mentioned_persons"] = custom_data["persons"]
-        result["mentioned_organizations"] = custom_data["organizations"]
-        result["mentioned_dates"] = custom_data["dates"]
-        result["mentioned_places"] = custom_data["places"]
+        # Erstelle ein BaseDocument-Objekt mit allen extrahierten Daten
+        doc = BaseDocument(
+            object_type="Dokument",
+            attributes=metadata_info,
+            content_transcription=transcript_text,
+            mentioned_persons=[Person(**p) for p in custom_data["persons"]],
+            mentioned_organizations=[Organization(**o) for o in custom_data["organizations"]],
+            mentioned_places=[Place(**pl) for pl in custom_data["places"]],
+            mentioned_dates=custom_data["dates"],
+            content_tags_in_german=[],
+            author=Person(),
+            recipient=Person(),
+            creation_date="",
+            creation_place="",
+            document_type="",
+            document_format=""
+        )
         
-        return result
+        return doc
     
     except Exception as e:
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
@@ -282,8 +437,9 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
 
 def main():
     """Hauptfunktion"""
-    print("Starte Extraktion von Transkribus-Daten...")
+    print("Starte Extraktion von Transkribus-Daten mit Objektorientierung und Validierung...")
     processed_files = 0
+    validated_files = 0
     
     # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
     for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
@@ -322,19 +478,40 @@ def main():
                     page_number = "001"
                 
                 # Verarbeite die XML-Datei
-                result = process_transkribus_file(xml_path, seven_digit_folder, subdir)
-                if result:
+                doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
+                if doc:
+                    # Prüfe, ob der Autor vollständig unbekannt ist (weder Vor- noch Nachname)
+                    unknown_author = not doc.author.forename.strip() and not doc.author.familyname.strip()
+                    
+                    # Validiere das Dokument
+                    validation_errors = doc.validate()
+                    is_valid = len(validation_errors) == 0
+                    
+                    # Speichere unbekannte Autoren in eine Log-Datei
+                    if unknown_author:
+                        log_filename = "unknown_authors.log"
+                        log_path = os.path.join(OUTPUT_DIR, log_filename)
+                        with open(log_path, "a", encoding="utf-8") as log_file:
+                            log_file.write(f"{seven_digit_folder}_{subdir}_page{page_number}: Unbekannter Autor\n")
+                    
+                    if not is_valid:
+                        print(f"Warnung: Dokument {seven_digit_folder}_{subdir}_page{page_number} enthält Validierungsfehler: {validation_errors}")
+                    else:
+                        validated_files += 1
+                    
                     # Speichere das Ergebnis
                     output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
                     output_path = os.path.join(OUTPUT_DIR, output_filename)
                     
+                    # Verwende die to_json-Methode des BaseDocument
                     with open(output_path, "w", encoding="utf-8") as json_out:
-                        json.dump(result, json_out, indent=4, ensure_ascii=False)
+                        json_out.write(doc.to_json())
                     
-                    print(f"JSON gespeichert: {output_path}")
+                    print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
                     processed_files += 1
     
     print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
+    print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
 
 if __name__ == "__main__":
     main()

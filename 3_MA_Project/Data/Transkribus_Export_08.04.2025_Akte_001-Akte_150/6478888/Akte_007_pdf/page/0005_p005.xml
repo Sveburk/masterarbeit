@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:22</Creator>
+        <Created>2025-01-22T16:57:22.419+01:00</Created>
+        <LastChange>2025-03-17T13:57:13.063+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0005_p005.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120185260" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="932,213 1553,213 1553,288 932,288"/>
+            <TextLine id="r_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="940,284 1221,307 1510,282 1510,220 1318,248 1293,227 1174,244 1064,228 1035,247 971,221 940,236"/>
+                <Baseline points="946,280 991,280 1035,277 1080,277 1125,280 1170,280 1215,280 1259,280 1304,280 1349,280 1394,277 1439,280 1483,280 1513,280"/>
+                <TextEquiv>
+                    <Unicode>Rechnungsabschluß</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>
