@@ -14,7 +14,18 @@ import time
 from typing import Dict, List, Any, Optional, Union
 import spacy
 import pandas as pd
+import pandas as pd
 
+# Definiere den Pfad zur bekannten Personenliste (Tipp: Verwende denselben Pfad wie in person_matcher.py)
+CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
+
+# Hinweis: Wir können die Funktionen von person_matcher.py wiederverwenden
+
+# Import Rapidfuzz für Fuzzy-Matching (Namensvergleich und zusammenfügung bei unklaren Schreibweisen)
+from rapidfuzz import fuzz, process
+
+# Import des Person Matchers für konsistente Personenerkennung
+from person_matcher import match_person, load_known_persons_from_csv, normalize_name, fuzzy_match_name
 
 # Import der Schema-Klassen
 from document_schemas import BaseDocument, Person, Place, Event, Organization
@@ -35,15 +46,11 @@ CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Proje
 # Logdatei für neue Personen
 LOG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/new_persons.log"
 
-def load_known_persons(csv_path: str) -> pd.DataFrame:
-    try:
-        df = pd.read_csv(csv_path, sep=";")
-        return df
-    except Exception as e:
-        print(f"Fehler beim Laden bekannter Personen: {e}")
-        return pd.DataFrame(columns=["schema:givenName", "schema:familyName"])
+# Lade bekannte Personen aus der CSV über die person_matcher-Funktionen
+known_persons_list = load_known_persons_from_csv(CSV_PATH_KNOWN_PERSONS)
 
-known_persons_df = load_known_persons(CSV_PATH_KNOWN_PERSONS)
+# Zusätzlich erstellen wir ein DataFrame für die alten Funktionen, die es noch benötigen
+known_persons_df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, sep=";")
 KNOWN_PERSONS = list(zip(
     known_persons_df["schema:givenName"].fillna("").str.strip(),
     known_persons_df["schema:familyName"].fillna("").str.strip()
@@ -55,6 +62,46 @@ def person_exists_in_known_list(forename: str, familyname: str, known_list: List
            (not forename and familyname == known_familyname):
             return True
     return False
+def fuzzy_match_person_in_list(forename: str, familyname: str, known_list: List[tuple], threshold: int = 90) -> Optional[tuple]:
+    """
+    Interne Funktion für Abwärtskompatibilität - verwendet das Tupel-Format (forename, familyname).
+    Für neue Funktionen sollte die person_matcher.match_person Funktion verwendet werden.
+    """
+    best_match = None
+    best_score = 0
+
+    for known_forename, known_familyname in known_list:
+        score = fuzz.token_sort_ratio(f"{forename} {familyname}", f"{known_forename} {known_familyname}")
+        if score > best_score and score >= threshold:
+            best_score = score
+            best_match = (known_forename, known_familyname)
+
+    return best_match
+
+def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
+    """
+    Sucht eine Person anhand eines Namenstextes in der Liste bekannter Personen.
+    
+    Args:
+        person_name: Der zu suchende Personenname
+        
+    Returns:
+        Matched person dictionary oder None, wenn keine Übereinstimmung gefunden wurde
+    """
+    if not person_name:
+        return None
+        
+    # Extrahiere Vor- und Nachname aus dem Text
+    forename, familyname = extract_name_with_spacy(person_name)
+    
+    # Verwende die match_person-Funktion aus person_matcher.py
+    person_dict = {"forename": forename, "familyname": familyname}
+    matched_person, score = match_person(person_dict)
+    
+    if matched_person and score >= 70:
+        return matched_person
+    return None
+
 
 def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
     global known_persons_df
@@ -198,7 +245,7 @@ def extract_name_with_spacy(name_text: str) -> tuple:
 #OUTPUT_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
 
 TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"           #neuer export
-OUTPUT_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
+OUTPUT_DIR = "/Users/svenburkhardt/Downloads/Base_Schema_Output_Test"
 
 # XML-Namespace (für Transkribus-Dateien)
 NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
@@ -248,6 +295,44 @@ def extract_text_from_xml(root: ET.Element) -> str:
 # Diese Funktion wird nicht mehr benötigt, da wir das Dokument direkt in process_transkribus_file erstellen
 # und die BaseDocument-Klasse verwenden
 
+def fuzzy_person_match(forename: str, familyname: str, known_list: List[tuple], threshold: int = 90) -> bool:
+    """
+    Vergleicht einen neuen Namen mit bekannten Personen mithilfe von fuzzy matching.
+    Verwendet intern die verbesserte match_person-Funktion aus person_matcher.
+
+    Args:
+        forename: Vorname der neuen Person
+        familyname: Nachname der neuen Person
+        known_list: Liste bekannter (Vorname, Nachname) Tupel
+        threshold: Ähnlichkeitsschwelle (0–100)
+
+    Returns:
+        True, wenn eine ähnliche Person gefunden wurde, sonst False.
+    """
+    # Nutze die bessere Matching-Funktion aus person_matcher
+    temp_person = {"forename": forename, "familyname": familyname}
+    matched_person, score = match_person(temp_person)
+    
+    # Wenn ein Match gefunden wurde und der Score über dem Schwellwert liegt
+    if matched_person and score >= threshold:
+        return True
+    
+    # Falls wir noch Abwärtskompatibilität benötigen, die alte Methode als Fallback
+    for known_forename, known_familyname in known_list:
+        score_first = fuzz.ratio(forename.lower(), known_forename.lower())
+        score_last = fuzz.ratio(familyname.lower(), known_familyname.lower())
+        
+        # Beides muss über Schwellwert liegen
+        if score_first >= threshold and score_last >= threshold:
+            return True
+
+        # Optional: Nur Nachnamenvergleich mit hoher Sicherheit
+        if not forename and score_last >= threshold:
+            return True
+
+    return False
+
+
 def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]]]:
     """
     Versucht, custom-Attribute aus den TextLine-Elementen zu extrahieren
@@ -290,10 +375,27 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                     # Versuche mit spaCy Vor- und Nachname zu extrahieren
                     forename, familyname = extract_name_with_spacy(person_name)
                     
-                    # Prüfe, ob die Person bereits bekannt ist, und füge sie zur CSV hinzu, falls nicht
-                    if not person_exists_in_known_list(forename, familyname, KNOWN_PERSONS):
-                        save_new_person_to_csv(forename, familyname, CSV_PATH_KNOWN_PERSONS)
+                    # Erstelle ein temporäres Person-Dictionary
+                    temp_person = {"forename": forename, "familyname": familyname}
                     
+                    # Versuche, die Person in der bekannten Personenliste zu finden (mit person_matcher)
+                    matched_person, score = match_person(temp_person)
+                    
+                    # Wenn keine Übereinstimmung gefunden wurde, füge eine neue Person hinzu
+                    if not matched_person or score < 70:
+                        # Neue Person speichern
+                        new_entry = pd.DataFrame([{
+                            "schema:givenName": forename,
+                            "schema:familyName": familyname
+                        }])
+                        if os.path.exists(CSV_PATH_KNOWN_PERSONS):
+                            new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='a', header=False, sep=';', index=False)
+                        else:
+                            new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='w', header=True, sep=';', index=False)
+                        
+                        # Aktualisiere die Liste bekannter Personen
+                        KNOWN_PERSONS.append((forename, familyname))  # Hinzufügen zur Liste der Tupel
+
                     result["persons"].append({
                         "forename": forename,
                         "familyname": familyname,

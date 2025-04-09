@@ -54,8 +54,26 @@ Hier kurze Zusammenfassung einfügen.
 % Vorlage 
 \noindent\hrulefill
 
-\section{Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \s
-small 08.04.2025}
+\section{Integration von person\_matcher.py mit transkribus\_to\_base\_schema.py \small 09.04.2025}
+\small\textit{Verbesserung der Personenerkennung durch Nutzung einer gemeinsamen CSV-Referenz}\\
+\subsection*{Kurzbeschreibung}
+
+Die beiden Module person\_matcher.py und transkribus\_to\_base\_schema.py wurden überarbeitet, um eine konsistente Personenerkennung zu gewährleisten. Die zentrale Verbesserung ist die Nutzung der CSV-Datei mit Personenmetadaten als gemeinsame Ground Truth. Dies ermöglicht eine zuverlässigere Erkennung und Matching von Personennamen mit Variationen in der Schreibweise.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Integration von person\_matcher.py}
+\ding{51} person\_matcher.py mit Funktionen für CSV-Einlesen und Fuzzy-Matching erweitert\\
+\ding{51} Schnittstelle für den Zugriff auf bekannte Personen standardisiert\\
+\ding{51} match\_person-Funktion für die Suche in der CSV-Datei optimiert\\
+\textbf{Ergebnis}: Vereinheitlichter Personenabgleich über beide Module hinweg
+
+\subsubsection*{\small Überarbeitung von transkribus\_to\_base\_schema.py}
+\ding{51} Funktionen aus person\_matcher.py integriert\\
+\ding{51} Gemeinsamen CSV-Pfad für Personenreferenzen eingerichtet\\
+\ding{51} Personenerkennungslogik verbessert, um Fuzzy-Matching zu nutzen\\
+\textbf{Ergebnis}: Zuverlässigere Erkennung von Personennamen mit konsistenter Referenzierung
+
+\section{Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \small 08.04.2025}
 \small\textit{Verbesserung des Skripts auf Basis der Empfehlungen von Claude Code}\\
 \subsection*{Kurzbeschreibung}
 
@@ -100,14 +118,67 @@ if not doc.is_valid():
     \item \textbf{Erweiterbarkeit:} Einfachere Anpassung an neue Anforderungen durch Vererbung
 \end{itemize}
 
+\subsection*{Technische Details zur Integration}
+
+\begin{minted}{python}
+# In person_matcher.py: CSV-Einlese-Funktion
+def load_known_persons_from_csv(csv_path: str) -> List[Dict[str, str]]:
+    """
+    Lädt die bekannten Personen aus der CSV-Datei.
+    """
+    if not os.path.exists(csv_path):
+        print(f"Warnung: CSV-Datei nicht gefunden: {csv_path}")
+        return []
+    
+    try:
+        df = pd.read_csv(csv_path, sep=";")
+        persons = []
+        
+        # Extrahiere relevante Spalten
+        for _, row in df.iterrows():
+            forename = row.get("schema:givenName", "").strip()
+            familyname = row.get("schema:familyName", "").strip()
+            
+            if forename or familyname:  # Mindestens ein Namensteil vorhanden
+                person = {
+                    "forename": forename,
+                    "familyname": familyname,
+                    "id": row.get("Lfd. No.", ""),
+                    # Weitere Metadaten
+                }
+                persons.append(person)
+        
+        return persons
+    except Exception as e:
+        print(f"Fehler beim Laden der CSV-Datei: {e}")
+        return []
+
+# Verbesserte person_matcher Funktion mit CSV-Standardwert
+def match_person(
+    person: Dict[str, str], 
+    candidates: List[Dict[str, str]] = None, 
+    threshold: int = 70
+) -> Tuple[Optional[Dict[str, str]], int]:
+    """
+    Match a person against known persons from CSV (if no candidates provided)
+    """
+    if not person:
+        return None, 0
+        
+    # Wenn keine Kandidaten angegeben, nutze CSV-Daten
+    if candidates is None:
+        candidates = KNOWN_PERSONS
+\end{minted}
+
 \subsection*{Nächste Schritte}
-\ding{113} Überprüfung aller generierten JSON-Dateien auf Validität.\\
-\ding{113} Integration von fortgeschrittenen Informationsextraktionsmethoden für Entitäten.\\
-\ding{113} Automatisierte Tests für die Datenverarbeitung entwickeln.
+\ding{113} Testen der verbesserten Personenerkennung mit einem größeren Datensatz\\
+\ding{113} Entwicklung von Methoden zur automatischen Zusammenführung von Personenduplikaten\\
+\ding{113} Integration fortgeschrittener NER-Methoden für noch bessere Personenerkennung\\
+\ding{113} Überprüfung aller generierten JSON-Dateien auf Validität
 
 \subsection*{Offene Fragen}
-\ding{113} Wie können wir die Qualität der Entitätserkennung verbessern?\\
-\ding{113} Sollen zusätzliche spezialisierte Dokumentklassen implementiert werden?
+\ding{113} Wie lässt sich die Konsistenz zwischen der CSV-Datei und extrahierten Personen automatisch überprüfen?\\
+\ding{113} Sollen Schwellwerte für das Fuzzy-Matching je nach Dokumenttyp angepasst werden?
 
 \section{Implementierung der Datenextraktions-Pipeline \small 03.04.2025}
 \small\textit{{Diese Implementierung wurde mit Unterstützung von Claude Code und Sorin von RISE durchgeführt. Erster Einsatz von Claude Code}}\\
