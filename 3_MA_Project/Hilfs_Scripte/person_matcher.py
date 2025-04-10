@@ -254,8 +254,7 @@ def normalize_name(name: str) -> str:
     # Titel & Anrede entfernen (auch generischere Fälle)
     honorifics = [
         "herr", "herrn", "frau", "fräulein", "witwe",
-        "dr", "dr.","dr. ", "prof", "prof.",
-        "obermusikmeister", "ehrenmitglied", "ehrenpräsident", "chorleiter", "dirigent"
+        "dr", "dr.","dr. ", "prof", "prof.", "pg", "pg."
     ]
     for honorific in honorifics:
         if normalized.startswith(honorific + " "):
@@ -359,7 +358,6 @@ def safe_str_lower_strip(val: Any) -> str:
         return val.lower().strip()
     return ""
 
-
 def match_person(
     person: Dict[str, str], 
     candidates: List[Dict[str, str]] = None
@@ -375,6 +373,14 @@ def match_person(
     familyname = str(person.get("familyname", "") or "").strip()
     alternate_name = str(person.get("alternate_name", "") or "").strip()
 
+    # ❌ Verhindere Matches für alleinstehende, unzuverlässige Namen
+    UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
+
+    if forename.lower().strip() in UNMATCHABLE_SINGLE_NAMES and not familyname:
+        return None, 0
+    if familyname.lower().strip() in UNMATCHABLE_SINGLE_NAMES and not forename:
+        return None, 0
+
     normalized_forename = normalize_name(forename)
     normalized_familyname = normalize_name(familyname)
     normalized_alternate_name = normalize_name(alternate_name)
@@ -385,56 +391,29 @@ def match_person(
     if not candidates:
         return None, 0
 
-    # Spezialfall: Gedrehter Vor-/Nachname
-    for candidate in candidates:
-        if (
-            normalize_name(forename) == normalize_name(str(candidate.get("familyname", ""))) and
-            normalize_name(familyname) == normalize_name(str(candidate.get("forename", "")))
-        ):
-            return candidate, 100
-
     # Initialisiere für Fallback
     best_match = None
     best_score = 0
 
-    # (weiter mit fuzzy matching etc.)
- 
-    # Spezialfall: Nur ein Vor- oder Nachname vorhanden
-    if forename and not familyname:
-        for candidate in candidates:
-            cand_forename = str(candidate.get("forename","") or "").strip()
-            cand_alt = str(candidate.get("alternate_name","") or "").strip()
-            cand_variants = [cand_forename]
-            if cand_alt and cand_alt != cand_forename:
-                cand_variants.append(cand_alt)
-            _, score = fuzzy_match_name(forename, cand_variants, threshold=thresholds["forename"])
-            if score > best_score:
-                best_score = score
-                best_match = candidate
-        return best_match, best_score
-
-    if familyname and not forename:
-        for candidate in candidates:
-            cand_familyname = str(candidate.get("familyname","") or "").strip()
-            _, score = fuzzy_match_name(familyname, [cand_familyname], threshold=thresholds["familyname"])
-            if score > best_score:
-                best_score = score
-                best_match = candidate
-        return best_match, best_score
-    
     for candidate in candidates:
-        candidate_forename = str(candidate.get("forename","") or "").strip()
+        candidate_forename = str(candidate.get("forename", "") or "").strip()
+        candidate_familyname = str(candidate.get("familyname", "") or "").strip()
         candidate_alternate = str(candidate.get("alternate_name", "") or "").strip()
 
-        candidate_familyname = str(candidate.get("familyname","") or "").strip()
-                
-        input_alt = str(person.get("alternate_name","") or "").strip().lower()
-        raw_cand_alt = candidate.get("alternate_name", "")
-        cand_alt = str(raw_cand_alt).strip().lower() if isinstance(raw_cand_alt, str) else ""
-        if input_alt and cand_alt and input_alt != cand_alt:
-            continue  # Unterschiedlich? → Kein Match erlaubt!
-        # Wenn nur einer gesetzt ist → auch zu unsicher
-        if (input_alt and not cand_alt) or (cand_alt and not input_alt):
+        cand_forename_norm = normalize_name(candidate_forename)
+        cand_familyname_norm = normalize_name(candidate_familyname)
+
+        # ✨ Sonderregel: Verhindere Otto ↔ Ott
+        if {"otto", "ott"} == {normalized_forename, cand_familyname_norm} \
+           or {"otto", "ott"} == {normalized_familyname, cand_forename_norm}:
+            continue
+
+        # ✅ Standardfall: Gedrehte Namen erlauben
+        if normalized_forename == cand_familyname_norm and normalized_familyname == cand_forename_norm:
+            return candidate, 100
+
+        # ⚠️ Skip leere Kandidaten
+        if not candidate_forename and not candidate_familyname:
             continue
 
         # Vorname-Varianten inkl. Alternativnamen
@@ -442,52 +421,33 @@ def match_person(
         if candidate_alternate and candidate_alternate != candidate_forename:
             candidate_forename_variants.append(candidate_alternate)
 
-        # Skip leere Kandidaten
-        if not candidate_forename and not candidate_familyname:
-            continue
-
-        # Family name matching
+        # Familienname fuzzy
         family_score = 0
         if familyname and candidate_familyname:
             _, family_score = fuzzy_match_name(familyname, [candidate_familyname], threshold=thresholds["familyname"])
 
-
-        # Forename matching
+        # Vorname fuzzy
         forename_score = 0
         if forename and candidate_forename_variants:
-            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants,threshold=thresholds["forename"])
+            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants, threshold=thresholds["forename"])
 
-        # Kombiniere Scores: ausgewogeneres Verhältnis zwischen Vor- und Nachname
-        combined_score = (family_score * 0.6) + (forename_score * 0.4)
-
-        # ⚠️ Behandlung von alternate_name
-        raw_alt = person.get("alternate_name", "")
-        input_alt = str(raw_alt).strip().lower() if isinstance(raw_alt, str) else ""
+        # alternate_name Bewertung
+        input_alt = str(person.get("alternate_name", "") or "").strip().lower()
         cand_alt = safe_str_lower_strip(candidate.get("alternate_name", ""))
-        
-        # Bewertung der Alternativnamen (gerichtet)
-        input_alt = str(person.get("alternate_name","") or "").strip().lower()
-        cand_alt = safe_str_lower_strip(candidate.get("alternate_name",""))
+        if input_alt and cand_alt and input_alt != cand_alt:
+            continue
+        if (input_alt and not cand_alt) or (cand_alt and not input_alt):
+            continue
 
-        alternate_name_score = 0
+        alternate_score = 100 if input_alt == cand_alt and input_alt else 0
 
-        if input_alt and cand_alt:
-            if input_alt == cand_alt:
-                alternate_name_score = 100  # Volle Übereinstimmung
-            else:
-                alternate_name_score = 0    # Unterschiedlich → keine Übereinstimmung
-        elif input_alt or cand_alt:
-            alternate_name_score = 50      # Nur einer hat einen alternate_name
-
-        # Kombinierte Bewertung mit alternate_name integriert
+        # Kombinierte Bewertung
         combined_score = (
-            family_score * 0.5 + 
-            forename_score * 0.4 + 
-            alternate_name_score * 0.3     # 10 % Gewicht für alternate_name
+            family_score * 0.5 +
+            forename_score * 0.4 +
+            alternate_score * 0.3
         )
 
-
-        # Bestes Match speichern
         if combined_score > best_score:
             best_score = combined_score
             best_match = candidate
@@ -628,6 +588,30 @@ def merge_person_records(person1: Dict[str, str], person2: Dict[str, str]) -> Di
                 merged[key] = value2
     
     return merged
+
+def get_best_match_info(
+    person: Dict[str, str],
+    candidates: List[Dict[str, str]]
+) -> Dict[str, Any]:
+    """
+    Gibt Detailinformationen zum besten Match zurück.
+
+    Args:
+        person: Die zu vergleichende Person
+        candidates: Liste bekannter Personen (Ground Truth)
+
+    Returns:
+        Dictionary mit Match-Infos: Vorname, Nachname, Titel, ID und Score
+    """
+    match, score = match_person(person, candidates)
+    return {
+        "matched_forename": match.get("forename", "") if match else None,
+        "matched_familyname": match.get("familyname", "") if match else None,
+        "matched_title": match.get("title", "") if match else None,
+        "match_id": match.get("id", "") if match else None,
+        "score": score
+    }
+
 def compare_with_ground_truth(
     persons_to_check: List[Dict[str, str]],
     ground_truth: List[Dict[str, str]] = KNOWN_PERSONS
@@ -664,6 +648,37 @@ def compare_with_ground_truth(
     
     df_results = pd.DataFrame(results)
     return df_results
+
+def compare_batch_with_ground_truth(
+    extracted_persons: List[Dict[str, str]],
+    ground_truth: List[Dict[str, str]] = KNOWN_PERSONS
+) -> pd.DataFrame:
+    """
+    Vergleicht eine Liste extrahierter Personen mit der Ground Truth.
+
+    Args:
+        extracted_persons: Liste mit Personen (z. B. aus OCR)
+        ground_truth: Ground-Truth-Liste (z. B. aus CSV)
+
+    Returns:
+        Pandas DataFrame mit besten Matches und Scores
+    """
+    results = []
+    for person in extracted_persons:
+        match_info = get_best_match_info(person, ground_truth)
+        result = {
+            "Input_Forename": person.get("forename", ""),
+            "Input_Familyname": person.get("familyname", ""),
+            "Input_Title": person.get("title", ""),
+            "Matched_Forename": match_info["matched_forename"],
+            "Matched_Familyname": match_info["matched_familyname"],
+            "Matched_Title": match_info["matched_title"],
+            "Match_ID": match_info["match_id"],
+            "Score": match_info["score"]
+        }
+        results.append(result)
+    return pd.DataFrame(results)
+
 
 
     
@@ -733,6 +748,14 @@ def main():
     print("\nVergleich mit Ground Truth:")
     print(df_comparison)
     df_comparison.to_csv("person_match_results.csv", index=False)
+    
+    
+            # Neue Methode mit Match-Info
+    print("\nVergleich mit Ground Truth (mit Match-Details):")
+    df_batch_comparison = compare_batch_with_ground_truth(deduplicated)
+    print(df_batch_comparison)
+    df_batch_comparison.to_csv("person_batch_match_results.csv", index=False)
+
 
 if __name__ == "__main__":
     main()
