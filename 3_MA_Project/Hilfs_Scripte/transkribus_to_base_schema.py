@@ -16,6 +16,7 @@ import spacy
 import pandas as pd
 import pandas as pd
 
+
 # Definiere den Pfad zur bekannten Personenliste (Tipp: Verwende denselben Pfad wie in person_matcher.py)
 CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
 
@@ -25,7 +26,7 @@ CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Proje
 from rapidfuzz import fuzz, process
 
 # Import des Person Matchers für konsistente Personenerkennung
-from person_matcher import match_person, load_known_persons_from_csv, normalize_name, fuzzy_match_name
+from person_matcher import match_person, load_known_persons_from_csv, normalize_name, fuzzy_match_name, deduplicate_persons
 
 # Import der Schema-Klassen
 from document_schemas import BaseDocument, Person, Place, Event, Organization
@@ -244,8 +245,8 @@ def extract_name_with_spacy(name_text: str) -> tuple:
 #TRANSKRIBUS_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"      #alter export
 #OUTPUT_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
 
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"           #neuer export
-OUTPUT_DIR = "/Users/svenburkhardt/Downloads/Base_Schema_Output_Test"
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"           #Testdansatz
+OUTPUT_DIR = "//Users/svenburkhardt/Desktop/Transkribus_test_Out"
 
 # XML-Namespace (für Transkribus-Dateien)
 NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
@@ -350,6 +351,9 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
         "places": []
     }
     
+    # Temporäre Liste für Personen, die später dedupliziert wird
+    temp_persons = []
+    
     # Suche nach TextLine-Elementen mit custom-Attributen
     for text_line in root.findall(".//ns:TextLine", NS):
         custom_attr = text_line.get("custom", "")
@@ -375,28 +379,8 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                     # Versuche mit spaCy Vor- und Nachname zu extrahieren
                     forename, familyname = extract_name_with_spacy(person_name)
                     
-                    # Erstelle ein temporäres Person-Dictionary
-                    temp_person = {"forename": forename, "familyname": familyname}
-                    
-                    # Versuche, die Person in der bekannten Personenliste zu finden (mit person_matcher)
-                    matched_person, score = match_person(temp_person)
-                    
-                    # Wenn keine Übereinstimmung gefunden wurde, füge eine neue Person hinzu
-                    if not matched_person or score < 70:
-                        # Neue Person speichern
-                        new_entry = pd.DataFrame([{
-                            "schema:givenName": forename,
-                            "schema:familyName": familyname
-                        }])
-                        if os.path.exists(CSV_PATH_KNOWN_PERSONS):
-                            new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='a', header=False, sep=';', index=False)
-                        else:
-                            new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='w', header=True, sep=';', index=False)
-                        
-                        # Aktualisiere die Liste bekannter Personen
-                        KNOWN_PERSONS.append((forename, familyname))  # Hinzufügen zur Liste der Tupel
-
-                    result["persons"].append({
+                    # Hinzufügen zur temporären Liste
+                    temp_persons.append({
                         "forename": forename,
                         "familyname": familyname,
                         "role": "",
@@ -464,6 +448,35 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                         "country": "Deutschland",  # Standardwert
                         "type": ""
                     })
+    
+    # Dedupliziere Personen mit der person_matcher.deduplicate_persons Funktion
+    if temp_persons:
+        # Erst gegen bekannte Personen matchen und neue Personen speichern
+        for person in temp_persons:
+            # Versuche, die Person in der bekannten Personenliste zu finden
+            matched_person, score = match_person(person)
+            
+            # Wenn keine Übereinstimmung gefunden wurde, füge eine neue Person hinzu
+            if not matched_person or score < 70:
+                # Neue Person speichern
+                new_entry = pd.DataFrame([{
+                    "schema:givenName": person.get("forename", ""),
+                    "schema:familyName": person.get("familyname", "")
+                }])
+                if os.path.exists(CSV_PATH_KNOWN_PERSONS):
+                    new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='a', header=False, sep=';', index=False)
+                else:
+                    new_entry.to_csv(CSV_PATH_KNOWN_PERSONS, mode='w', header=True, sep=';', index=False)
+                
+                # Aktualisiere die Liste bekannter Personen
+                KNOWN_PERSONS.append((person.get("forename", ""), person.get("familyname", "")))
+        
+        # Dann die Liste deduplizieren und das Ergebnis zurückgeben
+        # Deduplizierte Personen erhalten
+        deduplicated_persons = deduplicate_persons(temp_persons)
+        
+        # In das Ergebnis aufnehmen
+        result["persons"] = deduplicated_persons
     
     return result
 
