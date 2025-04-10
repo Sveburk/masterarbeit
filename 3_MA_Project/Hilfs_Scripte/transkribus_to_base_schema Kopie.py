@@ -644,4 +644,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# [WARNUNG] personen_liste nicht gefunden – Matching-Block nicht eingefügt.

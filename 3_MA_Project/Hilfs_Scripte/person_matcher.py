@@ -22,7 +22,7 @@ def get_matching_thresholds() -> Dict[str, int]:
         Dictionary mit individuellen Thresholds für 'forename' und 'familyname'
     """
     return {
-        "forename": 80,
+        "forename": 90,
         "familyname": 85
     }
 
@@ -209,18 +209,41 @@ OCR_ERRORS = {
 #     "cl": ["d"],
 #     "d": ["cl"],
  }
+def normalize_name_with_title(name: str) -> tuple[str, str]:
+    """
+    Trennt Titel/Anrede vom Namen und gibt beides zurück.
+    
+    Args:
+        name (str): z. B. "Herr Dr. Alfons Zimmermann"
+    
+    Returns:
+        Tuple aus (bereinigtem Namen, erkannter Titel), z. B. ("Alfons Zimmermann", "Herr Dr")
+    """
+    honorifics = [
+        r"Herrn?", r"Frau", r"Fräulein", r"Witwe",
+        r"Dr", r"Prof", r"Professor", r"Studienrat", r"Oberstudienrat",
+        r"Dipl[-\.]?Ing", r"Ing", r"Lic\.? phil\.?", r"Lic\.? rer\.? pol\.?",
+        r"Ehrenmitglied", r"Dirigent", r"Sänger", r"Musiklehrer", r"Chormeister", r"Kapellmeister", r"Vorstand"
+    ]
+    
+    pattern = re.compile(rf"\b({'|'.join(honorifics)})\.?", re.IGNORECASE)
+
+    # Titel extrahieren – diesmal sicher über finditer()
+    titles_found = [m.group(0).strip() for m in pattern.finditer(name)]
+    title = " ".join(titles_found).strip()
+
+    # Titel entfernen aus dem Originalnamen
+    cleaned = pattern.sub("", name)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+
+    return cleaned, title
 
 def normalize_name(name: str) -> str:
     """
-    Normalize a name by converting to lowercase, removing special characters,
-    and standardizing spelling variations (z. B. OCR oder Ehrentitel).
-    
-    Args:
-        name: The name to normalize
-        
-    Returns:
-        The normalized name
+    Entfernt temporär Titel/Anreden zur besseren Vergleichbarkeit.
+    Für vollständige Trennung nutze `normalize_name_with_title`.
     """
+
     
     if not name:
         return ""
@@ -231,7 +254,7 @@ def normalize_name(name: str) -> str:
     # Titel & Anrede entfernen (auch generischere Fälle)
     honorifics = [
         "herr", "herrn", "frau", "fräulein", "witwe",
-        "dr", "dr.", "prof", "prof.",
+        "dr", "dr.","dr. ", "prof", "prof.",
         "obermusikmeister", "ehrenmitglied", "ehrenpräsident", "chorleiter", "dirigent"
     ]
     for honorific in honorifics:
@@ -317,6 +340,7 @@ def fuzzy_match_name(name: str, candidates: List[str], threshold: int = 80) -> T
     for candidate in candidates:
         normalized_candidate = normalize_name(candidate)
         score = fuzz.ratio(normalized_name, normalized_candidate)
+        
 
         if score > best_score:
             best_score = score
@@ -488,30 +512,41 @@ def deduplicate_persons(
         forename = str(person.get("forename", "") or "").strip()
         familyname = str(person.get("familyname", "") or "").strip()
         altname = str(person.get("alternate_name", "") or "").strip()
+        role = str(person.get("role", "") or "").strip()
 
         if not forename and not familyname:
             continue
 
-        norm_forename = normalize_name(forename)
+        # ✨ Titel extrahieren
+        cleaned_name, extracted_title = normalize_name_with_title(forename)
+        extracted_forename = cleaned_name
+
+        # Setze extracted_title als eigenes Feld „title“
+        title = extracted_title
+
+
+        # aktualisierte Normalisierung für Matching-Schlüssel
+        norm_forename = normalize_name(extracted_forename)
         norm_familyname = normalize_name(familyname)
         norm_altname = normalize_name(altname)
 
-        # Kombiniere Normalform & gedrehte Form
         name_keys = {
             f"{norm_forename} {norm_familyname} {norm_altname}",
             f"{norm_familyname} {norm_forename} {norm_altname}"
         }
 
-        # Prüfe auf bereits gesehene Kombinationen
         if name_keys & normalized_names_seen:
             continue
 
         normalized_names_seen.update(name_keys)
 
         normalized_person = person.copy()
-        normalized_person["forename"] = forename
+        normalized_person["forename"] = extracted_forename
         normalized_person["familyname"] = familyname
         normalized_person["alternate_name"] = altname
+        normalized_person["title"] = title
+        normalized_person["role"] = role  
+
         normalized_persons.append(normalized_person)
 
     # jetzt deduplizieren mit merge und fuzzy matching
@@ -560,7 +595,7 @@ def merge_person_records(person1: Dict[str, str], person2: Dict[str, str]) -> Di
     merged = {}
     
     # Fields to merge
-    fields = ["forename", "familyname", "role", "associated_place", "associated_organisation", "alternate_name"]
+    fields = ["forename", "familyname", "role", "associated_place", "associated_organisation", "alternate_name", "title"]
     
     for field in fields:
         value1 = str(person1.get(field,"") or "").strip()
@@ -612,15 +647,19 @@ def compare_with_ground_truth(
     for person in persons_to_check:
         best_match, score = match_person(person, candidates=ground_truth)
         result = {
-            "Input_Forename": person.get("forename", ""),
-            "Input_Familyname": person.get("familyname", ""),
-            "Input_AltName": person.get("alternate_name", ""),
-            "Matched_Forename": best_match.get("forename", "") if best_match else None,
-            "Matched_Familyname": best_match.get("familyname", "") if best_match else None,
-            "Matched_AltName": best_match.get("alternate_name", "") if best_match else None,
-            "Match_ID": best_match.get("id", "") if best_match else None,
-            "Score": score
-        }
+        "Input_Forename": person.get("forename", ""),
+        "Input_Familyname": person.get("familyname", ""),
+        "Input_AltName": person.get("alternate_name", ""),
+        "Input_Title": person.get("title", ""),
+        "Matched_Forename": best_match.get("forename", "") if best_match else None,
+        "Matched_Familyname": best_match.get("familyname", "") if best_match else None,
+        "Matched_AltName": best_match.get("alternate_name", "") if best_match else None,
+        "Matched_Title": best_match.get("title", "") if best_match else None,
+        "Match_ID": best_match.get("id", "") if best_match else None,
+        "Score": score
+    }
+
+
         results.append(result)
     
     df_results = pd.DataFrame(results)
@@ -631,18 +670,21 @@ def compare_with_ground_truth(
 def main():
     """Test the fuzzy matching with some examples."""
     test_data = [
-         {"forename": "Otto", "familyname": "Bollinger", "role": "", "alternate_name": ""},
-         {"forename": "", "familyname": "Otto", "role": "", "alternate_name": ""},
+         {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""}, # Normal
+         {"forename": "Fräulein Lina", "familyname": "Fingerdick", "role": "", "alternate_name": ""}, #Normal
+         {"forename": "Otto", "familyname": "Bollinger", "role": "", "alternate_name": ""}, # Normal
+         {"forename": "", "familyname": "Otto", "role": "", "alternate_name": ""}, #Einzelname
          {"forename": "Otte", "familyname": "Boilinger", "role": "", "alternate_name": ""},  # OCR error
-         {"forename": "O.", "familyname": "Bollinger", "role": "", "alternate_name": ""},
+         {"forename": "O.", "familyname": "Bollinger", "role": "", "alternate_name": ""}, # Initiale Abkürzung
          {"forename": "Otho", "familyname": "Bolinger", "role": "", "alternate_name": ""},  # Spelling variation
-         {"forename": "Lina", "familyname": "Fingerdick", "role": "", "alternate_name": ""},
          {"forename": "Lina", "familyname": "Fingerdik", "role": "", "alternate_name": ""},  # Spelling variation
-         {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""},
-         {"forename": "Herrn Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""},
-         {"forename": "Zimmermann", "familyname": "Alfons", "role": "", "alternate_name": ""},
-        {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Junior"},  # Sohn
-        {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Senior"},  # Vater
+         {"forename": "Herrn Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""}, # Anrede Test
+         {"forename": "Zimmermann", "familyname": "Alfons", "role": "", "alternate_name": ""}, # Gedrehter Name Test
+         {"forename": "Dr. Emil", "familyname": "Hosp", "role": "", "alternate_name": ""},  # Titel-Test
+         {"forename": "Emil", "familyname": "Dr. Hosp", "role": "", "alternate_name": ""},  # Titel-Test gedreht
+         {"forename": "", "familyname": "Dr. Münch", "role": "", "alternate_name": ""},  # Titel-Test
+         {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Junior"},  # Sohn
+         {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Senior"},  # Vater
     ]
     
     deduplicated = deduplicate_persons(test_data, known_candidates=KNOWN_PERSONS)
@@ -658,33 +700,39 @@ def main():
         fn = person.get("forename", "")
         ln = person.get("familyname", "")
         alt = person.get("alternate_name", "")
-        person_str = f"{fn} {ln} (aka: {alt})"
+        title = person.get("title", "")
+        role = person.get("role", "")
+        parts = [f"{fn} {ln}"]
+        if title:
+            parts.append(f"[Titel: {title}]")
+        if alt:
+            parts.append(f"(aka: {alt})")
+        if role and role != title:
+            parts.append(f"[Rolle: {role}]")
+        person_str = " ".join(parts)
         print(f"  {person_str}")
         recognized_persons.append(person_str)
 
-    # Zusätzliche Ausgabe aller erkannten Personen als Liste
     print("\nAlle erkannten Personen als Liste:")
     for i, person_str in enumerate(recognized_persons, 1):
         print(f"{i}. {person_str}")
 
-
-    # Test individual matching
     test_matches = [
         ({"forename": "Otto", "familyname": ""}, {"forename": "", "familyname": "Otto"}),
         ({"forename": "Hans", "familyname": "Schmidt"}, {"forename": "Johann", "familyname": "Schmidt"}),
         ({"forename": "Wilhelm", "familyname": "Müller"}, {"forename": "Willi", "familyname": "Mueller"}),
         ({"forename": "Zimmermann", "familyname": "Alfons"}, {"forename": "Alfons", "familyname": "Zimmermann"}),
     ]
-    
+
     print("\nTest matches:")
     for person1, person2 in test_matches:
         match, score = match_person(person1, [person2])
         print(f"  {person1['forename']} {person1['familyname']} ↔ {person2['forename']} {person2['familyname']}: {score}%")
-    
+
     df_comparison = compare_with_ground_truth(deduplicated)
+    print("\nVergleich mit Ground Truth:")
     print(df_comparison)
     df_comparison.to_csv("person_match_results.csv", index=False)
-
 
 if __name__ == "__main__":
     main()
