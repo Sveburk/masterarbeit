@@ -335,7 +335,6 @@ def safe_str_lower_strip(val: Any) -> str:
         return val.lower().strip()
     return ""
 
-
 def match_person(
     person: Dict[str, str], 
     candidates: List[Dict[str, str]] = None
@@ -361,7 +360,27 @@ def match_person(
     if not candidates:
         return None, 0
 
-    # Spezialfall: Gedrehter Vor-/Nachname
+    # 1. Ground Truth Matching – bevorzugt
+    best_gt_match = None
+    best_gt_score = 0
+    for candidate in KNOWN_PERSONS:  # explizit Ground Truth prüfen
+        cand_fn = str(candidate.get("forename", "") or "").strip()
+        cand_ln = str(candidate.get("familyname", "") or "").strip()
+        cand_alt = str(candidate.get("alternate_name", "") or "").strip()
+
+        _, fn_score = fuzzy_match_name(forename, [cand_fn, cand_alt], threshold=thresholds["forename"])
+        _, ln_score = fuzzy_match_name(familyname, [cand_ln], threshold=thresholds["familyname"])
+
+        combined_gt_score = fn_score * 0.4 + ln_score * 0.6
+
+        if combined_gt_score > best_gt_score:
+            best_gt_score = combined_gt_score
+            best_gt_match = candidate
+
+    if best_gt_score >= 90:  # nur akzeptieren bei hoher Sicherheit
+        return best_gt_match, int(best_gt_score)
+
+    # 2. Spezialfall: Gedrehter Vor-/Nachname
     for candidate in candidates:
         if (
             normalize_name(forename) == normalize_name(str(candidate.get("familyname", ""))) and
@@ -369,17 +388,15 @@ def match_person(
         ):
             return candidate, 100
 
-    # Initialisiere für Fallback
+    # 3. Initialisiere für Fallback
     best_match = None
     best_score = 0
 
-    # (weiter mit fuzzy matching etc.)
- 
-    # Spezialfall: Nur ein Vor- oder Nachname vorhanden
+    # 4. Spezialfall: Nur ein Vor- oder Nachname vorhanden
     if forename and not familyname:
         for candidate in candidates:
-            cand_forename = str(candidate.get("forename","") or "").strip()
-            cand_alt = str(candidate.get("alternate_name","") or "").strip()
+            cand_forename = str(candidate.get("forename", "") or "").strip()
+            cand_alt = str(candidate.get("alternate_name", "") or "").strip()
             cand_variants = [cand_forename]
             if cand_alt and cand_alt != cand_forename:
                 cand_variants.append(cand_alt)
@@ -391,84 +408,60 @@ def match_person(
 
     if familyname and not forename:
         for candidate in candidates:
-            cand_familyname = str(candidate.get("familyname","") or "").strip()
+            cand_familyname = str(candidate.get("familyname", "") or "").strip()
             _, score = fuzzy_match_name(familyname, [cand_familyname], threshold=thresholds["familyname"])
             if score > best_score:
                 best_score = score
                 best_match = candidate
         return best_match, best_score
-    
+
+    # 5. Regulärer fuzzy-Vergleich mit Score-Mischung
     for candidate in candidates:
-        candidate_forename = str(candidate.get("forename","") or "").strip()
+        candidate_forename = str(candidate.get("forename", "") or "").strip()
         candidate_alternate = str(candidate.get("alternate_name", "") or "").strip()
+        candidate_familyname = str(candidate.get("familyname", "") or "").strip()
 
-        candidate_familyname = str(candidate.get("familyname","") or "").strip()
-                
-        input_alt = str(person.get("alternate_name","") or "").strip().lower()
-        raw_cand_alt = candidate.get("alternate_name", "")
-        cand_alt = str(raw_cand_alt).strip().lower() if isinstance(raw_cand_alt, str) else ""
+        input_alt = str(person.get("alternate_name", "") or "").strip().lower()
+        cand_alt = safe_str_lower_strip(candidate.get("alternate_name", ""))
+
         if input_alt and cand_alt and input_alt != cand_alt:
-            continue  # Unterschiedlich? → Kein Match erlaubt!
-        # Wenn nur einer gesetzt ist → auch zu unsicher
+            continue  # Unterschiedlich → skip
         if (input_alt and not cand_alt) or (cand_alt and not input_alt):
-            continue
+            continue  # nur einer hat alternate_name → auch skip
 
-        # Vorname-Varianten inkl. Alternativnamen
         candidate_forename_variants = [candidate_forename]
         if candidate_alternate and candidate_alternate != candidate_forename:
             candidate_forename_variants.append(candidate_alternate)
 
-        # Skip leere Kandidaten
         if not candidate_forename and not candidate_familyname:
             continue
 
-        # Family name matching
+        # Scores
         family_score = 0
+        forename_score = 0
         if familyname and candidate_familyname:
             _, family_score = fuzzy_match_name(familyname, [candidate_familyname], threshold=thresholds["familyname"])
-
-
-        # Forename matching
-        forename_score = 0
         if forename and candidate_forename_variants:
-            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants,threshold=thresholds["forename"])
+            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants, threshold=thresholds["forename"])
 
-        # Kombiniere Scores: ausgewogeneres Verhältnis zwischen Vor- und Nachname
-        combined_score = (family_score * 0.6) + (forename_score * 0.4)
-
-        # ⚠️ Behandlung von alternate_name
-        raw_alt = person.get("alternate_name", "")
-        input_alt = str(raw_alt).strip().lower() if isinstance(raw_alt, str) else ""
-        cand_alt = safe_str_lower_strip(candidate.get("alternate_name", ""))
-        
-        # Bewertung der Alternativnamen (gerichtet)
-        input_alt = str(person.get("alternate_name","") or "").strip().lower()
-        cand_alt = safe_str_lower_strip(candidate.get("alternate_name",""))
-
+        # alternate_name Score
         alternate_name_score = 0
-
         if input_alt and cand_alt:
-            if input_alt == cand_alt:
-                alternate_name_score = 100  # Volle Übereinstimmung
-            else:
-                alternate_name_score = 0    # Unterschiedlich → keine Übereinstimmung
+            alternate_name_score = 100 if input_alt == cand_alt else 0
         elif input_alt or cand_alt:
-            alternate_name_score = 50      # Nur einer hat einen alternate_name
+            alternate_name_score = 50
 
-        # Kombinierte Bewertung mit alternate_name integriert
         combined_score = (
             family_score * 0.5 + 
             forename_score * 0.4 + 
-            alternate_name_score * 0.3     # 10 % Gewicht für alternate_name
+            alternate_name_score * 0.3
         )
 
-
-        # Bestes Match speichern
         if combined_score > best_score:
             best_score = combined_score
             best_match = candidate
 
-    return best_match, best_score
+    return best_match, int(best_score)
 
 def deduplicate_persons(
     persons: List[Dict[str, str]],
