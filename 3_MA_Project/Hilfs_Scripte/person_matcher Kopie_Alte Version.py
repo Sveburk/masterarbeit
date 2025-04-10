@@ -334,7 +334,6 @@ def safe_str_lower_strip(val: Any) -> str:
     if isinstance(val, str):
         return val.lower().strip()
     return ""
-
 def match_person(
     person: Dict[str, str], 
     candidates: List[Dict[str, str]] = None
@@ -345,14 +344,9 @@ def match_person(
     if not person:
         return None, 0
 
-    # Extrahiere und normalisiere
     forename = str(person.get("forename", "") or "").strip()
     familyname = str(person.get("familyname", "") or "").strip()
     alternate_name = str(person.get("alternate_name", "") or "").strip()
-
-    normalized_forename = normalize_name(forename)
-    normalized_familyname = normalize_name(familyname)
-    normalized_alternate_name = normalize_name(alternate_name)
 
     if candidates is None:
         candidates = KNOWN_PERSONS
@@ -360,108 +354,57 @@ def match_person(
     if not candidates:
         return None, 0
 
-    # 1. Ground Truth Matching – bevorzugt
-    best_gt_match = None
-    best_gt_score = 0
-    for candidate in KNOWN_PERSONS:  # explizit Ground Truth prüfen
-        cand_fn = str(candidate.get("forename", "") or "").strip()
-        cand_ln = str(candidate.get("familyname", "") or "").strip()
-        cand_alt = str(candidate.get("alternate_name", "") or "").strip()
+    # Kandidatenvariationen vorbereiten
+    person_forename_variants = get_name_variations(forename)
+    person_familyname_variants = get_name_variations(familyname)
 
-        _, fn_score = fuzzy_match_name(forename, [cand_fn, cand_alt], threshold=thresholds["forename"])
-        _, ln_score = fuzzy_match_name(familyname, [cand_ln], threshold=thresholds["familyname"])
-
-        combined_gt_score = fn_score * 0.4 + ln_score * 0.6
-
-        if combined_gt_score > best_gt_score:
-            best_gt_score = combined_gt_score
-            best_gt_match = candidate
-
-    if best_gt_score >= 90:  # nur akzeptieren bei hoher Sicherheit
-        return best_gt_match, int(best_gt_score)
-
-    # 2. Spezialfall: Gedrehter Vor-/Nachname
-    for candidate in candidates:
-        if (
-            normalize_name(forename) == normalize_name(str(candidate.get("familyname", ""))) and
-            normalize_name(familyname) == normalize_name(str(candidate.get("forename", "")))
-        ):
-            return candidate, 100
-
-    # 3. Initialisiere für Fallback
     best_match = None
     best_score = 0
 
-    # 4. Spezialfall: Nur ein Vor- oder Nachname vorhanden
-    if forename and not familyname:
-        for candidate in candidates:
-            cand_forename = str(candidate.get("forename", "") or "").strip()
-            cand_alt = str(candidate.get("alternate_name", "") or "").strip()
-            cand_variants = [cand_forename]
-            if cand_alt and cand_alt != cand_forename:
-                cand_variants.append(cand_alt)
-            _, score = fuzzy_match_name(forename, cand_variants, threshold=thresholds["forename"])
-            if score > best_score:
-                best_score = score
-                best_match = candidate
-        return best_match, best_score
-
-    if familyname and not forename:
-        for candidate in candidates:
-            cand_familyname = str(candidate.get("familyname", "") or "").strip()
-            _, score = fuzzy_match_name(familyname, [cand_familyname], threshold=thresholds["familyname"])
-            if score > best_score:
-                best_score = score
-                best_match = candidate
-        return best_match, best_score
-
-    # 5. Regulärer fuzzy-Vergleich mit Score-Mischung
     for candidate in candidates:
-        candidate_forename = str(candidate.get("forename", "") or "").strip()
-        candidate_alternate = str(candidate.get("alternate_name", "") or "").strip()
-        candidate_familyname = str(candidate.get("familyname", "") or "").strip()
+        cand_forename = str(candidate.get("forename", "") or "").strip()
+        cand_familyname = str(candidate.get("familyname", "") or "").strip()
+        cand_alt = str(candidate.get("alternate_name", "") or "").strip()
 
-        input_alt = str(person.get("alternate_name", "") or "").strip().lower()
-        cand_alt = safe_str_lower_strip(candidate.get("alternate_name", ""))
+        # Kandidatenvarianten generieren
+        cand_forename_variants = get_name_variations(cand_forename)
+        cand_familyname_variants = get_name_variations(cand_familyname)
 
-        if input_alt and cand_alt and input_alt != cand_alt:
-            continue  # Unterschiedlich → skip
-        if (input_alt and not cand_alt) or (cand_alt and not input_alt):
-            continue  # nur einer hat alternate_name → auch skip
+        # Vorname matchen
+        max_forename_score = max(
+            fuzz.ratio(normalize_name(pf), normalize_name(cf))
+            for pf in person_forename_variants
+            for cf in cand_forename_variants
+        ) if forename else 0
 
-        candidate_forename_variants = [candidate_forename]
-        if candidate_alternate and candidate_alternate != candidate_forename:
-            candidate_forename_variants.append(candidate_alternate)
+        # Nachname matchen
+        max_familyname_score = max(
+            fuzz.ratio(normalize_name(pf), normalize_name(cf))
+            for pf in person_familyname_variants
+            for cf in cand_familyname_variants
+        ) if familyname else 0
 
-        if not candidate_forename and not candidate_familyname:
-            continue
+        # Alternate Name
+        alt_score = 0
+        input_alt = normalize_name(alternate_name)
+        cand_alt_norm = normalize_name(cand_alt)
 
-        # Scores
-        family_score = 0
-        forename_score = 0
-        if familyname and candidate_familyname:
-            _, family_score = fuzzy_match_name(familyname, [candidate_familyname], threshold=thresholds["familyname"])
-        if forename and candidate_forename_variants:
-            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants, threshold=thresholds["forename"])
-
-        # alternate_name Score
-        alternate_name_score = 0
-        if input_alt and cand_alt:
-            alternate_name_score = 100 if input_alt == cand_alt else 0
-        elif input_alt or cand_alt:
-            alternate_name_score = 50
+        if input_alt and cand_alt_norm:
+            alt_score = 100 if input_alt == cand_alt_norm else 0
+        elif input_alt or cand_alt_norm:
+            alt_score = 50  # einer gesetzt, einer nicht
 
         combined_score = (
-            family_score * 0.5 + 
-            forename_score * 0.4 + 
-            alternate_name_score * 0.3
+            max_familyname_score * 0.5 +
+            max_forename_score * 0.4 +
+            alt_score * 0.3
         )
 
         if combined_score > best_score:
             best_score = combined_score
             best_match = candidate
 
-    return best_match, int(best_score)
+    return best_match, best_score
 
 def deduplicate_persons(
     persons: List[Dict[str, str]],
@@ -473,9 +416,7 @@ def deduplicate_persons(
     if known_candidates is None:
         known_candidates = KNOWN_PERSONS
 
-    normalized_persons = []
-    normalized_names_seen = set()
-    unique_persons = []  # ← das hat gefehlt
+    unique_persons = []
 
     for person in persons:
         forename = str(person.get("forename", "") or "").strip()
@@ -485,56 +426,20 @@ def deduplicate_persons(
         if not forename and not familyname:
             continue
 
-        norm_forename = normalize_name(forename)
-        norm_familyname = normalize_name(familyname)
-        norm_altname = normalize_name(altname)
-
-        # Kombiniere Normalform & gedrehte Form
-        name_keys = {
-            f"{norm_forename} {norm_familyname} {norm_altname}",
-            f"{norm_familyname} {norm_forename} {norm_altname}"
-        }
-
-        # Prüfe auf bereits gesehene Kombinationen
-        if name_keys & normalized_names_seen:
-            continue
-
-        normalized_names_seen.update(name_keys)
-
-        normalized_person = person.copy()
-        normalized_person["forename"] = forename
-        normalized_person["familyname"] = familyname
-        normalized_person["alternate_name"] = altname
-        normalized_persons.append(normalized_person)
-
-    # jetzt deduplizieren mit merge und fuzzy matching
-    for person in normalized_persons:
+        # 1. Versuch: gegen CSV (Ground Truth)
         match_known, score_known = match_person(person, candidates=known_candidates)
-
         if match_known and score_known >= 90:
             unique_persons.append(match_known)
             continue
 
-        # zuerst versuchen: genaues Match (inkl. gedreht)
-        match_unique, score_unique = match_person(person, candidates=unique_persons)
-
-        # auch gedrehte Namen direkt abfangen
-        for existing in unique_persons:
-            if (
-                normalize_name(person["forename"]) == normalize_name(existing["familyname"]) and
-                normalize_name(person["familyname"]) == normalize_name(existing["forename"])
-            ):
-                match_unique = existing
-                score_unique = 100
-                break
-
-        if match_unique is None:
-            unique_persons.append(person)
+        # 2. Versuch: gegen interne Liste (eigene Duplikate)
+        match_internal, score_internal = match_person(person, candidates=unique_persons)
+        if match_internal and score_internal >= 85:  # leicht toleranter
+            idx = unique_persons.index(match_internal)
+            merged = merge_person_records(match_internal, person)
+            unique_persons[idx] = merged
         else:
-            match_idx = unique_persons.index(match_unique)
-            merged = merge_person_records(person, match_unique)
-            unique_persons[match_idx] = merged
-
+            unique_persons.append(person)
 
     return unique_persons
 
