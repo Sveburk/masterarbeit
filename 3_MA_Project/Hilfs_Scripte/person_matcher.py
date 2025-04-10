@@ -1,4 +1,6 @@
 """
+Der Code ist zu Fuzzy!
+
 Person Matcher - Fuzzy name matching for person entities
 
 This module provides functions for fuzzy matching of person names to handle
@@ -358,72 +360,79 @@ def match_person(
     best_match = None
     best_score = 0
     
+    # Spezialfall: Nur ein Vor- oder Nachname vorhanden
+    if forename and not familyname:
+        for candidate in candidates:
+            cand_forename = candidate.get("forename", "").strip()
+            cand_alt = candidate.get("alternate_name", "").strip()
+            cand_variants = [cand_forename]
+            if cand_alt and cand_alt != cand_forename:
+                cand_variants.append(cand_alt)
+            _, score = fuzzy_match_name(forename, cand_variants, threshold)
+            if score > best_score:
+                best_score = score
+                best_match = candidate
+        return best_match, best_score
+
+    if familyname and not forename:
+        for candidate in candidates:
+            cand_familyname = candidate.get("familyname", "").strip()
+            _, score = fuzzy_match_name(familyname, [cand_familyname], threshold)
+            if score > best_score:
+                best_score = score
+                best_match = candidate
+        return best_match, best_score
+    
     for candidate in candidates:
         candidate_forename = candidate.get("forename", "").strip()
+        candidate_alternate = candidate.get("alternate_name", "").strip()
         candidate_familyname = candidate.get("familyname", "").strip()
-        
-        # Skip empty candidates
+
+        # Vorname-Varianten inkl. Alternativnamen
+        candidate_forename_variants = [candidate_forename]
+        if candidate_alternate and candidate_alternate != candidate_forename:
+            candidate_forename_variants.append(candidate_alternate)
+
+        # Skip leere Kandidaten
         if not candidate_forename and not candidate_familyname:
             continue
-        
+
         # Family name matching
         family_score = 0
         if familyname and candidate_familyname:
-            _, family_score = fuzzy_match_name(
-                familyname, [candidate_familyname], threshold=50
-            )
-        
+            _, family_score = fuzzy_match_name(familyname, [candidate_familyname], threshold=50)
+
         # Forename matching
         forename_score = 0
-        if forename and candidate_forename:
-            _, forename_score = fuzzy_match_name(
-                forename, [candidate_forename], threshold=50
-            )
+        if forename and candidate_forename_variants:
+            _, forename_score = fuzzy_match_name(forename, candidate_forename_variants, threshold=50)
+
+        # Kombiniere Scores: ausgewogeneres Verhältnis zwischen Vor- und Nachname
+        combined_score = (family_score * 0.6) + (forename_score * 0.4)
+
+        # ⚠️ Behandlung von alternate_name
+        input_alt = person.get("alternate_name", "").lower().strip()
+        cand_alt = candidate.get("alternate_name", "").lower().strip()
         
-        # Calculate combined score based on available name parts
-        combined_score = 0
-        if familyname and candidate_familyname:
-            if forename and candidate_forename:
-                # Both parts available - weight family name more than first name
-                combined_score = (family_score * 0.7) + (forename_score * 0.3)
-            else:
-                # Only family names - use family score directly
-                combined_score = family_score
-        elif forename and candidate_forename:
-            # Only forenames - use first name score with penalty
-            combined_score = forename_score * 0.8  # Penalty for missing family name
+        # Stärkere Abwertung bei unterschiedlichen alternate_name
+        if input_alt and cand_alt and input_alt != cand_alt:
+            # Wenn ein alternativer Name anders ist (wie Senior vs. Junior), 
+            # wird diese Person als sehr verschieden betrachtet (höhere Penalty)
+            altname_penalty = 0.9  # 80% Penalty - fast Ausschlusskriterium 
+            combined_score *= (1.0 - altname_penalty)
         
-        # Check for reverse order (first/last name swapped)
-        reverse_family_score = 0
-        reverse_forename_score = 0
-        
-        if familyname and candidate_forename:
-            _, reverse_family_score = fuzzy_match_name(
-                familyname, [candidate_forename], threshold=50
-            )
-            
-        if forename and candidate_familyname:
-            _, reverse_forename_score = fuzzy_match_name(
-                forename, [candidate_familyname], threshold=50
-            )
-        
-        # Calculate reverse score
-        reverse_score = 0
-        if reverse_family_score > 0 and reverse_forename_score > 0:
-            reverse_score = (reverse_family_score * 0.6) + (reverse_forename_score * 0.4)
-            # Apply penalty for name reversal
-            reverse_score *= 0.9
-        
-        # Take best of normal or reverse matching
-        score = max(combined_score, reverse_score)
-        
-        if score > best_score:
-            best_score = score
+        # Bonus für übereinstimmende alternative Namen
+        elif input_alt and cand_alt and input_alt == cand_alt:
+            # Wenn alternativer Name übereinstimmt, verstärke Match
+            combined_score *= 1.2  # 20% Bonus
+
+        # Bestes Match speichern
+        if combined_score > best_score:
+            best_score = combined_score
             best_match = candidate
-    
-    if best_score >= threshold:
-        return best_match, best_score
-    return None, 0
+
+    return best_match, best_score
+
 
 def deduplicate_persons(persons: List[Dict[str, str]], threshold: int = 70) -> List[Dict[str, str]]:
     """
@@ -487,7 +496,7 @@ def merge_person_records(person1: Dict[str, str], person2: Dict[str, str]) -> Di
     merged = {}
     
     # Fields to merge
-    fields = ["forename", "familyname", "role", "associated_place", "associated_organisation"]
+    fields = ["forename", "familyname", "role", "associated_place", "associated_organisation", "alternate_name"]
     
     for field in fields:
         value1 = person1.get(field, "").strip()
@@ -521,29 +530,35 @@ def merge_person_records(person1: Dict[str, str], person2: Dict[str, str]) -> Di
     
     return merged
 
+    
 def main():
     """Test the fuzzy matching with some examples."""
     test_data = [
-        {"forename": "Otto", "familyname": "Bollinger", "role": ""},
-        {"forename": "", "familyname": "Otto", "role": ""},
-        {"forename": "Otte", "familyname": "Boilinger", "role": ""},  # OCR error
-        {"forename": "O.", "familyname": "Bollinger", "role": ""},
-        {"forename": "Otho", "familyname": "Bolinger", "role": ""},  # Spelling variation
-        {"forename": "Lina", "familyname": "Fingerdick", "role": ""},
-        {"forename": "Lina", "familyname": "Fingerdik", "role": ""},  # Spelling variation
-        {"forename": "Alfons", "familyname": "Zimmermann", "role": ""},
-        {"forename": "Herrn Alfons", "familyname": "Zimmermann", "role": ""},  # With honorific
-        {"forename": "Zimmermann", "familyname": "Alfons", "role": ""},  # Reversed
+        # {"forename": "Otto", "familyname": "Bollinger", "role": "", "alternate_name": ""},
+        # {"forename": "", "familyname": "Otto", "role": "", "alternate_name": ""},
+        # {"forename": "Otte", "familyname": "Boilinger", "role": "", "alternate_name": ""},  # OCR error
+        # {"forename": "O.", "familyname": "Bollinger", "role": "", "alternate_name": ""},
+        # {"forename": "Otho", "familyname": "Bolinger", "role": "", "alternate_name": ""},  # Spelling variation
+        # {"forename": "Lina", "familyname": "Fingerdick", "role": "", "alternate_name": ""},
+        # {"forename": "Lina", "familyname": "Fingerdik", "role": "", "alternate_name": ""},  # Spelling variation
+        # {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""},
+        # {"forename": "Herrn Alfons", "familyname": "Zimmermann", "role": "", "alternate_name": ""},
+        # {"forename": "Zimmermann", "familyname": "Alfons", "role": "", "alternate_name": ""},
+        {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Junior"},  # Sohn
+        {"forename": "Hermann", "familyname": "Binkert", "role": "", "alternate_name": "Senior"},  # Vater
     ]
     
     deduplicated = deduplicate_persons(test_data)
-    
+
     print(f"Original: {len(test_data)} records")
     print(f"Deduplicated: {len(deduplicated)} records")
     print("\nDeduplicated persons:")
     for person in deduplicated:
-        print(f"  {person['forename']} {person['familyname']}")
-    
+        fn = person.get("forename", "")
+        ln = person.get("familyname", "")
+        alt = person.get("alternate_name", "")
+        print(f"  {fn} {ln} (aka: {alt})")
+
     # Test individual matching
     test_matches = [
         ({"forename": "Otto", "familyname": ""}, {"forename": "", "familyname": "Otto"}),
