@@ -41,7 +41,10 @@ from Module import (
     assign_roles_to_known_persons,
 
     #LLM Enricher
-    llm_enricher
+    llm_enricher,
+
+    #place_matcher.py
+    PlaceMatcher
 )
 
 #=== LLM API Key für Enrichment ===
@@ -73,6 +76,12 @@ KNOWN_PERSONS = list(zip(
     known_persons_df["schema:givenName"].fillna("").str.strip(),
     known_persons_df["schema:familyName"].fillna("").str.strip()
 ))
+
+
+# === Bekannte Orte Laden ===
+PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Places-Tabelle 1.csv"
+place_matcher = PlaceMatcher(PLACE_CSV_PATH)
+
 
 # === Teste API KEY ===
 if not OPENAI_API_KEY:
@@ -480,12 +489,62 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                 offset = int(place_data.get("offset", 0))
                 length = int(place_data.get("length", 0))
                 if offset < len(text_content) and offset + length <= len(text_content):
-                    place_name = text_content[offset:offset+length]
-                    result["places"].append({
-                        "name": place_name,
-                        "country": "Deutschland",  # Standardwert
-                        "type": ""
-                    })
+                    place_name = text_content[offset:offset + length]
+
+                    # Groundtruth-Abgleich mit PlaceMatcher
+                    try:
+                        if place_matcher and place_name:
+                            match_result = place_matcher.match_place(place_name)
+                            if match_result:
+                                matched_data = match_result["data"]
+                                result["places"].append({
+                                    "name": matched_data.get("Name", place_name),
+                                    "alternate_name": matched_data.get("Alternativer Name", ""),
+                                    "geonames_id": matched_data.get("GeoNames", ""),
+                                    "wikidata_id": matched_data.get("WikidataID", ""),
+                                    "type": "",  # kann später ergänzt werden
+                                    "original_input": place_name,
+                                    "matched_name": match_result["matched_name"],
+                                    "match_score": match_result["score"],
+                                    "confidence": match_result.get("confidence", "unknown")
+                                })
+                            else:
+                                # Fallback, wenn kein Groundtruth-Match
+                                result["places"].append({
+                                    "name": place_name,
+                                    "country": "",
+                                    "type": "",
+                                    "original_input": place_name,
+                                    "matched_name": None,
+                                    "match_score": None,
+                                    "confidence": "none"
+                                })
+                        else:
+                            # Fallback wenn kein place_matcher oder place_name
+                            if place_name:  # Nur wenn es einen Ortsnamen gibt
+                                result["places"].append({
+                                    "name": place_name,
+                                    "country": "",
+                                    "type": "",
+                                    "original_input": place_name,
+                                    "matched_name": None,
+                                    "match_score": None,
+                                    "confidence": "matcher_unavailable"
+                                })
+                    except Exception as e:
+                        print(f"Fehler beim Ortsmatching für '{place_name}': {e}")
+                        # Sicherstellen, dass wir trotz Fehler den Ort erfassen
+                        result["places"].append({
+                            "name": place_name,
+                            "country": "",
+                            "type": "",
+                            "original_input": place_name,
+                            "matched_name": None,
+                            "match_score": None,
+                            "confidence": "error",
+                            "error": str(e)
+                        })
+
     
     return result
 
@@ -728,11 +787,11 @@ def main():
     print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
     print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
 
-    if OPENAI_API_KEY:
-         print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
-         llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)                    #prudiziert vorerst ein zweites File, muss später überschreiben!
-    else:
-         print("\nKein OpenAI API Key gefunden. LLM-Enrichment wird übersprungen.")
+    # if OPENAI_API_KEY:
+    #      print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
+    #      llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)                    #prudiziert vorerst ein zweites File, muss später überschreiben!
+    # else:
+    #      print("\nKein OpenAI API Key gefunden. LLM-Enrichment wird übersprungen.")
 
 if __name__ == "__main__":
     main()
