@@ -38,12 +38,17 @@ from Module import (
     get_document_type,
 
     # Assigned_Roles_Module.py
-    assign_roles_to_known_persons
+    assign_roles_to_known_persons,
+
+    #LLM Enricher
+    llm_enricher
 )
 
+#=== LLM API Key für Enrichment ===
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # === Pfadkonfiguration ===
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"          # Testdatensatz
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"            #Testdatensatz
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
 CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
@@ -57,14 +62,6 @@ except:
     nlp = None
 
 # === Bekannte Personen laden ===
-known_persons_list = load_known_persons_from_csv(CSV_PATH_KNOWN_PERSONS)
-known_persons_df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, sep=";")
-KNOWN_PERSONS = list(zip(
-    known_persons_df["schema:givenName"].fillna("").str.strip(),
-    known_persons_df["schema:familyName"].fillna("").str.strip()
-))
-
-
 # Lade bekannte Personen aus der CSV über die person_matcher-Funktionen
 known_persons_list = load_known_persons_from_csv(CSV_PATH_KNOWN_PERSONS)
 
@@ -76,6 +73,11 @@ KNOWN_PERSONS = list(zip(
     known_persons_df["schema:givenName"].fillna("").str.strip(),
     known_persons_df["schema:familyName"].fillna("").str.strip()
 ))
+
+# === Teste API KEY ===
+if not OPENAI_API_KEY:
+    print("Warnung: Kein API-Schlüssel gesetzt. Enrichment wird am Ende übersprungen.")
+
 
 
 def save_new_csv(df: pd.DataFrame):
@@ -597,7 +599,7 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
 
     except Exception as e:
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
-        return None
+        
    
     # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
     for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
@@ -725,6 +727,12 @@ def main():
 
     print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
     print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
+
+    if OPENAI_API_KEY:
+         print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
+         llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)                    #prudiziert vorerst ein zweites File, muss später überschreiben!
+    else:
+         print("\nKein OpenAI API Key gefunden. LLM-Enrichment wird übersprungen.")
 
 if __name__ == "__main__":
     main()
