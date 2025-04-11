@@ -5,65 +5,64 @@ Dieses Skript liest Transkribus XML-Dateien, extrahiert die Metadaten und den Te
 und konvertiert sie in das in WORKFLOW.md definierte Basis-Schema unter Verwendung der
 in document_schemas.py definierten Klassen für Objektorientierung und Datenvalidierung.
 """
-
+# --------------- Modulpfade vorbereiten ---------------
 import os
-import json
 import sys
-import os
-sys.path.append(os.path.dirname(__file__))
-from person_matcher import (
-    match_person, 
-    KNOWN_PERSONS, 
-    deduplicate_persons, 
-    normalize_name,
-    load_known_persons_from_csv
+
+MODULE_DIR = os.path.join(os.path.dirname(__file__), "Module")
+if MODULE_DIR not in sys.path:
+    sys.path.insert(0, MODULE_DIR)
+
+# --------------- Externe Abhängigkeiten ---------------
+import json
+import re
+import time
+import xml.etree.ElementTree as ET
+from typing import Dict, List, Any, Optional, Union
+
+import pandas as pd
+import spacy
+from rapidfuzz import fuzz, process
+
+# --------------- Eigene Module (aus /Module) ---------------
+# Importiere alle Klassen und Funktionen über das __init__ von Module
+from Module import (
+    # document_schemas.py
+    BaseDocument, Person, Place, Event, Organization,
+    
+    # person_matcher.py
+    match_person, KNOWN_PERSONS, deduplicate_persons, normalize_name,
+    normalize_name_with_title, fuzzy_match_name, load_known_persons_from_csv,
+    
+    # type_matcher.py
+    get_document_type,
+
+    # Assigned_Roles_Module.py
+    assign_roles_to_known_persons
 )
 
 
-import xml.etree.ElementTree as ET
-import re
-import time
-from typing import Dict, List, Any, Optional, Union
-import spacy
-import pandas as pd
-import pandas as pd
-# Konstanten definieren
-
-#TRANSKRIBUS_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"      #alter export
-#OUTPUT_DIR = "/mnt/c/Users/sorin/PycharmProjects/masterarbeit/3_MA_Project/Data/Base_Schema_Output"
-
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"           #Testdansatz
-OUTPUT_DIR = "//Users/svenburkhardt/Desktop/Transkribus_test_Out"
+# === Pfadkonfiguration ===
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"          # Testdatensatz
+OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
-# Definiere den Pfad zur bekannten Personenliste (Tipp: Verwende denselben Pfad wie in person_matcher.py)
 CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
-# Logdatei für neue Personen
 LOG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/new_persons.log"
-
-
-
-
-# Hinweis: Wir können die Funktionen von person_matcher.py wiederverwenden
-
-# Import Rapidfuzz für Fuzzy-Matching (Namensvergleich und zusammenfügung bei unklaren Schreibweisen)
-from rapidfuzz import fuzz, process
-
-# Import des Person Matchers für konsistente Personenerkennung
-from person_matcher import match_person, load_known_persons_from_csv, normalize_name, fuzzy_match_name
-
-# Import der Schema-Klassen
-from document_schemas import BaseDocument, Person, Place, Event, Organization
 
 # Lade deutsches spaCy-Modell
 try:
     nlp = spacy.load("de_core_news_sm")
 except:
-    # Fallback für den Fall, dass das Modell nicht installiert ist
-    print("Warnung: SpaCy-Modell 'de_core_news_sm' nicht gefunden. Verwende Fallback-Methode für Namensaufteilung.")
+    print("Warnung: SpaCy-Modell 'de_core_news_sm' nicht gefunden.")
     nlp = None
 
-# Stelle sicher, dass diese Zeilen *nach* allen anderen Imports eingefügt werden,
-# damit spaCy, pandas etc. schon importiert sind.
+# === Bekannte Personen laden ===
+known_persons_list = load_known_persons_from_csv(CSV_PATH_KNOWN_PERSONS)
+known_persons_df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, sep=";")
+KNOWN_PERSONS = list(zip(
+    known_persons_df["schema:givenName"].fillna("").str.strip(),
+    known_persons_df["schema:familyName"].fillna("").str.strip()
+))
 
 
 # Lade bekannte Personen aus der CSV über die person_matcher-Funktionen
@@ -174,25 +173,41 @@ def fuzzy_match_person_in_list(forename: str, familyname: str, known_list: List[
 def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
     """
     Sucht eine Person anhand eines Namenstextes in der Liste bekannter Personen.
-    
+    Berücksichtigt dabei auch extrahierte Titel wie "Dr." oder "Herr".
+
     Args:
         person_name: Der zu suchende Personenname
-        
+
     Returns:
         Matched person dictionary oder None, wenn keine Übereinstimmung gefunden wurde
     """
     if not person_name:
         return None
-        
-    # Extrahiere Vor- und Nachname aus dem Text
-    forename, familyname = extract_name_with_spacy(person_name)
+
+    # Titel und Name bereinigen (z. B. "Herr Dr. Emil Hosp")
+    # Funktion ist bereits über das Module-Paket importiert
     
-    # Verwende die match_person-Funktion aus person_matcher.py
-    person_dict = {"forename": forename, "familyname": familyname}
+    cleaned_name, extracted_title = normalize_name_with_title(person_name)
+
+    # Extrahiere Vor- und Nachname
+    forename, familyname = extract_name_with_spacy(cleaned_name)
+
+    # Erstelle Person-Dictionary
+    person_dict = {
+        "forename": forename,
+        "familyname": familyname,
+        "title": extracted_title
+    }
+
+    # Match mit bekannter Liste
     matched_person, score = match_person(person_dict)
-    
+
     if matched_person and score >= 70:
+        # Titel auch im Rückgabeobjekt setzen (wenn original nicht gesetzt)
+        if "title" not in matched_person or not matched_person["title"]:
+            matched_person["title"] = extracted_title
         return matched_person
+
     return None
 
 
@@ -388,8 +403,11 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                 if offset < len(text_content) and offset + length <= len(text_content):
                     person_name = text_content[offset:offset+length]
                     
-                    # Versuche mit spaCy Vor- und Nachname zu extrahieren
-                    forename, familyname = extract_name_with_spacy(person_name)
+                    # Extrahiere Titel separat und bereinige Namen
+                    # Funktion ist bereits über das Module-Paket importiert
+                    cleaned_name, extracted_title = normalize_name_with_title(person_name)
+                    forename, familyname = extract_name_with_spacy(cleaned_name)
+
                     
                     # Erstelle ein Person-Dictionary
                     person_dict = {
@@ -491,63 +509,73 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
             result[key.strip()] = value.strip()
     
     return result
-
 def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str) -> Union[BaseDocument, None]:
-    """
-    Verarbeitet eine Transkribus XML-Datei und extrahiert die Daten
-    
-    Args:
-        xml_path: Pfad zur XML-Datei
-        seven_digit_folder: Name des übergeordneten Ordners (Transkribus-ID)
-        subdir: Name des Unterordners (z.B. "Akte_001")
-        
-    Returns:
-        BaseDocument mit den extrahierten Daten oder None bei Fehler
-    """
     try:
+        # 💡 Filename aus Pfad extrahieren
+        transkribus_id = seven_digit_folder
+        akte_folder = subdir
+        page_name = os.path.splitext(os.path.basename(xml_path))[0]
+
+        filename_for_type = f"{transkribus_id}_{akte_folder}_{page_name}"
+        document_type = get_document_type(filename=filename_for_type, xml_path=xml_path, debug=True)
+        print(f"[DEBUG] Dokumenttyp erkannt für {filename_for_type}: {document_type}")
+
+        # XML parsen
         tree = ET.parse(xml_path)
         root = tree.getroot()
-        
-        # Metadaten und Text extrahieren
+
+        # Metadaten & Transkript
         metadata_info = extract_metadata_from_xml(root)
+        metadata_info["document_type"] = document_type
         transcript_text = extract_text_from_xml(root)
-        
-        # Versuche, custom-Attribute zu extrahieren
+
+        # Custom Tags extrahieren
         custom_data = extract_custom_attributes(root)
-        
-        # Extrahierte Personen sammeln
-        all_persons = []
-        for person in custom_data["persons"]:
-            all_persons.append(person)
-            
-        # Verwende den person_matcher um Duplikate zu erkennen und zu vermeiden
+
+        # Personen deduplizieren
+        all_persons = custom_data["persons"]
         unique_persons = deduplicate_persons(all_persons, known_candidates=known_persons_list)
-        
-        # Identifiziere neue Personen, die nicht in der bekannten Personenliste sind
+
         mentioned_persons = []
         for person in unique_persons:
-            # Erstelle ein Personenobjekt für das Dokument
             person_obj = Person(
-                forename=person.get("forename", ""), 
+                forename=person.get("forename", ""),
                 familyname=person.get("familyname", ""),
                 role=person.get("role", ""),
                 associated_place=person.get("associated_place", ""),
                 associated_organisation=person.get("associated_organisation", "")
             )
-            
-            # Prüfe, ob die Person bereits bekannt ist oder neu hinzugefügt wurde
+
             if not person_exists_in_known_list(person.get("forename", ""), person.get("familyname", ""), KNOWN_PERSONS):
-                # Logge die neue Person
                 with open(LOG_PATH, "a", encoding="utf-8") as log_file:
                     log_file.write(f"{person.get('forename', '')} {person.get('familyname', '')}\n")
-                    
-                # Optional: Speichere die Person zur permanenten Datenbank hinzu
-                # save_new_person_to_csv(person.get("forename", ""), person.get("familyname", ""), CSV_PATH_KNOWN_PERSONS)
-            
-            # Person zum Dokument hinzufügen
+
             mentioned_persons.append(person_obj)
-        
-        # Erstelle das BaseDocument Objekt mit den verarbeiteten Personen
+
+        # Rollenmodul anwenden
+        role_input_persons = [
+            {
+                "forename": p.forename,
+                "familyname": p.familyname,
+                "role": p.role or "",
+                "associated_organisation": p.associated_organisation or ""
+            }
+            for p in mentioned_persons
+        ]
+
+        enriched_dicts = assign_roles_to_known_persons(role_input_persons, transcript_text)
+
+        mentioned_persons = [
+            Person(
+                forename=d["forename"],
+                familyname=d["familyname"],
+                role=d.get("role", ""),
+                associated_organisation=d.get("associated_organisation", "")
+            )
+            for d in enriched_dicts
+        ]
+
+        # BaseDocument zusammenbauen
         doc = BaseDocument(
             object_type="Dokument",
             attributes=metadata_info,
@@ -557,26 +585,20 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             mentioned_places=[Place(**pl) for pl in custom_data["places"]],
             mentioned_dates=custom_data["dates"],
             content_tags_in_german=[],
-            author=Person(),  # Placeholder für Autor
-            recipient=Person(),  # Placeholder für Empfänger
+            author=Person(),
+            recipient=Person(),
             creation_date="",
             creation_place="",
-            document_type="",
+            document_type=document_type,
             document_format=""
         )
-        
+
         return doc
-    
+
     except Exception as e:
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
         return None
-
-def main():
-    """Hauptfunktion"""
-    print("Starte Extraktion von Transkribus-Daten mit Objektorientierung und Validierung...")
-    processed_files = 0
-    validated_files = 0
-    
+   
     # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
     for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
         folder_path = os.path.join(TRANSKRIBUS_DIR, seven_digit_folder)
@@ -632,6 +654,7 @@ def main():
                     output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
                     output_path = os.path.join(OUTPUT_DIR, output_filename)
                     
+                    
                     # Verwende die to_json-Methode des BaseDocument
                     with open(output_path, "w", encoding="utf-8") as json_out:
                         json_out.write(doc.to_json())
@@ -639,6 +662,67 @@ def main():
                     print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
                     processed_files += 1
     
+    print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
+    print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
+
+def main():
+    print("Starte Extraktion von Transkribus-Daten mit Objektorientierung und Validierung...")
+    processed_files = 0
+    validated_files = 0
+
+    # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
+    for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
+        folder_path = os.path.join(TRANSKRIBUS_DIR, seven_digit_folder)
+
+        if not os.path.isdir(folder_path) or not seven_digit_folder.isdigit():
+            continue
+
+        # Iteriere über alle "Akte_*" Unterordner
+        for subdir in os.listdir(folder_path):
+            subdir_path = os.path.join(folder_path, subdir)
+
+            if not os.path.isdir(subdir_path) or not subdir.startswith("Akte_"):
+                continue
+
+            # Finde den "page" Unterordner
+            page_folder = os.path.join(subdir_path, "page")
+            if not os.path.isdir(page_folder):
+                print(f"Kein 'page' Ordner in {subdir_path}")
+                continue
+
+            # Verarbeite alle XML-Dateien im "page" Ordner
+            for xml_file in os.listdir(page_folder):
+                if not xml_file.endswith(".xml"):
+                    continue
+
+                xml_path = os.path.join(page_folder, xml_file)
+                print(f"Verarbeite: Transkribus-ID {seven_digit_folder}, {subdir}, Datei {xml_file}")
+
+                # Extrahiere Seitenzahl aus Dateiname
+                page_match = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
+                page_number = page_match.group(1) if page_match else "001"
+
+                # Verarbeite die XML-Datei
+                doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
+                if doc:
+                    unknown_author = not doc.author.forename.strip() and not doc.author.familyname.strip()
+                    validation_errors = doc.validate()
+                    is_valid = len(validation_errors) == 0
+
+                    if not is_valid:
+                        print(f"Warnung: Dokument {seven_digit_folder}_{subdir}_page{page_number} enthält Validierungsfehler: {validation_errors}")
+                    else:
+                        validated_files += 1
+
+                    output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
+                    output_path = os.path.join(OUTPUT_DIR, output_filename)
+
+                    with open(output_path, "w", encoding="utf-8") as json_out:
+                        json_out.write(doc.to_json())
+
+                    print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
+                    processed_files += 1
+
     print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
     print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
 
