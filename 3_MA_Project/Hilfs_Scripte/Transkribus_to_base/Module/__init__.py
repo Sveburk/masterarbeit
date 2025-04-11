@@ -11,8 +11,11 @@ from .type_matcher import get_document_type
 from .person_matcher import (
     match_person, KNOWN_PERSONS, deduplicate_persons,
     normalize_name, normalize_name_with_title,
-    fuzzy_match_name, load_known_persons_from_csv
+    fuzzy_match_name, load_known_persons_from_csv,
 )
+# ==== place_matcher.py ====
+from .place_matcher import PlaceMatcher
+
 
 __all__ = [
     # document_schemas
