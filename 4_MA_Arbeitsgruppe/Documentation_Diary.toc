@@ -1,21 +1,25 @@
 \babel@toc {ngerman}{}\relax 
-\contentsline {section}{\numberline {1}Objektorientierte Umstrukturierung der Datenextraktions-Pipeline small 08.04.2025}{2}{section.1}%
-\contentsline {section}{\numberline {2}Implementierung der Datenextraktions-Pipeline \small 03.04.2025}{3}{section.2}%
-\contentsline {section}{\numberline {3}Festlegung Tagging Regeln \small 11.03.2025 }{4}{section.3}%
-\contentsline {section}{\numberline {4}Überblick Hilfscript\\CHatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}{6}{section.4}%
-\contentsline {section}{\numberline {5}Voraussetzungen \& Einrichtung}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.1}API Key setzen}{6}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Python-Bibliotheken installieren}{6}{subsection.5.2}%
-\contentsline {section}{\numberline {6}Funktionsweise}{6}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Basis-Einstellungen}{6}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Verzeichnisstruktur durchlaufen}{6}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Verarbeitung der XML-Dateien}{6}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}Strukturierung der Daten in JSON}{7}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}API-Anfrage an OpenAI}{7}{subsection.6.5}%
-\contentsline {section}{\numberline {7}Fehlerbehandlung}{7}{section.7}%
-\contentsline {section}{\numberline {8}Fazit}{7}{section.8}%
-\contentsline {section}{\numberline {9}Tagging der JPGEGs im AppleFinder \small 26.10.24 }{7}{section.9}%
-\contentsline {subsection}{\numberline {9.1}AppleFinder Tags}{7}{subsection.9.1}%
-\contentsline {section}{\numberline {10}JPG Datenbereinigung - leere Seiten löschen \small 25.10.2024 }{8}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Anmerkung}{8}{subsection.10.1}%
-\contentsline {section}{\numberline {11}Datennormalisierung PDF zu JPEG \small 24.10.2024}{8}{section.11}%
+\contentsline {section}{\numberline {1}Validierung und Orts-Matching \small 13.04.2025}{2}{section.1}%
+\contentsline {section}{\numberline {2}LLM-Anreicherung und Metadaten-Extraktion \small 12.04.2025}{3}{section.2}%
+\contentsline {section}{\numberline {3}Integration mit Transkribus XML Export \small 11.04.2025}{4}{section.3}%
+\contentsline {section}{\numberline {4}Integration von person\_matcher.py mit transkribus\_to\_base\_schema.py \small 09.04.2025}{5}{section.4}%
+\contentsline {section}{\numberline {5}Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \small 08.04.2025}{5}{section.5}%
+\contentsline {section}{\numberline {6}Implementierung der Datenextraktions-Pipeline \small 03.04.2025}{7}{section.6}%
+\contentsline {section}{\numberline {7}Festlegung Tagging Regeln \small 11.03.2025 }{7}{section.7}%
+\contentsline {section}{\numberline {8}Überblick Hilfscript\\CHatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}{10}{section.8}%
+\contentsline {section}{\numberline {9}Voraussetzungen \& Einrichtung}{10}{section.9}%
+\contentsline {subsection}{\numberline {9.1}API Key setzen}{10}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Python-Bibliotheken installieren}{10}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Funktionsweise}{10}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Basis-Einstellungen}{10}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Verzeichnisstruktur durchlaufen}{10}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Verarbeitung der XML-Dateien}{10}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Strukturierung der Daten in JSON}{11}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}API-Anfrage an OpenAI}{11}{subsection.10.5}%
+\contentsline {section}{\numberline {11}Fehlerbehandlung}{11}{section.11}%
+\contentsline {section}{\numberline {12}Fazit}{11}{section.12}%
+\contentsline {section}{\numberline {13}Tagging der JPGEGs im AppleFinder \small 26.10.24 }{11}{section.13}%
+\contentsline {subsection}{\numberline {13.1}AppleFinder Tags}{11}{subsection.13.1}%
+\contentsline {section}{\numberline {14}JPG Datenbereinigung - leere Seiten löschen \small 25.10.2024 }{12}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Anmerkung}{12}{subsection.14.1}%
+\contentsline {section}{\numberline {15}Datennormalisierung PDF zu JPEG \small 24.10.2024}{12}{section.15}%

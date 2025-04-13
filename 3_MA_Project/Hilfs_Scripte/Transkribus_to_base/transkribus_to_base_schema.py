@@ -44,7 +44,10 @@ from Module import (
     llm_enricher,
 
     #place_matcher.py
-    PlaceMatcher
+    PlaceMatcher,
+
+    #validate_module.py
+    validate_extended
 )
 
 #=== LLM API Key für Enrichment ===
@@ -497,11 +500,20 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                             match_result = place_matcher.match_place(place_name)
                             if match_result:
                                 matched_data = match_result["data"]
+                                # Prozessiere alternate_place_name wenn vorhanden
+                                alternate_names = []
+                                if matched_data.get("alternate_place_name"):
+                                    # Semikolon-getrennte alternative Namen in eine Liste umwandeln
+                                    alt_names_str = matched_data.get("alternate_place_name", "")
+                                    if alt_names_str:
+                                        alternate_names = [name.strip() for name in alt_names_str.split(";") if name.strip()]
+                                
                                 result["places"].append({
-                                    "name": matched_data.get("Name", place_name),
-                                    "alternate_name": matched_data.get("Alternativer Name", ""),
-                                    "geonames_id": matched_data.get("GeoNames", ""),
-                                    "wikidata_id": matched_data.get("WikidataID", ""),
+                                    "name": matched_data.get("name", place_name),
+                                    "alternate_place_name": ";".join(alternate_names),  # Als Semikolon-getrennte Liste speichern
+                                    "geonames_id": matched_data.get("geonames_id", ""),
+                                    "wikidata_id": matched_data.get("wikidata_id", ""),
+                                    "nodegoat_id": matched_data.get("nodegoat_id", ""),
                                     "type": "",  # kann später ergänzt werden
                                     "original_input": place_name,
                                     "matched_name": match_result["matched_name"],
@@ -512,8 +524,10 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                                 # Fallback, wenn kein Groundtruth-Match
                                 result["places"].append({
                                     "name": place_name,
-                                    "country": "",
                                     "type": "",
+                                    "alternate_place_name": "",
+                                    "geonames_id": "",
+                                    "wikidata_id": "",
                                     "original_input": place_name,
                                     "matched_name": None,
                                     "match_score": None,
@@ -524,8 +538,10 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                             if place_name:  # Nur wenn es einen Ortsnamen gibt
                                 result["places"].append({
                                     "name": place_name,
-                                    "country": "",
                                     "type": "",
+                                    "alternate_place_name": "",
+                                    "geonames_id": "",
+                                    "wikidata_id": "",
                                     "original_input": place_name,
                                     "matched_name": None,
                                     "match_score": None,
@@ -536,8 +552,10 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                         # Sicherstellen, dass wir trotz Fehler den Ort erfassen
                         result["places"].append({
                             "name": place_name,
-                            "country": "",
                             "type": "",
+                            "alternate_place_name": "",
+                            "geonames_id": "",
+                            "wikidata_id": "",
                             "original_input": place_name,
                             "matched_name": None,
                             "match_score": None,
@@ -547,6 +565,15 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
 
     
     return result
+
+def clean_place_dict(place: dict) -> dict:
+    """
+    Entfernt nicht erlaubte Keys aus dem Orts-Dictionary für das Place-Schema.
+    """
+    allowed_keys = ["name", "alternate_place_name", "geonames_id", "wikidata_id", "nodegoat_id", "type", "country"]
+    return {k: str(place[k]).strip() if pd.notna(place.get(k)) else "" for k in allowed_keys if k in place}
+
+
 
 def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     """
@@ -570,6 +597,9 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
             result[key.strip()] = value.strip()
     
     return result
+
+
+
 def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str) -> Union[BaseDocument, None]:
     try:
         # 💡 Filename aus Pfad extrahieren
@@ -643,7 +673,7 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             content_transcription=transcript_text,
             mentioned_persons=mentioned_persons,
             mentioned_organizations=[Organization(**o) for o in custom_data["organizations"]],
-            mentioned_places=[Place(**pl) for pl in custom_data["places"]],
+            mentioned_places = [Place(**clean_place_dict(pl)) for pl in custom_data["places"]],
             mentioned_dates=custom_data["dates"],
             content_tags_in_german=[],
             author=Person(),
@@ -660,98 +690,29 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
         
    
-    # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
-    for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
-        folder_path = os.path.join(TRANSKRIBUS_DIR, seven_digit_folder)
-        
-        # Prüfe, ob es ein gültiger Ordner ist
-        if not os.path.isdir(folder_path) or not seven_digit_folder.isdigit():
-            continue
-        
-        # Iteriere über alle "Akte_*" Unterordner
-        for subdir in os.listdir(folder_path):
-            subdir_path = os.path.join(folder_path, subdir)
-            
-            if not os.path.isdir(subdir_path) or not subdir.startswith("Akte_"):
-                continue
-            
-            # Finde den "page" Unterordner
-            page_folder = os.path.join(subdir_path, "page")
-            if not os.path.isdir(page_folder):
-                print(f"Kein 'page' Ordner in {subdir_path}")
-                continue
-            
-            # Verarbeite alle XML-Dateien im "page" Ordner
-            for xml_file in os.listdir(page_folder):
-                if not xml_file.endswith(".xml"):
-                    continue
-                
-                xml_path = os.path.join(page_folder, xml_file)
-                print(f"Verarbeite: Transkribus-ID {seven_digit_folder}, {subdir}, Datei {xml_file}")
-                
-                # Extrahiere Seitenzahl aus Dateiname
-                page_match = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
-                if page_match:
-                    page_number = page_match.group(1)
-                else:
-                    page_number = "001"
-                
-                # Verarbeite die XML-Datei
-                doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
-                if doc:
-                    # Prüfe, ob der Autor vollständig unbekannt ist (weder Vor- noch Nachname)
-                    unknown_author = not doc.author.forename.strip() and not doc.author.familyname.strip()
-                    
-                    # Validiere das Dokument
-                    validation_errors = doc.validate()
-                    is_valid = len(validation_errors) == 0
-                    
-                    if not is_valid:
-                        print(f"Warnung: Dokument {seven_digit_folder}_{subdir}_page{page_number} enthält Validierungsfehler: {validation_errors}")
-                    else:
-                        validated_files += 1
-                    
-                    # Speichere das Ergebnis
-                    output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
-                    output_path = os.path.join(OUTPUT_DIR, output_filename)
-                    
-                    
-                    # Verwende die to_json-Methode des BaseDocument
-                    with open(output_path, "w", encoding="utf-8") as json_out:
-                        json_out.write(doc.to_json())
-                    
-                    print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
-                    processed_files += 1
-    
-    print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
-    print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
-
 def main():
     print("Starte Extraktion von Transkribus-Daten mit Objektorientierung und Validierung...")
     processed_files = 0
     validated_files = 0
+    validation_summary_data = []
 
-    # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
     for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
         folder_path = os.path.join(TRANSKRIBUS_DIR, seven_digit_folder)
 
         if not os.path.isdir(folder_path) or not seven_digit_folder.isdigit():
             continue
 
-        # Iteriere über alle "Akte_*" Unterordner
         for subdir in os.listdir(folder_path):
             subdir_path = os.path.join(folder_path, subdir)
 
             if not os.path.isdir(subdir_path) or not subdir.startswith("Akte_"):
                 continue
 
-            # Finde den "page" Unterordner
             page_folder = os.path.join(subdir_path, "page")
             if not os.path.isdir(page_folder):
                 print(f"Kein 'page' Ordner in {subdir_path}")
                 continue
 
-            # Verarbeite alle XML-Dateien im "page" Ordner
             for xml_file in os.listdir(page_folder):
                 if not xml_file.endswith(".xml"):
                     continue
@@ -759,24 +720,30 @@ def main():
                 xml_path = os.path.join(page_folder, xml_file)
                 print(f"Verarbeite: Transkribus-ID {seven_digit_folder}, {subdir}, Datei {xml_file}")
 
-                # Extrahiere Seitenzahl aus Dateiname
                 page_match = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
                 page_number = page_match.group(1) if page_match else "001"
 
-                # Verarbeite die XML-Datei
                 doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
                 if doc:
+                    output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
+                    output_path = os.path.join(OUTPUT_DIR, output_filename)
+
                     unknown_author = not doc.author.forename.strip() and not doc.author.familyname.strip()
                     validation_errors = doc.validate()
+                    extended_errors = validate_extended(doc)
+                    validation_errors.update(extended_errors)
+
+                    validation_summary_data.append({
+                        "filename": output_filename,
+                        "errors": validation_errors
+                    })
+
                     is_valid = len(validation_errors) == 0
 
                     if not is_valid:
-                        print(f"Warnung: Dokument {seven_digit_folder}_{subdir}_page{page_number} enthält Validierungsfehler: {validation_errors}")
+                        print(f"Warnung: Dokument {output_filename} enthält Validierungsfehler: {validation_errors}")
                     else:
                         validated_files += 1
-
-                    output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
-                    output_path = os.path.join(OUTPUT_DIR, output_filename)
 
                     with open(output_path, "w", encoding="utf-8") as json_out:
                         json_out.write(doc.to_json())
@@ -786,6 +753,9 @@ def main():
 
     print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
     print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
+
+    from validation_module import generate_validation_summary
+    generate_validation_summary(validation_summary_data)
 
     # if OPENAI_API_KEY:
     #      print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")

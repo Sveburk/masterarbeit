@@ -25,6 +25,9 @@ def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-
     ⚠️ Besondere Regeln:
     - **„Laufenburg (Baden) Rhina“** oder ähnliche Kombinationen sind **in der Regel ein Ortsname** und sollen als solcher unter `mentioned_places` geführt werden.
     - **„Männerchor Murg“** oder ähnliche Begriffe sind **in der Regel eine Organisation**, meist ein Verein, und sollen unter `mentioned_organizations` erfasst werden – **nicht als Ort**. Murg kann aber in diesem Fall als location annotiert werden.
+    ⚠️ Niemals verändern oder ergänzen:
+    - ID-Felder (wie `geonames_id`, `wikidata_id`, `nodegoat_id` in `mentioned_places`)
+    - Diese stammen aus einer externen Datenbank und dürfen nur übernommen, aber **nicht verändert** werden.
 
     Wenn ein Feld **nicht eindeutig bestimmbar ist**, verwende `"[...]"`.
 

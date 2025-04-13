@@ -33,25 +33,140 @@
 %dieses Dokument wird blogartig geführt. Neuste Einträge sind oben einzufügen. 
 
 %___________________________________________________________________________
-% Vorlage 
 \noindent\hrulefill
 
+\section{Validierung und Orts-Matching \small 13.04.2025}
+\small\textit{Erweiterung der Datenvalidierung und Fehlerausgabe im Transkriptions-Workflow}\\
 
 \subsection*{Kurzbeschreibung}
-Hier kurze Zusammenfassung einfügen.
+
+Erweiterung des Validierungsmoduls für strukturierte Prüfung exportierter JSON-Dokumente. Verbesserung des Ortsabgleichs mit Groundtruth-Tabelle zur eindeutigen Zuordnung von Geonames- und Nodegoat-IDs.
 
 \subsection*{Erledigte Aufgaben}
-\subsubsection*{\small Aufgabentitel}
-\ding{51} Aufgabenbeschreibung.\\
-\textbf{Ergebnis}: Ergebnisbeschreibung.
+\subsubsection*{\small Validierungsmodul (\texttt{validation\_module.py})}
+\ding{51} Erweiterte Validierungslogik \texttt{validate\_extended()} implementiert\\
+\ding{51} Prüfung auf Pflichtfelder: \texttt{recipient}, \texttt{creation\_date}, \texttt{creation\_place}\\
+\ding{51} Prüfung von \texttt{mentioned\_places} auf Geonames- und Nodegoat-ID\\
+\ding{51} Ausgabe einer statistischen Fehlerübersicht (z.B. „Geonames-ID fehlt: 5×“)
+
+\subsubsection*{\small Transkribus-Hauptskript}
+\ding{51} Einbindung des erweiterten Validierungsmoduls\\
+\ding{51} Speichern von Fehlern pro Datei in strukturierter Liste\\
+\ding{51} Ausgabe der häufigsten Fehlerarten am Ende der Verarbeitung\\
+\ding{51} Fix für \texttt{UnboundLocalError} bei fehlgeschlagenem Dokumentexport
+
+\subsubsection*{\small Ortsabgleich (Place-Matching)- Funktioniert noch nicht}
+\ding{51} Lowercase + Strip für Eingabe und Vergleichswerte vereinheitlicht\\
+\ding{51} Threshold bei Fuzzy-Matching auf 75 gesetzt\\
+\ding{51} Fehlerbehandlung bei fehlenden oder ungültigen Wikidata-IDs (z.B. float statt string)\\
+\ding{51} Entfernung des Feldes \texttt{type} aus allen Place-Objekten und JSON-Exports\\
+\ding{51} Debug-Ausgabe zur Match-Qualität hinzugefügt
 
 \subsection*{Nächste Schritte}
-\ding{113} Beschrieb der nächsten Aufgabe.
+\ding{113} Validierungsfehler zusätzlich in CSV speichern\\
+\ding{113} Orte ohne IDs visuell markieren oder zur Nachprüfung kennzeichnen\\
+\ding{113} Schutzmechanismus gegen ID-Veränderung im LLM-Enrichment einbauen
 
 \subsection*{Offene Fragen}
-\ding{113} Beschreibung der offenen Frage.\\
-%___________________________________________________________________________
-% Vorlage 
+\ding{113} Wie bekomme ich die Groundtruth-Daten?
+\ding{113} Prüfung auf fehlerhafte Personenentitäten (z.B. „des“, „Vereinsführer“)\\
+
+
+
+
+\noindent\hrulefill
+
+\section{LLM-Anreicherung und Metadaten-Extraktion \small 12.04.2025}
+\small\textit{Integration von ChatGPT-API und Erweiterung der Metadaten-Extraktion}\\
+\subsection*{Kurzbeschreibung}
+
+Heute wurden die LLM-Anreicherungsskripte optimiert und die Metadatenextraktion aus JSON-Dateien weiterentwickelt. Die Skripte ermöglichen jetzt eine präzisere Erkennung von Entitäten und eine strukturierte Anreicherung der Transkribus-Daten mit zusätzlichen Metadaten durch den Einsatz von Large Language Models.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Optimierung von ChatGPT-API-picture-to-JSON\_2024.py}
+\ding{51} Code-Kommentare für bessere Dokumentation ergänzt\\
+\ding{51} API-Kostenkalkulation präzisiert\\
+\ding{51} Prompt-Engineering für die Analyse historischer Dokumente verbessert\\
+\textbf{Ergebnis}: Zuverlässigere Extraktion von Metadaten aus Bildmaterial mit detaillierter Kostenkontrolle
+
+\subsubsection*{\small Weiterentwicklung der CSV-Merger-Skripte}
+\ding{51} Metadaten\_CSV\_Merger\_V2.py mit erweiterter Normalisierungsfunktion implementiert\\
+\ding{51} Verbesserte Zusammenführung mehrerer CSV-Quellen\\
+\ding{51} Robustere Fehlerbehandlung bei der CSV-Verarbeitung hinzugefügt\\
+\textbf{Ergebnis}: Umfassendere Gesamtübersicht über alle Akten mit konsistenter Nummerierung
+
+\subsection*{Nächste Schritte}
+\ding{113} Automatisierte Validierung der extrahierten Metadaten implementieren\\
+\ding{113} Named Entity Recognition für Militäreinheiten und Dienstgrade integrieren\\
+\ding{113} Dashboard zur Visualisierung der Metadaten-Qualität entwickeln
+
+\subsection*{Offene Fragen}
+\ding{113} Wie kann die Qualität der LLM-Extraktion objektiv bewertet werden?\\
+\ding{113} Skalierungsmöglichkeiten für größere Dokumentenmengen?
+
+\section{Integration mit Transkribus XML Export \small 11.04.2025}
+\small\textit{Erweiterung der Datenpipeline zur Anreicherung von Transkribus-XML-Dateien}\\
+\subsection*{Kurzbeschreibung}
+
+Das neue Modul \texttt{Transkribus\_XML\_Data\_Enricher\_with\_CSV.py} wurde entwickelt, um XML-Dateien aus Transkribus mit strukturierten Metadaten aus CSV-Dateien anzureichern. Dieses Skript ermöglicht die Zusammenführung von manuell erstellten Metadaten und automatisch extrahierten Informationen, um vollständigere Dokumentbeschreibungen zu erstellen.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Entwicklung des XML-Enricher-Skripts}
+\ding{51} XML-Parser für Transkribus-Dateien implementiert\\
+\ding{51} Matching-Algorithmus zwischen XML- und CSV-Daten entwickelt\\
+\ding{51} Automatische Anreicherung der XML-Dateien mit CSV-Metadaten\\
+\textbf{Ergebnis}: Funktionierendes Skript zur Anreicherung von XML-Dateien mit zusätzlichen Metadaten
+
+\subsubsection*{\small Integration des Finder-Tag-Systems}
+\ding{51} \texttt{Image\_Tags\_to\_list.py} zur Extraktion von macOS Finder-Tags erstellt\\
+\ding{51} Automatische Konvertierung von Finder-Tags in strukturierte CSV-Daten\\
+\ding{51} Bereinigung und Normalisierung der extrahierten Tag-Informationen\\
+\textbf{Ergebnis}: Erfolgreiche Integration des visuellen Tagging-Systems in die Metadatenpipeline
+
+\subsection*{Technische Details zur XML-Anreicherung}
+\begin{minted}{python}
+# XML-Namespace festlegen (wie in den Transkribus-Dateien)
+NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+
+# CSV einlesen und für Matching vorbereiten
+df_csv = pd.read_csv(csv_file_path, sep=";", dtype=str, on_bad_lines='skip')
+df_csv = df_csv[df_csv["Akte_Scan"].str.contains("Akte", na=False)]
+
+# Extraktion der Seitenzahl für eindeutiges Matching
+df_csv["csv_page_number"] = df_csv["Akte_Scan"].apply(
+    lambda x: re.search(r"_S(\d+)", x).group(1) if re.search(r"_S(\d+)", x) else None
+)
+
+# XML-Dateien mit CSV-Informationen anreichern
+for xml_file in xml_files:
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    
+    # Metadaten aus Transkribus extrahieren
+    transkribus_meta = root.find(".//ns:TranskribusMetadata", NS)
+    doc_id = transkribus_meta.get("docId", "").strip()
+    page_id = transkribus_meta.get("pageId", "").strip()
+    
+    # Matching mit CSV-Daten
+    csv_match = find_matching_csv_entry(doc_id, xml_page_number)
+    
+    # CSV-Daten in XML integrieren
+    csv_elem = ET.Element("CSVData")
+    if csv_match:
+        for key, value in csv_match.items():
+            child = ET.SubElement(csv_elem, key)
+            child.text = value
+    
+    # Angereicherte XML speichern
+    root.append(csv_elem)
+    tree.write(output_path, encoding="utf-8", xml_declaration=True)
+\end{minted}
+
+\subsection*{Nächste Schritte}
+\ding{113} Integration der XML-Anreicherung in die bestehende Metadatenextraktion\\
+\ding{113} Entwicklung eines Validierungssystems für die angereicherten XML-Dateien\\
+\ding{113} Ausweitung der Extraktionsmöglichkeiten auf weitere Metadatenfelder
+
 \noindent\hrulefill
 
 \section{Integration von person\_matcher.py mit transkribus\_to\_base\_schema.py \small 09.04.2025}
@@ -233,7 +348,7 @@ Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{signature}{signature}}}}}
 \ding{43} Beispiel 3: **Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt**, sollte die Unterschrift vollständig im Tag \texttt{unclear} innerhalb von \texttt{signature} stehen:  
 \texttt{\textbf{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}}.\\  
 
-\ding{43} Beispiel 4: **Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird nicht als „Person“ getaggt**:  
+\ding{43} Beispiel 4: **Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird nicht als „Person" getaggt**:  
 \texttt{\textbf{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}.\\  
 
 \section*{Organisationen \texttt{\texttt{\textbf{{\colorbox{organization}{organization}}}}}}
@@ -243,7 +358,7 @@ Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{organization}{organization}}}}} s
 
 \noindent\ding{43} Beispiel 1: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.\\
 \ding{43} Beispiel 2: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.\\
-\ding{43} Beispiel 3: Wenn der Organisationsname mit einer Positionsangabe kombiniert ist, wird nur der Organisationsname getaggt: „\textless person\textgreater Vereinsleiter \textless person\textgreater des \textbf{\textless organisation\textgreater Männerchor Murg\textless /organisation\textgreater}“. \\
+\ding{43} Beispiel 3: Wenn der Organisationsname mit einer Positionsangabe kombiniert ist, wird nur der Organisationsname getaggt: „\textless person\textgreater Vereinsleiter \textless person\textgreater des \textbf{\textless organisation\textgreater Männerchor Murg\textless /organisation\textgreater}". \\
 
 \section*{Orte \texttt{\texttt{\textbf{{\colorbox{place}{place}}}}}}
 
@@ -253,8 +368,8 @@ Mit dem Tag\texttt{\texttt{\textbf{{\colorbox{place}{place}}}}} sollen alle Stri
 Flexibilität: Falls sich eine Organisation an mehreren Orten befindet oder in einem bestimmten Kontext mit einem anderen Ort assoziiert wird, bleibt die Information strukturiert erhalten.} \\
 
 \noindent\ding{43} Beispiel 1: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.\\
-\ding{43} Beispiel 2: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“, "Mayerhof Nebenzimmer" werden getaggt, und die nähere Bestimmung muss innerhalb des Tags. Beispiel: „ \textbf{\textless place\textgreater  im Murgtal\textless /place\textgreater }“.\\
-\ding{43} Beispiel 3: Adressen oder Ortsangaben in Verbindung mit Organisationen, z.B. „\textless organisation\textgreater Universität \textbf{\textless place\textgreater  Basel\textless /place\textgreater} \textless /organisation\textgreater“ oder „Postfach 6, \textbf{\textless place\textgreater  Murg \textless /place\textgreater }“. \\
+\ding{43} Beispiel 2: Orte mit näherer Bestimmung, z.B. „bei Berlin", „im Murgtal", "Mayerhof Nebenzimmer" werden getaggt, und die nähere Bestimmung muss innerhalb des Tags. Beispiel: „ \textbf{\textless place\textgreater  im Murgtal\textless /place\textgreater }".\\
+\ding{43} Beispiel 3: Adressen oder Ortsangaben in Verbindung mit Organisationen, z.B. „\textless organisation\textgreater Universität \textbf{\textless place\textgreater  Basel\textless /place\textgreater} \textless /organisation\textgreater" oder „Postfach 6, \textbf{\textless place\textgreater  Murg \textless /place\textgreater }". \\
 
 \section*{Datum \texttt{\texttt{\textbf{{\colorbox{date}{date}}}}}}
 
@@ -262,8 +377,8 @@ Flexibilität: Falls sich eine Organisation an mehreren Orten befindet oder in e
 Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{date}{date}}}}}} werden alle expliziten Datumsangaben markiert und bereits im Tag um das format dd.mm.yyyy ergänzt.\\
 
 \noindent\ding{43} Beispiel 1: 9. Oktober 1940, 20.10.1940, den 3. Mai 1938, etc.\\
-\ding{43} Beispiel 2: Relative Datumsangaben („gestern“, „letzten Freitag“) werden getaggt.\\
-\ding{43} Beispiel 3: Falls ein Datum in Kombination mit einem Ort steht, wird nur das Datum getaggt: „\textbf{\textless place\textgreater Murg (Baden)\textless /place\textgreater }, den \textbf{\textless date\textgreater 9. Oktober 1940\textless /date\textgreater }“. \\
+\ding{43} Beispiel 2: Relative Datumsangaben („gestern", „letzten Freitag") werden getaggt.\\
+\ding{43} Beispiel 3: Falls ein Datum in Kombination mit einem Ort steht, wird nur das Datum getaggt: „\textbf{\textless place\textgreater Murg (Baden)\textless /place\textgreater }, den \textbf{\textless date\textgreater 9. Oktober 1940\textless /date\textgreater }". \\
 
 \section*{Abkürzungen \texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}}
 
@@ -271,7 +386,7 @@ Mit dem Tag \texttt{\texttt{\texttt{\textbf{{\colorbox{date}{date}}}}}} werden a
 Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
 
 \noindent\ding{43} Beispiel 1: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
-\ding{43} Beispiel 2: Organisationskürzel, wenn sie eindeutig sind: „\textbf{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater }“.\\
+\ding{43} Beispiel 2: Organisationskürzel, wenn sie eindeutig sind: „\textbf{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater }".\\
 \ding{43} Beispiel 3: Falls eine ausgeschriebene Variante im selben Dokument vorhanden ist, bleibt die Abkürzung getaggt: \textbf{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß\textless /person\textgreater}
 
 
@@ -280,8 +395,8 @@ Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle A
 
 Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
 
-\noindent\ding{43} Beispiel 1: Unklare Zeichen oder fehlende Buchstaben: „Er wohnte in \textbf{\textless unclear\textgreater [...]\textless unclear\textgreater }“.\\
-\ding{43} Beispiel 2: Teilweise lesbare Wörter: „\textbf{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater }“.\\
+\noindent\ding{43} Beispiel 1: Unklare Zeichen oder fehlende Buchstaben: „Er wohnte in \textbf{\textless unclear\textgreater [...]\textless unclear\textgreater }".\\
+\ding{43} Beispiel 2: Teilweise lesbare Wörter: „\textbf{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater }".\\
 
 
 \section*{Sic \texttt{\textbf{{\colorbox{sic}{sic}}}}}
@@ -289,8 +404,8 @@ Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unle
 
 Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{sic}{sic}}}}} werden Wörter markiert, die absichtlich in einer falschen oder ungewöhnlichen Schreibweise beibehalten werden. \\
 
-\noindent\ding{43} Beispiel 1: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: „Er hatt \textbf{\textless sic\textgreater einen\textless /sic\textgreater } große Freude.“\\
-\ding{43} Beispiel 2: Veraltete oder falsche Schreibweisen: „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater }“ für Februar.\\
+\noindent\ding{43} Beispiel 1: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: „Er hatt \textbf{\textless sic\textgreater einen\textless /sic\textgreater } große Freude."\\
+\ding{43} Beispiel 2: Veraltete oder falsche Schreibweisen: „\textbf{\textless sic\textgreater Feber\textless /sic\textgreater }" für Februar.\\
 \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
 
 
@@ -400,9 +515,9 @@ Dieses Skript automatisiert die Verarbeitung von XML-Dokumenten, extrahiert dere
 \subsection*{Kurzbeschreibung}
 
 Überlegung:
-JPEGs sollen bereits im Apple Finder mit Tags versehen werden, um eine effiziente, automatisierte Transkription der Chorunterlagen des Männerchors Murg zu ermöglichen. Geplant ist die Kombination von ChatGPT und Transkribus zur Erkennung unterschiedlicher Dokumententypen. Ein Tag-System, bestehend aus \textbf{„Maschinell“} für maschinengeschriebene und \textbf{„Handschrift“} für handschriftliche Dokumente, gewährleistet die gezielte Zuordnung zur jeweils geeigneten OCR-Software \textit{(Maschinenschrift mit ChatGPT, Handschrift mit Transkribus ''German Giant'')}.
+JPEGs sollen bereits im Apple Finder mit Tags versehen werden, um eine effiziente, automatisierte Transkription der Chorunterlagen des Männerchors Murg zu ermöglichen. Geplant ist die Kombination von ChatGPT und Transkribus zur Erkennung unterschiedlicher Dokumententypen. Ein Tag-System, bestehend aus \textbf{„Maschinell"} für maschinengeschriebene und \textbf{„Handschrift"} für handschriftliche Dokumente, gewährleistet die gezielte Zuordnung zur jeweils geeigneten OCR-Software \textit{(Maschinenschrift mit ChatGPT, Handschrift mit Transkribus ''German Giant'')}.
 
-Dokumente, die sowohl maschinell erstellten Text als auch handschriftliche Elemente enthalten, werden entsprechend ihrer Hauptinformationsgehalt getaggt. Zusätzlich erhalten alle Dokumente mit Unterschriften den Tag \textbf{„Unterschrift“}, um eine gezielte Verarbeitung dieser Elemente sicherzustellen.
+Dokumente, die sowohl maschinell erstellten Text als auch handschriftliche Elemente enthalten, werden entsprechend ihrer Hauptinformationsgehalt getaggt. Zusätzlich erhalten alle Dokumente mit Unterschriften den Tag \textbf{„Unterschrift"}, um eine gezielte Verarbeitung dieser Elemente sicherzustellen.
 
 \subsection{AppleFinder Tags}
 
@@ -483,4 +598,3 @@ Heute zwei Python-Skripte zur Normalisierung der Akten geschrieben:
 
 %___________________________________________________________________________
 \end{document}
-
