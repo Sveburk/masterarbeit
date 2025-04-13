@@ -17,6 +17,10 @@ from .person_matcher import (
 from .place_matcher import PlaceMatcher
 
 
+# ==== validation_module.py ====
+from .validation_module import validate_extended, generate_validation_summary
+
+
 __all__ = [
     # document_schemas
     "BaseDocument", "Person", "Place", "Event", "Organization",
@@ -30,5 +34,8 @@ __all__ = [
     "get_document_type",
 
     # assigned_roles_module
-    "assign_roles_to_known_persons"
+    "assign_roles_to_known_persons",
+
+    #validation_module
+    "validate_extended", "generate_validation_summary"
 ]

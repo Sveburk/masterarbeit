@@ -1,0 +1,49 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} In person\PYGZus{}matcher.py: CSV\PYGZhy{}Einlese\PYGZhy{}Funktion}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{load\PYGZus{}known\PYGZus{}persons\PYGZus{}from\PYGZus{}csv}\PYG{p}{(}\PYG{n}{csv\PYGZus{}path}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{List}\PYG{p}{[}\PYG{n}{Dict}\PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n+nb}{str}\PYG{p}{]]:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Lädt die bekannten Personen aus der CSV\PYGZhy{}Datei.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{exists}\PYG{p}{(}\PYG{n}{csv\PYGZus{}path}\PYG{p}{):}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Warnung: CSV\PYGZhy{}Datei nicht gefunden: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{csv\PYGZus{}path}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{return} \PYG{p}{[]}
+
+    \PYG{k}{try}\PYG{p}{:}
+        \PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{n}{csv\PYGZus{}path}\PYG{p}{,} \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{};\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{persons} \PYG{o}{=} \PYG{p}{[]}
+
+        \PYG{c+c1}{\PYGZsh{} Extrahiere relevante Spalten}
+        \PYG{k}{for} \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{row} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{iterrows}\PYG{p}{():}
+            \PYG{n}{forename} \PYG{o}{=} \PYG{n}{row}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}schema:givenName\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{strip}\PYG{p}{()}
+            \PYG{n}{familyname} \PYG{o}{=} \PYG{n}{row}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}schema:familyName\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{strip}\PYG{p}{()}
+
+            \PYG{k}{if} \PYG{n}{forename} \PYG{o+ow}{or} \PYG{n}{familyname}\PYG{p}{:}  \PYG{c+c1}{\PYGZsh{} Mindestens ein Namensteil vorhanden}
+                \PYG{n}{person} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+                    \PYG{l+s+s2}{\PYGZdq{}forename\PYGZdq{}}\PYG{p}{:} \PYG{n}{forename}\PYG{p}{,}
+                    \PYG{l+s+s2}{\PYGZdq{}familyname\PYGZdq{}}\PYG{p}{:} \PYG{n}{familyname}\PYG{p}{,}
+                    \PYG{l+s+s2}{\PYGZdq{}id\PYGZdq{}}\PYG{p}{:} \PYG{n}{row}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Lfd. No.\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{),}
+                    \PYG{c+c1}{\PYGZsh{} Weitere Metadaten}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{persons}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{person}\PYG{p}{)}
+
+        \PYG{k}{return} \PYG{n}{persons}
+    \PYG{k}{except} \PYG{n+ne}{Exception} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Fehler beim Laden der CSV\PYGZhy{}Datei: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{e}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{return} \PYG{p}{[]}
+
+\PYG{c+c1}{\PYGZsh{} Verbesserte person\PYGZus{}matcher Funktion mit CSV\PYGZhy{}Standardwert}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{match\PYGZus{}person}\PYG{p}{(}
+    \PYG{n}{person}\PYG{p}{:} \PYG{n}{Dict}\PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n+nb}{str}\PYG{p}{],}
+    \PYG{n}{candidates}\PYG{p}{:} \PYG{n}{List}\PYG{p}{[}\PYG{n}{Dict}\PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n+nb}{str}\PYG{p}{]]} \PYG{o}{=} \PYG{k+kc}{None}\PYG{p}{,}
+    \PYG{n}{threshold}\PYG{p}{:} \PYG{n+nb}{int} \PYG{o}{=} \PYG{l+m+mi}{70}
+\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{Tuple}\PYG{p}{[}\PYG{n}{Optional}\PYG{p}{[}\PYG{n}{Dict}\PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n+nb}{str}\PYG{p}{]],} \PYG{n+nb}{int}\PYG{p}{]:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Match a person against known persons from CSV (if no candidates provided)}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{person}\PYG{p}{:}
+        \PYG{k}{return} \PYG{k+kc}{None}\PYG{p}{,} \PYG{l+m+mi}{0}
+
+    \PYG{c+c1}{\PYGZsh{} Wenn keine Kandidaten angegeben, nutze CSV\PYGZhy{}Daten}
+    \PYG{k}{if} \PYG{n}{candidates} \PYG{o+ow}{is} \PYG{k+kc}{None}\PYG{p}{:}
+        \PYG{n}{candidates} \PYG{o}{=} \PYG{n}{KNOWN\PYGZus{}PERSONS}
+\end{Verbatim}

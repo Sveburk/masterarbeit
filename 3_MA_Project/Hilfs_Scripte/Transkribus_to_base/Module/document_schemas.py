@@ -27,7 +27,6 @@ class Person:
         self.associated_organisation = associated_organisation
     
     def to_dict(self) -> Dict[str, str]:
-        """Konvertiert Personenobjekt in ein Dictionary."""
         return {
             "forename": self.forename,
             "familyname": self.familyname,
@@ -35,6 +34,7 @@ class Person:
             "associated_place": self.associated_place,
             "associated_organisation": self.associated_organisation
         }
+
     
     @classmethod
     def from_dict(cls, data: Dict[str, str]) -> 'Person':
@@ -84,17 +84,24 @@ class Organization:
 class Place:
     """Repräsentiert einen Ort."""
     
-    def __init__(self, name: str = "", country: str = "", type: str = ""):
+    def __init__(self, name: str = "", type: str = "",
+                 alternate_place_name: str = "", geonames_id: str = "", wikidata_id: str = "", nodegoat_id: str = ""):
         self.name = name
-        self.country = country
         self.type = type
+        self.alternate_place_name = alternate_place_name
+        self.geonames_id = geonames_id
+        self.wikidata_id = wikidata_id
+        self.nodegoat_id = nodegoat_id
     
     def to_dict(self) -> Dict[str, str]:
         """Konvertiert Ortsobjekt in ein Dictionary."""
         return {
             "name": self.name,
-            "country": self.country,
-            "type": self.type
+            "type": self.type,
+            "alternate_place_name": self.alternate_place_name,
+            "geonames_id": self.geonames_id,
+            "wikidata_id": self.wikidata_id,
+            "nodegoat_id": self.nodegoat_id
         }
     
     @classmethod
@@ -102,8 +109,11 @@ class Place:
         """Erstellt ein Ortsobjekt aus einem Dictionary."""
         return cls(
             name=data.get("name", ""),
-            country=data.get("country", ""),
-            type=data.get("type", "")
+            type=data.get("type", ""),
+            alternate_place_name=data.get("alternate_place_name", ""),
+            geonames_id=data.get("geonames_id", ""),
+            wikidata_id=data.get("wikidata_id", ""),
+            nodegoat_id=data.get("nodegoat_id", "")
         )
     
     def is_valid(self) -> bool:
