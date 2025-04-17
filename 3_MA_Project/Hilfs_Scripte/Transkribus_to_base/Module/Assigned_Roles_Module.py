@@ -1,79 +1,84 @@
+# ================================================================
+# Assigned_Roles_Module.py  
+# ================================================================
 
 import re
 from typing import List, Dict
-from pprint import pprint
-import xml.etree.ElementTree as ET
 
-# Ground Truth Mapping laut CSV (nur deutsche Rollenbezeichnungen)
+# Ground‑Truth‑Mapping  ➜  schema:Role@de
 ROLE_MAPPINGS_DE = {
     "ehrenpräsident": "Ehrenpräsident",
-    "ehrenmitglied": "Ehrenmitglied",
-    "vorstand": "Vorstand",
-    "schriftführer": "Schriftführer",
-    "kassierer": "Kassierer",
-    "sachwalter": "Sachwalter, Notenwart",
-    "notenwart": "Sachwalter, Notenwart",
+    "ehrenmitglied":  "Ehrenmitglied",
+    "vorstand":       "Vorstand",
+    "schriftführer":  "Schriftführer",
+    "kassierer":      "Kassierer",
+    "sachwalter":     "Sachwalter, Notenwart",
+    "notenwart":      "Sachwalter, Notenwart",
     "zweiter vorstand": "ZweiterVorstand",
-    "dirigent": "Dirigent",
-    "chorleiter": "Chorleiter",
-    "ehrenführer": "Ehrenführer",
+    "dirigent":       "Dirigent",
+    "chorleiter":     "Chorleiter",
+    "ehrenführer":    "Ehrenführer",
 }
 
-# Regex zur Rollenerkennung (Textrollen)
+# Basis‑Wortschatz für Rollen
 POSSIBLE_ROLES = list(set(ROLE_MAPPINGS_DE.keys()) | {
-    "vereinsführer", "leiter", "obmann", "präsident"  # zusätzliche gängige Rollen
+    "vereinsführer", "leiter", "obmann", "präsident"
 })
 
-ROLE_ORG_REGEX = re.compile(
-    r"(?P<name>[A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)\s*,?\s*(?P<role>" + "|".join(POSSIBLE_ROLES) + r")\s*(des|der|vom)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?",
+# 1)  «Name,  Rolle …»      z.B.  „Alfons Zimmermann, Vereinsführer des Männerchor“
+ROLE_AFTER_NAME_RE = re.compile(
+    rf"(?P<name>[A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)\s*,?\s*"
+    rf"(?P<role>{'|'.join(POSSIBLE_ROLES)})\s*(des|der|vom)?\s*"
+    rf"(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?",
+    re.IGNORECASE | re.UNICODE
+)
+
+# 2)  «Rolle  … Name»       z.B.  „Vereinsführer des Männerchor Alfons Zimmermann“
+ROLE_BEFORE_NAME_RE = re.compile(
+    rf"(?P<role>{'|'.join(POSSIBLE_ROLES)})\s+(des|der|vom)?\s*"
+    rf"(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?\s+"
+    rf"(?P<name>[A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)",
     re.IGNORECASE | re.UNICODE
 )
 
 def map_role_to_schema_entry(role_string: str) -> str:
-    """
-    Gibt die standardisierte schema:Role@de zurück, basierend auf der Ground Truth.
-    Falls kein Mapping vorhanden, wird 'None' (String) zurückgegeben.
-    """
-    normalized = role_string.strip().lower()
-    for key in ROLE_MAPPINGS_DE:
-        if key in normalized:
-            return ROLE_MAPPINGS_DE[key]
+    norm = role_string.strip().lower()
+    for key, mapped in ROLE_MAPPINGS_DE.items():
+        if key in norm:
+            return mapped
     return "None"
 
-def assign_roles_to_known_persons(persons: List[Dict[str, str]], full_text: str) -> List[Dict[str, str]]:
+def assign_roles_to_known_persons(persons: List[Dict[str, str]],
+                                  full_text: str) -> List[Dict[str, str]]:
     """
-    Reiche Rollen und Organisationen für bekannte Personen anhand des Kontexts im Transkripttext an.
-    Die Rolle bleibt im Original (wie im Text), zusätzlich wird ein schema:Role@de-Mapping gespeichert.
-
-    Args:
-        persons: Liste erkannter Personen
-        full_text: Volltext der Seite zur Kontextanalyse
-
-    Returns:
-        Liste mit angereicherten Personen-Dictionaries
+    Ergänzt  role, role_schema, associated_organisation  in den Personen‑Dicts.
     """
-    for match in ROLE_ORG_REGEX.finditer(full_text):
-        name = match.group("name")
-        raw_role = match.group("role")
-        organisation = match.group("organisation") or ""
+    for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
+        for match in regex.finditer(full_text):
+            name  = match.group("name") or ""
+            role  = match.group("role")
+            org   = (match.group("organisation") or "").strip()
 
-        name_parts = name.strip().split(" ")
-        if len(name_parts) >= 2:
-            forename_candidate = " ".join(name_parts[:-1])
-            familyname_candidate = name_parts[-1]
+            # Name in Vor‑/Nachname zerlegen
+            fn_parts = name.strip().split()
+            if len(fn_parts) < 2:
+                continue
+            fn_candidate  = " ".join(fn_parts[:-1])
+            ln_candidate  = fn_parts[-1]
 
-            for person in persons:
-                if (person.get("familyname") == familyname_candidate and
-                    forename_candidate in person.get("forename", "")):
-                    person["role"] = raw_role  # Original aus Text
-                    person["role_schema"] = map_role_to_schema_entry(raw_role)
-                    person["associated_organisation"] = organisation.strip()
-
+            for p in persons:
+                if (p.get("familyname") == ln_candidate and
+                        fn_candidate in p.get("forename", "")):
+                    p["role"]                   = role
+                    p["role_schema"]            = map_role_to_schema_entry(role)
+                    p["associated_organisation"] = org
     return persons
+
 
 def main():
     xml_file = "0002_p002.xml"  # Pfad zu deiner XML-Datei
-    full_text = extract_full_text_from_transkribus_xml(xml_file)
+    root = ET.parse(xml_path).getroot()
+    full_text = extract_text_from_xml(root)
 
     persons = [
         {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "associated_organisation": ""},

@@ -1,6 +1,3 @@
-# DIESES SKRIPT IST NUN KOMPLETT NEU (NACH ALTEM VORBILD) DER HAUPT CODE MUSS AN DEF UND VARIABLEN ANGEPASST WERDEN!!!
-
-
 
 """
 Person Matcher - Fuzzy name matching adapted for specific CSV structure
@@ -15,6 +12,11 @@ df: pd.DataFrame
 from rapidfuzz import fuzz
 import re
 import os
+
+
+HONORIFICS = {"herr", "herrn", "frau", "fräulein", "witwe", "pg", "pg.", "Parteigenosse"}
+
+
 
 # Einheitliche Leseoptionen für alle CSV-Inputs
 default_read_opts = dict(sep=";", dtype=str, keep_default_na=False)
@@ -262,6 +264,10 @@ def match_person(
     forename   = (person.get("forename", "")   or "").strip()
     familyname = (person.get("familyname", "") or "").strip()
 
+    norm_fn = normalize_name_string(forename)
+    norm_ln = normalize_name_string(familyname)
+
+
     UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
     if forename.lower() in UNMATCHABLE_SINGLE_NAMES and not familyname:
         print(f"[DEBUG] ❌ Einzelname {forename} geblockt")
@@ -269,10 +275,6 @@ def match_person(
     if familyname.lower() in UNMATCHABLE_SINGLE_NAMES and not forename:
         print(f"[DEBUG] ❌ Einzelname {familyname} geblockt")
         return None, 0
-
-    # Für Sonderregeln: normalisierte Varianten
-    norm_fn = normalize_name_string(forename)
-    norm_ln = normalize_name_string(familyname)
 
     # ------------------------------------------------------------------
     # 2) Reguläres Matching
@@ -302,11 +304,49 @@ def match_person(
         _, ln_score = fuzzy_match_name(familyname, [cand_ln],          thresholds["familyname"])
         combined = fn_score * 0.4 + ln_score * 0.6
 
+    # ------------------------------------------------------------------
+    # ✂️  Honorifics & Rollen vor dem Matching entfernen
+    # ------------------------------------------------------------------
+    HONORIFICS    = {"herr", "herrn", "frau", "fräulein", "witwe"}
+    ROLE_KEYWORDS = {"dirigent", "vereinsführer", "chorleiter", "ehrenmitglied"}
+
+    # a) Anrede steht im Forename‑Feld?  →  als Titel merken, Forename leeren
+    if forename.lower().rstrip(".") in HONORIFICS:
+        person["title"]   = forename.capitalize().rstrip(".")
+        forename          = ""
+        person["forename"] = ""
+        
+    if not forename and " " in familyname:
+        tokens = familyname.split()
+        # mind. 2 Tokens → 1. Token = Vorname, Rest = Nachname
+        if len(tokens) >= 2:
+            forename, familyname = tokens[0], " ".join(tokens[1:])
+            person["forename"]   = forename
+            person["familyname"] = familyname
+
+        norm_fn = normalize_name_string(forename)
+        norm_ln = normalize_name_string(familyname)
+
+
+
+    # b) Rollen­keyword als erstes Token im Familyname?  →  als Rolle ablegen
+    first_token = familyname.split()[0].lower() if familyname else ""
+    if first_token in ROLE_KEYWORDS and not forename:
+        person["role"]       = first_token.capitalize()
+        familyname           = ""                    # Name unbekannt
+        person["familyname"] = ""
+
+    # ------------------------------------------------------------------
+    # 1) Vorab‑Prüfung auf verbotene Einzel‑Namen
+    # ------------------------------------------------------------------
+
         if combined > best_score:
             best_score, best_match = combined, candidate
 
     if best_score >= 90:
         return best_match, int(best_score)
+    
+    
 
     # ------------------------------------------------------------------
     # 3) Fallback: nur Vor‑ oder nur Nachname  (Blacklist gilt schon oben)
@@ -332,20 +372,49 @@ def match_person(
     return None, 0
 
 
-def deduplicate_persons(persons: List[Dict[str, str]]) -> List[Dict[str, str]]:
-    unique_persons, seen = [], set()
+
+from typing import List, Dict, Optional
+
+def deduplicate_persons(
+    persons: List[Dict[str, str]],
+    known_candidates: Optional[List[Dict[str, str]]] = None
+) -> List[Dict[str, str]]:
+    """
+    Entfernt Duplikate aus der Liste von Personen und führt ein Fuzzy-Matching
+    gegen eine Liste bekannter Kandidaten durch.
+
+    Args:
+        persons: Roh-Liste von {'forename': ..., 'familyname': ..., ...}-Dicts
+        known_candidates: Liste von Kandidaten-Dicts; falls None, wird KNOWN_PERSONS verwendet
+
+    Returns:
+        Liste von eindeutigen Personen-Dicts (match oder original)
+    """
+    unique_persons: List[Dict[str, str]] = []
+    seen: set = set()
+    # Fallback auf globale KNOWN_PERSONS, falls keine übergeben wurden
+    candidates = known_candidates if known_candidates is not None else KNOWN_PERSONS
 
     for person in persons:
-        norm_name = f"{normalize_name(person['forename'])} {normalize_name(person['familyname'])}"
-        if norm_name not in seen:
-            match, score = match_person(person)
-            if match and score >= 90:
-                unique_persons.append(match)
-            else:
-                unique_persons.append(person)
-            seen.add(norm_name)
+        # Normiere den Schlüssel, damit Otto Bollinger nicht doppelt auftaucht
+        norm_fn = normalize_name(person.get("forename", ""))["forename"]
+        norm_ln = normalize_name(person.get("familyname", ""))["familyname"]
+        norm_name = f"{norm_fn} {norm_ln}"
+
+        if norm_name in seen:
+            continue
+
+        # Versuche ein Fuzzy-Match
+        match, score = match_person(person, candidates=candidates)
+        if match and score >= 90:
+            unique_persons.append(match)
+        else:
+            unique_persons.append(person)
+
+        seen.add(norm_name)
 
     return unique_persons
+
 
 # Testfunktion für die Überprüfung der Implementierung
 def main():
