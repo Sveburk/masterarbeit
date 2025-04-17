@@ -10,7 +10,7 @@ from .type_matcher import get_document_type
 # ==== person_matcher.py ====
 from .person_matcher import (
     match_person, KNOWN_PERSONS, deduplicate_persons,
-    normalize_name, load_known_persons_from_csv,get_best_match_info,
+    normalize_name, load_known_persons_from_csv,get_best_match_info, fuzzy_match_name, 
 )
 import inspect
 print(">>> match_person loaded from:", inspect.getfile(match_person))
@@ -34,7 +34,7 @@ __all__ = [
 
     # person_matcher
     "match_person", "KNOWN_PERSONS", "deduplicate_persons",
-    "normalize_name", "load_known_persons_from_csv", "get_best_match_info",
+    "normalize_name", "load_known_persons_from_csv", "get_best_match_info", "fuzzy_match_name",
 
     # type_matcher
     "get_document_type",
