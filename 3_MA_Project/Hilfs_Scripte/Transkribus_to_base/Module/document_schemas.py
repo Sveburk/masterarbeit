@@ -15,37 +15,52 @@ class Person:
     """Repräsentiert eine Person mit Namen, Rolle und Zugehörigkeiten."""
     
     def __init__(self, 
-                 forename: str = "", 
-                 familyname: str = "", 
-                 role: str = "", 
-                 associated_place: str = "", 
-                 associated_organisation: str = ""):
+                forename: str = "", 
+                alternate_name: str = "",
+                familyname: str = "", 
+                title: str = "",
+                role: str = "", 
+                associated_place: str = "", 
+                associated_organisation: str = "",
+                nodegoat_id: str = ""):
         self.forename = forename
+        self.alternate_name = alternate_name
         self.familyname = familyname
+        self.title = title
         self.role = role
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
+        self.nodegoat_id = nodegoat_id
     
     def to_dict(self) -> Dict[str, str]:
         return {
             "forename": self.forename,
             "familyname": self.familyname,
+            "alternate_name": self.alternate_name,
+            "title": self.title,
             "role": self.role,
             "associated_place": self.associated_place,
-            "associated_organisation": self.associated_organisation
+            "associated_organisation": self.associated_organisation,
+            "nodegoat_id": self.nodegoat_id 
+
         }
 
     
     @classmethod
     def from_dict(cls, data: Dict[str, str]) -> 'Person':
         """Erstellt ein Personenobjekt aus einem Dictionary."""
-        return cls(
+        return cls(            
             forename=data.get("forename", ""),
             familyname=data.get("familyname", ""),
             role=data.get("role", ""),
             associated_place=data.get("associated_place", ""),
-            associated_organisation=data.get("associated_organisation", "")
+            associated_organisation=data.get("associated_organisation", ""),
+            nodegoat_id=data.get("nodegoat_id", ""),
+            alternate_name=data.get("alternate_name", ""),
+            title=data.get("title", ""),
+            
         )
+
     
     def is_valid(self) -> bool:
         """Prüft, ob die Personendaten gültig sind."""
@@ -110,7 +125,7 @@ class Place:
         return cls(
             name=data.get("name", ""),
             type=data.get("type", ""),
-            alternate_place_name=data.get("alternate_place_name", ""),
+            alternate_place_name=data.get("alternate_place_name", data.get("alternate_name", "")), 
             geonames_id=data.get("geonames_id", ""),
             wikidata_id=data.get("wikidata_id", ""),
             nodegoat_id=data.get("nodegoat_id", "")
