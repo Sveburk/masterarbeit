@@ -93,8 +93,10 @@ all_known_persons_df = pd.DataFrame(known_persons_list)
 
 
 # === Bekannte Orte Laden ===
-PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Places-Tabelle 1.csv"
+PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-place.csv"
 place_matcher = PlaceMatcher(PLACE_CSV_PATH)
+print("[DEBUG] Geladene Ortsdaten aus CSV:")
+print(place_matcher.places_df.head())
 
 
 # === Bekannte Organisationen Laden ===
@@ -650,21 +652,19 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
 def clean_place_dict(place: dict) -> dict:
     """
     Entfernt nicht erlaubte Keys aus dem Orts-Dictionary für das Place-Schema.
-    Behält alternate_place_name im ursprünglichen Format bei.
+    Behält alternate_place_name im ursprünglichen Format bei und korrigiert Geonames-IDs.
     """
     allowed_keys = ["name", "alternate_place_name", "geonames_id", "wikidata_id", "nodegoat_id", "type", "country"]
-    # Spezialbehandlung für alternate_place_name, um das Format zu erhalten
     result = {}
     for k in allowed_keys:
         if k in place:
-            if k == "alternate_place_name":
-                # Beim alternate_place_name das Format bewahren (keine strip-Operation)
-                result[k] = place[k] if pd.notna(place.get(k)) else ""
-            else:
-                # Bei anderen Feldern weiterhin stripping anwenden
-                result[k] = str(place[k]).strip() if pd.notna(place.get(k)) else ""
+            value = place[k] if pd.notna(place.get(k)) else ""
+            if k == "geonames_id" and isinstance(value, str) and value.endswith('.0'):
+                value = value[:-2]  # ".0" am Ende entfernen
+            elif k != "alternate_place_name":
+                value = str(value).strip()
+            result[k] = value
     return result
-
 
 
 def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
