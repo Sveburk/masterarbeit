@@ -1,15 +1,20 @@
 import os
 import json
 import time
-import openai
 import csv
 from typing import List, Dict
+
+# Conditional import for openai
+try:
+    import openai
+except ImportError:
+    openai = None
 
 # Kosten-Konstanten (GPT-4 Turbo, Stand 2024)
 INPUT_COST_PER_1K = 0.01  # USD
 OUTPUT_COST_PER_1K = 0.03  # USD
 
-def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-4", temperature=0.0) -> Dict:
+def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temperature=0.0) -> Dict:
     prompt = f""" 
     Temperatur: 0,4  
     Du bekommst ein vollständiges JSON-Dokument aus einem historischen Transkriptionsworkflow.  
@@ -19,6 +24,8 @@ def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-
     - `recipient` → An wen ist der Text gerichtet? Analysiere das Adressfeld und Anrede.  
     - `creation_date` → Nutze Datumsangaben im Text oder Datumsformat wie „28.V.1941“.  
     - `creation_place` → Oft steht der Ort vor dem Datum, z. B. „München, 28. Mai 1941“.  
+         Falls Adressen erwähnt sind, extrahiere sie und gib sie als strukturierte Felder zurück:\n
+         author_address und recipient_address, inklusive Straße, Hausnummer, Postleitzahl, Ort, ggf. Zimmer/Stube/Militärinfo (wie Einheiten,Felpostnummern/FPN).\n
     - `content_tags_in_german` → Themen oder Gefühle im Text, z. B. Liebe, Krieg, Trauer, Hoffnung etc.  
     - `mentioned_persons`, `mentioned_organizations`, `mentioned_places` → Wenn nötig, **Dubletten entfernen**, falsch erkannte Personen (wie „des“) aussortieren.
 
@@ -29,7 +36,7 @@ def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-
     - ID-Felder (wie `geonames_id`, `wikidata_id`, `nodegoat_id` in `mentioned_places`)
     - Diese stammen aus einer externen Datenbank und dürfen nur übernommen, aber **nicht verändert** werden.
 
-    Wenn ein Feld **nicht eindeutig bestimmbar ist**, verwende `"[...]"`.
+    Wenn ein Feld **nicht eindeutig bestimmbar ist**, verwende `""`.
 
     Gib das vollständige JSON inklusive aller Felder zurück, so wie im Original – aber angereichert mit deinen Ergänzungen.
  
@@ -52,7 +59,11 @@ def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-
         enriched_data = json.loads(output)
     except Exception as e:
         print("Fehler beim Parsen der LLM-Antwort:", e)
-        enriched_data = json_data
+        enriched_data = json_data.copy()
+        enriched_data["llm_metadata"] = {
+            "error": f"Parsing error: {str(e)}",
+            "raw_llm_output": output[:500]  # optional: erste 500 Zeichen speichern
+        }
 
     enriched_data["llm_metadata"] = {
         "input_tokens": input_tokens,
@@ -62,6 +73,7 @@ def enrich_document_with_llm(json_data: dict, client: openai.OpenAI, model="gpt-
     }
 
     return enriched_data
+
 
 def load_json_files(input_dir: str) -> List[str]:
     return [
@@ -89,6 +101,10 @@ def log_enrichment(csv_path: str, file: str, input_tokens: int, output_tokens: i
         writer.writerow([file, input_tokens, output_tokens, f"{cost_usd:.4f}"])
 
 def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
+    if openai is None:
+        print("OpenAI library not installed. Skipping enrichment.")
+        return
+        
     client = openai.OpenAI(api_key=api_key)
     json_files = load_json_files(input_dir)
 
@@ -101,7 +117,17 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        doc_type = data.get("document_type", "")
+        # 🛡️ Original-IDs sichern
+        original_place_ids = [
+            (p.get("name", ""), p.get("nodegoat_id", ""), p.get("geonames_id", ""), p.get("wikidata_id", ""))
+            for p in data.get("mentioned_places", [])
+        ]
+        original_person_ids = [
+            (p.get("forename", ""), p.get("familyname", ""), p.get("nodegoat_id", ""))
+            for p in data.get("mentioned_persons", [])
+        ]
+
+        # Prüfe, ob relevante Felder fehlen (IDs dürfen ruhig fehlen)
         missing_fields = any([
             not data.get("recipient"),
             not data.get("author"),
@@ -109,8 +135,23 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
             not data.get("content_tags_in_german")
         ])
 
-        if doc_type in ["Brief", "Postkarte"] and missing_fields:
+        # ✨ Immer durchlaufen, aber nur bei fehlenden Feldern API-Aufruf starten
+        if missing_fields:
             enriched = enrich_document_with_llm(data, client, model=model)
+
+            # 🔒 Stelle sicher, dass keine IDs überschrieben wurden
+            for p in enriched.get("mentioned_places", []):
+                for name, node_id, geo_id, wiki_id in original_place_ids:
+                    if p.get("name") == name:
+                        p["nodegoat_id"] = node_id
+                        p["geonames_id"] = geo_id
+                        p["wikidata_id"] = wiki_id
+
+            for p in enriched.get("mentioned_persons", []):
+                for fn, ln, node_id in original_person_ids:
+                    if p.get("forename") == fn and p.get("familyname") == ln:
+                        p["nodegoat_id"] = node_id
+
             save_enriched_json(path, enriched)
 
             meta = enriched.get("llm_metadata", {})
@@ -123,6 +164,8 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
             total_in += input_tokens
             total_out += output_tokens
             total_cost += cost
+        else:
+            print(f"[SKIP] {os.path.basename(path)} hat bereits alle relevanten Felder.")
 
     print("\n--- Zusammenfassung ---")
     print(f"Input-Tokens: {total_in}")

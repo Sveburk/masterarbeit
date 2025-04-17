@@ -1,7 +1,7 @@
 
 import re
 from typing import Dict, List
-from Module import BaseDocument, Person, Place
+from .document_schemas import BaseDocument, Person, Place
 
 def validate_extended(doc: BaseDocument) -> Dict[str, List[str]]:
     errors = {}
@@ -49,23 +49,23 @@ def generate_validation_summary(validation_error_list):
     print(f"- {with_errors} mit Fehlern")
 
     error_counter = Counter()
-    for entry in validation_error_list:
-        for field, messages in entry["errors"].items():
-            for msg in messages:
-                if "recipient" in field:
-                    error_counter["recipient fehlt"] += 1
-                elif "creation_date" in field:
-                    error_counter["creation_date ungültig"] += 1
-                elif "geonames_id" in field:
-                    error_counter["geonames_id fehlt"] += 1
-                elif "nodegoat_id" in field:
-                    error_counter["nodegoat_id fehlt"] += 1
-                elif "creation_place" in field:
-                    error_counter["creation_place fehlt"] += 1
-                elif "mentioned_persons" in field and "Möglicher Fehlname" in msg:
-                    error_counter["person möglicherweise falsch"] += 1
-                else:
-                    error_counter[msg] += 1
+    # for entry in validation_error_list:
+    #     for field, messages in entry["errors"].items():
+    #         for msg in messages:
+    #             if "recipient" in field:
+    #                 error_counter["recipient fehlt"] += 1
+    #             elif "creation_date" in field:
+    #                 error_counter["creation_date ungültig"] += 1
+    #             elif "geonames_id" in field:
+    #                 error_counter["geonames_id fehlt"] += 1
+    #             elif "nodegoat_id" in field:
+    #                 error_counter["nodegoat_id fehlt"] += 1
+    #             elif "creation_place" in field:
+    #                 error_counter["creation_place fehlt"] += 1
+    #             elif "mentioned_persons" in field and "Möglicher Fehlname" in msg:
+    #                 error_counter["person möglicherweise falsch"] += 1
+    #             else:
+    #                 error_counter[msg] += 1
 
     if error_counter:
         print("- Häufigste Fehler:")

@@ -5,6 +5,7 @@ Dieses Skript liest Transkribus XML-Dateien, extrahiert die Metadaten und den Te
 und konvertiert sie in das in WORKFLOW.md definierte Basis-Schema unter Verwendung der
 in document_schemas.py definierten Klassen für Objektorientierung und Datenvalidierung.
 """
+
 # --------------- Modulpfade vorbereiten ---------------
 import os
 import sys
@@ -19,20 +20,29 @@ import re
 import time
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Any, Optional, Union
+import sys
+sys.path.insert(0, "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Hilfs_Scripte/Transkribus_to_base")
 
 import pandas as pd
-import spacy
-from rapidfuzz import fuzz, process
+try:
+    import spacy
+    from rapidfuzz import fuzz, process
+except ImportError:
+    print("Warning: Some required libraries are not installed. Limited functionality available.")
+    spacy = None
+    fuzz = None
+    process = None
+
 
 # --------------- Eigene Module (aus /Module) ---------------
 # Importiere alle Klassen und Funktionen über das __init__ von Module
-from Module import (
+from .Module import (
     # document_schemas.py
     BaseDocument, Person, Place, Event, Organization,
     
     # person_matcher.py
     match_person, KNOWN_PERSONS, deduplicate_persons, normalize_name,
-    normalize_name_with_title, fuzzy_match_name, load_known_persons_from_csv,
+    fuzzy_match_name, load_known_persons_from_csv, load_all_known_persons,
     
     # type_matcher.py
     get_document_type,
@@ -47,7 +57,12 @@ from Module import (
     PlaceMatcher,
 
     #validate_module.py
-    validate_extended
+    validate_extended,
+
+    #organization_matcher.py
+    load_organizations_from_csv,
+    match_organization_from_text,
+
 )
 
 #=== LLM API Key für Enrichment ===
@@ -57,7 +72,9 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"            #Testdatensatz
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
-CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
+#CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
+CSV_PATH_NODEGOAT = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
+CSV_PATH_METADATA = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Person-Metadaten_Personen.csv"
 LOG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/new_persons.log"
 
 # Lade deutsches spaCy-Modell
@@ -69,21 +86,20 @@ except:
 
 # === Bekannte Personen laden ===
 # Lade bekannte Personen aus der CSV über die person_matcher-Funktionen
-known_persons_list = load_known_persons_from_csv(CSV_PATH_KNOWN_PERSONS)
-
-# Wir verwenden die Funktionen aus person_matcher.py
-known_persons_df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, sep=";")
-
-# Für Abwärtskompatibilität älterer Funktionen, die noch Tupel verwenden
-KNOWN_PERSONS = list(zip(
-    known_persons_df["schema:givenName"].fillna("").str.strip(),
-    known_persons_df["schema:familyName"].fillna("").str.strip()
-))
-
+all_known_persons_df = load_all_known_persons(CSV_PATH_NODEGOAT, CSV_PATH_METADATA)
+known_persons_list = all_known_persons_df
+deduplicated_persons = deduplicate_persons(known_persons_list)
 
 # === Bekannte Orte Laden ===
 PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Places-Tabelle 1.csv"
 place_matcher = PlaceMatcher(PLACE_CSV_PATH)
+
+
+# === Bekannte Organisationen Laden ===
+CSV_PATH_ORGANIZATIONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-organisationen.csv"
+known_organizations = load_organizations_from_csv(CSV_PATH_ORGANIZATIONS)
+
+
 
 
 # === Teste API KEY ===
@@ -120,12 +136,12 @@ def save_new_csv(df: pd.DataFrame):
     
         # Wenn nicht, füge die Person hinzu
         new_row = {
-            "schema:givenName": forename,
-            "schema:familyName": familyname,
-            "schema:alternateName": "",
-            "schema:homeLocation": "",
-            "schema:birthDate": "",
-            "schema:deathDate": "",
+            "forename": forename,
+            "familyname": familyname,
+            "Alternativer Vorname": "",
+            "[Wohnort] Location Reference": "",
+            "[Geburt] Date Start": "",
+            "[Tod] Date Start": "",
             "db:deathPlace": "",
             "Lfd_No.": f"{len(known_persons_df) + 1:05d}"  # Neue ID mit führenden Nullen
     }
@@ -220,6 +236,14 @@ def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
         # Titel auch im Rückgabeobjekt setzen (wenn original nicht gesetzt)
         if "title" not in matched_person or not matched_person["title"]:
             matched_person["title"] = extracted_title
+            
+        # Sicherstellen, dass die nodegoat_id übertragen wird
+        # Wenn nodegoat_id nicht direkt gesetzt ist, aber Person aus nodegoat kommt (source=nodegoat)
+        if (not matched_person.get("nodegoat_id") and 
+            matched_person.get("source") == "nodegoat" and 
+            matched_person.get("id")):
+            matched_person["nodegoat_id"] = matched_person["id"]
+            
         return matched_person
 
     return None
@@ -294,6 +318,36 @@ def extract_name_with_spacy(name_text: str) -> tuple:
 
 # XML-Namespace (für Transkribus-Dateien)
 NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+
+#Alto-Namespace
+NS_ALTO = {"alto": "http://www.loc.gov/standards/alto/ns-v4#"}
+# === Transkribus-Dateien einlesen ===
+
+def find_all_transkribus_xml_files(base_path: str) -> List[str]:
+    """
+    Sucht rekursiv nach XML-Dateien, sowohl in 'page' als auch 'alto' Unterordnern.
+    """
+    xml_files = []
+    for root, dirs, files in os.walk(base_path):
+        for file in files:
+            if file.endswith(".xml"):
+                xml_files.append(os.path.join(root, file))
+    return xml_files
+
+NS_PAGE = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+NS_ALTO = {"alto": "http://www.loc.gov/standards/alto/ns-v4#"}
+
+def detect_xml_type_and_namespace(root: ET.Element):
+    """
+    Erkennt, ob es sich um PAGE oder ALTO handelt und gibt den passenden Namespace zurück.
+    """
+    tag = root.tag.lower()
+    if "alto" in tag:
+        return "ALTO", NS_ALTO
+    elif "pcgts" in tag:
+        return "PAGE", NS_PAGE
+    return "UNKNOWN", {}
+
 
 # Sicherstellen, dass das Ausgabeverzeichnis existiert
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -377,7 +431,23 @@ def fuzzy_person_match(forename: str, familyname: str, known_list: List[tuple], 
 
     return False
 
+# Normalisiserungsfunktion für Organisationen
+def unify_organization_keys(orgs: list[dict]) -> list[dict]:
+    unified = []
+    for o in orgs:
+        unified.append({
+            "name": o.get("name", "").strip(),
+            "alternateName": [a.strip() for a in o.get("alternateName", "").split(";") if a.strip()],
+            "nodegoat_id": o.get("id", "").strip(),
+            "wikidata_id": o.get("sameAs", "").strip(),
+            "source": "nodegoat"
+        })
+    return unified
 
+known_organizations = unify_organization_keys(known_organizations)
+
+
+seen_place_ids = set()
 def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]]]:
     """
     Versucht, custom-Attribute aus den TextLine-Elementen zu extrahieren
@@ -431,6 +501,7 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                         "associated_place": "",
                         "associated_organisation": "",
                         "alternate_name": ""  # Wichtig: Auch alternate_name setzen
+                        
                     }
                     
                     # Füge die Person zum result hinzu
@@ -446,13 +517,28 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                 offset = int(org_data.get("offset", 0))
                 length = int(org_data.get("length", 0))
                 if offset < len(text_content) and offset + length <= len(text_content):
-                    org_name = text_content[offset:offset+length]
-                    result["organizations"].append({
-                        "name": org_name,
-                        "location": "",
-                        "type": ""
-                    })
-        
+                    org_name = text_content[offset:offset + length]
+
+                    # Sicherstellen, dass org_name gesetzt ist
+                    if org_name:
+                        matched = match_organization_from_text(org_name, known_organizations)
+                        if matched:
+                            print(f"[DEBUG] ORG-MATCH: '{org_name}' → {matched}")
+                            result["organizations"].append(matched)
+                        else:
+                            print(f"[DEBUG] ORG-NOMATCH: '{org_name}'")
+                            result["organizations"].append({
+                                "name": org_name,
+                                "location": "",
+                                "type": "",
+                                "nodegoat_id": "",
+                                "wikidata_id": ""
+                            })
+                    else:
+                        print(f"[DEBUG] Kein org_name extrahiert.")
+                else:
+                    print(f"[ERROR] Ungültiger Offset oder Länge für Organisation: {org_data}")
+
         # Datumsangaben
         date_match = re.search(r"date\s+\{([^}]+)\}", custom_attr)
         if date_match and text_content:
@@ -498,61 +584,50 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
                     try:
                         if place_matcher and place_name:
                             match_result = place_matcher.match_place(place_name)
+                            print(f"'{place_name}' → {match_result['data']['name']} | ID: {match_result['data']['nodegoat_id']}")
                             if match_result:
                                 matched_data = match_result["data"]
-                                # Prozessiere alternate_place_name wenn vorhanden
-                                alternate_names = []
-                                if matched_data.get("alternate_place_name"):
-                                    # Semikolon-getrennte alternative Namen in eine Liste umwandeln
-                                    alt_names_str = matched_data.get("alternate_place_name", "")
-                                    if alt_names_str:
-                                        alternate_names = [name.strip() for name in alt_names_str.split(";") if name.strip()]
+                                # Direkter Zugriff auf alternate_place_name ohne Umwandlung
+                                alt_names_str = matched_data.get("alternate_place_name", "")
                                 
+                                # Eindeutige ID für Duplikatprüfung priorisieren: nodegoat > geonames > wikidata
+                            unique_id = matched_data.get("nodegoat_id") or matched_data.get("geonames_id") or matched_data.get("wikidata_id")
+
+                            if unique_id and unique_id not in seen_place_ids:
+                                seen_place_ids.add(unique_id)
                                 result["places"].append({
                                     "name": matched_data.get("name", place_name),
-                                    "alternate_place_name": ";".join(alternate_names),  # Als Semikolon-getrennte Liste speichern
+                                    "alternate_place_name": alt_names_str,
                                     "geonames_id": matched_data.get("geonames_id", ""),
                                     "wikidata_id": matched_data.get("wikidata_id", ""),
                                     "nodegoat_id": matched_data.get("nodegoat_id", ""),
-                                    "type": "",  # kann später ergänzt werden
                                     "original_input": place_name,
                                     "matched_name": match_result["matched_name"],
                                     "match_score": match_result["score"],
                                     "confidence": match_result.get("confidence", "unknown")
                                 })
-                            else:
-                                # Fallback, wenn kein Groundtruth-Match
-                                result["places"].append({
-                                    "name": place_name,
-                                    "type": "",
-                                    "alternate_place_name": "",
-                                    "geonames_id": "",
-                                    "wikidata_id": "",
-                                    "original_input": place_name,
-                                    "matched_name": None,
-                                    "match_score": None,
-                                    "confidence": "none"
-                                })
+
+                            elif unique_id in seen_place_ids:
+                                print(f"[DEBUG] Ort bereits verarbeitet → übersprungen: '{place_name}' (ID: {unique_id})")
+
                         else:
-                            # Fallback wenn kein place_matcher oder place_name
-                            if place_name:  # Nur wenn es einen Ortsnamen gibt
-                                result["places"].append({
-                                    "name": place_name,
-                                    "type": "",
-                                    "alternate_place_name": "",
-                                    "geonames_id": "",
-                                    "wikidata_id": "",
-                                    "original_input": place_name,
-                                    "matched_name": None,
-                                    "match_score": None,
-                                    "confidence": "matcher_unavailable"
-                                })
+                            # Fallback, wenn kein Groundtruth-Match (d.h. unique_id = "")
+                            result["places"].append({
+                                "name": place_name,
+                                "alternate_place_name": "",
+                                "geonames_id": "",
+                                "wikidata_id": "",
+                                "nodegoat_id": "",
+                                "original_input": place_name,
+                                "matched_name": None,
+                                "match_score": None,
+                                "confidence": "none"
+                            })
                     except Exception as e:
                         print(f"Fehler beim Ortsmatching für '{place_name}': {e}")
                         # Sicherstellen, dass wir trotz Fehler den Ort erfassen
                         result["places"].append({
                             "name": place_name,
-                            "type": "",
                             "alternate_place_name": "",
                             "geonames_id": "",
                             "wikidata_id": "",
@@ -569,9 +644,20 @@ def extract_custom_attributes(root: ET.Element) -> Dict[str, List[Dict[str, Any]
 def clean_place_dict(place: dict) -> dict:
     """
     Entfernt nicht erlaubte Keys aus dem Orts-Dictionary für das Place-Schema.
+    Behält alternate_place_name im ursprünglichen Format bei.
     """
     allowed_keys = ["name", "alternate_place_name", "geonames_id", "wikidata_id", "nodegoat_id", "type", "country"]
-    return {k: str(place[k]).strip() if pd.notna(place.get(k)) else "" for k in allowed_keys if k in place}
+    # Spezialbehandlung für alternate_place_name, um das Format zu erhalten
+    result = {}
+    for k in allowed_keys:
+        if k in place:
+            if k == "alternate_place_name":
+                # Beim alternate_place_name das Format bewahren (keine strip-Operation)
+                result[k] = place[k] if pd.notna(place.get(k)) else ""
+            else:
+                # Bei anderen Feldern weiterhin stripping anwenden
+                result[k] = str(place[k]).strip() if pd.notna(place.get(k)) else ""
+    return result
 
 
 
@@ -618,23 +704,59 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         # Metadaten & Transkript
         metadata_info = extract_metadata_from_xml(root)
         metadata_info["document_type"] = document_type
+        # --- TRANSKRIPT EXTRAHIEREN ---
         transcript_text = extract_text_from_xml(root)
+
+        # --- ORGANISATIONEN-MATCHING ---
+        matched_org = match_organization_from_text(org_name, known_organizations)
+
+
+        if matched_org:
+            print(f"[DEBUG] matched org: {matched_org}")
+            print(f"[DEBUG] hash test: {hash(frozenset(matched_org.items()))}")
+            matched_organizations = [Organization(**matched_org)]
+        else:
+            matched_organizations = []
+
+
 
         # Custom Tags extrahieren
         custom_data = extract_custom_attributes(root)
+        if not custom_data:
+            print(f"[ERROR] Keine custom_data gefunden in {xml_path}")
+            return None, None
+        
 
         # Personen deduplizieren
-        all_persons = custom_data["persons"]
+        all_persons = custom_data.get("persons", [])
+        for raw_person in all_persons:
+            matched, score = match_person(raw_person, candidates=known_persons_list)
+            if matched:
+                print(f"[DEBUG] PRE-MATCH: {raw_person['forename']} {raw_person['familyname']} → {matched.get('nodegoat_id')} | Score: {score}")
+            else:
+                print(f"[DEBUG] PRE-MATCH: {raw_person['forename']} {raw_person['familyname']} → KEIN MATCH | Score: {score}")
+
+
         unique_persons = deduplicate_persons(all_persons, known_candidates=known_persons_list)
 
         mentioned_persons = []
         for person in unique_persons:
+            # Prüfe, ob wir eine nodegoat_id haben
+            nodegoat_id = person.get("nodegoat_id", "")
+            
+            # Bei Personen aus Nodegoat kann die ID auch im "id"-Feld sein, wenn source="nodegoat"
+            if not nodegoat_id and person.get("source") == "nodegoat":
+                nodegoat_id = person.get("id", "")
+            
+            print("[DEBUG] Matched Person Dict:", person)
+
             person_obj = Person(
                 forename=person.get("forename", ""),
                 familyname=person.get("familyname", ""),
                 role=person.get("role", ""),
                 associated_place=person.get("associated_place", ""),
-                associated_organisation=person.get("associated_organisation", "")
+                associated_organisation=person.get("associated_organisation", ""),
+                nodegoat_id=nodegoat_id
             )
 
             if not person_exists_in_known_list(person.get("forename", ""), person.get("familyname", ""), KNOWN_PERSONS):
@@ -649,7 +771,8 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
                 "forename": p.forename,
                 "familyname": p.familyname,
                 "role": p.role or "",
-                "associated_organisation": p.associated_organisation or ""
+                "associated_organisation": p.associated_organisation or "",
+                "nodegoat_id": p.nodegoat_id or ""  # Füge nodegoat_id hinzu
             }
             for p in mentioned_persons
         ]
@@ -661,7 +784,8 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
                 forename=d["forename"],
                 familyname=d["familyname"],
                 role=d.get("role", ""),
-                associated_organisation=d.get("associated_organisation", "")
+                associated_organisation=d.get("associated_organisation", ""),
+                nodegoat_id=d.get("nodegoat_id", "")
             )
             for d in enriched_dicts
         ]
@@ -672,7 +796,7 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             attributes=metadata_info,
             content_transcription=transcript_text,
             mentioned_persons=mentioned_persons,
-            mentioned_organizations=[Organization(**o) for o in custom_data["organizations"]],
+            mentioned_organizations=matched_organizations,
             mentioned_places = [Place(**clean_place_dict(pl)) for pl in custom_data["places"]],
             mentioned_dates=custom_data["dates"],
             content_tags_in_german=[],
@@ -683,11 +807,85 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             document_type=document_type,
             document_format=""
         )
+        for org in matched_organizations:
+            print(f"[DEBUG] Org-Eintrag: {org}")
+            print(f"[DEBUG] nodegoat_id: {org.get('nodegoat_id')} | type: {type(org.get('nodegoat_id'))}")
 
-        return doc
+        print(f"[DEBUG] Organisationen erkannt: {[org.name for org in matched_organizations]}")
+        return doc, unique_persons
+    
+
 
     except Exception as e:
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
+        return None, None
+    
+    
+    
+
+# Unmatched Places ohne Geonames-ID oder Nodegoat-ID werden seperat zur manuellen Überprüfung gespeichert
+def export_unmatched_places_to_csv(output_dir: str, csv_filename: str = "unmatched_places_report.csv"):
+    """
+     Exportiert alle Orte ohne Groundtruth-ID in gruppierter Form:
+    - Spalte 1: fehlender Ortsname
+    - Spalte 2: Liste von Aktennamen mit Kontext in Klammern
+
+    Args:
+        output_dir (str): Pfad zum Ordner mit JSON-Dateien
+        csv_filename (str): Dateiname der Output-CSV
+    """
+    from collections import defaultdict
+
+    unmatched_places = defaultdict(list)
+
+    for filename in os.listdir(output_dir):
+        if not filename.endswith(".json"):
+            continue
+
+        file_path = os.path.join(output_dir, filename)
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            aktenname = filename.replace(".json", "")
+            places = data.get("mentioned_places", [])
+            full_text = data.get("content_transcription", "")
+
+            for place in places:
+                if not place.get("geonames_id") and not place.get("nodegoat_id"):
+                    ort = place.get("name", "")
+                    if not ort:
+                        continue
+
+                    context_sentence = ""
+                    if full_text:
+                        sentences = full_text.split(".")
+                        for sentence in sentences:
+                            if ort in sentence:
+                                context_sentence = sentence.strip()
+                                break
+
+                    akteninfo = f"{aktenname} ({context_sentence})" if context_sentence else aktenname
+                    unmatched_places[ort].append(akteninfo)
+
+        except Exception as e:
+            print(f"Fehler beim Verarbeiten von {filename}: {e}")
+
+    # Speichern als CSV
+    if unmatched_places:
+        rows = []
+        for ort, aktenliste in unmatched_places.items():
+            rows.append({
+                "ort": ort,
+                "vorkommen": " | ".join(aktenliste)
+            })
+        df = pd.DataFrame(rows)
+        output_path = os.path.join(output_dir, csv_filename)
+        df.to_csv(output_path, sep=";", index=False)
+        print(f"\n⚠️ Gruppierter Unmatched Places-Report gespeichert: {output_path}")
+    else:
+        print("\n✅ Keine unmatched Places gefunden.")
         
    
 def main():
@@ -708,9 +906,17 @@ def main():
             if not os.path.isdir(subdir_path) or not subdir.startswith("Akte_"):
                 continue
 
-            page_folder = os.path.join(subdir_path, "page")
-            if not os.path.isdir(page_folder):
-                print(f"Kein 'page' Ordner in {subdir_path}")
+            # ✨ Versuche zuerst "alto", wenn nicht vorhanden, fallback auf "page"
+            preferred_folders = ["alto", "page"]
+            page_folder = None
+            for pf in preferred_folders:
+                candidate = os.path.join(subdir_path, pf)
+                if os.path.isdir(candidate):
+                    page_folder = candidate
+                    break
+
+            if not page_folder:
+                print(f"Kein 'alto' oder 'page' Ordner in {subdir_path}")
                 continue
 
             for xml_file in os.listdir(page_folder):
@@ -723,7 +929,15 @@ def main():
                 page_match = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
                 page_number = page_match.group(1) if page_match else "001"
 
-                doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
+                doc, deduplicated = process_transkribus_file(xml_path, seven_digit_folder, subdir)
+                if doc is None or deduplicated is None:
+                    print(f"[SKIP] Datei konnte nicht verarbeitet werden: {xml_path}")
+                    continue
+
+                if not deduplicated:
+                    print(f"[SKIP] Keine deduplizierten Personen für {xml_path}")
+                    continue
+
                 if doc:
                     output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
                     output_path = os.path.join(OUTPUT_DIR, output_filename)
@@ -740,9 +954,7 @@ def main():
 
                     is_valid = len(validation_errors) == 0
 
-                    if not is_valid:
-                        print(f"Warnung: Dokument {output_filename} enthält Validierungsfehler: {validation_errors}")
-                    else:
+                    if is_valid:
                         validated_files += 1
 
                     with open(output_path, "w", encoding="utf-8") as json_out:
@@ -751,17 +963,21 @@ def main():
                     print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
                     processed_files += 1
 
-    print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
-    print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
+                print(f"Verarbeitung abgeschlossen. {processed_files} Dateien wurden verarbeitet.")
+                print(f"Davon {validated_files} Dokumente ohne Validierungsfehler und {processed_files - validated_files} mit Validierungsfehlern.")
+                for p in deduplicated:
+                    print(f"{p['forename']} {p['familyname']} → Nodegoat-ID: {p.get('nodegoat_id')}")
 
-    from validation_module import generate_validation_summary
-    generate_validation_summary(validation_summary_data)
+
+    #from validation_module import generate_validation_summary
+    #generate_validation_summary(validation_summary_data)
 
     # if OPENAI_API_KEY:
-    #      print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
-    #      llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)                    #prudiziert vorerst ein zweites File, muss später überschreiben!
+    #       print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
+    #       llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)                    #prudiziert vorerst ein zweites File, muss später überschreiben!
     # else:
-    #      print("\nKein OpenAI API Key gefunden. LLM-Enrichment wird übersprungen.")
+    #       print("\nKein OpenAI API Key gefunden. LLM-Enrichment wird übersprungen.")
+    # export_unmatched_places_to_csv(OUTPUT_DIR)
 
 if __name__ == "__main__":
     main()
