@@ -20,14 +20,16 @@ def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temper
     Du bekommst ein vollständiges JSON-Dokument aus einem historischen Transkriptionsworkflow.  
     Deine Aufgabe ist es, folgende Felder **zu ergänzen oder zu korrigieren**, **wenn sie erkennbar sind**:
 
-    - `author` → Wer hat den Text verfasst? Suche nach Grußformeln wie "Deine...", "Mit freundlichen Grüßen..." usw.  
-    - `recipient` → An wen ist der Text gerichtet? Analysiere das Adressfeld und Anrede.  
+    - `author` → Wer hat den Text verfasst? Suche nach Grußformeln wie "Deine...", "Mit freundlichen Grüßen..." usw.  Wenn du das ausfüllst, ergänze in confidence	"OpenAI"
+
+    - `recipient` → An wen ist der Text gerichtet? Analysiere das Adressfeld und Anrede. Wenn du das ausfüllst, ergänze in confidence	"OpenAI"
     - `creation_date` → Nutze Datumsangaben im Text oder Datumsformat wie „28.V.1941“.  
     - `creation_place` → Oft steht der Ort vor dem Datum, z. B. „München, 28. Mai 1941“.  
          Falls Adressen erwähnt sind, extrahiere sie und gib sie als strukturierte Felder zurück:\n
          author_address und recipient_address, inklusive Straße, Hausnummer, Postleitzahl, Ort, ggf. Zimmer/Stube/Militärinfo (wie Einheiten,Felpostnummern/FPN).\n
     - `content_tags_in_german` → Themen oder Gefühle im Text, z. B. Liebe, Krieg, Trauer, Hoffnung etc.  
     - `mentioned_persons`, `mentioned_organizations`, `mentioned_places` → Wenn nötig, **Dubletten entfernen**, falsch erkannte Personen (wie „des“) aussortieren.
+    - `mentioned_persons` → erkenne, ob in dem content_transcription eine rolle für die Person genannt wird und ergänze sie
 
     ⚠️ Besondere Regeln:
     - **„Laufenburg (Baden) Rhina“** oder ähnliche Kombinationen sind **in der Regel ein Ortsname** und sollen als solcher unter `mentioned_places` geführt werden.

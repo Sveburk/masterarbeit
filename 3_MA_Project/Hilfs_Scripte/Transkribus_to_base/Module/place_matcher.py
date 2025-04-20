@@ -2,6 +2,16 @@ import pandas as pd
 from rapidfuzz import process, fuzz
 import logging
 import re
+from typing import List, Dict, Any, Optional, Tuple
+def sanitize_id(v) -> str:
+    # Leere Strings oder NaN bleiben leer
+    if pd.isna(v) or v == "":
+        return ""
+    try:
+        # z.B. "2867714.0" → "2867714"
+        return str(int(float(v)))
+    except Exception:
+        return ""
 
 class PlaceMatcher:
     def __init__(self, csv_path, threshold=85):
@@ -16,6 +26,10 @@ class PlaceMatcher:
                 "Alternativer Ort Name": "alternate_place_name",
                 "Name": "name"
             }, inplace=True)
+
+            for col in ("geonames_id", "wikidata_id"):
+                if col in self.places_df.columns:
+                    self.places_df[col] = self.places_df[col].apply(sanitize_id)
 
             print("[DEBUG] Spaltennamen nach Umbenennung:", self.places_df.columns.tolist())
             self.known_name_map = self._build_known_place_map()
@@ -175,3 +189,36 @@ class PlaceMatcher:
 
     def is_known_place(self, input_place: str):
         return self.match_place(input_place) is not None
+    
+
+    def deduplicate_places(
+            self,
+            raw_places: List[Dict[str, Any]],
+            document_id: Optional[str] = None
+        ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+            """
+            Entfernt Duplikate in raw_places und teilt auf in:
+            - matched: Orte mit nodegoat_id
+            - unmatched: Orte ohne nodegoat_id, ergänzt um document_id
+            Dubletten (gleiche nodegoat_id oder normalisierter Name) werden einmalig ausgegeben.
+            """
+            seen = set()
+            matched = []
+            unmatched = []
+
+            for pl in raw_places:
+                # Key: nodegoat_id wenn vorhanden, sonst normalisierte Name
+                key = pl.get("data", {}).get("nodegoat_id") or self._normalize_place_name(pl.get("matched_raw_input", pl.get("name", "")))
+                if not key or key in seen:
+                    continue
+                seen.add(key)
+
+                if pl.get("data", {}).get("nodegoat_id"):
+                    matched.append(pl)
+                else:
+                    entry = pl.copy()
+                    if document_id:
+                        entry["document_id"] = document_id
+                    unmatched.append(entry)
+
+            return matched, unmatched
