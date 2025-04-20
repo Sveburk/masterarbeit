@@ -1,5 +1,6 @@
-
 """
+Module: Module.person_matcher
+
 Person Matcher - Fuzzy name matching adapted for specific CSV structure
 
 This module provides functions for fuzzy matching of person names from a custom CSV
@@ -8,75 +9,72 @@ including specific metadata fields and using robust fuzzy matching techniques.
 
 from typing import List, Dict, Tuple, Optional, Any
 import pandas as pd
-df: pd.DataFrame
 from rapidfuzz import fuzz
 import re
 import os
 
-
-HONORIFICS = {"herr", "herrn", "frau", "fräulein", "witwe", "pg", "pg.", "Parteigenosse"}
-
-
-
-# Einheitliche Leseoptionen für alle CSV-Inputs
+# ------------------------------------------------------------------------------
+# Konfiguration & Konstanten
+# ------------------------------------------------------------------------------
 default_read_opts = dict(sep=";", dtype=str, keep_default_na=False)
+CSV_PATH_KNOWN_PERSONS = os.path.expanduser(
+    "~/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
+)
+UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
 
-
-# Pfad zur neuen CSV-Datei
-CSV_PATH_KNOWN_PERSONS = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
-
+# ------------------------------------------------------------------------------
+# Schwellenwerte
+# ------------------------------------------------------------------------------
 def get_matching_thresholds() -> Dict[str, int]:
     return {"forename": 80, "familyname": 85}
 
-# Lade bekannte Personen aus der neuen CSV
-
-
-def load_known_persons_from_csv(csv_path: str = CSV_PATH_KNOWN_PERSONS) -> List[Dict[str, str]]:
-    """
-    Lädt die Personendaten aus der CSV und liefert eine Liste von Dictionaries.
-    Leer-/NaN-Werte werden in leere Strings umgewandelt, und wir strippen alle String-Felder.
-    """
-    if not os.path.exists(csv_path):
-        print(f"Warnung: CSV-Datei nicht gefunden: {csv_path}")
-        return []
+# ------------------------------------------------------------------------------
+# Laden bekannter Personen
+# ------------------------------------------------------------------------------
+def load_known_persons_from_csv(path: str = CSV_PATH_KNOWN_PERSONS) -> List[Dict[str, str]]:
+    def safe_strip(val: Any) -> str:
+        return str(val).strip() if isinstance(val, str) else str(val) if pd.notna(val) else ""
 
     try:
-        raw_df = pd.read_csv(csv_path, **default_read_opts)
+        df = pd.read_csv(path, **default_read_opts)
+        df.rename(columns=lambda x: x.strip(), inplace=True)
+        df.rename(columns={
+            "Vorname": "forename",
+            "Nachname": "familyname",
+            "Alternativer Vorname": "alternate_name",
+            "nodegoat ID": "nodegoat_id",
+            "[Wohnort] Location Reference - Object ID": "associated_place",
+            "[Geburt] Date Start": "birth_date",
+            "[Tod] Date Start": "death_date",
+            "[Mitgliedschaft] in Organisation": "organisation"
+        }, inplace=True)
+        string_columns = [
+            "forename", "familyname", "alternate_name", "nodegoat_id",
+            "associated_place", "birth_date", "death_date", "organisation"
+        ]
+        for col in string_columns:
+            if col in df.columns:
+                df[col] = df[col].astype(str).fillna("").str.strip()
+        persons: List[Dict[str, str]] = []
+        for _, row in df.iterrows():
+            persons.append({
+                "forename": safe_strip(row.get("forename")),
+                "familyname": safe_strip(row.get("familyname")),
+                "alternate_name": safe_strip(row.get("alternate_name")),
+                "id": safe_strip(row.get("nodegoat_id")),
+                "home": safe_strip(row.get("associated_place")),
+                "birth_date": safe_strip(row.get("birth_date")),
+                "death_date": safe_strip(row.get("death_date")),
+                "organisation": safe_strip(row.get("organisation"))
+            })
+        print(f"[DEBUG] Geladene Personen: {len(persons)}")
+        return persons
     except Exception as e:
-        print(f"Fehler beim Laden der CSV-Datei: {e}")
+        print(f"[ERROR] Fehler beim Laden der Personendaten aus {path}: {e}")
         return []
 
-    df: pd.DataFrame = raw_df.fillna("")  
 
-
-    df = df.fillna("")  # NaNs sicher entfernen
-
-    persons: List[Dict[str, str]] = []
-    for _, row in df.iterrows():
-        row_dict = {k: v.strip() if isinstance(v, str) else v for k, v in row.to_dict().items()}
-
-        forename   = row_dict.get("Vorname", "")
-        familyname = row_dict.get("Nachname", "")
-        if not (forename or familyname):
-            continue
-
-        person = {
-            "forename":        forename,
-            "familyname":      familyname,
-            "alternate_name":  row.get("Alternativer Vorname", ""),
-            "id":              row.get("nodegoat ID", ""),
-            "home":            row.get("[Wohnort] Location Reference - Object ID", ""),
-            "birth_date":      row.get("[Geburt] Date Start", ""),
-            "death_date":      row.get("[Tod] Date Start", ""),
-            "organisation":    row.get("[Mitgliedschaft] in Organisation", "")
-        }
-        persons.append(person)
-
-    return persons
-
-# Initialisiere bekannte Personen
-KNOWN_PERSONS = load_known_persons_from_csv()
-
+KNOWN_PERSONS: List[Dict[str, str]] = load_known_persons_from_csv()
 # Nickname-Map wie ursprünglich definiert (kann angepasst werden)
 NICKNAME_MAP = {    
     # First names
@@ -177,273 +175,222 @@ NICKNAME_MAP = {
      "veronika": ["vroni", "vera", "nika"],
      "waltraud": ["traudl", "waltraut"],
  }
-EXPANDED_NICKNAME_MAP = {nickname: canonical for canonical, nicknames in NICKNAME_MAP.items() for nickname in nicknames}
+EXPANDED_NICKNAME_MAP: Dict[str, str] = {nick: canon for canon, nicks in NICKNAME_MAP.items() for nick in nicks}
+OCR_ERRORS: Dict[str, List[str]] = {
+    "ü": ["u", "ue"], "ä": ["a", "ae"], "ö": ["o", "oe"], "ß": ["ss"]
+}
+KNOWN_PERSONS: List[Dict[str, str]] = load_known_persons_from_csv()
 
-# OCR Fehler Korrekturen wie definiert
-OCR_ERRORS = {"ü": ["u", "ii", "il", "li"], 
-              "ä": ["a", "ii", "il", "li"], 
-              "ö": ["o", "ii", "il", "li"], 
-              "ß": ["ss", "sz", "s", "b"]}
+# ------------------------------------------------------------------------------
+# Normalisierung
+# ------------------------------------------------------------------------------
 
 def normalize_name_string(name: str) -> str:
-    """
-    Gibt eine bereinigte Namenszeichenkette zurück, bei der Titel entfernt, 
-    Sonderzeichen gestripped und Nickname-Mapping angewendet wurde.
-    Wird z. B. für Fuzzy-Matching verwendet.
-    """
     if not name:
         return ""
-    name = name.lower().strip()
-    name = re.sub(r"\b(dr|prof|herr|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s*", "", name)
-    name = re.sub(r'[^\w\s]', '', name)
-    return EXPANDED_NICKNAME_MAP.get(name, name)
+    s = name.lower().strip()
+    s = re.sub(r"\b(dr|prof|herr|herrn|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s*", "", s)
+    s = re.sub(r"[^\w\s]", "", s)
+    return EXPANDED_NICKNAME_MAP.get(s, s)
 
 
-def normalize_name(name: str) -> dict:
-    """
-    Entfernt Titel (z. B. 'Dr.', 'Herr', 'Prof.') aus einem Namen,
-    bereinigt Sonderzeichen und gibt ein Dictionary mit Titel, Vorname und Nachname zurück.
-    """
+def is_initial(s: str) -> bool:
+    return bool(re.fullmatch(r"[A-Za-z]\.?", s.strip()))
+
+
+def normalize_name(name: str) -> Dict[str, str]:
     if not name:
         return {"title": "", "forename": "", "familyname": ""}
-
-    name = name.strip().strip('"')
-    title_match = re.match(r"(?i)\b(dr|prof|herr|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s+", name)
-    title = title_match.group(1).capitalize() if title_match else ""
-
-    # Titel entfernen für weitere Analyse
-    name = re.sub(r"(?i)\b(dr|prof|herr|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s+", "", name)
-    name = name.lower().strip()
-    name = re.sub(r'[^\w\s]', '', name)
-
-    # Nickname-Mapping
-    name = EXPANDED_NICKNAME_MAP.get(name, name)
-
-    parts = name.split()
+    s = name.strip().strip('"')
+    m = re.match(r"(?i)\b(dr|prof|herr|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s+", s)
+    title = m.group(1).capitalize() if m else ""
+    s = re.sub(r"(?i)\b(dr|prof|herr|frau|fräulein|witwe|dirigent|ehrenmitglied)\.?\s+", "", s)
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s]", "", s)
+    s = EXPANDED_NICKNAME_MAP.get(s, s)
+    parts = s.split()
     if len(parts) == 1:
         return {"title": title, "forename": parts[0].capitalize(), "familyname": ""}
-    elif len(parts) >= 2:
-        return {
-            "title": title,
-            "forename": parts[0].capitalize(),
-            "familyname": " ".join(parts[1:]).capitalize()
-        }
+    return {"title": title, "forename": parts[0].capitalize(), "familyname": " ".join(parts[1:]).capitalize()}
 
-    return {"title": title, "forename": "", "familyname": ""}
-
+# ------------------------------------------------------------------------------
+# Match-Funktionen
+# ------------------------------------------------------------------------------
 
 def fuzzy_match_name(name: str, candidates: List[str], threshold: int) -> Tuple[Optional[str], int]:
     best_match, best_score = None, 0
-    normalized_name = normalize_name_string(name)
-
-    for candidate in candidates:
-        score = fuzz.ratio(normalize_name_string(candidate), normalized_name)
+    norm = normalize_name_string(name)
+    for c in candidates:
+        score = fuzz.ratio(normalize_name_string(c), norm)
         if score > best_score:
-            best_score, best_match = score, candidate
-
+            best_match, best_score = c, score
     return (best_match, best_score) if best_score >= threshold else (None, 0)
+
 
 def match_person(
     person: Dict[str, str],
     candidates: List[Dict[str, str]] = KNOWN_PERSONS
 ) -> Tuple[Optional[Dict[str, str]], int]:
-    """
-    Liefert (beste_Person, Score) oder (None, 0)
-
-    – blockiert vorab „unmatchable“ Einzel‑Namen (Otto / Döbele / Doebele)
-    – erkennt gedrehte Vor‑/Nachnamen
-    – verhindert das Spezial‑Miss‑Match Otto ↔ Ott
-    – überspringt leere Kandidaten
-    """
+    fn_in = person.get("forename", "").strip()
+    ln_in = person.get("familyname", "").strip()
     thresholds = get_matching_thresholds()
     best_match, best_score = None, 0
 
-    # ------------------------------------------------------------------
-    # 1) Vorab‑Prüfung auf verbotene Einzel‑Namen
-    # ------------------------------------------------------------------
-    forename   = (person.get("forename", "")   or "").strip()
-    familyname = (person.get("familyname", "") or "").strip()
+    for cand in candidates:
+        fn_can = cand.get("forename", "").strip()
+        ln_can = cand.get("familyname", "").strip()
 
-    norm_fn = normalize_name_string(forename)
-    norm_ln = normalize_name_string(familyname)
+        if is_initial(fn_in) and fn_can and fn_in[0].upper() == fn_can[0].upper():
+            fn_score = 100
+        else:
+            _, fn_score = fuzzy_match_name(fn_in, [fn_can, cand.get("alternate_name","")], thresholds["forename"])
 
+        if is_initial(ln_in) and ln_can and ln_in[0].upper() == ln_can[0].upper():
+            ln_score = 100
+        else:
+            _, ln_score = fuzzy_match_name(ln_in, [ln_can], thresholds["familyname"])
 
-    UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
-    if forename.lower() in UNMATCHABLE_SINGLE_NAMES and not familyname:
-        print(f"[DEBUG] ❌ Einzelname {forename} geblockt")
-        return None, 0
-    if familyname.lower() in UNMATCHABLE_SINGLE_NAMES and not forename:
-        print(f"[DEBUG] ❌ Einzelname {familyname} geblockt")
-        return None, 0
-
-    # ------------------------------------------------------------------
-    # 2) Reguläres Matching
-    # ------------------------------------------------------------------
-    for candidate in candidates:
-        cand_fn  = (candidate.get("forename", "")        or "").strip()
-        cand_alt = (candidate.get("alternate_name", "")  or "").strip()
-        cand_ln  = (candidate.get("familyname", "")      or "").strip()
-
-        # ⚠️ leere Kandidaten sofort überspringen
-        if not cand_fn and not cand_ln:
-            continue
-
-        cand_fn_norm = normalize_name_string(cand_fn)
-        cand_ln_norm = normalize_name_string(cand_ln)
-
-        # ✨ Spezialregel: Otto ↔ Ott verhindern
-        if {"otto", "ott"} == {norm_fn, cand_ln_norm} or {"otto", "ott"} == {norm_ln, cand_fn_norm}:
-            continue
-
-        # ✅ Gedrehter Vor‑/Nachname (Maximal‑Treffer)
-        if norm_fn == cand_ln_norm and norm_ln == cand_fn_norm:
-            return candidate, 100
-
-        # ---------- reguläre Score‑Berechnung ----------
-        _, fn_score = fuzzy_match_name(forename, [cand_fn, cand_alt], thresholds["forename"])
-        _, ln_score = fuzzy_match_name(familyname, [cand_ln],          thresholds["familyname"])
-        combined = fn_score * 0.4 + ln_score * 0.6
-
-    # ------------------------------------------------------------------
-    # ✂️  Honorifics & Rollen vor dem Matching entfernen
-    # ------------------------------------------------------------------
-    HONORIFICS    = {"herr", "herrn", "frau", "fräulein", "witwe"}
-    ROLE_KEYWORDS = {"dirigent", "vereinsführer", "chorleiter", "ehrenmitglied"}
-
-    # a) Anrede steht im Forename‑Feld?  →  als Titel merken, Forename leeren
-    if forename.lower().rstrip(".") in HONORIFICS:
-        person["title"]   = forename.capitalize().rstrip(".")
-        forename          = ""
-        person["forename"] = ""
-        
-    if not forename and " " in familyname:
-        tokens = familyname.split()
-        # mind. 2 Tokens → 1. Token = Vorname, Rest = Nachname
-        if len(tokens) >= 2:
-            forename, familyname = tokens[0], " ".join(tokens[1:])
-            person["forename"]   = forename
-            person["familyname"] = familyname
-
-        norm_fn = normalize_name_string(forename)
-        norm_ln = normalize_name_string(familyname)
-
-
-
-    # b) Rollen­keyword als erstes Token im Familyname?  →  als Rolle ablegen
-    first_token = familyname.split()[0].lower() if familyname else ""
-    if first_token in ROLE_KEYWORDS and not forename:
-        person["role"]       = first_token.capitalize()
-        familyname           = ""                    # Name unbekannt
-        person["familyname"] = ""
-
-    # ------------------------------------------------------------------
-    # 1) Vorab‑Prüfung auf verbotene Einzel‑Namen
-    # ------------------------------------------------------------------
-
+        combined = ln_score * 0.5 + fn_score * 0.4 / 0.9
         if combined > best_score:
-            best_score, best_match = combined, candidate
+            best_score, best_match = combined, cand
 
-    if best_score >= 90:
+        if normalize_name_string(fn_in) == normalize_name_string(ln_can) \
+        and normalize_name_string(ln_in) == normalize_name_string(fn_can):
+            return cand, 100
+
+    if best_score >= max(thresholds.values()):
         return best_match, int(best_score)
-    
-    
 
-    # ------------------------------------------------------------------
-    # 3) Fallback: nur Vor‑ oder nur Nachname  (Blacklist gilt schon oben)
-    # ------------------------------------------------------------------
-    if forename and not familyname:
-        for candidate in candidates:
-            cand_fn  = candidate.get("forename", "") or ""
-            cand_alt = candidate.get("alternate_name", "") or ""
-            _, score = fuzzy_match_name(forename, [cand_fn, cand_alt], thresholds["forename"])
-            if score and score >= thresholds["forename"]:
-                print(f"[DEBUG] 🟡 Match nur Vorname: {forename} ↔ {cand_fn} (Score: {score})")
-                return candidate, score
+    if fn_in and not ln_in and fn_score >= thresholds["forename"]:
+        return best_match, int(fn_score)
+    if ln_in and not fn_in and ln_score >= thresholds["familyname"]:
+        return best_match, int(ln_score)
 
-    if familyname and not forename:
-        for candidate in candidates:
-            cand_ln = candidate.get("familyname", "") or ""
-            _, score = fuzzy_match_name(familyname, [cand_ln], thresholds["familyname"])
-            if score and score >= thresholds["familyname"]:
-                print(f"[DEBUG] 🟡 Match nur Nachname: {familyname} ↔ {cand_ln} (Score: {score})")
-                return candidate, score
-
-    print(f"[DEBUG] ❌ Kein Match (max Score: {int(best_score)})")
     return None, 0
 
-
-
-from typing import List, Dict, Optional
-
+# ------------------------------------------------------------------------------
+# Deduplication
+# ------------------------------------------------------------------------------
 def deduplicate_persons(
     persons: List[Dict[str, str]],
     known_candidates: Optional[List[Dict[str, str]]] = None
 ) -> List[Dict[str, str]]:
-    """
-    Entfernt Duplikate aus der Liste von Personen und führt ein Fuzzy-Matching
-    gegen eine Liste bekannter Kandidaten durch.
-
-    Args:
-        persons: Roh-Liste von {'forename': ..., 'familyname': ..., ...}-Dicts
-        known_candidates: Liste von Kandidaten-Dicts; falls None, wird KNOWN_PERSONS verwendet
-
-    Returns:
-        Liste von eindeutigen Personen-Dicts (match oder original)
-    """
-    unique_persons: List[Dict[str, str]] = []
     seen: set = set()
-    # Fallback auf globale KNOWN_PERSONS, falls keine übergeben wurden
-    candidates = known_candidates if known_candidates is not None else KNOWN_PERSONS
+    unique: List[Dict[str, str]] = []
+    candidates = known_candidates or KNOWN_PERSONS
 
-    for person in persons:
-        # Normiere den Schlüssel, damit Otto Bollinger nicht doppelt auftaucht
-        norm_fn = normalize_name(person.get("forename", ""))["forename"]
-        norm_ln = normalize_name(person.get("familyname", ""))["familyname"]
-        norm_name = f"{norm_fn} {norm_ln}"
-
-        if norm_name in seen:
+    for p in persons:
+        key = f"{normalize_name_string(p.get('forename',''))} {normalize_name_string(p.get('familyname',''))}"
+        if key in seen:
             continue
+        seen.add(key)
 
-        # Versuche ein Fuzzy-Match
-        match, score = match_person(person, candidates=candidates)
+        match, score = match_person(p, candidates)
         if match and score >= 90:
-            unique_persons.append(match)
+            enriched = {
+                **match,
+                "match_score": score,
+                "confidence": "fuzzy"
+            }
+            unique.append(enriched)
         else:
-            unique_persons.append(person)
+            p["match_score"] = score
+            p["confidence"]  = "none"
+            unique.append(p)
 
-        seen.add(norm_name)
+    return unique
 
-    return unique_persons
-
-
-# Testfunktion für die Überprüfung der Implementierung
-def main():
-    test_persons = [
-        {"forename": "Otto", "familyname": "Bollinger"},
-        {"forename": "Otte", "familyname": "Boilinger"},
-        {"forename": "Lina", "familyname": "Fingerdick"},
-        {"forename": "Alfons", "familyname": "Zimmermann"},
-    ]
-
-    deduplicated = deduplicate_persons(test_persons)
-    for p in deduplicated:
-        print(p)
-
-if __name__ == "__main__":
-    main()
-
+# ------------------------------------------------------------------------------
+# Detail-Info
+# ------------------------------------------------------------------------------
 def get_best_match_info(
     person: Dict[str, str],
-    candidates: List[Dict[str, str]]
+    candidates: List[Dict[str, str]] = KNOWN_PERSONS
 ) -> Dict[str, Any]:
-    """
-    Gibt Detailinformationen zum besten Match zurück.
-    """
     match, score = match_person(person, candidates)
     return {
-        "matched_forename": match.get("forename", "") if match else None,
-        "matched_familyname": match.get("familyname", "") if match else None,
-        "matched_title": match.get("title", "") if match else None,
-        "match_id": match.get("id", "") if match else None,
+        "matched_forename": match.get("forename") if match else None,
+        "matched_familyname": match.get("familyname") if match else None,
+        "matched_title": match.get("title") if match and match.get("title") else None,
+        "match_id": match.get("id") if match else None,
         "score": score
     }
+
+# ------------------------------------------------------------------------------
+# Extract Person Data
+# ------------------------------------------------------------------------------
+def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
+    if row.get('forename') and row.get('familyname'):
+        return {
+            'forename': row.get('forename', '').strip(),
+            'familyname': row.get('familyname', '').strip(),
+            'alternate_name': row.get('alternate_name', '').strip(),
+            'title': row.get('title', '').strip(),
+            'nodegoat_id': row.get('nodegoat_id', '').strip(),
+            'home': row.get('home', '').strip(),
+            'birth_date': row.get('birth_date', '').strip(),
+            'death_date': row.get('death_date', '').strip(),
+            'organisation': row.get('organisation', '').strip(),
+        }
+    name_field = (row.get('name') or row.get('Name') or '').strip()
+    m = re.match(r'^(?P<anrede>Herrn?|Frau|Fräulein|Dr\.?|Prof\.?|Witwe)\s+(?P<rest>.+)$', name_field, flags=re.IGNORECASE)
+    if m:
+        name_field = m.group('rest').strip()
+    parts = normalize_name(name_field)
+    return {
+        'forename': parts.get('forename', ''),
+        'familyname': parts.get('familyname', ''),
+        'alternate_name': row.get('alternate_name', '').strip(),
+        'title': parts.get('title', ''),
+        'nodegoat_id': row.get('id', '').strip(),
+        'home': row.get('home', '').strip(),
+        'birth_date': row.get('birth_date', '').strip(),
+        'death_date': row.get('death_date', '').strip(),
+        'organisation': row.get('organisation', '').strip(),
+    }
+
+# ------------------------------------------------------------------------------
+# Split und Enrich
+# ------------------------------------------------------------------------------
+def split_and_enrich_persons(
+    raw_persons: List[Dict[str, str]],
+    document_id: Optional[str] = None,
+    candidates: Optional[List[Dict[str, str]]] = None
+) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
+    seen = set()
+    matched, unmatched = [], []
+    cand_list = candidates or KNOWN_PERSONS
+
+    for p in raw_persons:
+        nid = p.get("nodegoat_id", "").strip()
+        key = nid or f"{normalize_name_string(p['forename'])} {normalize_name_string(p['familyname'])}"
+        if not key or key in seen:
+            continue
+        seen.add(key)
+
+        match, score = match_person(p, candidates=cand_list)
+        print(f"[DEBUG] Person-Match: {p.get('forename')} {p.get('familyname')} -> Score: {score}")
+
+        if match and score >= 90:
+            enriched = {
+                **p,
+                "forename": match.get("forename", p["forename"]),
+                "familyname": match.get("familyname", p["familyname"]),
+                "nodegoat_id": match.get("nodegoat_id"),
+                "alternate_name": match.get("alternate_name", ""),
+                "title": match.get("title", p.get("title", "")),
+                "match_score": score,
+                "confidence": "fuzzy"
+            }
+            print(f"[DEBUG] Matched person enriched with score {score}: {enriched.get('forename')} {enriched.get('familyname')}")
+            matched.append(enriched)
+        else:
+            entry = p.copy()
+            if document_id:
+                entry["document_id"] = document_id
+            entry["match_score"] = score
+            entry["confidence"] = "none"
+            print(f"[DEBUG] Unmatched person with score {score}: {entry.get('forename')} {entry.get('familyname')}")
+            unmatched.append(entry)
+
+    return matched, unmatched

@@ -12,14 +12,50 @@ import traceback
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json, re, time, xml.etree.ElementTree as ET
-
+import time
+ts = time.time()
+print(ts)
 # Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
 THIS_FILE = Path(__file__).resolve()
 BASE_DIR  = THIS_FILE.parents[2]
 
-MODULE_DIR = THIS_FILE.parent / "Module"
-if str(MODULE_DIR) not in sys.path:
-    sys.path.insert(0, str(MODULE_DIR))
+THIS_FILE    = Path(__file__).resolve()
+PROJECT_ROOT = THIS_FILE.parent  # …/Transkribus_to_base
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+# --------------- Eigene Module (aus /Module) ---------------
+from Module import (
+    enrich_pipeline,
+
+    # Schemas
+    BaseDocument, Person, Place, Event, Organization,
+
+    # Person‐Matcher
+    match_person, KNOWN_PERSONS, deduplicate_persons,
+    normalize_name, load_known_persons_from_csv,
+    get_best_match_info, extract_person_data,
+    split_and_enrich_persons,
+
+    # Organisation‐Matcher
+    match_organization_from_text,load_organizations_from_csv, match_organization_from_text, match_organization_entities,
+
+    # Type‐Matcher
+    get_document_type,
+
+    # Rollen‑Enricher
+    assign_roles_to_known_persons,
+
+    # PlaceMatcher
+    PlaceMatcher,
+
+    # Validation
+    validate_extended, generate_validation_summary,
+
+    # LLM
+    run_enrichment_on_directory,
+)
+
 
 # --------------- Externe Abhängigkeiten ---------------
 import pandas as pd
@@ -29,11 +65,16 @@ from rapidfuzz import fuzz, process
 # --------------- Pfadkonfiguration ---------------
 TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
+OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched_persons")
 OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
 
 CSV_PATH_KNOWN_PERSONS   = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
+ORG_CSV_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
 CSV_PATH_METADATA        = CSV_PATH_KNOWN_PERSONS
 LOG_PATH                 = BASE_DIR / "Data" / "new_persons.log"
+
+
+
 
 # --------------- CSV‑Dateien laden (immer mit denselben Optionen) ---------------
 read_opts = dict(sep=";", dtype=str, keep_default_na=False)
@@ -41,26 +82,7 @@ read_opts = dict(sep=";", dtype=str, keep_default_na=False)
 df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, **read_opts)
 print(df.isna().sum())           # Kontrolle: keine NaN → keine Floats
 
-# --------------- Eigene Module (aus /Module) ---------------
-from Module import (
-    # document_schemas.py
-    BaseDocument, Person, Place, Event, Organization,
 
-    # person_matcher.py
-    match_person, KNOWN_PERSONS, deduplicate_persons, normalize_name, load_known_persons_from_csv,get_best_match_info,
-
-    # type_matcher.py
-    get_document_type,
-
-    # Assigned_Roles_Module.py
-    assign_roles_to_known_persons,
-
-    # llm_enricher.py
-    llm_enricher,
-
-    # place_matcher.py
-    PlaceMatcher,
-)
 
 # === LLM API Key für Enrichment ===
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -81,7 +103,7 @@ all_known_persons_list = load_known_persons_from_csv(CSV_PATH_METADATA)
 df_persons = pd.DataFrame(all_known_persons_list)
 
 
-# Jetzt sicher deduplizieren
+# Jetzt sicher deduplizierenz
 deduplicated_persons = deduplicate_persons(all_known_persons_list)
 
 
@@ -102,7 +124,9 @@ known_persons_list = [
 # nodegoat_persons = load_nodegoat_persons(CSV_PATH_METADATA)
 
 
-
+#=== Bekannte Organisationen laden ===
+org_list = load_organizations_from_csv(str(ORG_CSV_PATH))
+                                       
 # === Bekannte Orte Laden ===
 PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Places-Tabelle 1.csv"
 place_matcher = PlaceMatcher(PLACE_CSV_PATH)
@@ -323,6 +347,7 @@ NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
 
 # Sicherstellen, dass das Ausgabeverzeichnis existiert
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR_UNMATCHED, exist_ok=True)
 
 def extract_metadata_from_xml(root: ET.Element) -> Dict[str, str]:
     """
@@ -422,9 +447,6 @@ def extract_custom_attributes(root: ET.Element, known_persons: List[Dict[str, st
         if text_equiv is not None and text_equiv.text:
             text_content = text_equiv.text
 
-        # Debug the raw custom attribute
-        print(f"[DEBUG] Processing custom attribute: '{custom_attr}'")
-        print(f"[DEBUG] Text content: '{text_content}'")
 
         # Extract persons - returns a list
         persons = extract_person_from_custom(custom_attr, text_content, KNOWN_PERSONS)
@@ -471,7 +493,7 @@ def extract_person_from_custom(custom_attr: str, text_content: str, known_person
     persons = []
     
     # Durchsuche custom_attr nach Mustern wie 'person { ... }'
-    for pattern in [r"person\s+\{([^}]+)\}", r"person {([^}]+)}"]:
+    for pattern in [r"(?i)person\s*\{([^}]+)\}"]:
         person_matches = re.finditer(pattern, custom_attr)
         for person_match in person_matches:
             if not text_content:
@@ -490,6 +512,18 @@ def extract_person_from_custom(custom_attr: str, text_content: str, known_person
                     # Schneidet den entsprechenden Namens-String aus text_content aus
                     person_name = text_content[offset:offset+length]
                     print(f"[DEBUG] Erkannter Personenname: {person_name}")
+                    
+                    
+                    # entferne generische Zusätze vor dem eigentlichen Namen
+                    person_name = re.sub(
+                        r'.*(Herrn?|Frau|Dr\.?|Prof\.?|Fräulein|Witwe)\s+',
+                        '',
+                        person_name,
+                        flags=re.IGNORECASE
+                    ).strip()
+                    print(f"[DEBUG] Bereinigter Personenname: {person_name}")
+
+
 
                     # Nutzt die person_matcher-Funktion, um Personendaten (Vorname, Nachname etc.) zu extrahieren
                     person_info = extract_person_data(person_name)
@@ -692,10 +726,12 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         xml_file = os.path.basename(xml_path)
         page_match = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
         page_number = page_match.group(1) if page_match else "001"
+        full_doc_id = f"{seven_digit_folder}_{subdir}_page{page_number}"
+
 
         # Dokumenttyp ermitteln
         full_doc_id = f"{seven_digit_folder}_{subdir}_{xml_file.replace('.xml', '')}"
-        document_type = get_document_type(seven_digit_folder, page_number)
+        document_type = get_document_type(full_doc_id, xml_path)
         print(f"[DEBUG] Dokumenttyp erkannt für {full_doc_id}: {document_type}")
 
         # Metadaten & Transkript
@@ -708,6 +744,8 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
 
         # Custom Tags extrahieren
         custom_data = extract_custom_attributes(root)
+
+#################################################################
 
         # Personen deduplizieren
         all_persons = custom_data["persons"]
@@ -724,7 +762,8 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
                 p["familyname"]      = match["matched_familyname"] or p["familyname"]
                 p["title"]           = match["matched_title"]      or p.get("title", "")
                 p["nodegoat_id"]     = match["match_id"]
-                p["match_score"]     = match["score"]              # optional fürs Debuggen
+                p["match_score"]     = match["score"]
+                p["confidence"]      = "fuzzy"
 
 
         mentioned_persons = []
@@ -737,7 +776,9 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
                 role=person.get("role", ""),
                 associated_place=person.get("associated_place", ""),
                 associated_organisation=person.get("associated_organisation", ""),
-                nodegoat_id=person.get("nodegoat_id", "")
+                nodegoat_id=person.get("nodegoat_id", ""),
+                match_score=person.get("match_score"),
+                confidence=person.get("confidence", "")
                 )
 
 
@@ -777,7 +818,9 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
                 role=d.get("role", ""),
                 associated_place=d.get("associated_place", ""),
                 associated_organisation=d.get("associated_organisation", ""),
-                nodegoat_id=str(d.get("nodegoat_id", "") or "")
+                nodegoat_id=str(d.get("nodegoat_id", "") or ""),
+                match_score=d.get("match_score"),
+                confidence=d.get("confidence", "")
             )
             for d in enriched_dicts
         ]
@@ -790,7 +833,18 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             attributes=metadata_info,
             content_transcription=transcript_text,
             mentioned_persons=mentioned_persons,
-            mentioned_organizations=[Organization(**o) for o in custom_data["organizations"]],
+            mentioned_organizations=[
+                Organization(
+                    name=o.get("name", ""),
+                    type=o.get("type", ""),
+                    nodegoat_id=o.get("nodegoat_id", ""),           # ← nur einmal nodegoat_id
+                    alternate_names=o.get("alternate_names", []),
+                    feldpostnummer=o.get("feldpostnummer", ""),
+                    match_score=o.get("match_score"),
+                    confidence=o.get("confidence", "")
+                )
+                for o in custom_data["organizations"]
+            ],
             mentioned_places=[
                 Place(
                     name=pl.get("name", ""),
@@ -819,101 +873,182 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
         traceback.print_exc()
         return None
 
-def main():
-    print("Starte Extraktion von Transkribus-Daten mit Objektorientierung und Validierung...")
-    processed_files = 0
-    validated_files = 0
 
-    # Stelle sicher, dass das Ausgabeverzeichnis existiert
+
+def main():
+    print("Starte Extraktion von Transkribus-Daten...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # Prüfe, ob das Eingabeverzeichnis existiert
-    if not os.path.exists(TRANSKRIBUS_DIR) or not os.path.isdir(TRANSKRIBUS_DIR):
-        print(f"ERROR: Das Eingabeverzeichnis {TRANSKRIBUS_DIR} existiert nicht oder ist kein Verzeichnis.")
+    # initialize place matcher
+    place_m = PlaceMatcher(PLACE_CSV_PATH)
+    if not place_m.known_name_map:
+        print(f"ERROR: konnte keine Orte laden aus '{PLACE_CSV_PATH}'")
+        return
+    
+    # initialize org matcher
+    org_list = load_organizations_from_csv(ORG_CSV_PATH)
+    if not org_list:
+        print(f"ERROR: konnte keine Organisationen laden aus '{ORG_CSV_PATH}'")
         return
 
-    # Prüfe, ob Orte und Personen korrekt geladen wurden
-    print(f"Status: {len(KNOWN_PERSONS)} bekannte Personen geladen.")
-    print(f"Status: Place Matcher verfügbar: {place_matcher is not None}")
-    if place_matcher and hasattr(place_matcher, 'places_df'):
-        print(f"Status: {len(place_matcher.places_df)} bekannte Orte geladen.")
-
-    # Iteriere über alle 7-stelligen Ordner (Transkribus-IDs)
-    transkribus_folders = [d for d in os.listdir(TRANSKRIBUS_DIR) 
-                          if os.path.isdir(os.path.join(TRANSKRIBUS_DIR, d)) and d.isdigit()]
-    
-    if not transkribus_folders:
-        print(f"Warnung: Keine gültigen Transkribus-Ordner in {TRANSKRIBUS_DIR} gefunden.")
-    
-    for seven_digit_folder in transkribus_folders:
+    for seven_digit_folder in os.listdir(TRANSKRIBUS_DIR):
+        if not seven_digit_folder.isdigit():
+            continue
         folder_path = os.path.join(TRANSKRIBUS_DIR, seven_digit_folder)
-        print(f"Verarbeite Transkribus-Ordner: {seven_digit_folder}")
 
-        # Iteriere über alle "Akte_*" Unterordner
-        akte_folders = [d for d in os.listdir(folder_path) 
-                       if os.path.isdir(os.path.join(folder_path, d)) and d.startswith("Akte_")]
-        
-        if not akte_folders:
-            print(f"Warnung: Keine 'Akte_*'-Unterordner in {folder_path} gefunden.")
-            
-        for subdir in akte_folders:
-            subdir_path = os.path.join(folder_path, subdir)
-            print(f"Verarbeite Akte: {subdir}")
-
-            # Finde den "page" Unterordner
-            page_folder = os.path.join(subdir_path, "page")
-            if not os.path.isdir(page_folder):
-                print(f"Kein 'page' Ordner in {subdir_path}")
+        for subdir in os.listdir(folder_path):
+            if not subdir.startswith("Akte_"):
+                continue
+            page_dir = os.path.join(folder_path, subdir, "page")
+            if not os.path.isdir(page_dir):
                 continue
 
-            # Verarbeite alle XML-Dateien im "page" Ordner
-            xml_files = [f for f in os.listdir(page_folder) if f.endswith(".xml")]
-            
-            if not xml_files:
-                print(f"Warnung: Keine XML-Dateien in {page_folder} gefunden.")
-                
-            for xml_file in xml_files:
-                xml_path = os.path.join(page_folder, xml_file)
-                print(f"\nVerarbeite: Transkribus-ID {seven_digit_folder}, {subdir}, Datei {xml_file}")
+            for xml_file in os.listdir(page_dir):
+                if not xml_file.endswith(".xml"):
+                    continue
+                xml_path = os.path.join(page_dir, xml_file)
+                tree = ET.parse(xml_path)
+                root = tree.getroot()
+                print(f"Verarbeite Datei: {xml_file}")
 
-                # Extrahiere Seitenzahl aus Dateiname
-                page_match = re.search(r"p(\d+)|(\d+)_p", xml_file, re.IGNORECASE)
-                page_number = page_match.group(1) if page_match and page_match.group(1) else \
-                             page_match.group(2) if page_match and page_match.group(2) else "001"
-
-                # Verarbeite die XML-Datei
+                # 1) BaseDocument erzeugen
                 doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
-                if doc:
-                    validation_errors = doc.validate()
-                    is_valid = len(validation_errors) == 0
+                if not doc:
+                    continue
 
-                    if not is_valid:
-                        print(f"Warnung: Dokument {seven_digit_folder}_{subdir}_page{page_number} enthält Validierungsfehler: {validation_errors}")
+                # 2) Seitenzahl extrahieren
+                m = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
+                page_num = m.group(1) if m else re.search(r"(\d+)_p", xml_file, re.IGNORECASE).group(1)
+
+                # 3) Vollständige Doc-ID
+                full_doc_id = f"{seven_digit_folder}_{subdir}_page{page_num}"
+
+    
+
+                # 5a) Roh-Personen aus den Custom Attributes extrahieren
+                raw_persons = extract_custom_attributes(root).get("persons", [])
+
+                # 5b) (Optional) nach Vor‑/Nachname deduplizieren
+                seen = set()
+                unique_raw_persons = []
+                for p in raw_persons:
+                    key = (p.get("forename","").strip().lower(), p.get("familyname","").strip().lower())
+                    if key not in seen:
+                        seen.add(key)
+                        unique_raw_persons.append(p)
+
+                # 6) Splitten & Enrich
+                matched_persons, unmatched_persons = split_and_enrich_persons(
+                    unique_raw_persons,
+                    document_id=full_doc_id,
+                    candidates=KNOWN_PERSONS
+                )
+
+                # 7) Ungelöste Personen separat ablegen
+                if unmatched_persons:
+                    path = os.path.join(OUTPUT_DIR_UNMATCHED, f"{full_doc_id}_unmatched_persons.json")
+                    with open(path, "w", encoding="utf-8") as fh:
+                        json.dump(unmatched_persons, fh, ensure_ascii=False, indent=2)
+
+                # 8) Nur die gematchten Personen ins Dokument übernehmen
+                doc.mentioned_persons = []
+                for pd in matched_persons:
+                    # Map 'id' → 'nodegoat_id' falls vorhanden
+                    if "id" in pd:
+                        pd["nodegoat_id"] = pd.pop("id")
+                        
+                    # Debug: Alle Werte ausgeben
+                    print(f"[DEBUG] Person data for {pd.get('forename')} {pd.get('familyname')}:")
+                    for k, v in pd.items():
+                        print(f"  {k}: {v}")
+                        
+                    # Stelle sicher, dass match_score korrekt übergeben wird
+                    match_score = pd.get("match_score")
+                    if isinstance(match_score, (int, float)):
+                        print(f"[DEBUG] Person {pd.get('forename')} {pd.get('familyname')} has match_score: {match_score}")
                     else:
-                        validated_files += 1
+                        print(f"[WARNING] Person {pd.get('forename')} {pd.get('familyname')} has NO match_score!")
+                        
+                    doc.mentioned_persons.append(
+                        Person(
+                            forename=pd.get("forename", ""),
+                            familyname=pd.get("familyname", ""),
+                            alternate_name=pd.get("alternate_name", ""),
+                            title=pd.get("title", ""),
+                            role=pd.get("role", ""),
+                            associated_place=pd.get("associated_place", ""),
+                            associated_organisation=pd.get("associated_organisation", ""),
+                            nodegoat_id=pd.get("nodegoat_id", ""),
+                            match_score=match_score,  # Explizit übergeben
+                            confidence=pd.get("confidence", "")
+                        )
+                    )
 
-                    print(f"[DEBUG] Speichere JSON mit {len(doc.mentioned_persons)} Personen, {len(doc.mentioned_places)} Orten etc.")
 
-                    output_filename = f"{seven_digit_folder}_{subdir}_page{page_number}.json"
-                    output_path = os.path.join(OUTPUT_DIR, output_filename)
+                # 9) rohe Places matchen
+                raw_places = []
+                for pl in extract_custom_attributes(root)["places"]:
+                    match = place_m.match_place(pl.get("original_input", pl.get("name", "")))
+                    if match:
+                        raw_places.append(match)
 
-                    if doc is not None and hasattr(doc, "to_json"):
-                        with open(output_path, "w", encoding="utf‑8") as f:
-                            f.write(doc.to_json(indent=2))   # oder einfach doc.to_json()
-                        print(f"JSON gespeichert: {output_path} (Validierung: {'Erfolgreich' if is_valid else 'Fehlgeschlagen'})")
+                # 10) deduplizieren & splitten
+                matched_places, unmatched_places = place_m.deduplicate_places(
+                    raw_places,
+                    document_id=full_doc_id
+                )
 
-    print(f"\nVerarbeitung abgeschlossen.")
-    print(f"- {processed_files} Dateien wurden verarbeitet.")
-    print(f"- {validated_files} Dokumente ohne Validierungsfehler")
-    print(f"- {processed_files - validated_files} Dokumente mit Validierungsfehlern")
+                # 11) Ungelöste Orte speichern
+                if unmatched_places:
+                    unmatched_path = os.path.join(OUTPUT_DIR, f"{full_doc_id}_unmatched_places.json")
+                    with open(unmatched_path, "w", encoding="utf-8") as fh:
+                        json.dump(unmatched_places, fh, ensure_ascii=False, indent=2)
 
-    # LLM-Enrichment aktivieren, wenn gewünscht (noch auskommentiert)
-    if OPENAI_API_KEY:
-        print("\nLLM-Enrichment ist vorbereitet, aber aktuell deaktiviert.")
-        # print("\nStarte LLM-Enrichment der generierten JSON-Dateien...")
-        # llm_enricher.run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)
-    else:
-        print("\nKein OpenAI API Key gefunden. LLM-Enrichment ist nicht möglich.")
+                # 12) gematchte Orte ins Dokument übernehmen
+                doc.mentioned_places = [
+                    Place(
+                        name=pl["data"]["name"],
+                        type="",
+                        alternate_place_name=pl["data"]["alternate_place_name"],
+                        geonames_id=pl["data"]["geonames_id"],
+                        wikidata_id=pl["data"]["wikidata_id"],
+                        nodegoat_id=pl["data"]["nodegoat_id"],
+                    )
+                    for pl in matched_places
+                ]
+                # 14) Alle extrahierten Organisationen ins Dokument übernehmen
+                raw_orgs = extract_custom_attributes(root)["organizations"]
+                matched_orgs = match_organization_entities(raw_orgs, org_list)
+                doc.mentioned_organizations = [
+                Organization(
+                    name=o.get("name", ""),
+                    type=o.get("type", ""),
+                    nodegoat_id=o.get("nodegoat_id", ""),
+                    alternate_names=o.get("alternate_names", []),
+                    feldpostnummer=o.get("feldpostnummer", ""),
+                    match_score=o.get("match_score"),
+                    confidence=o.get("confidence", "")
+                )
+                for o in matched_orgs
+            ]
+
+
+                # 18) Document speichern
+                output_path = os.path.join(OUTPUT_DIR, f"{full_doc_id}.json")
+                with open(output_path, "w", encoding="utf-8") as f:
+                    f.write(doc.to_json(indent=2))
+                print(f"Gespeichert: {output_path}")
+
+                # 19) LLM-Enricher
+                # if OPENAI_API_KEY:
+                #     print("\nStarte LLM-Enrichment der generierten JSON-Dateien…")
+                #     run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)
+                # else:
+                #     print("\nWarnung: Kein OPENAI_API_KEY gesetzt – LLM-Enrichment übersprungen.")
+
+
+
+    print("Fertig.")
 
 if __name__ == "__main__":
     main()

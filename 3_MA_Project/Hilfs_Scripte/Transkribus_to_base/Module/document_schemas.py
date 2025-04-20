@@ -11,18 +11,24 @@ from typing import Dict, List, Optional, Union, Any
 import re
 from datetime import datetime
 
+# Im Person-Constructor in document_schemas.py
 class Person:
-    """Repräsentiert eine Person mit Namen, Rolle und Zugehörigkeiten."""
-    
-    def __init__(self, 
-                forename: str = "", 
-                alternate_name: str = "",
-                familyname: str = "", 
-                title: str = "",
-                role: str = "", 
-                associated_place: str = "", 
-                associated_organisation: str = "",
-                nodegoat_id: str = ""):
+    def __init__(
+        self,
+        anrede: str = "",
+        forename: str = "",
+        alternate_name: str = "",
+        familyname: str = "",
+        title: str = "",
+        role: str = "",
+        associated_place: str = "",
+        associated_organisation: str = "",
+        nodegoat_id: str = "",
+        match_score: Optional[float] = None,
+        confidence: str = ""
+    ):
+        # alle Parameter auch zuweisen!
+        self.anrede = anrede
         self.forename = forename
         self.alternate_name = alternate_name
         self.familyname = familyname
@@ -31,67 +37,218 @@ class Person:
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
         self.nodegoat_id = nodegoat_id
-    
-    def to_dict(self) -> Dict[str, str]:
+        self.match_score = match_score
+        self.confidence = confidence
+
+    def to_dict(self) -> Dict[str, Any]:
         return {
+            "anrede": self.anrede,
             "forename": self.forename,
-            "familyname": self.familyname,
             "alternate_name": self.alternate_name,
+            "familyname": self.familyname,
             "title": self.title,
             "role": self.role,
             "associated_place": self.associated_place,
             "associated_organisation": self.associated_organisation,
-            "nodegoat_id": self.nodegoat_id 
-
+            "nodegoat_id": self.nodegoat_id,
+            "match_score": self.match_score,
+            "confidence": self.confidence
         }
 
-    
     @classmethod
-    def from_dict(cls, data: Dict[str, str]) -> 'Person':
-        """Erstellt ein Personenobjekt aus einem Dictionary."""
-        return cls(            
+    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
+        # nur eine from_dict, die *alle* Felder übernimmt
+        return cls(
+            anrede=data.get("anrede", ""),
             forename=data.get("forename", ""),
+            alternate_name=data.get("alternate_name", ""),
             familyname=data.get("familyname", ""),
+            title=data.get("title", ""),
             role=data.get("role", ""),
             associated_place=data.get("associated_place", ""),
             associated_organisation=data.get("associated_organisation", ""),
             nodegoat_id=data.get("nodegoat_id", ""),
-            alternate_name=data.get("alternate_name", ""),
-            title=data.get("title", ""),
-            
+            match_score=data.get("match_score"),
+            confidence=data.get("confidence", "")
         )
 
-    
     def is_valid(self) -> bool:
-        """Prüft, ob die Personendaten gültig sind."""
-        # Eine Person ist gültig, wenn mindestens Vor- oder Nachname vorhanden ist
+        """Mindestens Vor- oder Nachname muss vorhanden sein."""
+        return bool(self.forename.strip() or self.familyname.strip())
+
+    def __init__(
+        self,
+        anrede: str = "",
+        forename: str = "",
+        alternate_name: str = "",
+        familyname: str = "",
+        title: str = "",
+        role: str = "",
+        associated_place: str = "",
+        associated_organisation: str = "",
+        nodegoat_id: str = "",
+        match_score: Optional[float] = None,
+        confidence: str = ""
+    ):
+        # alle Parameter auch zuweisen!
+        self.anrede = anrede
+        self.forename = forename
+        self.alternate_name = alternate_name
+        self.familyname = familyname
+        self.title = title
+        self.role = role
+        self.associated_place = associated_place
+        self.associated_organisation = associated_organisation
+        self.nodegoat_id = nodegoat_id
+        self.match_score = match_score
+        self.confidence = confidence
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "anrede": self.anrede,
+            "forename": self.forename,
+            "alternate_name": self.alternate_name,
+            "familyname": self.familyname,
+            "title": self.title,
+            "role": self.role,
+            "associated_place": self.associated_place,
+            "associated_organisation": self.associated_organisation,
+            "nodegoat_id": self.nodegoat_id,
+            "match_score": self.match_score,
+            "confidence": self.confidence
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
+        # nur eine from_dict, die *alle* Felder übernimmt
+        return cls(
+            anrede=data.get("anrede", ""),
+            forename=data.get("forename", ""),
+            alternate_name=data.get("alternate_name", ""),
+            familyname=data.get("familyname", ""),
+            title=data.get("title", ""),
+            role=data.get("role", ""),
+            associated_place=data.get("associated_place", ""),
+            associated_organisation=data.get("associated_organisation", ""),
+            nodegoat_id=data.get("nodegoat_id", ""),
+            match_score=data.get("match_score"),
+            confidence=data.get("confidence", "")
+        )
+
+    def is_valid(self) -> bool:
+        """Mindestens Vor- oder Nachname muss vorhanden sein."""
+        return bool(self.forename.strip() or self.familyname.strip())
+
+    def __init__(
+        self,
+        anrede: str = "",
+        forename: str = "",
+        alternate_name: str = "",
+        familyname: str = "",
+        title: str = "",
+        role: str = "",
+        associated_place: str = "",
+        associated_organisation: str = "",
+        nodegoat_id: str = "",
+        match_score: Optional[float] = None,
+        confidence: str = ""
+    ):
+        # alle Parameter auch zuweisen!
+        self.anrede = anrede
+        self.forename = forename
+        self.alternate_name = alternate_name
+        self.familyname = familyname
+        self.title = title
+        self.role = role
+        self.associated_place = associated_place
+        self.associated_organisation = associated_organisation
+        self.nodegoat_id = nodegoat_id
+        self.match_score = match_score
+        self.confidence = confidence
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "anrede": self.anrede,
+            "forename": self.forename,
+            "alternate_name": self.alternate_name,
+            "familyname": self.familyname,
+            "title": self.title,
+            "role": self.role,
+            "associated_place": self.associated_place,
+            "associated_organisation": self.associated_organisation,
+            "nodegoat_id": self.nodegoat_id,
+            "match_score": self.match_score,
+            "confidence": self.confidence
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
+        # nur eine from_dict, die *alle* Felder übernimmt
+        return cls(
+            anrede=data.get("anrede", ""),
+            forename=data.get("forename", ""),
+            alternate_name=data.get("alternate_name", ""),
+            familyname=data.get("familyname", ""),
+            title=data.get("title", ""),
+            role=data.get("role", ""),
+            associated_place=data.get("associated_place", ""),
+            associated_organisation=data.get("associated_organisation", ""),
+            nodegoat_id=data.get("nodegoat_id", ""),
+            match_score=data.get("match_score"),
+            confidence=data.get("confidence", "")
+        )
+
+    def is_valid(self) -> bool:
+        """Mindestens Vor- oder Nachname muss vorhanden sein."""
         return bool(self.forename.strip() or self.familyname.strip())
 
 class Organization:
-    """Repräsentiert eine Organisation."""
-    
-    def __init__(self, name: str = "", location: str = "", type: str = ""):
+    """Repräsentiert eine Organisation, angereichert mit Nodegoat-ID, Alternativnamen, Match-Score und Confidence."""
+
+    def __init__(
+        self,
+        name: str = "",
+        type: str = "",
+        nodegoat_id: str = "",
+        alternate_names: List[str] = None,
+        feldpostnummer: str = "",
+        match_score: Optional[float] = None,
+        confidence: str = ""
+    ):
         self.name = name
-        self.location = location
         self.type = type
-    
-    def to_dict(self) -> Dict[str, str]:
-        """Konvertiert Organisationsobjekt in ein Dictionary."""
-        return {
+        self.nodegoat_id = nodegoat_id
+        self.alternate_names = alternate_names or []
+        self.feldpostnummer = feldpostnummer
+        self.match_score = match_score
+        self.confidence = confidence
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = {
             "name": self.name,
-            "location": self.location,
-            "type": self.type
+            "type": self.type,
+            "nodegoat_id": self.nodegoat_id,
+            "alternate_names": self.alternate_names,
+            "feldpostnummer": self.feldpostnummer
         }
-    
+        if self.match_score is not None:
+            d["match_score"] = self.match_score
+        if self.confidence:
+            d["confidence"] = self.confidence
+        return d
+
     @classmethod
-    def from_dict(cls, data: Dict[str, str]) -> 'Organization':
-        """Erstellt ein Organisationsobjekt aus einem Dictionary."""
+    def from_dict(cls, data: Dict[str, Any]) -> 'Organization':
         return cls(
             name=data.get("name", ""),
-            location=data.get("location", ""),
-            type=data.get("type", "")
+            type=data.get("type", ""),
+            nodegoat_id=data.get("nodegoat_id", ""),
+            alternate_names=data.get("alternate_names", []),
+            feldpostnummer=data.get("feldpostnummer", ""),
+            match_score=data.get("match_score"),
+            confidence=data.get("confidence", "")
         )
-    
+
     def is_valid(self) -> bool:
         """Prüft, ob die Organisationsdaten gültig sind."""
         return bool(self.name.strip())
