@@ -589,7 +589,7 @@ def extract_date_from_custom(custom_attr: str, text_content: str) -> List[str]:
                 continue
                 
             date_data = parse_custom_attributes(date_match.group(1))
-            print(f"[DEBUG] Date data: {date_data}")
+            # print(f"[DEBUG] Date data: {date_data}")
             
             if "when" in date_data:
                 date_str = date_data.get("when", "")
@@ -615,7 +615,7 @@ def extract_date_from_custom(custom_attr: str, text_content: str) -> List[str]:
                     else:
                         formatted_date = date_str
                 
-                print(f"[DEBUG] Formatiertes Datum: {formatted_date}")
+                # print(f"[DEBUG] Formatiertes Datum: {formatted_date}")
                 dates.append(formatted_date)
     return dates
 
@@ -633,7 +633,7 @@ def extract_place_from_custom(custom_attr: str, text_content: str) -> List[Dict[
                 offset = int(place_data.get("offset", 0))
                 length = int(place_data.get("length", 0))
                 
-                print(f"[DEBUG] Versuche Extraktion Ort: offset={offset}, length={length}, text='{text_content}'")
+                # print(f"[DEBUG] Versuche Extraktion Ort: offset={offset}, length={length}, text='{text_content}'")
                 
                 if offset < len(text_content) and offset + length <= len(text_content):
                     place_name = text_content[offset:offset+length]
@@ -943,6 +943,7 @@ def main():
                     document_id=full_doc_id,
                     candidates=KNOWN_PERSONS
                 )
+                matched_persons = assign_roles_to_known_persons(matched_persons, extract_text_from_xml(root))
 
                 # 7) Ungelöste Personen separat ablegen
                 if unmatched_persons:

@@ -68,6 +68,43 @@ def assign_roles_to_known_persons(persons: List[Dict[str, str]],
                     p["role"]                   = role
                     p["role_schema"]            = map_role_to_schema_entry(role)
                     p["associated_organisation"] = org
+    # 3) Rollenzeilen, die auf der eigenen Zeile stehen, z.B.
+    #     Vereinsführer des Männerchor
+    STANDALONE_ROLE_RE = re.compile(
+        rf"^\s*(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})"
+        rf"\s*(des|der|vom)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?\s*$",
+        re.IGNORECASE | re.UNICODE | re.MULTILINE
+    )
+    print(f"[DEBUG][Roles] Stand‑alone Regex: {STANDALONE_ROLE_RE.pattern!r}")  # Debug-Meldung
+    for match in STANDALONE_ROLE_RE.finditer(full_text):
+        print(f"[DEBUG][Roles] Found stand‑alone match: {match.group(0)!r} at {match.start()}") 
+        role = match.group("role")
+        org  = (match.group("organisation") or "").strip()
+        start_idx = match.start()
+
+        # vorherige Zeile herausziehen
+        prev_chunk = full_text[:start_idx].rstrip("\n")
+        last_line = prev_chunk.split("\n")[-1].strip()
+        print(f"[DEBUG][Roles] Prev line for assignment: {last_line!r}")
+
+        # evtl. "z.H.d Herrn " o.ä. entfernen
+        name_line = re.sub(r'.*(Herrn?|Frau)\s+', '', last_line, flags=re.IGNORECASE).strip()
+        print(f"[DEBUG][Roles] After cleaning salutation: {name_line!r}")
+        parts = name_line.split()
+        if len(parts) < 2:
+            continue
+
+        fn_candidate = " ".join(parts[:-1])
+        ln_candidate = parts[-1]
+
+        # Person im persons-Array finden und anreichern
+        for p in persons:
+            if (p.get("familyname") == ln_candidate and
+                    fn_candidate in p.get("forename", "")):
+                p["role"]                   = role
+                p["role_schema"]            = map_role_to_schema_entry(role)
+                p["associated_organisation"] = org
+
     return persons
 
 
