@@ -76,6 +76,34 @@ def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temper
 
     return enriched_data
 
+def merge_lists(orig_list: List[dict], enriched_list: List[dict], key_fields: List[str]) -> List[dict]:
+    result = orig_list.copy()
+    for item in enriched_list:
+        # prüfe, ob item nach key_fields schon existiert
+        if not any(all(o.get(k) == item.get(k) for k in key_fields) for o in orig_list):
+            result.append(item)
+    return result
+
+def merge_original_and_enriched(orig: dict, enriched: dict) -> dict:
+    merged = orig.copy()
+    for k, v in enriched.items():
+        if k not in merged or merged.get(k) in (None, "", [], {}):
+            # fehlt ganz oder leer: übernehmen
+            merged[k] = v
+        else:
+            # Spezialfall Listen: union
+            if isinstance(v, list) and isinstance(merged.get(k), list):
+                if k == "mentioned_places":
+                    merged[k] = merge_lists(merged[k], v, key_fields=["name","nodegoat_id"])
+                elif k == "mentioned_persons":
+                    merged[k] = merge_lists(merged[k], v, key_fields=["forename","familyname","nodegoat_id"])
+                elif k == "mentioned_organizations":
+                    merged[k] = merge_lists(merged[k], v, key_fields=["name","nodegoat_id"])
+                else:
+                    # für alle anderen Listen einfach ersetzen, wenn orig leer
+                    pass
+            # alle anderen Felder belassen wir, weil orig nicht leer war
+    return merged
 
 def load_json_files(input_dir: str) -> List[str]:
     return [
@@ -88,10 +116,8 @@ def save_enriched_json(original_path: str, enriched_data: dict):
     dir_name = os.path.dirname(original_path)
     base_name = os.path.basename(original_path).replace(".json", "_enriched.json")
     output_path = os.path.join(dir_name, base_name)
-
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(enriched_data, f, ensure_ascii=False, indent=2)
-
     print(f"Enriched JSON gespeichert: {output_path}")
 
 def log_enrichment(csv_path: str, file: str, input_tokens: int, output_tokens: int, cost_usd: float):
@@ -111,63 +137,56 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
     json_files = load_json_files(input_dir)
 
     total_in, total_out, total_cost = 0, 0, 0.0
-    print(f"Starte LLM-Enrichment für {len(json_files)} JSON-Dateien...")
-
     csv_log_path = os.path.join(input_dir, "llm_enrichment_log.csv")
 
+    print(f"Starte LLM-Enrichment für {len(json_files)} Dateien…")
     for path in json_files:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        # 🛡️ Original-IDs sichern
-        original_place_ids = [
-            (p.get("name", ""), p.get("nodegoat_id", ""), p.get("geonames_id", ""), p.get("wikidata_id", ""))
-            for p in data.get("mentioned_places", [])
-        ]
-        original_person_ids = [
-            (p.get("forename", ""), p.get("familyname", ""), p.get("nodegoat_id", ""))
-            for p in data.get("mentioned_persons", [])
-        ]
-
-        # Prüfe, ob relevante Felder fehlen (IDs dürfen ruhig fehlen)
-        missing_fields = any([
+        # nur, wenn wir wirklich etwas ergänzen müssen
+        missing = any([
             not data.get("recipient"),
             not data.get("author"),
             not data.get("creation_date"),
             not data.get("content_tags_in_german")
         ])
+        if not missing:
+            print(f"[SKIP] {os.path.basename(path)}: alles bereits vorhanden.")
+            continue
 
-        # ✨ Immer durchlaufen, aber nur bei fehlenden Feldern API-Aufruf starten
-        if missing_fields:
-            enriched = enrich_document_with_llm(data, client, model=model)
+        enriched = enrich_document_with_llm(data, client, model=model)
 
-            # 🔒 Stelle sicher, dass keine IDs überschrieben wurden
-            for p in enriched.get("mentioned_places", []):
-                for name, node_id, geo_id, wiki_id in original_place_ids:
-                    if p.get("name") == name:
-                        p["nodegoat_id"] = node_id
-                        p["geonames_id"] = geo_id
-                        p["wikidata_id"] = wiki_id
+        # IDs sichern und nach Merge wieder einsetzen
+        place_ids = { (p["name"], p["nodegoat_id"]) for p in data.get("mentioned_places", []) }
+        person_ids = { (p["forename"],p["familyname"],p["nodegoat_id"]) for p in data.get("mentioned_persons", []) }
 
-            for p in enriched.get("mentioned_persons", []):
-                for fn, ln, node_id in original_person_ids:
-                    if p.get("forename") == fn and p.get("familyname") == ln:
-                        p["nodegoat_id"] = node_id
+        merged = merge_original_and_enriched(data, enriched)
 
-            save_enriched_json(path, enriched)
+        # IDs zurückschreiben
+        for p in merged.get("mentioned_places", []):
+            key = (p.get("name"), p.get("nodegoat_id"))
+            if key not in place_ids:
+                # neu ergänzte behalten wie vom LLM
+                continue
+            # nichts zu tun, existierende sind schon korrekt
 
-            meta = enriched.get("llm_metadata", {})
-            input_tokens = meta.get("input_tokens", 0)
-            output_tokens = meta.get("output_tokens", 0)
-            cost = meta.get("cost_usd", 0.0)
+        for p in merged.get("mentioned_persons", []):
+            key = (p.get("forename"),p.get("familyname"),p.get("nodegoat_id"))
+            if key not in person_ids:
+                continue
 
-            log_enrichment(csv_log_path, os.path.basename(path), input_tokens, output_tokens, cost)
+        save_enriched_json(path, merged)
 
-            total_in += input_tokens
-            total_out += output_tokens
-            total_cost += cost
-        else:
-            print(f"[SKIP] {os.path.basename(path)} hat bereits alle relevanten Felder.")
+        meta = merged.get("llm_metadata", {})
+        i_tok = meta.get("input_tokens", 0)
+        o_tok = meta.get("output_tokens", 0)
+        cost = meta.get("cost_usd", 0.0)
+        log_enrichment(csv_log_path, os.path.basename(path), i_tok, o_tok, cost)
+
+        total_in += i_tok
+        total_out += o_tok
+        total_cost += cost
 
     print("\n--- Zusammenfassung ---")
     print(f"Input-Tokens: {total_in}")
