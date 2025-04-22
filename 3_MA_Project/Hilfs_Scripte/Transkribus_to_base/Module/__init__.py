@@ -21,17 +21,21 @@ from .person_matcher import (
     split_and_enrich_persons,
 )
 
+# --- Letter‑Metadata Matcher ---
+from .letter_metadata_matcher import match_author, match_recipient
+
 # --- Organization Matcher ---
 from .organization_matcher import (
     load_organizations_from_csv,
-    match_organization_from_text, match_organization_entities
+    match_organization_from_text,
+    match_organization_entities,
 )
 
 # --- Type Matcher ---
 from .type_matcher import get_document_type
 
 # --- Assigned Roles ---
-from .Assigned_Roles_Module import assign_roles_to_known_persons
+from .Assigned_Roles_Module import ROLE_MAPPINGS_DE, assign_roles_to_known_persons
 
 # --- Place Matcher ---
 from .place_matcher import PlaceMatcher
@@ -40,9 +44,7 @@ from .place_matcher import PlaceMatcher
 from .validation_module import validate_extended, generate_validation_summary
 
 # --- LLM Enricher ---
-from .llm_enricher import (
-    run_enrichment_on_directory,
-)
+from .llm_enricher import run_enrichment_on_directory
 
 __all__ = [
     # Pipeline
@@ -62,13 +64,17 @@ __all__ = [
     "deduplicate_persons",
     "get_best_match_info",
     "extract_person_data",
-    "split_and_enrich_persons"
+    "split_and_enrich_persons",
+
+    # Letter‑Metadata Matcher
+    "match_author",
+    "match_recipient",
     
+
     # Organization Matcher
     "load_organizations_from_csv",
     "match_organization_from_text",
-    "match_organization_entities"
-
+    "match_organization_entities",
 
     # Type Matcher
     "get_document_type",
@@ -83,5 +89,5 @@ __all__ = [
     "validate_extended", "generate_validation_summary",
 
     # LLM Enricher
-    "llm_enricher", "run_enrichment_on_directory"
+    "run_enrichment_on_directory",
 ]

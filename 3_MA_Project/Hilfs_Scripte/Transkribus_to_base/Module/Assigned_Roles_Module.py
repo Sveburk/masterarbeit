@@ -75,7 +75,7 @@ def assign_roles_to_known_persons(persons: List[Dict[str, str]],
         rf"\s*(des|der|vom)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?\s*$",
         re.IGNORECASE | re.UNICODE | re.MULTILINE
     )
-    print(f"[DEBUG][Roles] Stand‑alone Regex: {STANDALONE_ROLE_RE.pattern!r}")  # Debug-Meldung
+
     for match in STANDALONE_ROLE_RE.finditer(full_text):
         print(f"[DEBUG][Roles] Found stand‑alone match: {match.group(0)!r} at {match.start()}") 
         role = match.group("role")
