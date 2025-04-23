@@ -849,18 +849,7 @@ def process_transkribus_file(xml_path: str, seven_digit_folder: str, subdir: str
             attributes=metadata_info,
             content_transcription=transcript_text,
             mentioned_persons=mentioned_persons,
-            mentioned_organizations=[
-                Organization(
-                    name=o.get("name", ""),
-                    type=o.get("type", ""),
-                    nodegoat_id=o.get("nodegoat_id", ""),           # ← nur einmal nodegoat_id
-                    alternate_names=o.get("alternate_names", []),
-                    feldpostnummer=o.get("feldpostnummer", ""),
-                    match_score=o.get("match_score"),
-                    confidence=o.get("confidence", "")
-                )
-                for o in custom_data["organizations"]
-            ],
+            mentioned_organizations=[],      
             mentioned_places=[
                 Place(
                     name=pl.get("name", ""),
@@ -1021,17 +1010,13 @@ def main():
                             confidence=pd.get("confidence","")
                         )
                     )
-
-                # 13) Orte matchen & deduplizieren
-                raw_places = custom_data["places"]
-                matched_places, unmatched_places = place_m.deduplicate_places(
-                    raw_places,
+                 # 13) Orte anreichern & deduplizieren mit dem neuen Modul-API
+                matched_places, unmatched_places = place_m.enrich_and_deduplicate(
+                    custom_data["places"],
                     document_id=full_doc_id
                 )
-                if unmatched_places:
-                    path_unp = os.path.join(OUTPUT_DIR_UNMATCHED, f"{full_doc_id}_unmatched_places.json")
-                    with open(path_unp, "w", encoding="utf-8") as fh:
-                        json.dump(unmatched_places, fh, ensure_ascii=False, indent=2)
+
+                # 14) Gematchte Orte ins Dokument übernehmen
                 doc.mentioned_places = [
                     Place(
                         name=pl["data"]["name"],
@@ -1044,19 +1029,30 @@ def main():
                     for pl in matched_places
                 ]
 
-                # 14) Organisationen matchen & deduplizieren
-                raw_orgs = custom_data["organizations"]
+                # 15) Ungematchte Orte optional speichern
+                if unmatched_places:
+                    path_unp = os.path.join(
+                        OUTPUT_DIR_UNMATCHED,
+                        f"{full_doc_id}_unmatched_places.json"
+                    )
+                    with open(path_unp, "w", encoding="utf-8") as fh:
+                        json.dump(unmatched_places, fh, ensure_ascii=False, indent=2)
+                # Organisationen extrahieren, matchen & deduplizieren
+                raw_orgs     = custom_data["organizations"]
                 matched_orgs = match_organization_entities(raw_orgs, org_list)
-                seen_org = set()
+
+                seen_org    = set()
                 unique_orgs = []
                 for o in matched_orgs:
-                    key = (o.get("nodegoat_id",""), o.get("name",""))
+                    key = (o.get("nodegoat_id", ""), o.get("name", ""))
                     if key not in seen_org:
                         seen_org.add(key)
                         unique_orgs.append(o)
+
+                # 15) Gematchte Organisationen ins Dokument übernehmen
                 doc.mentioned_organizations = [
                     Organization(
-                        name=o.get("name",""),
+                        name=o["name"],
                         type=o.get("type",""),
                         nodegoat_id=o.get("nodegoat_id",""),
                         alternate_names=o.get("alternate_names",[]),
