@@ -106,21 +106,38 @@ class PlaceMatcher:
         logging.info(f"Insgesamt {len(name_map)} Ortsnamen-Varianten im Index geladen")
         return name_map
 
+
     def match_place(self, input_place: str):
         if not input_place or not input_place.strip():
             return None
 
-        if not self.known_name_map:
-            logging.warning("Keine bekannten Orte zum Abgleich verfügbar.")
-            return None
-
         try:
             normalized_input = self._normalize_place_name(input_place)
-            logging.debug(f"Normalisierte Eingabe: '{input_place}' → '{normalized_input}'")
+            variants = list(self.known_name_map.keys())
 
-            if input_place.lower() in self.known_name_map:
-                entry = self.known_name_map[input_place.lower()]
-                alternate_str = ";".join(sorted(entry["all_variants"]))
+            # 1) Partial-Fuzzy auf den Roh-String
+            best_match, best_score, _ = process.extractOne(
+                input_place,       # der unveränderte Raw-Text
+                variants,
+                scorer=fuzz.partial_ratio
+            )
+            if best_score >= self.threshold:
+                entry = self.known_name_map[best_match]
+                return {
+                    "matched_name": entry["matched_name"],
+                    "matched_raw_input": input_place.strip(),
+                    "score": best_score,
+                    "confidence": f"fuzzy_partial ({best_score})",
+                    "data": {
+                        **entry["data"],
+                        "alternate_place_name": ";".join(entry["all_variants"])
+                    }
+                }
+
+            # 2) Exact-Match: Original und Normalized
+            lp = input_place.lower().strip()
+            if lp in self.known_name_map:
+                entry = self.known_name_map[lp]
                 return {
                     "matched_name": entry["matched_name"],
                     "matched_raw_input": input_place.strip(),
@@ -128,13 +145,12 @@ class PlaceMatcher:
                     "confidence": "exact_original",
                     "data": {
                         **entry["data"],
-                        "alternate_place_name": alternate_str
+                        "alternate_place_name": ";".join(entry["all_variants"])
                     }
                 }
 
             if normalized_input in self.known_name_map:
                 entry = self.known_name_map[normalized_input]
-                alternate_str = ";".join(sorted(entry["all_variants"]))
                 return {
                     "matched_name": entry["matched_name"],
                     "matched_raw_input": input_place.strip(),
@@ -142,34 +158,29 @@ class PlaceMatcher:
                     "confidence": "exact_normalized",
                     "data": {
                         **entry["data"],
-                        "alternate_place_name": alternate_str
+                        "alternate_place_name": ";".join(entry["all_variants"])
                     }
                 }
 
+            # 3) Klassische Fuzzy-Strategien auf Normalized-Keys
             match_strategies = [
                 ("token_sort_ratio", fuzz.token_sort_ratio),
-                ("token_set_ratio", fuzz.token_set_ratio),
-                ("partial_ratio", fuzz.partial_ratio)
+                ("token_set_ratio",   fuzz.token_set_ratio),
+                ("partial_ratio",     fuzz.partial_ratio)
             ]
-            
-            best_match = None
-            best_score = 0
-            best_method = ""
-            
+
+            best_match, best_score, best_method = None, 0, ""
             for method_name, scorer in match_strategies:
-                match, score, _ = process.extractOne(
+                candidate, score, _ = process.extractOne(
                     normalized_input,
-                    list(self.known_name_map.keys()),
+                    variants,
                     scorer=scorer
                 )
                 if score > best_score:
-                    best_match = match
-                    best_score = score
-                    best_method = method_name
+                    best_match, best_score, best_method = candidate, score, method_name
 
             if best_score >= self.threshold:
                 entry = self.known_name_map[best_match]
-                alternate_str = ";".join(sorted(entry["all_variants"]))
                 return {
                     "matched_name": entry["matched_name"],
                     "matched_raw_input": input_place.strip(),
@@ -177,7 +188,7 @@ class PlaceMatcher:
                     "confidence": f"fuzzy ({best_method})",
                     "data": {
                         **entry["data"],
-                        "alternate_place_name": alternate_str
+                        "alternate_place_name": ";".join(entry["all_variants"])
                     }
                 }
 
@@ -222,3 +233,35 @@ class PlaceMatcher:
                     unmatched.append(entry)
 
             return matched, unmatched
+
+    def enrich_and_deduplicate(
+        self,
+        raw_places: List[Dict[str, Any]],
+        document_id: Optional[str] = None
+    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        """
+        Full pipeline:
+         1) match_place auf jeden raw_place["name"] anwenden
+         2) deduplicate_places auf das Ergebnis
+        """
+        enriched = []
+        for raw in raw_places:
+            place_str = raw.get("name", "").strip()
+            match = self.match_place(place_str)
+            if match:
+                enriched.append(match)
+            else:
+                enriched.append({
+                    "matched_name": None,
+                    "matched_raw_input": place_str,
+                    "score": 0,
+                    "confidence": "none",
+                    "data": {
+                        "name": "",
+                        "alternate_place_name": "",
+                        "geonames_id": "",
+                        "wikidata_id": "",
+                        "nodegoat_id": ""
+                    }
+                })
+        return self.deduplicate_places(enriched, document_id=document_id)
