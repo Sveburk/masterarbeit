@@ -1,5 +1,10 @@
 # File: Module/__init__.py
 
+# --- llm_xml_enricher ---
+from . import llm_xml_preprocessing as enhancer
+
+
+
 # --- Enrich Pipeline ---
 from .enrich_pipeline import enrich_pipeline
 
@@ -46,7 +51,13 @@ from .validation_module import validate_extended, generate_validation_summary
 # --- LLM Enricher ---
 from .llm_enricher import run_enrichment_on_directory
 
+
+
 __all__ = [
+
+
+    # llm_xml_enricher
+    "enhancer", 
     # Pipeline
     "enrich_pipeline",
 

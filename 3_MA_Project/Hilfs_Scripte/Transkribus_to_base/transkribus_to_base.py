@@ -5,6 +5,8 @@ Dieses Skript liest Transkribus XML‑Dateien, extrahiert die Metadaten und den 
 und konvertiert sie in das in WORKFLOW.md definierte Basis‑Schema unter Verwendung der
 in document_schemas.py definierten Klassen für Objektorientierung und Datenvalidierung.
 """
+# source .venv/bin/activate
+
 # --------------- Modulpfade vorbereiten ---------------
 import os
 import sys
@@ -13,6 +15,8 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json, re, time, xml.etree.ElementTree as ET
 import time
+import openai
+
 ts = time.time()
 print(ts)
 # Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
@@ -30,6 +34,10 @@ from Module import (
 
     # Schemas
     BaseDocument, Person, Place, Event, Organization,
+
+
+    # llm_xml_enricher
+    enhancer,
 
     # Person‐Matcher
     match_person, KNOWN_PERSONS, deduplicate_persons,
@@ -69,7 +77,7 @@ import spacy
 from rapidfuzz import fuzz, process
 
 # --------------- Pfadkonfiguration ---------------
-TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In/preprocessed"
 OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched_persons")
 OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
@@ -914,6 +922,19 @@ def main():
                 xml_path = os.path.join(page_dir, xml_file)
                 print(f"Verarbeite Datei: {xml_file}")
 
+                # ——— LLM-basiertes Preprocessing aller XMLs ———
+                # liest die unannotierte XML, annotiert sie via OpenAI und speichert
+                # Setze den Ausgabepfad im enhancer-Modul
+                enhancer.OUTPUT_DIR = page_dir
+                # Prozessiere die Datei und erhalte den Pfad zur bearbeiteten XML zurück
+                enhanced_xml_path = enhancer.process_file(xml_path)
+                if enhanced_xml_path and os.path.exists(enhanced_xml_path):
+                    xml_path = enhanced_xml_path
+                else:
+                    print(f"Warnung: Enrichment für {xml_path} fehlgeschlagen, verwende Original-XML")
+
+                # ——————————————————————————————————————————
+
                 # a) BaseDocument + Transkript anlegen
                 doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
                 if not doc:
@@ -1069,12 +1090,12 @@ def main():
                     f.write(doc.to_json(indent=2))
                 print(f"Gespeichert: {output_path}")
 
-                # 16) LLM‑Enrichment (optional)
-                if OPENAI_API_KEY:
-                    print("Starte LLM‑Enrichment…")
-                    run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)
-                else:
-                    print("Warnung: Kein OPENAI_API_KEY – Enrichment übersprungen.")
+                # # 16) LLM‑Enrichment (optional)
+                # if OPENAI_API_KEY:
+                #     print("Starte LLM‑Enrichment…")
+                #     run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)
+                # else:
+                #     print("Warnung: Kein OPENAI_API_KEY – Enrichment übersprungen.")
 
     print("Fertig.")
 

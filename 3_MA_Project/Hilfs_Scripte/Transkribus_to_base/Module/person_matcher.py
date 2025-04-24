@@ -395,7 +395,7 @@ def match_person(
         return None, 0
 
     thr = get_matching_thresholds()
-    print(f"[DEBUG] match_person: fn='{fn}', ln='{ln}'")
+    
 
     # 4) Initial‑Fallback
     if is_initial(fn):
