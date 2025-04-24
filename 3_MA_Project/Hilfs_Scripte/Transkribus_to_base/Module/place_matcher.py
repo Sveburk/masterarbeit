@@ -207,33 +207,39 @@ class PlaceMatcher:
             raw_places: List[Dict[str, Any]],
             document_id: Optional[str] = None
         ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-            """
-            Entfernt Duplikate in raw_places und teilt auf in:
-            - matched: Orte mit nodegoat_id
-            - unmatched: Orte ohne nodegoat_id, ergänzt um document_id
-            Dubletten (gleiche nodegoat_id oder normalisierter Name) werden einmalig ausgegeben.
-            """
-            seen = set()
-            matched = []
-            unmatched = []
+        """
+        Entfernt Duplikate in raw_places und teilt auf in:
+        - matched: alle Treffer (auch fuzzy ohne nodegoat_id)
+        - unmatched: nur die mit matched_name=None
+        """
+        seen = set()
+        matched = []
+        unmatched = []
 
-            for pl in raw_places:
-                # Key: nodegoat_id wenn vorhanden, sonst normalisierte Name
-                key = pl.get("data", {}).get("nodegoat_id") or self._normalize_place_name(pl.get("matched_raw_input", pl.get("name", "")))
-                if not key or key in seen:
-                    continue
-                seen.add(key)
+        for pl in raw_places:
+            # Key: nodegoat_id wenn vorhanden, sonst normalisierte matched_raw_input
+            key = pl.get("data", {}).get("nodegoat_id") \
+                  or self._normalize_place_name(pl.get("matched_raw_input", ""))
 
-                if pl.get("data", {}).get("nodegoat_id"):
-                    matched.append(pl)
-                else:
-                    entry = pl.copy()
-                    if document_id:
-                        entry["document_id"] = document_id
-                    unmatched.append(entry)
+            if not key or key in seen:
+                continue
+            seen.add(key)
 
-            return matched, unmatched
+            # fuzzy- oder exact-Matches (matched_name != None) kommen zu matched
+            if pl.get("matched_name"):
+                matched.append(pl)
+            else:
+                entry = pl.copy()
+                if document_id:
+                    entry["document_id"] = document_id
+                unmatched.append(entry)
 
+        # Return muss hier stehen, außerhalb der for-Schleife
+        return matched, unmatched
+    
+    def _extract_name_only(self, raw: str) -> str:
+        return raw.split(",", 1)[0]
+        
     def enrich_and_deduplicate(
         self,
         raw_places: List[Dict[str, Any]],
