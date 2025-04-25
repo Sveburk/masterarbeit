@@ -35,10 +35,6 @@ from Module import (
     # Schemas
     BaseDocument, Person, Place, Event, Organization,
 
-
-    # llm_xml_enricher
-    enhancer,
-
     # Person‐Matcher
     match_person, KNOWN_PERSONS, deduplicate_persons,
     normalize_name, load_known_persons_from_csv,
@@ -77,7 +73,7 @@ import spacy
 from rapidfuzz import fuzz, process
 
 # --------------- Pfadkonfiguration ---------------
-TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In/preprocessed"
+TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched_persons")
 OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
@@ -914,24 +910,19 @@ def main():
             page_dir = os.path.join(folder_path, subdir, "page")
             if not os.path.isdir(page_dir):
                 continue
+            print(f"\n→ Scanning folder: {page_dir}")
+            print("  contains:", os.listdir(page_dir))
 
-            # 4) Jede XML‑Datei verarbeiten
-            for xml_file in os.listdir(page_dir):
-                if not xml_file.endswith(".xml"):
+             # 4) Nur XML-Dateien mit "_preprocessed" im Dateinamen verarbeiten
+            for xml_file in sorted(os.listdir(page_dir)):
+                print("   checking file:", xml_file) 
+                if not xml_file.endswith("_preprocessed.xml"):
                     continue
-                xml_path = os.path.join(page_dir, xml_file)
-                print(f"Verarbeite Datei: {xml_file}")
+                if "preprocessed" not in xml_file:
+                    continue
 
-                # ——— LLM-basiertes Preprocessing aller XMLs ———
-                # liest die unannotierte XML, annotiert sie via OpenAI und speichert
-                # Setze den Ausgabepfad im enhancer-Modul
-                enhancer.OUTPUT_DIR = page_dir
-                # Prozessiere die Datei und erhalte den Pfad zur bearbeiteten XML zurück
-                enhanced_xml_path = enhancer.process_file(xml_path)
-                if enhanced_xml_path and os.path.exists(enhanced_xml_path):
-                    xml_path = enhanced_xml_path
-                else:
-                    print(f"Warnung: Enrichment für {xml_path} fehlgeschlagen, verwende Original-XML")
+                xml_path = os.path.join(page_dir, xml_file)
+                print(f"Verarbeite preprocessed-Datei: {xml_file}")
 
                 # ——————————————————————————————————————————
 
