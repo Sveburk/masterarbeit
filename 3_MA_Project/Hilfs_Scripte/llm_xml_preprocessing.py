@@ -3,14 +3,16 @@ import os
 import openai
 from pathlib import Path
 from tqdm import tqdm
+import re
+import xml.etree.ElementTree as ET
 
-# --- Kosten-Konstanten (GPT-4 Turbo, Stand 2024) ---
-INPUT_COST_PER_1K = 0.01   # USD per 1K input tokens
-OUTPUT_COST_PER_1K = 0.03  # USD per 1K output tokens
+
+# --- Kosten-Konstanten (GPT-4o, Stand April 2025) ---
+INPUT_COST_PER_1K = 0.0011   # USD per 1K input tokens (non-cached)
+OUTPUT_COST_PER_1K = 0.0044  # USD per 1K output tokens
 
 # --- Konfiguration: Pfade anpassen falls nötig ---
 TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Desktop/Transkribus_test_In")
-OUTPUT_DIR      = TRANSKRIBUS_DIR / "preprocessed"
 
 # --- Hilfsfunktionen ---
 def get_api_client() -> openai.OpenAI:
@@ -21,7 +23,7 @@ def get_api_client() -> openai.OpenAI:
 
 def annotate_with_llm(xml_content: str,
                       client: openai.OpenAI,
-                      model: str = "gpt-4",
+                      model: str = "gpt-4o",
                       temperature: float = 0.0) -> dict:
     """
     Sendet `xml_content` an die LLM und gibt ein dict zurück:
@@ -84,20 +86,35 @@ Hier ist das zu annotierende XML:
     }
 
 def process_file(xml_path: Path, client: openai.OpenAI):
-    """Annotiert eine einzelne XML und speichert sie im OUTPUT_DIR."""
+    """Annotiert eine einzelne XML und speichert sie direkt im gleichen Ordner."""
     try:
         xml_text = xml_path.read_text(encoding="utf-8")
         print(f"\nVerarbeite Datei: {xml_path.name}")
         print("  → Starte Annotation via OpenAI…", end="", flush=True)
 
         result    = annotate_with_llm(xml_text, client)
-        annotated = result["annotated_xml"]
+        annotated = clean_llm_output(result["annotated_xml"])
         meta      = result["llm_metadata"]
+
+        # ✅ Check if LLM returned valid XML
+        if not annotated.strip().startswith("<"):
+            raise ValueError(
+                f"LLM did not return valid XML for {xml_path.name}.\n"
+                f"Response starts with: {annotated[:200]!r}"
+            )
+        try:
+            ET.fromstring(annotated)  # validiert grob das XML
+        except ET.ParseError as pe:
+            raise ValueError(
+                f"Returned XML is not well-formed for {xml_path.name}: {pe}\n"
+                f"Start of XML: {annotated[:200]!r}"
+            )
+
 
         print(" ✓ zurück, speichere…")
 
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        out_path = OUTPUT_DIR / f"{xml_path.stem}_enhanced_xml.xml"
+        # hier direkt neben der Originaldatei speichern
+        out_path = xml_path.with_name(f"{xml_path.stem}_preprocessed{xml_path.suffix}")
         out_path.write_text(annotated, encoding="utf-8")
 
         print(f"    → Gespeichert unter: {out_path}")
@@ -105,38 +122,47 @@ def process_file(xml_path: Path, client: openai.OpenAI):
         print(f"    • Input-Tokens: {meta['input_tokens']}, Output-Tokens: {meta['output_tokens']}")
         print(f"    • Geschätzte Kosten: ${meta['cost_usd']}\n")
 
+        return out_path
+
     except Exception as e:
         print(f"  ✗ Fehler bei {xml_path.name}: {e}")
+        return None
+    
+def clean_llm_output(raw: str) -> str:
+    """
+    Extrahiert den XML-Teil aus der LLM-Antwort, entfernt Markdown-Wrapper wie ```xml\n...\n```.
+    """
+    # Versuche, Block mit ```xml ... ``` zu extrahieren
+    match = re.search(r"```xml\s*(.*?)```", raw, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    
+    # Fallback: Wenn keine ```xml Blöcke vorhanden, aber es irgendwo mit < beginnt
+    xml_start = raw.find("<?xml")
+    if xml_start >= 0:
+        return raw[xml_start:].strip()
 
-# --- Hauptlogik ---
-def get_transkribus():
+    return raw.strip()  # wenn alles andere fehlschlägt
+
+def main():
     client = get_api_client()
-    # jede siebenstellige Ordnernummer durchlaufen
-    for seven in sorted(os.listdir(TRANSKRIBUS_DIR)):
-        if not seven.isdigit():
-            continue
-        folder = TRANSKRIBUS_DIR / seven
 
-        # nur Unterordner, die mit "Akte_" beginnen
-        for sub in sorted(folder.iterdir()):
+    # find all XMLs in the Transkribus structure
+    xml_files = []
+    for seven in sorted(TRANSKRIBUS_DIR.iterdir()):
+        if not seven.is_dir() or not seven.name.isdigit():
+            continue
+        for sub in sorted(seven.iterdir()):
             if not sub.is_dir() or not sub.name.startswith("Akte_"):
                 continue
-
             page_dir = sub / "page"
             if not page_dir.is_dir():
                 continue
+            xml_files.extend(sorted(page_dir.glob("*.xml")))
 
-            # jede XML-Datei in /page/
-            for xml_file in sorted(page_dir.iterdir()):
-                if xml_file.suffix.lower() != ".xml":
-                    continue
-                process_file(xml_file, client)
-
-def main():
-    if not os.getenv("OPENAI_API_KEY"):
-        print("Fehler: Kein OPENAI_API_KEY gesetzt.")
-        return
-    get_transkribus()
+    print(f"Starte LLM-Annotation für {len(xml_files)} Dateien…")
+    for xml_path in tqdm(xml_files, unit="file"):
+        process_file(xml_path, client)
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,5 @@
 # File: Module/__init__.py
 
-# --- llm_xml_enricher ---
-from . import llm_xml_preprocessing as enhancer
 
 
 
@@ -55,9 +53,6 @@ from .llm_enricher import run_enrichment_on_directory
 
 __all__ = [
 
-
-    # llm_xml_enricher
-    "enhancer", 
     # Pipeline
     "enrich_pipeline",
 
