@@ -75,16 +75,17 @@ from rapidfuzz import fuzz, process
 # --------------- Pfadkonfiguration ---------------
 TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
-OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched_persons")
+OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched")
 OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
-#personen
-CSV_PATH_KNOWN_PERSONS   = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
-ORG_CSV_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
-CSV_PATH_METADATA        = CSV_PATH_KNOWN_PERSONS
-LOG_PATH                 = BASE_DIR / "Data" / "new_persons.log"
-#Orte
-PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-place.csv"
 
+# ——— Pfade für Personen-Listen ———
+CSV_PATH_KNOWN_PERSONS  = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
+ORG_CSV_PATH            = BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
+CSV_PATH_METADATA       = CSV_PATH_KNOWN_PERSONS
+LOG_PATH                = BASE_DIR / "Data" / "new_persons.log"
+
+# ——— Pfad für Orte ———
+PLACE_CSV_PATH          = BASE_DIR / "Data" / "Nodegoat_Export" / "export-place.csv"
 
 
 
@@ -888,6 +889,9 @@ def main():
     print("Starte Extraktion von Transkribus-Daten...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+    # 0) Listen für unmatched ojekte:
+    all_unmatched_persons: list[dict] = []
+
     # 1) Place‑Matcher initialisieren
     all_unmatched_places: Dict[str, List[Dict[str,Any]]] = {}
     place_m = PlaceMatcher(PLACE_CSV_PATH)
@@ -996,14 +1000,23 @@ def main():
                 # 10) Rollen‑Enrichment per LLM/Listenzuordnung
                 assign_roles_to_known_persons(matched_persons, doc.content_transcription)
 
-                # 11) Ungematchte Personen speichern
-                if unmatched_persons:
-                    unmatched_path = os.path.join(
-                        OUTPUT_DIR_UNMATCHED,
-                        f"{full_doc_id}_unmatched_persons.json"
-                    )
-                    with open(unmatched_path, "w", encoding="utf-8") as fh:
-                        json.dump(unmatched_persons, fh, ensure_ascii=False, indent=2)
+                # 11) Ungematchte Personen **nur sammeln**, nicht einzeln speichern
+                for up in unmatched_persons:
+                    token = up["raw_token"]
+                    # finde die erste Zeile, die den Token enthält
+                    context_line = ""
+                    for line in doc.content_transcription.splitlines():
+                        if token in line:
+                            context_line = line.strip()
+                            break
+
+                    all_unmatched_persons.append({
+                        "akte": subdir,
+                        "document_id": full_doc_id,
+                        "name": token,
+                        "context": context_line
+                    })
+
 
                 # 12) Gematchte Personen ins Dokument übernehmen
                 for pd in matched_persons:
@@ -1082,9 +1095,16 @@ def main():
                     f.write(doc.to_json(indent=2))
                 print(f"Gespeichert: {output_path}")
 
-                #16) EINMAL: alle unge­matchten Orte in eine große JSON packen
+                #16) === EINMAL: alle unge­matchten in JSON packen ===
+                # ==Personen==
+                if all_unmatched_persons:
+                    out_path = os.path.join(OUTPUT_DIR_UNMATCHED, "unmatched_persons.json")
+                    with open(out_path, "w", encoding="utf-8") as fh:
+                        json.dump(all_unmatched_persons, fh, ensure_ascii=False, indent=2)
+                    print(f"[DEBUG] Alle unge­matchten Personen geschrieben nach {out_path}")
+                #==Places==
                 if all_unmatched_places:
-                    unmatched_out = os.path.join(OUTPUT_DIR_UNMATCHED, "all_unmatched_places.json")
+                    unmatched_out = os.path.join(OUTPUT_DIR_UNMATCHED, "unmatched_places.json")
                     with open(unmatched_out, "w", encoding="utf-8") as fh:
                         json.dump(all_unmatched_places, fh, ensure_ascii=False, indent=2)
                     print(f"[DEBUG] Alle unge­matchten Orte geschrieben nach {unmatched_out}")
