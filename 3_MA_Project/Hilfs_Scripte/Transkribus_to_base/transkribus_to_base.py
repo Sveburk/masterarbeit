@@ -77,11 +77,13 @@ TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched_persons")
 OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
-
+#personen
 CSV_PATH_KNOWN_PERSONS   = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
 ORG_CSV_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
 CSV_PATH_METADATA        = CSV_PATH_KNOWN_PERSONS
 LOG_PATH                 = BASE_DIR / "Data" / "new_persons.log"
+#Orte
+PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-place.csv"
 
 
 
@@ -138,7 +140,6 @@ known_persons_list = [
 org_list = load_organizations_from_csv(str(ORG_CSV_PATH))
                                        
 # === Bekannte Orte Laden ===
-PLACE_CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Datenbank_Metadaten_Stand_08.04.2025/Metadata_Places-Tabelle 1.csv"
 place_matcher = PlaceMatcher(PLACE_CSV_PATH)
 
 
@@ -184,7 +185,7 @@ def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
     #         "[Geburt] Date Start": "",
     #         "[Tod] Date Start": "",
     #         "db:deathPlace": "",
-    #         "Lfd_No.": f"{len(known_persons_df) + 1:05d}"  # Neue ID mit führenden Nullen
+    #         "Lfd_No.": f"{len(known_persons_df) 1:05d}"  # Neue ID mit führenden Nullen
 
     # }
     known_persons_df = pd.concat([known_persons_df, pd.DataFrame([new_row])], ignore_index=True)
@@ -316,7 +317,7 @@ def extract_name_with_spacy(name_text: str) -> tuple:
             forename = name_parts[0]
             # Falls mittlere Namen vorhanden sind, füge sie zum Vornamen hinzu
             if len(name_parts) > 2:
-                forename += " " + " ".join(name_parts[1:-1])
+                forename += " " " ".join(name_parts[1:-1])
             familyname = name_parts[-1]
             return forename, familyname
         return "", text  # Wenn nur ein Wort, behandle es als Nachnamen
@@ -394,7 +395,7 @@ def extract_text_from_xml(root: ET.Element) -> str:
     transcript_text = ""
     for text_equiv in root.findall(".//ns:TextEquiv/ns:Unicode", NS):
         if text_equiv.text:
-            transcript_text += text_equiv.text + "\n"
+              transcript_text += text_equiv.text + "\n"
     
     return transcript_text.strip()
 
@@ -477,6 +478,7 @@ def extract_custom_attributes(root: ET.Element, known_persons: List[Dict[str, st
         places = extract_place_from_custom(custom_attr, text_content)
         if places:
             result["places"].extend(places)
+        
 
     # Debug the result
     print(f"[DEBUG] Extracted entities: persons={len(result['persons'])}, places={len(result['places'])}, "
@@ -887,6 +889,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     # 1) Place‑Matcher initialisieren
+    all_unmatched_places: Dict[str, List[Dict[str,Any]]] = {}
     place_m = PlaceMatcher(PLACE_CSV_PATH)
     if not place_m.known_name_map:
         print(f"ERROR: konnte keine Orte laden aus '{PLACE_CSV_PATH}'")
@@ -926,7 +929,7 @@ def main():
 
                 # ——————————————————————————————————————————
 
-                # a) BaseDocument + Transkript anlegen
+                # a) BaseDocument Transkript anlegen
                 doc = process_transkribus_file(xml_path, seven_digit_folder, subdir)
                 if not doc:
                     continue
@@ -1022,9 +1025,10 @@ def main():
                             confidence=pd.get("confidence","")
                         )
                     )
-                 # 13) Orte anreichern & deduplizieren mit dem neuen Modul-API
-                matched_places, unmatched_places = place_m.enrich_and_deduplicate(
+                 # 13) Orte direkt aus den <custom>-Tags extrahieren und matchen
+                matched_places, unmatched_places = place_m.extract_and_match_from_custom(
                     custom_data["places"],
+                    doc.content_transcription,
                     document_id=full_doc_id
                 )
 
@@ -1033,7 +1037,7 @@ def main():
                     Place(
                         name=pl["data"]["name"],
                         type="",
-                        alternate_place_name=pl["data"]["alternate_place_name"],
+                        alternate_place_name=pl["data"].get("alternate_place_name", ""),
                         geonames_id=pl["data"]["geonames_id"],
                         wikidata_id=pl["data"]["wikidata_id"],
                         nodegoat_id=pl["data"]["nodegoat_id"]
@@ -1043,12 +1047,9 @@ def main():
 
                 # 15) Ungematchte Orte optional speichern
                 if unmatched_places:
-                    path_unp = os.path.join(
-                        OUTPUT_DIR_UNMATCHED,
-                        f"{full_doc_id}_unmatched_places.json"
-                    )
-                    with open(path_unp, "w", encoding="utf-8") as fh:
-                        json.dump(unmatched_places, fh, ensure_ascii=False, indent=2)
+                    all_unmatched_places[full_doc_id] = unmatched_places
+
+
                 # Organisationen extrahieren, matchen & deduplizieren
                 raw_orgs     = custom_data["organizations"]
                 matched_orgs = match_organization_entities(raw_orgs, org_list)
@@ -1067,7 +1068,7 @@ def main():
                         name=o["name"],
                         type=o.get("type",""),
                         nodegoat_id=o.get("nodegoat_id",""),
-                        alternate_names=o.get("alternate_names",[]),
+                        alternate_names=[],
                         feldpostnummer=o.get("feldpostnummer",""),
                         match_score=o.get("match_score"),
                         confidence=o.get("confidence","")
@@ -1081,12 +1082,21 @@ def main():
                     f.write(doc.to_json(indent=2))
                 print(f"Gespeichert: {output_path}")
 
-                # # 16) LLM‑Enrichment (optional)
+                #16) EINMAL: alle unge­matchten Orte in eine große JSON packen
+                if all_unmatched_places:
+                    unmatched_out = os.path.join(OUTPUT_DIR_UNMATCHED, "all_unmatched_places.json")
+                    with open(unmatched_out, "w", encoding="utf-8") as fh:
+                        json.dump(all_unmatched_places, fh, ensure_ascii=False, indent=2)
+                    print(f"[DEBUG] Alle unge­matchten Orte geschrieben nach {unmatched_out}")
+
+                # # 17) LLM‑Enrichment (optional)
                 # if OPENAI_API_KEY:
                 #     print("Starte LLM‑Enrichment…")
                 #     run_enrichment_on_directory(OUTPUT_DIR, api_key=OPENAI_API_KEY)
                 # else:
                 #     print("Warnung: Kein OPENAI_API_KEY – Enrichment übersprungen.")
+
+                
 
     print("Fertig.")
 

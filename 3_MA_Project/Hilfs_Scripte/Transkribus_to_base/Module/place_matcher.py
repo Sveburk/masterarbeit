@@ -14,7 +14,7 @@ def sanitize_id(v) -> str:
         return ""
 
 class PlaceMatcher:
-    def __init__(self, csv_path, threshold=85):
+    def __init__(self, csv_path, threshold=80):
         self.threshold = threshold
         try:
             self.places_df = pd.read_csv(csv_path, sep=";", encoding="utf-8")
@@ -41,11 +41,28 @@ class PlaceMatcher:
 
     def _normalize_place_name(self, name: str) -> str:
         name = name.lower()
+        name = name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")
         name = re.sub(r"[/\-\.(),]", " ", name)
         name = re.sub(r"[^\w\s]", "", name)
-        name = re.sub(r"\b(am|an|bei|in|auf|von|zu|zum|zur|a|i|der|die|das|im|aus|und)\b", "", name)
+        name = re.sub(r"\b(am|an|bei|in|auf|von|zu|zum|zur|a|i|der|die|das|im|aus|und|unsere)\b", "", name)
         name = re.sub(r"\s+", " ", name)
         return name.strip()
+    
+    def _build_match_result(self, entry, raw_input, score, method):
+        alternate_str = ";".join(entry["all_variants"])
+        return {
+            "matched_name": entry["matched_name"],
+            "matched_raw_input": raw_input.strip(),
+            "score": score,
+            "confidence": method,
+            "data": {
+                **entry["data"],
+                "alternate_place_name": alternate_str
+            }
+        }
+
+
+    
 
     def _build_known_place_map(self):
         name_map = {}
@@ -113,60 +130,34 @@ class PlaceMatcher:
 
         try:
             normalized_input = self._normalize_place_name(input_place)
-            variants = list(self.known_name_map.keys())
+            print(f"[DEBUG] Versuche Matching für Eingabe-Ort: '{input_place}' (normalisiert: '{normalized_input}')")
+            variants = [v for v in self.known_name_map.keys() if len(v) > 3]
 
-            # 1) Partial-Fuzzy auf den Roh-String
-            best_match, best_score, _ = process.extractOne(
-                input_place,       # der unveränderte Raw-Text
-                variants,
-                scorer=fuzz.partial_ratio
-            )
-            if best_score >= self.threshold:
-                entry = self.known_name_map[best_match]
-                return {
-                    "matched_name": entry["matched_name"],
-                    "matched_raw_input": input_place.strip(),
-                    "score": best_score,
-                    "confidence": f"fuzzy_partial ({best_score})",
-                    "data": {
-                        **entry["data"],
-                        "alternate_place_name": ";".join(entry["all_variants"])
-                    }
-                }
-
-            # 2) Exact-Match: Original und Normalized
-            lp = input_place.lower().strip()
-            if lp in self.known_name_map:
-                entry = self.known_name_map[lp]
-                return {
-                    "matched_name": entry["matched_name"],
-                    "matched_raw_input": input_place.strip(),
-                    "score": 100,
-                    "confidence": "exact_original",
-                    "data": {
-                        **entry["data"],
-                        "alternate_place_name": ";".join(entry["all_variants"])
-                    }
-                }
-
+            # 1) Exact match first (original)
             if normalized_input in self.known_name_map:
                 entry = self.known_name_map[normalized_input]
-                return {
-                    "matched_name": entry["matched_name"],
-                    "matched_raw_input": input_place.strip(),
-                    "score": 100,
-                    "confidence": "exact_normalized",
-                    "data": {
-                        **entry["data"],
-                        "alternate_place_name": ";".join(entry["all_variants"])
-                    }
-                }
+                return self._build_match_result(entry, input_place, 100, "exact_normalized")
 
-            # 3) Klassische Fuzzy-Strategien auf Normalized-Keys
+            # 3) Partial-Fuzzy auf raw (mit Längencheck!)
+            best_match, best_score, _ = process.extractOne(
+                normalized_input,
+                [v for v in self.known_name_map.keys() if len(v)>3],
+                scorer=fuzz.partial_ratio
+            )
+            print(f"[DEBUG] (partial fuzzy) Best Match für '{input_place.strip()}': '{best_match}' mit Score {best_score}")
+
+            if best_score >= self.threshold:
+                if len(best_match) >= 0.5 * len(input_place):
+                    entry = self.known_name_map[best_match]
+                    return self._build_match_result(entry, input_place, best_score, f"fuzzy_partial ({best_score})")
+                else:
+                    print(f"[DEBUG] Best Match '{best_match}' ist zu kurz für Eingabe '{input_place}'")
+
+            # 4) Andere Fuzzy-Strategien auf normalized
             match_strategies = [
                 ("token_sort_ratio", fuzz.token_sort_ratio),
-                ("token_set_ratio",   fuzz.token_set_ratio),
-                ("partial_ratio",     fuzz.partial_ratio)
+                ("token_set_ratio", fuzz.token_set_ratio),
+                ("partial_ratio", fuzz.partial_ratio)
             ]
 
             best_match, best_score, best_method = None, 0, ""
@@ -181,16 +172,7 @@ class PlaceMatcher:
 
             if best_score >= self.threshold:
                 entry = self.known_name_map[best_match]
-                return {
-                    "matched_name": entry["matched_name"],
-                    "matched_raw_input": input_place.strip(),
-                    "score": best_score,
-                    "confidence": f"fuzzy ({best_method})",
-                    "data": {
-                        **entry["data"],
-                        "alternate_place_name": ";".join(entry["all_variants"])
-                    }
-                }
+                return self._build_match_result(entry, input_place, best_score, f"fuzzy ({best_method})")
 
             return None
 
@@ -264,10 +246,45 @@ class PlaceMatcher:
                     "confidence": "none",
                     "data": {
                         "name": "",
-                        "alternate_place_name": "",
+                        "geonames_id": "",
+                        "wikidata_id": "",
+                        "nodegoat_id": ""
+                        }
+
+                })
+        return self.deduplicate_places(enriched, document_id=document_id)
+    
+
+    def extract_and_match_from_custom(
+        self,
+        custom_places: List[Dict[str, Any]],
+        text_content: str,
+        document_id: Optional[str] = None
+    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        """
+        Extrahiere die in Transkribus custom-Tags gelisteten Orte,
+        führe match_place darauf aus und dedupliziere das Ergebnis.
+        """
+        enriched = []
+        for raw in custom_places:
+            place_name = raw.get("name", "").strip()
+            if not place_name:
+                continue
+            match = self.match_place(place_name)
+            if match:
+                enriched.append(match)
+            else:
+                enriched.append({
+                    "matched_name": None,
+                    "matched_raw_input": place_name,
+                    "score": 0,
+                    "confidence": "none",
+                    "data": {
+                        "name": "",
                         "geonames_id": "",
                         "wikidata_id": "",
                         "nodegoat_id": ""
                     }
                 })
+        # jetzt deduplizieren und (optional) document_id dranpacken
         return self.deduplicate_places(enriched, document_id=document_id)
