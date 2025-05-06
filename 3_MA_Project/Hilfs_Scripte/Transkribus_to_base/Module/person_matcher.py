@@ -352,71 +352,60 @@ def fuzzy_match_name(name: str, candidates: List[str], threshold: int) -> Tuple[
         if sc > score:
             best, score = c, sc
     return (best, score) if score>=threshold else (None,0)
-# ----------------------------------------------------------------------------
-# Person Match
-# ----------------------------------------------------------------------------
 def match_person(
     person: Dict[str, str],
     candidates: List[Dict[str, str]] = KNOWN_PERSONS
 ) -> Tuple[Optional[Dict[str, str]], int]:
     """
-    1) Entfernt Rollentitel und Sonderzeichen aus dem Vornamen.
-    2) Schneidet alles nach dem ersten Komma im Nachnamen ab.
-    3) Verwirft reine Rollen‑Tokens (z.B. 'Mutter').
-    4) Initial‑Fallback: z.B. 'C.' → 'Carl'.
-    5) Klassisches Fuzzy‑Matching.
-    6) Verschiedene Levenshtein‑Fallbacks.
+    Erweitertes Matching mit folgenden Szenarien:
+    1) Klassische Normalisierung, Rollenerkennung, Initial-Fallbacks.
+    2) Klassisches Fuzzy-Matching (auch mit Swap).
+    3) Levenshtein-Fallbacks.
+    4) Neue Szenarien:
+       a) Nur Nachname + Rolle
+       b) Nur Rolle
+       c) Nichts vorhanden
+       d) Vertauschter Vor-/Nachname
+       e) Rolle als Name
     """
-    # Roh‑Strings
     fn_raw = (person.get("forename") or "").strip()
     ln_raw = (person.get("familyname") or "").strip()
+    role_raw = (person.get("role") or "").strip()
 
-    # 1) Rollen‑Suffix/Prefix & Klammern/Doppelpunkte entfernen
     fn_stripped, roles = strip_roles_from_name(fn_raw)
-    if roles and not ln_raw:
-        print(f"[DEBUG] Dropping because stripped role: fn_raw='{fn_raw}', role='{roles[0]}'")
-        return None, 0
-    # entferne noch verbliebene Klammern/Doppelpunkte
     fn = re.sub(r"[():]", "", fn_stripped).strip()
-
-    # 1a) Pre‑Filter: wenn irgendein Teilwort in der Blacklist, verwerfen
-    tokens = [w.strip(",:;.").lower() for w in fn.split()]
-    if any(t in NON_PERSON_TOKENS for t in tokens) and not ln_raw:
-        print(f"[DEBUG] Dropping because token in blacklist: fn='{fn}', ln='{ln_raw}'")
-        return None, 0
-
-    # 2) Nachname: alles nach dem ersten Komma weg
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
 
-    # 3) Verwerfe reine Rollen‑Tokens
+    tokens = [w.strip(",:;.").lower() for w in fn.split()]
+    if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
+        print(f"[DEBUG] Dropping because token in blacklist: fn='{fn}', ln='{ln}'")
+        return None, 0
+
     ROLE_TOKENS = {"mutter", "prokurist", "vereinsführer", "errn", "herrn"}
-    if not ln or fn.lower() in ROLE_TOKENS:
+    if not ln and fn.lower() in ROLE_TOKENS:
         print(f"[DEBUG] Dropping token as name: fn='{fn}', ln='{ln}'")
         return None, 0
 
     thr = get_matching_thresholds()
-    
+    norm_fn, norm_ln = normalize_name_string(fn), normalize_name_string(ln)
 
-    # 4) Initial‑Fallback
+    # 1) Initial-Fallback
     if is_initial(fn):
         init = fn[0].upper()
         fam_norm = normalize_name_string(ln)
         for c in candidates:
             if c["forename"] and c["forename"][0].upper() == init \
                and normalize_name_string(c["familyname"]) == fam_norm:
-                print(f"[DEBUG] initial matched: {c['forename']} {c['familyname']}")
-                person["forename"], person["familyname"] = c["forename"], c["familyname"]
                 return c, 95
 
-    # 5) Klassisches Fuzzy‑Matching
+    # 2) Klassisches Fuzzy-Matching
     best, best_score = None, 0
-    norm_fn, norm_ln = normalize_name_string(fn), normalize_name_string(ln)
     for c in candidates:
         fn_c, ln_c = c["forename"], c["familyname"]
         fn_score = (
             100
             if is_initial(fn) and fn_c and fn[0].upper() == fn_c[0].upper()
-            else fuzzy_match_name(fn, [fn_c, c.get("alternate_name","")], thr["forename"])[1]
+            else fuzzy_match_name(fn, [fn_c, c.get("alternate_name", "")], thr["forename"])[1]
         )
         ln_score = (
             100
@@ -426,38 +415,58 @@ def match_person(
         combo = 0.4 * fn_score + 0.6 * ln_score
         if combo > best_score:
             best_score, best = combo, c
-        # Exakter Vor-/Nachnamen‑Swap
+        # Vor-/Nachnamen-Swap
         if norm_fn == normalize_name_string(ln_c) and norm_ln == normalize_name_string(fn_c):
             return c, 100
 
     if best_score >= max(thr.values()):
         return best, int(best_score)
 
-    # 6a) Levenshtein‑Fallback gleicher Vorname
+    # 3a) Levenshtein: Vorname stimmt, Nachname fast gleich
     for c in candidates:
         if normalize_name_string(fn) == normalize_name_string(c["forename"]):
             if Levenshtein.distance(ln.lower(), c["familyname"].lower()) <= 1:
-                person["forename"], person["familyname"] = c["forename"], c["familyname"]
                 return c, 90
 
-    # 6b) Swap‑Fallback
+    # 3b) Levenshtein: Swap-Erkennung
     for c in candidates:
         if normalize_name_string(ln) == normalize_name_string(c["forename"]):
             if Levenshtein.distance(fn.lower(), c["familyname"].lower()) <= 1:
-                person["forename"], person["familyname"] = c["forename"], c["familyname"]
                 return c, 90
 
-    # 6c) Levenshtein‑Fallback auf Nachname
-    fams = [c["familyname"] for c in candidates if c["familyname"]]
-    matched, dist, _ = ocr_error_match(ln, fams)
-    if matched and dist <= 2:
-        c = next(x for x in candidates if x["familyname"] == matched)
-        if normalize_name_string(fn) == normalize_name_string(c["forename"]):
-            person["forename"], person["familyname"] = c["forename"], c["familyname"]
-            return c, 90
+    # 3c) Nur Nachname + Fuzzy/Levenshtein
+    if not fn and ln:
+        for c in candidates:
+            ln_score = fuzzy_match_name(ln, [c["familyname"]], thr["familyname"])[1]
+            if ln_score >= thr["familyname"]:
+                return c, ln_score
 
-    # kein Match gefunden
+    # 4) Nur Rolle bekannt (versuche Matching auf Rolle)
+    if not fn and not ln and role_raw:
+        for c in candidates:
+            if role_raw.lower() in (c.get("role", "").lower(), c.get("alternate_name", "").lower()):
+                return c, 80
+
+    # 5) Rolle als Vorname/Nachname erkannt (z. B. „Ehrenvorsitzender Burger“)
+    if fn.lower() in NON_PERSON_TOKENS and ln:
+        for c in candidates:
+            if normalize_name_string(ln) == normalize_name_string(c["familyname"]):
+                return c, 85
+    if ln.lower() in NON_PERSON_TOKENS and fn:
+        for c in candidates:
+            if normalize_name_string(fn) == normalize_name_string(c["familyname"]):
+                return c, 85
+
+    # 6) Nur Familienname (mit Levenshtein als letzter Fallback)
+    if not fn and ln:
+        fams = [c["familyname"] for c in candidates if c["familyname"]]
+        matched, dist, _ = ocr_error_match(ln, fams)
+        if matched and dist <= 2:
+            c = next(x for x in candidates if x["familyname"] == matched)
+            return c, 85
+
     return None, 0
+
 
 # ----------------------------------------------------------------------------
 # Extract Person Data mit Rolleninfos
@@ -568,23 +577,60 @@ def deduplicate_persons(
     persons: List[Dict[str, str]],
     known_candidates: Optional[List[Dict[str, str]]] = None
 ) -> List[Dict[str, str]]:
-    seen, unique = set(), []
+    """
+    Dedupliziert Personeneinträge basierend auf nodegoat_id oder normalisierten Namen.
+    Priorität haben Personen mit nodegoat_id, gefolgt von der besten Übereinstimmung.
+    """
+    # Gruppiere nach nodegoat_id (wenn vorhanden) oder normalisiertem Namen
+    person_groups = {}
     candidates = known_candidates or KNOWN_PERSONS
+    
+    # Erster Durchlauf: Gruppiere nach ID oder Namen
     for p in persons:
-        key = f"{normalize_name_string(p['forename'])} {normalize_name_string(p['familyname'])}"
-        if not key or key in seen:
+        # Primärer Schlüssel ist nodegoat_id wenn vorhanden, sonst normalisierter Name
+        key = p.get("nodegoat_id", "").strip() or f"{normalize_name_string(p.get('forename', ''))} {normalize_name_string(p.get('familyname', ''))}"
+        
+        if not key:
             continue
-        seen.add(key)
-        match, score = match_person(p, candidates)
-        if match and score >= 90:
-            enriched = {**match, "match_score": score, "confidence": "fuzzy"}
-            enriched.setdefault("role", p.get("role", ""))
-            enriched.setdefault("role_schema", p.get("role_schema", ""))
-            enriched.setdefault("associated_organisation", p.get("associated_organisation", ""))
-            unique.append(enriched)
+            
+        if key not in person_groups:
+            person_groups[key] = []
+        person_groups[key].append(p)
+    
+    # Zweiter Durchlauf: Nimm jeweils nur den besten Eintrag pro Gruppe
+    unique = []
+    for key, group in person_groups.items():
+        # Wenn nodegoat_id vorhanden ist, verwende den Eintrag mit dieser ID
+        entries_with_id = [p for p in group if p.get("nodegoat_id")]
+        
+        if entries_with_id:
+            # Sortiere nach match_score (höchster zuerst)
+            best_entry = sorted(entries_with_id, key=lambda p: p.get("match_score", 0), reverse=True)[0]
+            # Füge alle Rollen zusammen (wenn unterschiedlich)
+            roles = list(set(p.get("role", "") for p in group if p.get("role")))
+            if roles:
+                best_entry["role"] = "; ".join(roles)
+            unique.append(best_entry)
         else:
-            p["match_score"], p["confidence"] = score, "none"
-            unique.append(p)
+            # Kein Eintrag mit ID, führe Matching durch
+            best_entry = sorted(group, key=lambda p: p.get("match_score", 0), reverse=True)[0]
+            match, score = match_person(best_entry, candidates)
+            
+            if match and score >= 90:
+                enriched = {**match, "match_score": score, "confidence": "fuzzy"}
+                # Übernehme zusätzliche Informationen aus dem originalen Eintrag
+                enriched.setdefault("role", best_entry.get("role", ""))
+                enriched.setdefault("role_schema", best_entry.get("role_schema", ""))
+                enriched.setdefault("associated_organisation", best_entry.get("associated_organisation", ""))
+                # Sammle alle Rollen
+                all_roles = list(set(p.get("role", "") for p in group if p.get("role")))
+                if all_roles:
+                    enriched["role"] = "; ".join(all_roles)
+                unique.append(enriched)
+            else:
+                best_entry["match_score"], best_entry["confidence"] = score, "none"
+                unique.append(best_entry)
+    
     return unique
 
 

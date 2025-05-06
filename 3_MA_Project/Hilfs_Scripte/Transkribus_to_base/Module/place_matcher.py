@@ -3,6 +3,7 @@ from rapidfuzz import process, fuzz
 import logging
 import re
 from typing import List, Dict, Any, Optional, Tuple
+from Module.document_schemas import Place
 def sanitize_id(v) -> str:
     # Leere Strings oder NaN bleiben leer
     if pd.isna(v) or v == "":
@@ -113,19 +114,29 @@ class PlaceMatcher:
                 }
             }
 
+            def _insert_if_better(key: str, new_entry: dict):
+                existing = name_map.get(key)
+                new_has_id = new_entry["data"].get("nodegoat_id") or new_entry["data"].get("geonames_id") or new_entry["data"].get("wikidata_id")
+                old_has_id = existing and (existing["data"].get("nodegoat_id") or existing["data"].get("geonames_id") or existing["data"].get("wikidata_id"))
+                if key not in name_map or (new_has_id and not old_has_id):
+                    name_map[key] = new_entry
+
             for variant in place["all_variants"]:
                 norm_name = self._normalize_place_name(variant)
-                if norm_name and norm_name not in name_map:
-                    name_map[norm_name] = place_entry
-                if variant.lower() not in name_map:
-                    name_map[variant.lower()] = place_entry
-            
+                _insert_if_better(norm_name, place_entry)
+                _insert_if_better(variant.lower(), place_entry)
+
         logging.info(f"Insgesamt {len(name_map)} Ortsnamen-Varianten im Index geladen")
+        if "muenchen" in name_map:
+            print("[DEBUG] Finaler 'muenchen'-Eintrag:", name_map["muenchen"])
         return name_map
+
 
 
     def match_place(self, input_place: str):
         if not input_place or not input_place.strip():
+            print(f"[DEBUG] Kein Match für '{input_place}' obwohl name_map-Eintrag existiert? → key: '{normalized_input}', has: {normalized_input in self.known_name_map}")
+
             return None
 
         try:
@@ -137,6 +148,13 @@ class PlaceMatcher:
             if normalized_input in self.known_name_map:
                 entry = self.known_name_map[normalized_input]
                 return self._build_match_result(entry, input_place, 100, "exact_normalized")
+
+            # 2. Fallback: lowercase raw name
+            raw_lower = input_place.lower()
+            if raw_lower in self.known_name_map:
+                entry = self.known_name_map[raw_lower]
+                return self._build_match_result(entry, input_place, 100, "exact_raw")
+
 
             # 3) Partial-Fuzzy auf raw (mit Längencheck!)
             best_match, best_score, _ = process.extractOne(
@@ -193,30 +211,64 @@ class PlaceMatcher:
         Entfernt Duplikate in raw_places und teilt auf in:
         - matched: alle Treffer (auch fuzzy ohne nodegoat_id)
         - unmatched: nur die mit matched_name=None
+        
+        Optimierte Version mit nodegoat_id-Priorisierung und Gruppierung
         """
-        seen = set()
+        place_groups = {}
         matched = []
         unmatched = []
 
+        # 1. Phase: Gruppiere Orte nach nodegoat_id oder normalisiertem Namen
         for pl in raw_places:
-            # Key: nodegoat_id wenn vorhanden, sonst normalisierte matched_raw_input
-            key = pl.get("data", {}).get("nodegoat_id") \
-                  or self._normalize_place_name(pl.get("matched_raw_input", ""))
-
-            if not key or key in seen:
+            data = pl.get("data", {})
+            # Primärer Schlüssel: nodegoat_id (falls vorhanden) oder normalisierter Name
+            key = data.get("nodegoat_id") or self._normalize_place_name(pl.get("matched_raw_input", ""))
+            
+            if not key:
                 continue
-            seen.add(key)
-
-            # fuzzy- oder exact-Matches (matched_name != None) kommen zu matched
-            if pl.get("matched_name"):
-                matched.append(pl)
+                
+            if key not in place_groups:
+                place_groups[key] = []
+            place_groups[key].append(pl)
+        
+        # 2. Phase: Wähle für jede Gruppe den besten Eintrag aus
+        for key, group in place_groups.items():
+            # Priorisiere Einträge mit nodegoat_id
+            entries_with_id = [p for p in group if p.get("data", {}).get("nodegoat_id")]
+            
+            if entries_with_id:
+                # Nimm den Eintrag mit dem höchsten Score
+                best_entry = sorted(entries_with_id, key=lambda p: p.get("score", 0), reverse=True)[0]
+                
+                # Sammle alle original inputs für alternate_place_name
+                orig_inputs = set()
+                for entry in group:
+                    orig_input = entry.get("matched_raw_input", "")
+                    if orig_input and orig_input != best_entry.get("matched_name", ""):
+                        orig_inputs.add(orig_input)
+                
+                # Füge Originaleinträge zu alternate_place_name hinzu, wenn nicht schon dort
+                if orig_inputs:
+                    alt_names = best_entry.get("data", {}).get("alternate_place_name", "").split(";")
+                    alt_names.extend(orig_inputs)
+                    alt_names = [n.strip() for n in alt_names if n.strip()]
+                    best_entry["data"]["alternate_place_name"] = ";".join(set(alt_names))
+                
+                matched.append(best_entry)
             else:
-                entry = pl.copy()
-                if document_id:
-                    entry["document_id"] = document_id
-                unmatched.append(entry)
+                # Kein Eintrag mit ID, prüfe ob es matched einträge gibt
+                matched_entries = [p for p in group if p.get("matched_name")]
+                if matched_entries:
+                    # Höchster Score zuerst
+                    best_entry = sorted(matched_entries, key=lambda p: p.get("score", 0), reverse=True)[0]
+                    matched.append(best_entry)
+                else:
+                    # Kein Match gefunden, nimm einfach den ersten Eintrag
+                    entry = group[0].copy()
+                    if document_id:
+                        entry["document_id"] = document_id
+                    unmatched.append(entry)
 
-        # Return muss hier stehen, außerhalb der for-Schleife
         return matched, unmatched
     
     def _extract_name_only(self, raw: str) -> str:
@@ -255,36 +307,52 @@ class PlaceMatcher:
         return self.deduplicate_places(enriched, document_id=document_id)
     
 
-    def extract_and_match_from_custom(
-        self,
-        custom_places: List[Dict[str, Any]],
-        text_content: str,
-        document_id: Optional[str] = None
-    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-        """
-        Extrahiere die in Transkribus custom-Tags gelisteten Orte,
-        führe match_place darauf aus und dedupliziere das Ergebnis.
-        """
-        enriched = []
-        for raw in custom_places:
-            place_name = raw.get("name", "").strip()
-            if not place_name:
-                continue
-            match = self.match_place(place_name)
-            if match:
-                enriched.append(match)
-            else:
-                enriched.append({
-                    "matched_name": None,
-                    "matched_raw_input": place_name,
-                    "score": 0,
-                    "confidence": "none",
-                    "data": {
-                        "name": "",
-                        "geonames_id": "",
-                        "wikidata_id": "",
-                        "nodegoat_id": ""
-                    }
-                })
-        # jetzt deduplizieren und (optional) document_id dranpacken
-        return self.deduplicate_places(enriched, document_id=document_id)
+
+def mentioned_places_from_custom_data(
+    custom_data: Dict[str, Any],
+    full_doc_id: str,
+    place_matcher: Any,  # erwartet eine Instanz von PlaceMatcher
+    get_place_name_fn = None  # Optional: Funktion zur Namensbereinigung
+) -> List[Place]:
+    """
+    Extrahiert deduplizierte Place-Objekte aus custom_data["places"].
+
+    Args:
+        custom_data: Dictionary mit Custom-Tags inkl. "places"
+        full_doc_id: ID des Dokuments (für Logging, Matching etc.)
+        place_matcher: Instanz von PlaceMatcher (mit deduplicate_places-Methode)
+        get_place_name_fn: optionale Funktion zur Extraktion des besten Ortsnamens
+    
+    Returns:
+        Liste von Place-Objekten
+    """
+    raw_places = [
+        {
+            "matched_name": pl.get("matched_name", pl.get("name", "")),
+            "matched_raw_input": pl.get("original_input", pl.get("name", "")),
+            "score": pl.get("match_score", 0),
+            "confidence": pl.get("confidence", "unknown"),
+            "data": {
+                "name": get_place_name_fn(pl) if get_place_name_fn else pl.get("name", ""),
+                "alternate_place_name": pl.get("alternate_name", ""),
+                "geonames_id": pl.get("geonames_id", ""),
+                "wikidata_id": pl.get("wikidata_id", ""),
+                "nodegoat_id": pl.get("nodegoat_id", "")
+            }
+        }
+        for pl in custom_data.get("places", [])
+    ]
+
+    matched_places, _ = place_matcher.deduplicate_places(raw_places, document_id=full_doc_id)
+
+    return [
+        Place(
+            name=mp["data"].get("name", ""),
+            type="",  # ggf. später differenzieren
+            alternate_place_name=mp["data"].get("alternate_place_name", ""),
+            geonames_id=mp["data"].get("geonames_id", ""),
+            wikidata_id=mp["data"].get("wikidata_id", ""),
+            nodegoat_id=mp["data"].get("nodegoat_id", "")
+        )
+        for mp in matched_places
+    ]

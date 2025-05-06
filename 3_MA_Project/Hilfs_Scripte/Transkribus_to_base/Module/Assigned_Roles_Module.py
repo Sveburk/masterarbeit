@@ -1,160 +1,305 @@
-# ================================================================
-# Assigned_Roles_Module.py  
-# ================================================================
-
 import re
 import pandas as pd
 import xml.etree.ElementTree as ET  
-from typing import List, Dict
+from typing import List, Dict, Any
+from pathlib import Path
 
-# Pfad zur CSV mit Rollen-Mappings
-CSV_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-roles.csv"
+# --- Dynamische Ermittlung des Projekt-Root (sucht up bis Data/Nodegoat_Export) ---
+THIS_FILE = Path(__file__).resolve()
+BASE_DIR = THIS_FILE.parent
+while BASE_DIR != BASE_DIR.parent and not (BASE_DIR / "Data" / "Nodegoat_Export").exists():
+    BASE_DIR = BASE_DIR.parent
 
-# Lade CSV und baue ROLE_MAPPINGS_DE dynamisch
-_df = pd.read_csv(CSV_PATH, sep=";", dtype=str).fillna("")
+# Pfade zu CSV-Dateien
+CSV_ROLE_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-roles.csv"
+CSV_PERSON_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
+
+# === Rollen-CSV laden und Mapping aufbauen ===
+_df = pd.read_csv(CSV_ROLE_PATH, sep=";", dtype=str).fillna("") 
 ROLE_MAPPINGS_DE: Dict[str, str] = {}
+
 for _, row in _df.iterrows():
-    schema_role = row["Rollenname"].strip()
-    # kanonischer Name selbst
-    key = schema_role.lower()
-    ROLE_MAPPINGS_DE[key] = schema_role
-    # alternative Bezeichnungen (falls vorhanden, durch Komma getrennt)
+    base = row.get("Rollenname", "").strip()
+    if not base:
+        continue
+
+    variants = {base}
+
+    # Falls maskuline Endung auf „er“, versuche Deklinationsformen
+    if re.search(r"er$", base):
+        variants |= {
+            base + "n",
+            base + "en",
+            base + "ern",
+        }
+
     alt = row.get("Alternativer Rollenname", "").strip()
-    for alt_name in alt.split(","):
-        alt_name = alt_name.strip()
-        if alt_name:
-            ROLE_MAPPINGS_DE[alt_name.lower()] = schema_role
+    for alt_name in alt.split(','):
+        if alt_name.strip():
+            variants.add(alt_name.strip())
 
-# Basis‑Vokabular: alle in ROLE_MAPPINGS_DE enthaltenen Keys
+    for variant in variants:
+        ROLE_MAPPINGS_DE[variant.lower()] = base
+
+# Basis-Vokabular: alle Keys
 POSSIBLE_ROLES: List[str] = list(ROLE_MAPPINGS_DE.keys())
+# Bekanntes Rollen-Verzeichnis für externe Nutzung
+KNOWN_ROLE_LIST: List[str] = POSSIBLE_ROLES
+print(f"{len(ROLE_MAPPINGS_DE)} Rollenvarianten geladen.")
+print("Beispiele:", list(ROLE_MAPPINGS_DE.items())[:10])
 
-# Regex 1: „Name, Rolle … Organisation“
+# === Regex-Patterns ===
 ROLE_AFTER_NAME_RE = re.compile(
-    rf"(?P<name>[A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)\s*,?\s*"
-    rf"(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})\s*(des|der|vom)?\s*"
+    rf"(?P<name>[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)?)\s*,?\s*"
+    rf"(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})\s*(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*"
     rf"(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?",
     re.IGNORECASE | re.UNICODE
 )
-
-# Regex 2: „Rolle … Name“
 ROLE_BEFORE_NAME_RE = re.compile(
-    rf"(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})\s+(des|der|vom)?\s*"
-    rf"(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?\s+"
-    rf"(?P<name>[A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)",
+    rf"(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})\s+(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*"
+    rf"(?: (?P<organisation>[A-ZÄÖÜ][\w\s\-]+)\s+ )?"
+    rf"(?P<name>[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)?)",
     re.IGNORECASE | re.UNICODE
 )
+STANDALONE_ROLE_RE = re.compile(
+    rf"^\s*(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})"
+    rf"(?:\s*(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+))?\s*$",
+    re.IGNORECASE | re.UNICODE | re.MULTILINE
+)
+NAME_RE = re.compile(
+    r"^[A-ZÄÖÜ][a-zäöüß]+(?:[- ][A-Za-zäöüÄÖÜß]+)*$"
+)
 
+def normalize_and_match_role(text: str) -> str:
+    text_clean = text.lower().strip()
+
+    # 1. Direkter Treffer
+    if text_clean in ROLE_MAPPINGS_DE:
+        return ROLE_MAPPINGS_DE[text_clean]
+
+    # 2. Versuche über häufige Flexionsendungen zur Grundform
+    suffixes = ["en", "ern", "em", "e", "es", "n", "r", "s", "ns", "nt", "ner", "ners"]
+    for suffix in suffixes:
+        if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
+            base = text_clean[: -len(suffix)]
+            candidate = base + "er"
+            if candidate in ROLE_MAPPINGS_DE:
+                return ROLE_MAPPINGS_DE[candidate]
+
+    # 3. Startswith-Fallback
+    for role in ROLE_MAPPINGS_DE:
+        if role.startswith(text_clean):
+            return ROLE_MAPPINGS_DE[role]
+
+    return ""
+
+
+# === Laden der Bekanntpersonen ===
+def load_known_persons() -> List[Dict[str, Any]]:
+    df = pd.read_csv(CSV_PERSON_PATH, sep=";", dtype=str, keep_default_na=False)
+    df.rename(columns={"Vorname": "forename", "Name": "familyname", "Alternativname": "alternate_name", "Titel": "title"}, inplace=True)
+    persons = df[["forename", "familyname", "alternate_name", "title"]].to_dict(orient="records")
+    for p in persons:
+        p.update({"role": "", "role_schema": "", "associated_organisation": "", "associated_place": "", "nodegoat_id": "", "match_score": 0, "confidence": ""})
+    return persons
+
+# === Mapping-Funktion ===
 def map_role_to_schema_entry(role_string: str) -> str:
-    norm = role_string.strip().lower()
-    return ROLE_MAPPINGS_DE.get(norm, "None")
+    return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "None")
 
-def assign_roles_to_known_persons(persons: List[Dict[str, str]],
-                                  full_text: str) -> List[Dict[str, str]]:
+# === Extraktion Inline-Rollen zu bekannten Personen ===
+def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Dict[str, Any]]:
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
         for match in regex.finditer(full_text):
             name = match.group("name") or ""
-            role = match.group("role")
-            org  = (match.group("organisation") or "").strip()
+            raw_role = match.group("role")
+            org = (match.group("organisation") or "").strip()
 
-            fn_parts = name.strip().split()
-            if len(fn_parts) < 2:
+            # Rolle normalisieren
+            normalized_role = normalize_and_match_role(raw_role)
+
+            # Kein valider Rollenbegriff erkannt
+            if not normalized_role:
                 continue
-            fn_candidate = " ".join(fn_parts[:-1])
-            ln_candidate = fn_parts[-1]
 
+            # Wenn der Name zu einer Rolle gehört (z.B. Ehrenvorsitzenden -> Ehrenvorsitzender)
+            normalized_role = normalize_role_form(normalized_role)
+
+            parts = name.strip().split()
+            if len(parts) < 2:
+                continue
+
+            fn_cand, ln_cand = " ".join(parts[:-1]), parts[-1]
+            
+            # Fallback, wenn keine Übereinstimmung gefunden wurde
+            # Prüfen, ob Vorname oder Nachname mit einer Rolle übereinstimmt
             for p in persons:
-                if (p.get("familyname") == ln_candidate and
-                        fn_candidate in p.get("forename", "")):
-                    p["role"]                   = role
-                    p["role_schema"]            = map_role_to_schema_entry(role)
+                if (p.get("familyname") == ln_cand and fn_cand in p.get("forename", "")) or \
+                        fn_cand.lower() in ROLE_MAPPINGS_DE or ln_cand.lower() in ROLE_MAPPINGS_DE:
+                    p["role"] = normalized_role
+                    p["role_schema"] = map_role_to_schema_entry(normalized_role)
                     p["associated_organisation"] = org
-    # 3) Rollenzeilen, die auf der eigenen Zeile stehen, z.B.
-    #     Vereinsführer des Männerchor
-    STANDALONE_ROLE_RE = re.compile(
-        rf"^\s*(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})"
-        rf"\s*(des|der|vom)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+)?\s*$",
-        re.IGNORECASE | re.UNICODE | re.MULTILINE
-    )
-
-    for match in STANDALONE_ROLE_RE.finditer(full_text):
-        print(f"[DEBUG][Roles] Found stand‑alone match: {match.group(0)!r} at {match.start()}") 
-        role = match.group("role")
-        org  = (match.group("organisation") or "").strip()
-        start_idx = match.start()
-
-        # vorherige Zeile herausziehen
-        prev_chunk = full_text[:start_idx].rstrip("\n")
-        last_line = prev_chunk.split("\n")[-1].strip()
-        print(f"[DEBUG][Roles] Prev line for assignment: {last_line!r}")
-
-        # evtl. "z.H.d Herrn " o.ä. entfernen
-        name_line = re.sub(r'.*(Herrn?|Frau)\s+', '', last_line, flags=re.IGNORECASE).strip()
-        print(f"[DEBUG][Roles] After cleaning salutation: {name_line!r}")
-        parts = name_line.split()
-        if len(parts) < 2:
-            continue
-
-        fn_candidate = " ".join(parts[:-1])
-        ln_candidate = parts[-1]
-
-        # Person im persons-Array finden und anreichern
-        for p in persons:
-            if (p.get("familyname") == ln_candidate and
-                    fn_candidate in p.get("forename", "")):
-                p["role"]                   = role
-                p["role_schema"]            = map_role_to_schema_entry(role)
-                p["associated_organisation"] = org
-
     return persons
 
 
+# === Extraktion reiner Rollenzeilen ===
+def extract_standalone_roles(persons: List[Dict[str, Any]], full_text: str) -> List[Dict[str, Any]]:
+    new_entries: List[Dict[str, Any]] = []
+    lines = full_text.splitlines()
+    for idx, line in enumerate(lines):
+        segment = line.split(',', 1)[-1].strip()
+        m = STANDALONE_ROLE_RE.match(segment)
+        if not m:
+            continue
+        role = m.group("role")
+        org  = (m.group("organisation") or "").strip()
 
-def main():
-    xml_file = "0002_p002.xml"  # Pfad zu deiner XML-Datei
-    root = ET.parse(xml_path).getroot()
-    full_text = extract_text_from_xml(root)
+        # Vorherige Zeile zur Namensableitung
+        if idx > 0:
+            prev = lines[idx - 1].strip()
+            name_line = re.sub(r'.*(Herrn?|Frau)\s+', '', prev, flags=re.IGNORECASE).strip()
+            parts = name_line.split()
+            if len(parts) >= 2:
+                fn_cand, ln_cand = " ".join(parts[:-1]), parts[-1]
+            else:
+                fn_cand, ln_cand = "", ""
+        else:
+            fn_cand, ln_cand = "", ""
 
-    persons = [
-        {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "associated_organisation": ""},
-        {"forename": "Otto", "familyname": "Bollinger", "role": "", "associated_organisation": ""}
-    ]
+               # Rolle normalisieren
+        normalized_role = normalize_and_match_role(role)
 
-    enriched = assign_roles_to_known_persons(persons, full_text)
-    pprint(enriched)
+        # Kein valider Rollenbegriff erkannt
+        if not normalized_role:
+            continue
 
+        # Bereits zugeordnet?
+        exists = any(
+            p.get("forename") == fn_cand and
+            p.get("familyname") == ln_cand and
+            p.get("role") == normalized_role
+            for p in persons
+        )
+        if exists:
+            continue
+
+        # Wenn gültiger Name extrahiert → Role-Only mit Name
+        if NAME_RE.match(fn_cand) and NAME_RE.match(ln_cand):
+            new_entries.append({
+                "forename": fn_cand,
+                "familyname": ln_cand,
+                "alternate_name": "",
+                "title": "",
+                "role": normalized_role,
+                "role_schema": map_role_to_schema_entry(normalized_role),
+                "associated_place": "",
+                "associated_organisation": org,
+                "nodegoat_id": "",
+                "match_score": 0,
+                "confidence": "role_only"
+            })
+        else:
+            # Reines Role-Only ohne Namen
+            new_entries.append({
+                "forename": "",
+                "familyname": "",
+                "alternate_name": "",
+                "title": "",
+                "role": normalized_role,
+                "role_schema": map_role_to_schema_entry(normalized_role),
+                "associated_place": "",
+                "associated_organisation": org,
+                "nodegoat_id": "",
+                "match_score": 0,
+                "confidence": "role_only"
+            })
+    return new_entries
+
+
+
+def normalize_role_form(role_str: str) -> str:
+    """
+    Normalisiert deklinierte Rollenformen wie 'vorsitzenden' oder 'vorsitzende' zu 'vorsitzender'.
+    """
+    role_str = role_str.lower()
+
+    # Nur wenn Wort auf typische Endungen endet
+    for suffix in ["en", "n", "e", "ern"]:
+        if role_str.endswith(suffix) and len(role_str) > len(suffix) + 2:
+            candidate = role_str[: -len(suffix)]
+            possible_base = candidate + "er"
+            if possible_base in ROLE_MAPPINGS_DE:
+                return possible_base
+    return role_str
+
+
+# === Fallback: nur Rollen ohne Personen ===
+def extract_mentioned_roles(full_text: str) -> List[Dict[str, Any]]:
+    seen = set()
+    entries: List[Dict[str, Any]] = []
+    for m in STANDALONE_ROLE_RE.finditer(full_text):
+        role = m.group("role")
+        org  = (m.group("organisation") or "").strip()
+        key = (role.lower(), org.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        entries.append({
+            "forename": "",
+            "familyname": "",
+            "alternate_name": "",
+            "title": "",
+            "role": role,
+            "role_schema": map_role_to_schema_entry(role),
+            "associated_place": "",
+            "associated_organisation": org,
+            "nodegoat_id": "",
+            "match_score": 0,
+            "confidence": "mentioned_role"
+        })
+    return entries
+
+# === Haupt-Prozess ===
+def process_text(full_text: str) -> Dict[str, Any]:
+    """
+    Extrahiert Rollen-Personen und – als Fallback – Author/Recipient
+    aus dem Text und liefert ein Dict, das sowohl persons_with_roles
+    als auch author/recipient enthalten kann.
+    """
+    # 1) Rollen-Personen extrahieren
+    persons = load_known_persons()
+    persons = assign_roles_to_known_persons(persons, full_text)
+    standalone = extract_standalone_roles(persons, full_text)
+    persons.extend(standalone)
+    matched = [p for p in persons if p.get("role")]
+
+    result: Dict[str, Any] = {}
+    if matched:
+        result["persons_with_roles"] = matched
+    else:
+        # wenn keine Rollen-Personen gefunden, wenigstens reine Rollen erwähnen
+        result["mentioned_persons"] = extract_mentioned_roles(full_text)
+
+    # 2) Fallback für Author & Recipient aus dem Brieftext
+    from .letter_metadata_matcher import (
+        extract_author_raw, extract_recipient_raw, letter_match_and_enrich
+    )
+
+    # Author extrahieren & anreichern
+    raw_author = extract_author_raw(full_text)
+    enriched_author = letter_match_and_enrich(raw_author, full_text)
+    if enriched_author.get("forename"):
+        result["author"] = enriched_author
+
+    # Recipient extrahieren & anreichern
+    raw_rec = extract_recipient_raw(full_text)
+    enriched_rec = letter_match_and_enrich(raw_rec, full_text)
+    if enriched_rec.get("forename"):
+        result["recipient"] = enriched_rec
+
+    return result
+
+# Beispielaufruf
 if __name__ == "__main__":
-    main()
-
-
-def main():
-    # Simulierte Liste aus einer XML-Extraktion
-    persons = [
-        {"forename": "Alfons", "familyname": "Zimmermann", "role": "", "associated_organisation": ""},
-        {"forename": "Otto", "familyname": "Bollinger", "role": "", "associated_organisation": ""}
-    ]
-
-    # Inhalt aus dem content_transcription-Feld eines Transkribus-Dokuments
-    full_text = """München 28.V.1941
-Lieber Otto!
-Nur wer die Sehnsucht kennt weiß was ich leide
-Ich wandle traurig her in schwarzer Seide.
-die Sehnsucht brennt du bist so fern
-Ach lieber Otto wie hab ich dich gern.
-Ich schnitt es gern in alle Rinden
-Ach Otto wann u. wo kann ich dich finden?
-Deine Dich nie vergessende
-Lina Fingerdick
-An 
-Herrn
-Otto Bollinger
-z.H.d Herrn Alfons Zimmermann
-Vereinsführer des Männerchor
-Murg
-Laufenburg (Baden)
-Rhina"""
-
-    result = assign_roles_to_known_persons(persons, full_text)
-    pprint(result)
-
-if __name__ == "__main__":
-    main()
+    full_text = """... dein Transkript ..."""
+    print(process_text(full_text))

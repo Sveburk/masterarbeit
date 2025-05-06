@@ -38,28 +38,79 @@ def annotate_with_llm(xml_content: str,
       }
     """
     prompt = f"""
-Du bekommst ein vollständiges XML aus einem historischen Transkriptionsworkflow.
-Deine Aufgabe ist es, in jedem <TextLine> Element das darinstehende <Unicode> –
-also den reinen Text – zu analysieren und alle Personen, Organisationen, Orte,
-Daten (mit standardized when:DD.MM.YYYY) und Rollen zu finden.
+Du bist ein spezialisiertes XML-Annotationstool für historische Transkribus-Dokumente.
 
-Füge dann jedem <TextLine>-Tag ein Attribut
+Deine Aufgabe:
 
-  custom="person {{offset:X; length:Y;}} organization {{offset:X; length:Y;}} place {{offset:X; length:Y;}} date {{offset:X; length:Y; when:DD.MM.YYYY;}} role {{offset:X; length:Y;}}"
+1. Lies das komplette XML-Dokument ein und analysiere den darin enthaltenen Unicode-Text aller <TextLine>-Elemente.
 
-ein, das alle Treffer im Unicode-Text auflistet. Liefere das komplette XML
-zurück, unverändert außer deinen custom-Attributen.
+2. **Globale Personenerkennung**  
+   a) Durchsuche das gesamte Dokument nach Personennamen (inkl. Vornamen, Nachnamen, ggf. Titeln).  
+   b) Merke Dir jede gefundene Person einmalig mit Offset und Länge im jeweiligen <TextLine>-Unicode-Text.  
+   c) Verwende für alle späteren Referenzen dieselben Offsets.
 
-FORMAT-BEISPIEL:
-<TextLine id="r1_l5"
-  custom="person {{offset:0; length:12;}} role {{offset:13; length:10;}}">
-  <TextEquiv><Unicode>Herr Müller Vortragender</Unicode></TextEquiv>
+3. **Empfänger-Suche (recipient)**  
+   a) Identifiziere im **Kopfbereich** (alles bis zur ersten Leerzeile) eine mögliche Anrede wie  
+      „Herr“, „Frau“, „Sehr geehrter Herr …“ oder vergleichbare Ausdrücke.  
+   b) Ordne die gefundene Anrede der passenden Person aus Schritt 2 zu.  
+   c) Annotiere sie als `recipient {{offset:X; length:Y;}}` im jeweiligen <TextLine>.
+
+4. **Autor-Suche (author)**  
+   a) Identifiziere im **Fußbereich** (alles nach der letzten Grußformel wie „Mit freundlichen Grüßen“, „Heil Hitler“, etc.)  
+      eine oder mehrere Personen, die als Verfasser auftreten (z. B. „Max Mustermann, Vereinsführer“).  
+   b) Annotiere den Namen als `author {{offset:X; length:Y;}}`.  
+   c) Falls im Text eine Funktionsbezeichnung (z. B. „Chorleiter“) vorkommt, annotiere diese zusätzlich als separate `role {{offset:X; length:Y;}}`.
+
+5. **Annotation pro TextLine**  
+   Füge jedem <TextLine> (sofern zutreffend) **ein einziges** Attribut `custom="..."` hinzu, das alle erkannten Entitäten in dieser festen Reihenfolge enthält:
+   
+    person {{offset:X; length:Y;}}  
+    recipient {{offset:X; length:Y;}}  
+    author {{offset:X; length:Y;}}  
+    organization {{offset:X; length:Y;}}  
+    place {{offset:X; length:Y;}}  
+    date {{offset:X; length:Y; when:TT.MM.JJJJ;}}  
+    role {{offset:X; length:Y;}}
+
+– Füge nur die Entitäten hinzu, die **tatsächlich** vorkommen (keine leeren Platzhalter).  
+– Gib `date` immer im Format `TT.MM.JJJJ` mit dem Zusatz `when:` an.
+
+6. **Behalte alle anderen Inhalte des XML unverändert bei.**  
+Du darfst ausschließlich `custom="..."`-Attribute in <TextLine>-Tags verändern oder hinzufügen.
+
+7. **Antwortformat:** Gib ausschließlich das vollständige, gültige und annotierte XML zurück – **ohne** erklärenden Text oder Markdown-Formatierung.
+
+**Beispiel**  
+<!-- Kopfzeile mit Empfänger und Ort -->
+<TextLine id="tl_header"
+          custom="recipient {{offset:17; length:13;}} place {{offset:32; length:10;}}">
+  <Unicode>Sehr geehrter Herr Müller, Murg/Baden</Unicode>
+</TextLine>
+
+<!-- Organisation -->
+<TextLine id="tl_org"
+          custom="organization {{offset:0; length:15;}}">
+  <Unicode>Männerchor Murg</Unicode>
+</TextLine>
+
+<!-- Datum -->
+<TextLine id="tl_date"
+          custom="date {{offset:0; length:10; when:01.09.1939;}}">
+  <Unicode>01.09.1939</Unicode>
+</TextLine>
+
+<!-- Grußformel mit Autor -->
+<TextLine id="tl_footer"
+          custom="author {{offset:29; length:15;}} role {{offset:46; length:10;}}">
+  <Unicode>Mit freundlichen Grüßen Max Mustermann, Chorleiter</Unicode>
 </TextLine>
 
 Hier ist das zu annotierende XML:
-\"\"\"
+
+```
 {xml_content}
-\"\"\"
+```
+
 """
     resp = client.chat.completions.create(
         model=model,
@@ -116,7 +167,9 @@ def process_file(xml_path: Path, client: openai.OpenAI):
         # hier direkt neben der Originaldatei speichern
         out_path = xml_path.with_name(f"{xml_path.stem}_preprocessed{xml_path.suffix}")
         out_path.write_text(annotated, encoding="utf-8")
-
+        folder_name = xml_path.parent.name
+        
+        print(f"    → Ordner      : {folder_name}")
         print(f"    → Gespeichert unter: {out_path}")
         print(f"    • Model: {meta['model']}")
         print(f"    • Input-Tokens: {meta['input_tokens']}, Output-Tokens: {meta['output_tokens']}")
@@ -155,14 +208,25 @@ def main():
         for sub in sorted(seven.iterdir()):
             if not sub.is_dir() or not sub.name.startswith("Akte_"):
                 continue
+
             page_dir = sub / "page"
             if not page_dir.is_dir():
                 continue
+
+            # --- Neuer Check: Ordner überspringen, wenn ≥50 % schon vorverarbeitet ---
+            all_xmls = list(page_dir.glob("*.xml"))
+            if all_xmls:
+                preproc = [p for p in all_xmls if p.stem.endswith("_preprocessed")]
+                ratio = len(preproc) / len(all_xmls)
+                if ratio >= 0.5:
+                    print(f"Überspringe Ordner {page_dir}, "
+                          f"{len(preproc)}/{len(all_xmls)} Dateien sind bereits vorverarbeitet ({ratio:.0%}).")
+                    continue
+
             xml_files.extend(sorted(page_dir.glob("*.xml")))
 
     print(f"Starte LLM-Annotation für {len(xml_files)} Dateien…")
     for xml_path in tqdm(xml_files, unit="file"):
         process_file(xml_path, client)
-
 if __name__ == "__main__":
     main()
