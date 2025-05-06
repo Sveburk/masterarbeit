@@ -6,6 +6,7 @@ from typing import List, Dict, Optional, Any
 # ----------------------------------------------------------------------------
 # Organization Extraction Helper
 # ----------------------------------------------------------------------------
+_WIKIDATA_RE = re.compile(r'wikiData:(Q\d+)', re.IGNORECASE)
 
 # matches and strips enclosing parentheses/brackets
 _ENCLOSING_BRACKETS = re.compile(r'^[\(\[\{]\s*(.*?)\s*[\)\]\}]$')
@@ -63,6 +64,9 @@ def load_organizations_from_csv(csv_path: str) -> List[Dict[str, str]]:
 def normalize_org_name(name: str) -> str:
     return re.sub(r"[^a-zA-Z0-9äöüÄÖÜß ]", "", name).lower().strip()
 
+def extract_wikidata_id(custom_str: str) -> Optional[str]:
+    m = _WIKIDATA_RE.search(custom_str)
+    return m.group(1) if m else None
 
 # ----------------------------------------------------------------------------
 # Fuzzy-Matching
@@ -84,26 +88,32 @@ def match_organization(
 
 
 def match_organization_from_text(
-    org_name: str,
+    transcript_text: str,
     org_list: List[Dict[str, str]],
     threshold: int = 85
-) -> Optional[Dict[str, str]]:
-    raw = org_name.strip()
-    # Nodegoat-ID fallback
-    for org in org_list:
-        if raw and raw == org.get("nodegoat_id", ""):
-            return org
-    # clean via extract_organization
-    cleaned = extract_organization(raw)
-    if not cleaned:
-        return None
-    # special case
-    norm = normalize_org_name(cleaned)
-    if re.search(r"\bmännerchor\s+murg\b", norm):
-        cleaned = "Männerchor Murg"
-    match, _ = match_organization({"name": cleaned}, org_list, threshold)
-    return match
+) -> List[Dict[str, str]]:
+    """
+    Durchsucht den gesamten Text auf bekannte Organisationsnamen (oder fuzzy Varianten)
+    und gibt eine Liste von org_list-Einträgen zurück, die mindestens threshold erreichen.
+    """
+    found = []
+    norm_text = normalize_org_name(transcript_text.lower())
 
+    for org in org_list:
+        name = org.get("name", "")
+        norm_name = normalize_org_name(name.lower())
+        # exakter Substring-Check
+        if norm_name and norm_name in norm_text:
+            found.append(org)
+            continue
+        # fuzzy match gegen den ganzen Text
+        score = fuzz.partial_ratio(norm_name, norm_text)
+        if score >= threshold:
+            found.append(org)
+
+    # Duplikate entfernen, falls nötig
+    unique = {o["nodegoat_id"]: o for o in found}
+    return list(unique.values())
 
 def match_organization_entities(
     raw_orgs: List[Dict[str, str]],

@@ -35,6 +35,42 @@
 %___________________________________________________________________________
 \noindent\hrulefill
 
+\section{Verbesserte Deduplizierung in Person- und Orts-Matchern \small 30.04.2025}
+\small\textit{Optimierung der Deduplizierungslogik für Personen und Orte in den JSON-Ausgabedateien}\\
+
+\subsection*{Kurzbeschreibung}
+Die Module zur Deduplizierung von Personen und Orten in den JSON-Ausgabedateien wurden grundlegend überarbeitet. Die neue Implementierung verhindert, dass Entitäten mehrfach in der Ausgabe erscheinen, und priorisiert dabei Einträge mit vorhandener Nodegoat-ID. Zudem werden alternative Namensformen zusammengeführt, um ein umfassenderes Verständnis der identifizierten Entitäten zu ermöglichen.
+
+\subsection*{Erledigte Aufgaben}
+\subsubsection*{\small Überarbeitung des person\_matcher.py Moduls}
+\ding{51} Gruppierung von Personen nach nodegoat\_id oder normalisiertem Namen implementiert\\
+\ding{51} Priorisierung von Einträgen mit Nodegoat-ID bei der Deduplizierung\\
+\ding{51} Kombination und Konsolidierung von Rolleninformationen aus mehreren Nennungen\\
+\ding{51} Optimiertes Scoring-System für die Auswahl der besten Einträge
+
+\subsubsection*{\small Optimierung des place\_matcher.py Moduls}
+\ding{51} Neuimplementierung der deduplicate\_places-Methode mit verbesserter Gruppierungslogik\\
+\ding{51} Zusammenführung alternativer Ortsnamen in einem deduplizierten Eintrag\\
+\ding{51} Priorisierung von Ortseinträgen nach Vorhandensein und Qualität von IDs\\
+\ding{51} Deduplizierung basierend auf normalisiertem Ortsnamen für Einträge ohne ID
+
+\subsubsection*{\small Integration im Hauptskript}
+\ding{51} Anpassung der Verarbeitung in transkribus\_to\_base.py für deduplizierte Personen\\
+\ding{51} Beseitigung von Doppeleinträgen durch vereinheitlichte Deduplizierung\\
+\ding{51} Konsistente Verwendung der verbesserten Matcher-Module\\
+\ding{51} Erhalt und Zusammenführung aller relevanten Informationen in deduplizierten Entitäten
+
+\subsection*{Nächste Schritte}
+\ding{113} Quantitative Evaluierung der Deduplizierungsqualität auf dem Gesamtdatensatz\\
+\ding{113} Dashboard zur Visualisierung der Entitätsbeziehungen entwickeln\\
+\ding{113} Integration mit Batch-Prozessierung für alle Dokumente\\
+\ding{113} Automatisierte Tests für die Matching-Qualität implementieren
+
+\subsection*{Offene Fragen}
+\ding{113} Wie kann die Konsolidierung von semantisch identischen Rollen verbessert werden?\\
+\ding{113} Könnte eine Clustering-Methode zur Identifikation weiterer Duplikate beitragen?\\
+\ding{113} Wie sollen Grenzfälle mit sehr ähnlichen, aber nicht identischen Entitäten behandelt werden?\\
+
 \section{Vereinheitlichung der Schnittstellen und Dataframes \small 14.04.2025}
 \small\textit{Integration der Datenvalidierung mit CSV-Export und Optimierung der Ortsanreicherung}\\
 

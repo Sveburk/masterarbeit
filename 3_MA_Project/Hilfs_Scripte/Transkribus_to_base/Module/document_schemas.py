@@ -11,8 +11,9 @@ from typing import Dict, List, Optional, Union, Any
 import re
 from datetime import datetime
 
-# Im Person-Constructor in document_schemas.py
 class Person:
+    """Repräsentiert eine Person mit verschiedenen Attributen."""
+    
     def __init__(
         self,
         anrede: str = "",
@@ -27,7 +28,6 @@ class Person:
         match_score: Optional[float] = None,
         confidence: str = ""
     ):
-        # alle Parameter auch zuweisen!
         self.anrede = anrede
         self.forename = forename
         self.alternate_name = alternate_name
@@ -41,6 +41,7 @@ class Person:
         self.confidence = confidence
 
     def to_dict(self) -> Dict[str, Any]:
+        """Konvertiert ein Person-Objekt in ein Dictionary."""
         return {
             "anrede": self.anrede,
             "forename": self.forename,
@@ -57,133 +58,7 @@ class Person:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Person':
-        # nur eine from_dict, die *alle* Felder übernimmt
-        return cls(
-            anrede=data.get("anrede", ""),
-            forename=data.get("forename", ""),
-            alternate_name=data.get("alternate_name", ""),
-            familyname=data.get("familyname", ""),
-            title=data.get("title", ""),
-            role=data.get("role", ""),
-            associated_place=data.get("associated_place", ""),
-            associated_organisation=data.get("associated_organisation", ""),
-            nodegoat_id=data.get("nodegoat_id", ""),
-            match_score=data.get("match_score"),
-            confidence=data.get("confidence", "")
-        )
-
-    def is_valid(self) -> bool:
-        """Mindestens Vor- oder Nachname muss vorhanden sein."""
-        return bool(self.forename.strip() or self.familyname.strip())
-
-    def __init__(
-        self,
-        anrede: str = "",
-        forename: str = "",
-        alternate_name: str = "",
-        familyname: str = "",
-        title: str = "",
-        role: str = "",
-        associated_place: str = "",
-        associated_organisation: str = "",
-        nodegoat_id: str = "",
-        match_score: Optional[float] = None,
-        confidence: str = ""
-    ):
-        # alle Parameter auch zuweisen!
-        self.anrede = anrede
-        self.forename = forename
-        self.alternate_name = alternate_name
-        self.familyname = familyname
-        self.title = title
-        self.role = role
-        self.associated_place = associated_place
-        self.associated_organisation = associated_organisation
-        self.nodegoat_id = nodegoat_id
-        self.match_score = match_score
-        self.confidence = confidence
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "anrede": self.anrede,
-            "forename": self.forename,
-            "alternate_name": self.alternate_name,
-            "familyname": self.familyname,
-            "title": self.title,
-            "role": self.role,
-            "associated_place": self.associated_place,
-            "associated_organisation": self.associated_organisation,
-            "nodegoat_id": self.nodegoat_id,
-            "match_score": self.match_score,
-            "confidence": self.confidence
-        }
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
-        # nur eine from_dict, die *alle* Felder übernimmt
-        return cls(
-            anrede=data.get("anrede", ""),
-            forename=data.get("forename", ""),
-            alternate_name=data.get("alternate_name", ""),
-            familyname=data.get("familyname", ""),
-            title=data.get("title", ""),
-            role=data.get("role", ""),
-            associated_place=data.get("associated_place", ""),
-            associated_organisation=data.get("associated_organisation", ""),
-            nodegoat_id=data.get("nodegoat_id", ""),
-            match_score=data.get("match_score"),
-            confidence=data.get("confidence", "")
-        )
-
-    def is_valid(self) -> bool:
-        """Mindestens Vor- oder Nachname muss vorhanden sein."""
-        return bool(self.forename.strip() or self.familyname.strip())
-
-    def __init__(
-        self,
-        anrede: str = "",
-        forename: str = "",
-        alternate_name: str = "",
-        familyname: str = "",
-        title: str = "",
-        role: str = "",
-        associated_place: str = "",
-        associated_organisation: str = "",
-        nodegoat_id: str = "",
-        match_score: Optional[float] = None,
-        confidence: str = ""
-    ):
-        # alle Parameter auch zuweisen!
-        self.anrede = anrede
-        self.forename = forename
-        self.alternate_name = alternate_name
-        self.familyname = familyname
-        self.title = title
-        self.role = role
-        self.associated_place = associated_place
-        self.associated_organisation = associated_organisation
-        self.nodegoat_id = nodegoat_id
-        self.match_score = match_score
-        self.confidence = confidence
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "anrede": self.anrede,
-            "forename": self.forename,
-            "alternate_name": self.alternate_name,
-            "familyname": self.familyname,
-            "title": self.title,
-            "role": self.role,
-            "associated_place": self.associated_place,
-            "associated_organisation": self.associated_organisation,
-            "nodegoat_id": self.nodegoat_id,
-            "match_score": self.match_score,
-            "confidence": self.confidence
-        }
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
-        # nur eine from_dict, die *alle* Felder übernimmt
+        """Erstellt ein Person-Objekt aus einem Dictionary."""
         return cls(
             anrede=data.get("anrede", ""),
             forename=data.get("forename", ""),
@@ -339,15 +214,15 @@ class BaseDocument:
     def __init__(self, 
                  object_type: str = "Dokument",
                  attributes: Dict[str, str] = None,
-                 author: Union[Person, Dict[str, str]] = None,
-                 recipient: Union[Person, Dict[str, str]] = None,
-                 mentioned_persons: List[Union[Person, Dict[str, str]]] = None,
-                 mentioned_organizations: List[Union[Organization, Dict[str, str]]] = None,
-                 mentioned_events: List[Union[Event, Dict[str, str]]] = None,
+                 authors: List[Union[Person, Dict[str, Any]]] = None,
+                 recipients: List[Union[Person, Dict[str, Any]]] = None,
+                 mentioned_persons: List[Union[Person, Dict[str, Any]]] = None,
+                 mentioned_organizations: List[Union[Organization, Dict[str, Any]]] = None,
+                 mentioned_events: List[Union[Event, Dict[str, Any]]] = None,
                  creation_date: str = "",
                  creation_place: str = "",
                  mentioned_dates: List[str] = None,
-                 mentioned_places: List[Union[Place, Dict[str, str]]] = None,
+                 mentioned_places: List[Union[Place, Dict[str, Any]]] = None,
                  content_tags_in_german: List[str] = None,
                  content_transcription: str = "",
                  document_type: str = "",
@@ -356,42 +231,17 @@ class BaseDocument:
         self.object_type = object_type
         self.attributes = attributes or {}
         
-        # Konvertieren der Person-Objekte oder Dictionaries
-        self.author = Person.from_dict(author) if isinstance(author, dict) else author or Person()
-        self.recipient = Person.from_dict(recipient) if isinstance(recipient, dict) else recipient or Person()
+        # Konvertieren der Person-Objekte für Autoren
+        self.authors = self._convert_person_list(authors) or []
+        
+        # Konvertieren der Person-Objekte für Empfänger
+        self.recipients = self._convert_person_list(recipients) or []
         
         # Konvertieren der Listen von Objekten oder Dictionaries
-        self.mentioned_persons = []
-        if mentioned_persons:
-            for person in mentioned_persons:
-                if isinstance(person, dict):
-                    self.mentioned_persons.append(Person.from_dict(person))
-                else:
-                    self.mentioned_persons.append(person)
-        
-        self.mentioned_organizations = []
-        if mentioned_organizations:
-            for org in mentioned_organizations:
-                if isinstance(org, dict):
-                    self.mentioned_organizations.append(Organization.from_dict(org))
-                else:
-                    self.mentioned_organizations.append(org)
-        
-        self.mentioned_events = []
-        if mentioned_events:
-            for event in mentioned_events:
-                if isinstance(event, dict):
-                    self.mentioned_events.append(Event.from_dict(event))
-                else:
-                    self.mentioned_events.append(event)
-        
-        self.mentioned_places = []
-        if mentioned_places:
-            for place in mentioned_places:
-                if isinstance(place, dict):
-                    self.mentioned_places.append(Place.from_dict(place))
-                else:
-                    self.mentioned_places.append(place)
+        self.mentioned_persons = self._convert_person_list(mentioned_persons)
+        self.mentioned_organizations = self._convert_object_list(mentioned_organizations, Organization)
+        self.mentioned_events = self._convert_object_list(mentioned_events, Event)
+        self.mentioned_places = self._convert_object_list(mentioned_places, Place)
         
         self.creation_date = creation_date
         self.creation_place = creation_place
@@ -400,14 +250,53 @@ class BaseDocument:
         self.content_transcription = content_transcription
         self.document_type = document_type
         self.document_format = document_format
+        
+    def _convert_person_list(self, items) -> List[Person]:
+        """Konvertiert eine Liste von Person-Dictionaries oder Person-Objekten in eine Liste von Person-Objekten."""
+        result = []
+        
+        if not items:
+            return result
+            
+        # Falls ein einzelnes Element statt einer Liste übergeben wurde
+        if not isinstance(items, list):
+            items = [items]
+            
+        for item in items:
+            if isinstance(item, dict):
+                result.append(Person.from_dict(item))
+            else:
+                result.append(item)
+                
+        return result
+        
+    def _convert_object_list(self, items, cls) -> List:
+        """Konvertiert eine Liste von Dictionaries oder Objekten in eine Liste von Objekten des angegebenen Typs."""
+        result = []
+        
+        if not items:
+            return result
+            
+        # Falls ein einzelnes Element statt einer Liste übergeben wurde
+        if not isinstance(items, list):
+            items = [items]
+            
+        for item in items:
+            if isinstance(item, dict):
+                result.append(cls.from_dict(item))
+            else:
+                result.append(item)
+                
+        return result
     
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert das Dokument in ein Dictionary."""
         return {
             "object_type": self.object_type,
             "attributes": self.attributes,
-            "author": self.author.to_dict(),
-            "recipient": self.recipient.to_dict(),
+            "authors": [a.to_dict() for a in self.authors],
+            "recipients": [r.to_dict() for r in self.recipients],
+
             "mentioned_persons": [person.to_dict() for person in self.mentioned_persons],
             "mentioned_organizations": [org.to_dict() for org in self.mentioned_organizations],
             "mentioned_events": [event.to_dict() for event in self.mentioned_events],
@@ -424,11 +313,20 @@ class BaseDocument:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'BaseDocument':
         """Erstellt ein Dokumentobjekt aus einem Dictionary."""
+        # Vereinheitlichung der Autoren- und Empfängerfelder
+        authors = data.get("authors", [])
+        if not authors and "author" in data:
+            authors = data.get("author")
+            
+        recipients = data.get("recipients", [])
+        if not recipients and "recipient" in data:
+            recipients = data.get("recipient")
+            
         return cls(
             object_type=data.get("object_type", "Dokument"),
             attributes=data.get("attributes", {}),
-            author=data.get("author", {}),
-            recipient=data.get("recipient", {}),
+            authors=authors,
+            recipients=recipients,
             mentioned_persons=data.get("mentioned_persons", []),
             mentioned_organizations=data.get("mentioned_organizations", []),
             mentioned_events=data.get("mentioned_events", []),
@@ -482,8 +380,8 @@ class BaseDocument:
                 errors["mentioned_dates"].append(f"Ungültiges Datum an Index {i}: {date}. Format sollte YYYY.MM.DD sein")
         
         # Validiere Empfänger für Briefe und Postkarten
-        if not self.recipient.is_valid() and self.document_type in ["Brief", "Postkarte"]:
-            errors["recipient"] = ["Empfänger muss für Briefe und Postkarten angegeben werden"]
+        if not any(r.is_valid() for r in self.recipients) and self.document_type in ["Brief", "Postkarte"]:
+            errors["recipients"] = ["Empfänger muss für Briefe und Postkarten angegeben werden"]
         
         # Validiere erwähnte Personen
         for i, person in enumerate(self.mentioned_persons):
@@ -649,3 +547,39 @@ def create_document(data: Dict[str, Any]) -> BaseDocument:
         return Protokoll.from_dict(data)
     else:
         return BaseDocument.from_dict(data)
+    
+def mentioned_places_from_custom_data(custom_data: Dict[str, Any], full_doc_id: str) -> List[Place]:
+    """
+    Extrahiert deduplizierte Place-Objekte aus custom_data["places"] mithilfe der lokalen deduplicate_places-Funktion.
+    """
+    raw_places = [
+        {
+            "matched_name": pl.get("name", ""),
+            "matched_raw_input": pl.get("name", ""),
+            "score": pl.get("match_score") or 0,
+            "confidence": pl.get("confidence", ""),
+            "data": {
+                "name": pl.get("name", ""),
+                "alternate_place_name": pl.get("alternate_name", ""),
+                "geonames_id": pl.get("geonames_id", ""),
+                "wikidata_id": pl.get("wikidata_id", ""),
+                "nodegoat_id": pl.get("nodegoat_id", "")
+            }
+        }
+        for pl in custom_data.get("places", [])
+    ]
+
+    # Hier wird angenommen, dass deduplicate_places() im gleichen Modul definiert ist.
+    deduplicated_places = deduplicate_places(raw_places, document_id=full_doc_id)[0]
+
+    return [
+        Place(
+            name=pl.get("name") or pl.get("matched_name") or pl.get("matched_raw_input", ""),
+            type=pl.get("type", ""),
+            alternate_place_name=pl.get("alternate_place_name", ""),
+            geonames_id=pl.get("geonames_id", ""),
+            wikidata_id=pl.get("wikidata_id", ""),
+            nodegoat_id=pl.get("nodegoat_id", "")
+        )
+        for pl in deduplicated_places
+    ]

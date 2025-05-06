@@ -25,7 +25,7 @@ from .person_matcher import (
 )
 
 # --- Letter‑Metadata Matcher ---
-from .letter_metadata_matcher import match_author, match_recipient
+from .letter_metadata_matcher import match_authors, match_recipients, resolve_llm_custom_authors_recipients
 
 # --- Organization Matcher ---
 from .organization_matcher import (
@@ -38,16 +38,18 @@ from .organization_matcher import (
 from .type_matcher import get_document_type
 
 # --- Assigned Roles ---
-from .Assigned_Roles_Module import ROLE_MAPPINGS_DE, assign_roles_to_known_persons
+from .Assigned_Roles_Module import ROLE_MAPPINGS_DE, KNOWN_ROLE_LIST, NAME_RE,assign_roles_to_known_persons,extract_standalone_roles,map_role_to_schema_entry
 
 # --- Place Matcher ---
-from .place_matcher import PlaceMatcher
+from .place_matcher import PlaceMatcher, mentioned_places_from_custom_data
 
 # --- Validation ---
 from .validation_module import validate_extended, generate_validation_summary
 
 # --- LLM Enricher ---
 from .llm_enricher import run_enrichment_on_directory
+
+
 
 
 
@@ -73,8 +75,9 @@ __all__ = [
     "split_and_enrich_persons",
 
     # Letter‑Metadata Matcher
-    "match_author",
-    "match_recipient",
+    "match_authors",
+    "match_recipients",
+    "resolve_llm_custom_authors_recipients",
     
 
     # Organization Matcher
@@ -87,9 +90,12 @@ __all__ = [
 
     # Assigned Roles
     "assign_roles_to_known_persons",
+    "extract_standalone_roles",
+    "map_role_to_schema_entry",
+    
 
     # Place Matcher
-    "PlaceMatcher",
+    "PlaceMatcher", "mentioned_places_from_custom_data",
 
     # Validation
     "validate_extended", "generate_validation_summary",
