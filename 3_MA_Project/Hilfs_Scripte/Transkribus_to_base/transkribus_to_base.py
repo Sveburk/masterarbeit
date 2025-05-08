@@ -11,11 +11,13 @@ in document_schemas.py definierten Klassen für Objektorientierung und Datenvali
 import os
 import sys
 import traceback
+from collections import defaultdict, Counter
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json, re, time, xml.etree.ElementTree as ET
 from datetime import datetime
 import openai
+
 #Zeitstempel
 now = datetime.now()
 formatted = now.strftime("%d.%m.%Y. %H:%M")
@@ -39,9 +41,12 @@ from Module import (
     BaseDocument, Person, Place, Event, Organization,
 
     # Person‐Matcher
-    match_person, KNOWN_PERSONS, deduplicate_persons,
-    normalize_name, load_known_persons_from_csv,
-    get_best_match_info, extract_person_data,
+    KNOWN_PERSONS,match_person,
+    deduplicate_persons,
+    normalize_name, 
+    load_known_persons_from_csv,
+    get_best_match_info, 
+    extract_person_data,
     split_and_enrich_persons,
     
     #letter-metadata-matcher
@@ -52,13 +57,22 @@ from Module import (
 
 
     # Organisation‐Matcher
-    match_organization_from_text,load_organizations_from_csv, match_organization_from_text, match_organization_entities,
+    match_organization_from_text,
+    load_organizations_from_csv, 
+    match_organization_from_text, 
+    match_organization_entities,
 
     # Type‐Matcher
     get_document_type,
 
     # Rollen‑Enricher
-    KNOWN_ROLE_LIST,assign_roles_to_known_persons,ROLE_MAPPINGS_DE,extract_standalone_roles,map_role_to_schema_entry,NAME_RE,
+    KNOWN_ROLE_LIST,
+    ROLE_MAPPINGS_DE,
+    NAME_RE,assign_roles_to_known_persons,
+    extract_standalone_roles,
+    map_role_to_schema_entry,
+    extract_role_in_token,
+    process_text,
 
     # PlaceMatcher
     PlaceMatcher,mentioned_places_from_custom_data,
@@ -589,7 +603,6 @@ def extract_person_data(name: str) -> Dict[str, str]:
         "nodegoat_id": "",
     }
     
-
 def extract_person_from_custom(
     custom_attr: str,
     text_content: str,
@@ -598,84 +611,71 @@ def extract_person_from_custom(
     """Extract person entities from custom attributes - returns a LIST of dictionaries."""
     persons: List[Dict[str, str]] = []
 
-    # Durchsuche custom_attr nach Mustern wie 'person { ... }'
     for pattern in [r"(?i)person\s*\{([^}]+)\}"]:
         for person_match in re.finditer(pattern, custom_attr):
             if not text_content:
                 continue
 
-            # Parsed die individuellen Key-Value-Attribute innerhalb von { ... }
             person_data = parse_custom_attributes(person_match.group(1))
             if "offset" in person_data and "length" in person_data:
                 offset = int(person_data["offset"])
                 length = int(person_data["length"])
+                person_name = text_content[offset : offset + length]
 
-                print(f"[DEBUG] Versuche Extraktion Person: offset={offset}, length={length}, text='{text_content}'")
+                person_name = re.sub(
+                    r".*(Herrn?|Frau|Dr\.?|Prof\.?|Fräulein|Witwe)\s+",
+                    "",
+                    person_name,
+                    flags=re.IGNORECASE
+                ).strip()
 
-                if 0 <= offset < len(text_content) and offset + length <= len(text_content):
-                    # Schneidet den entsprechenden Namens-String aus text_content aus
-                    person_name = text_content[offset : offset + length]
-                    print(f"[DEBUG] Erkannter Personenname: {person_name}")
+                # Rolle aus deklinierter Form erkennen
+                role = ""
+                role_match = re.match(r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+en)\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)", person_name)
+                if role_match:
+                    role_raw = role_match.group("role").rstrip("en")
+                    role = ROLE_MAPPINGS_DE.get(role_raw.lower(), "")
+                    person_name = role_match.group("name")
 
-                    # entferne generische Zusätze vor dem eigentlichen Namen
-                    person_name = re.sub(
-                        r".*(Herrn?|Frau|Dr\.?|Prof\.?|Fräulein|Witwe)\s+",
-                        "",
-                        person_name,
-                        flags=re.IGNORECASE
-                    ).strip()
-                    print(f"[DEBUG] Bereinigter Personenname: {person_name}")
+                # Haupt-Zerlegung des Namens
+                person_info = extract_person_data(person_name)
+                person_info["role"] = role
 
-                    # Debug für known_persons Liste
-                    print(f"[DEBUG] Übergabe known_persons an extract_person_from_custom: {len(known_persons)} Einträge")
+                # Fallback für Titel aus known_persons
+                if not person_info["forename"]:
+                    possible_titles = set(p.get("title", "").strip() for p in known_persons if p.get("title"))
+                    for title in sorted(possible_titles, key=lambda x: -len(x)):
+                        if re.match(rf"^{re.escape(title)}\b", person_name):
+                            rest = person_name[len(title):].strip()
+                            person_info = extract_person_data(rest)
+                            person_info["title"] = title
+                            break
 
-                    role_match = re.match(r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+en)\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)", person_name)
-                    if role_match:
-                        role_raw = role_match.group("role").rstrip("en")  # z.B. „Ehrenvorsitzenden“ → „Ehrenvorsitzend“
-                        role = ROLE_MAPPINGS_DE.get(role_raw.lower(), "")  # Mapping auf echte Rolle
-                        name = role_match.group("name")
-                        person_info = extract_person_data(name)
-                        person_info["role"] = role
-                        print(f"[DEBUG] Deklinierte Rolle erkannt: {role_raw} → {role}")
-                        print(f"[DEBUG] Person aus deklinierter Form extrahiert: {name}")
+                # Fuzzy Matching gegen bekannte Personen
+                match, score = match_person(person_info, candidates=known_persons)
+                if match:
+                    person_info["nodegoat_id"]    = match.get("nodegoat_id", "")
+                    person_info["alternate_name"] = match.get("alternate_name", "")
+                    person_info["title"]          = match.get("title", "")
 
-                    # Zerlege in forename/familyname
-                    person_info = extract_person_data(person_name)
-                    if not person_info["forename"]:
-                        # Liste möglicher Titel aus der CSV extrahieren
-                        possible_titles = set(p.get("title", "").strip() for p in known_persons if p.get("title"))
-                        print(f"[DEBUG] Erkannte mögliche Titel: {possible_titles}")
-                        for title in sorted(possible_titles, key=lambda x: -len(x)):  # längste zuerst
-                            if re.match(rf"^{re.escape(title)}\b", person_name):
-                                rest = person_name[len(title):].strip()
-                                person_info = extract_person_data(rest)
-                                person_info["title"] = title
-                                break
+                # Ortserkennung (falls im gleichen Tag vorhanden)
+                place_dicts = extract_place_from_custom(custom_attr, text_content)
+                person_place = place_dicts[0]["name"] if place_dicts else ""
 
-                    # Versuche, einen Match in den known_persons zu finden
-                    match, score = match_person(person_info, candidates=known_persons)
-                    if match:
-                        person_info["nodegoat_id"]    = match.get("nodegoat_id", "")
-                        person_info["alternate_name"] = match.get("alternate_name", "")
-                        person_info["title"]          = match.get("title", "")
-
-                    # Extrahiere Orte aus genau diesem custom-Attribut
-                    place_dicts = extract_place_from_custom(custom_attr, text_content)
-                    person_place = place_dicts[0]["name"] if place_dicts else ""
-
-                    # Baue das Dictionary, das später ins JSON übernommen wird
-                    persons.append({
-                        "forename":             person_info["forename"],
-                        "familyname":           person_info["familyname"],
-                        "role":                 "", 
-                        "associated_place":     person_place,
-                        "associated_organisation": "",
-                        "alternate_name":       person_info["alternate_name"],
-                        "title":                person_info["title"],
-                        "nodegoat_id":          person_info.get("nodegoat_id", "")
-                    })
+                # Finales Dictionary aufbauen
+                persons.append({
+                    "forename":               person_info["forename"],
+                    "familyname":             person_info["familyname"],
+                    "role":                   person_info.get("role", ""),
+                    "associated_place":       person_place,
+                    "associated_organisation": "",
+                    "alternate_name":         person_info.get("alternate_name", ""),
+                    "title":                  person_info.get("title", ""),
+                    "nodegoat_id":            person_info.get("nodegoat_id", "")
+                })
 
     return persons
+
 
 def extract_organization_from_custom(custom_attr: str, text_content: str) -> List[Dict[str, str]]:
     organizations = []
@@ -932,6 +932,16 @@ def process_transkribus_file(
 
         # 8) Personen deduplizieren und anreichern
         all_persons = custom_data["persons"]
+        # 8a) Rollen aus Tokens wie 'Ehrenvorsitzender Burger' extrahieren
+        roles_from_tokens = []
+        for p in all_persons:
+            token = p.get("raw_token", "")
+            roles_from_tokens.extend(extract_role_in_token(token))
+
+        # 8b) Kombinieren
+        combined_persons = all_persons + roles_from_tokens
+
+        # 8c) Deduplizieren
         unique_persons = deduplicate_persons(all_persons)
         
         # Mit Stammliste abgleichen (Nodegoat-ID, Titel, etc.)
@@ -960,7 +970,10 @@ def process_transkribus_file(
             for p in unique_persons
         ]
         enriched_persons = assign_roles_to_known_persons(role_input_persons, transcript_text)
-
+        combined_persons = unique_persons + [
+            p for p in enriched_persons
+            if not any(p["forename"] == up["forename"] and p["familyname"] == up["familyname"] for up in unique_persons)
+        ]
         # 9) Neue Personen loggen
         for person in unique_persons:
             if not person_exists_in_known_list(
@@ -972,8 +985,12 @@ def process_transkribus_file(
                     log_file.write(f"{person.get('forename', '')} {person.get('familyname', '')}\n")
 
         # 10) Person-Objekte erstellen
-        mentioned_persons = [
-            Person(
+        mentioned_persons = []
+        for d in enriched_persons:
+            if not d.get("forename") and not d.get("familyname") and not d.get("role"):
+                continue  # Nur komplett leere Personen überspringen
+
+            mentioned_persons.append(Person(
                 forename=d.get("forename", ""),
                 familyname=d.get("familyname", ""),
                 alternate_name=str(d.get("alternate_name", "") or ""),
@@ -984,9 +1001,7 @@ def process_transkribus_file(
                 nodegoat_id=str(d.get("nodegoat_id", "") or ""),
                 match_score=d.get("match_score"),
                 confidence=d.get("confidence", "")
-            )
-            for d in enriched_persons
-        ]
+            ))
 
         # 11) Orte deduplizieren mit PlaceMatcher
         all_places = custom_data["places"]
@@ -1081,16 +1096,15 @@ def process_transkribus_file(
             print(f" - {p.name} | Geo: {p.geonames_id} | WD: {p.wikidata_id} | NG: {p.nodegoat_id}")
 
 
-        
 
         # 14) BaseDocument zusammenbauen
         doc = BaseDocument(
             object_type             = "Dokument",
             attributes              = metadata_info,
             content_transcription   = transcript_text,
-            authors                  = final_authors,
-            recipients               = final_recipients,
-            mentioned_persons       = mentioned_persons,
+            authors                 = [final_authors] if final_authors else [],
+            recipients              = [final_recipients] if final_recipients else [],
+            mentioned_persons       = mentioned_persons,                                    #der Wichscheiss produziert den fucking verdammten drecksfehler
             mentioned_organizations = mentioned_organizations,
             mentioned_places        = mentioned_places,
             mentioned_dates         = custom_data["dates"],
@@ -1104,9 +1118,9 @@ def process_transkribus_file(
 
         final_authors, final_recipients = resolve_llm_custom_authors_recipients(doc, transcript_text, log_path=Path("conflict_log.json"))
         if final_authors:
-            doc.authors = final_authors
+            doc.authors = [final_authors] if final_authors else []
         if final_recipients:
-            doc.recipients = final_recipients
+            doc.recipients = [final_recipients] if final_recipients else []
 
         # 15) Dokument speichern
         output_path = os.path.join(OUTPUT_DIR, f"{full_doc_id}.json")
@@ -1178,6 +1192,14 @@ def main():
                 if not transcript_text or len(transcript_text.strip()) < 10:
                     print(f"[INFO] Überspringe {xml_file} – Transkript zu kurz oder leer.")
                     continue
+                # --- DEBUG: Rollen ohne Personenbezug ---
+                print("\n[DEBUG] Suche nach Rollenbezeichnungen im Transkript:")
+                standalone_roles = extract_standalone_roles([], transcript_text)
+                for r in standalone_roles:
+                    print(" →", r.get("role"), "—", r.get("forename", ""), r.get("familyname", ""))
+                    context_lines = [line for line in transcript_text.splitlines() if r["role"] in line]
+                    for cl in context_lines:
+                        print("     Kontext:", cl)
 
                 # full_doc_id bestimmen
                 m = re.search(r"p(\d+)", xml_file, re.IGNORECASE)
@@ -1195,13 +1217,13 @@ def main():
 
                 # a) Autor extrahieren
                 authors_info = match_authors(transcript_text, document_type=document_type)
-                if authors_info.get("forename"):
-                    authors = Person.from_dict(authors_info)
+                if getattr(authors_info, "forename", ""):
+                    authors = authors_info
 
                 # b) Empfänger extrahieren
                 recipients_info = match_recipients(transcript_text, document_type=document_type)
-                if recipients_info.get("forename"):
-                    recipients = Person.from_dict(recipients_info)
+                if getattr(recipients_info, "forename", ""):
+                    recipients = recipients_info
 
                 # c) Autor & Empfänger auch in mentioned_persons aufnehmen
                 mentioned_persons: List[Person] = []
@@ -1219,7 +1241,6 @@ def main():
                     candidates=KNOWN_PERSONS
                 )
                 # Zähle Mehrfachnennungen
-                from collections import Counter
                 name_counts = Counter((p["forename"].strip(), p["familyname"].strip()) for p in matched_persons)
                 final_persons = deduplicate_persons(matched_persons)
 
@@ -1230,51 +1251,131 @@ def main():
                         print(f"[CHECK] Burger wurde im Rollenextrakt erkannt: {ep}")
 
                 # --- 11) Kombinieren: matched + role-extrahierte ---
-                combined_raw = matched_persons + enriched_only
-
-                # === Zusätzlicher Matching-Schritt gegen known_persons ===
-                rechecked_combined = []
+                combined_raw = matched_persons + [
+                    p for p in enriched_only
+                    if not any(
+                        p["forename"] == mp["forename"] and p["familyname"] == mp["familyname"]
+                        for mp in matched_persons
+                    )
+                ]
                 for p in combined_raw:
+                    if p.get("familyname", "").lower() == "burger":
+                        print(f"[CHECK] Burger wird übernommen: {p}")
+
+                # === Gruppieren nach nodegoat_id oder Namen ===
+                grouped_by_id: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+                for p in combined_raw:
+                    key = p.get("nodegoat_id") or f"{p.get('forename','').strip()} {p.get('familyname','').strip()}"
+                    grouped_by_id[key].append(p)
+
+                rechecked_combined = []
+                for key, group in grouped_by_id.items():
+                    best = max(group, key=lambda x: float(x.get("match_score", 0) or 0))
+                    merged = best.copy()
+
+                    # Alle Rollen sammeln
+                    all_roles = {p.get("role", "").strip() for p in group if p.get("role")}
+                    merged["role"] = "; ".join(sorted(r for r in all_roles if r))
+
+                    # Titel ggf. ergänzen
+                    if not merged.get("title"):
+                        for p in group:
+                            if p.get("title"):
+                                merged["title"] = p["title"]
+                                break
+
+                    # Confidence ggf. ergänzen
+                    if not merged.get("confidence"):
+                        merged["confidence"] = next((p.get("confidence", "") for p in group if p.get("confidence")), "")
+
+                    # mentioned_count summieren
+                    merged["mentioned_count"] = sum(int(p.get("mentioned_count", 1) or 1) for p in group)
+
+                    rechecked_combined.append(merged)
+                
+                
+                # --- 12) Deduplizieren ---
+                # Gruppieren nach nodegoat_id oder name fallback
+                name_to_id = {}
+                for p in rechecked_combined + standalone_roles:
+                    nid = p.get("nodegoat_id", "").strip()
+                    if nid:
+                        key = f"{p.get('forename','').strip()}|{p.get('familyname','').strip()}"
+                        name_to_id[key] = nid
+
+                # Gruppierung anhand von vorhandener ID oder Namens-Fallback
+                grouped: Dict[str, List[Dict]] = defaultdict(list)
+                for p in rechecked_combined + standalone_roles:
+                    nid = p.get("nodegoat_id", "").strip()
                     fn = p.get("forename", "").strip()
                     ln = p.get("familyname", "").strip()
-                    alt = p.get("alternate_name", "").strip()
-                    token = f"{fn} {ln}".strip() or alt
-                    matched_result = match_person(p, KNOWN_PERSONS)
-                    matched = matched_result[0] if isinstance(matched_result, tuple) else matched_result
+                    fallback_key = f"{fn}|{ln}"
+                    key = nid if nid else name_to_id.get(fallback_key, fallback_key)
+                    grouped[key].append(p)
 
-                    if matched:
-                        # merge matched info, aber fallback auf Originalrolle etc.
-                        merged = {**matched}
-                        merged["role"] = p.get("role", matched.get("role", ""))
-                        merged["title"] = p.get("title", matched.get("title", ""))
-                        rechecked_combined.append(merged)
-                    else:
-                        rechecked_combined.append(p)
+                # Fallback-Mapping: name → nodegoat_id
+                name_to_id = {}
+                for key, entries in grouped_by_id.items():
+                    if "|" in key:
+                        for e in entries:
+                            if e.get("nodegoat_id"):
+                                name_to_id[key] = e["nodegoat_id"]
+                                break
 
-                # --- 12) Deduplizieren ---
-                deduplicated_enriched_persons = deduplicate_persons(rechecked_combined)
+                # Merge Rolle und Confidence
+                merged_entries = {}
+                for key, entries in grouped.items():
+                    actual_id = key if "|" not in key else name_to_id.get(key, key)
+                    merged_entries.setdefault(actual_id, []).extend(entries)
+
+                deduplicated_enriched_persons = []
+
+                for key, entries in merged_entries.items():
+                    print(f"\n[DEBUG] Kandidaten für Person-Key '{key}':")
+                    for e in entries:
+                        print(f" - Name: {e.get('forename','')} {e.get('familyname','')}, Role: {e.get('role','')}, Score: {e.get('match_score', 0)}, Confidence: {e.get('confidence', '')}, Nodegoat-ID: {e.get('nodegoat_id','')}")
+
+                    best_entry = max(entries, key=lambda x: float(x.get("match_score", 0)))
+
+                    # Alle Rollen & Confidences sammeln
+                    all_roles = sorted(set(r for r in [e.get("role", "").strip() for e in entries] if r))
+                    all_confidences = sorted(set(c for c in [e.get("confidence", "").strip() for e in entries] if c))
+                    total_mentions = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
+
+                    merged = dict(best_entry)
+                    merged["role"] = "; ".join(all_roles)  # bei Bedarf ", " statt "; "
+                    merged["confidence"] = ", ".join(all_confidences)
+                    merged["mentioned_count"] = total_mentions
+
+                    # Debug: Rolle verloren?
+                    print(f"[DEBUG] → Gewählter Eintrag für '{key}': {merged.get('forename')} {merged.get('familyname')} | Role: '{merged['role']}', Confidence: '{merged['confidence']}', Score: {merged['match_score']}")
+                    if not merged["role"]:
+                        print(f"[WARNING] Keine Rolle übernommen für {merged.get('forename')} {merged.get('familyname')} (Key={key})")
+
+
+                    print(f"[DEBUG] → Gewählter Eintrag für '{key}': {merged.get('forename')} {merged.get('familyname')} | Role: '{merged['role']}', Confidence: '{merged['confidence']}', Score: {merged['match_score']}")
+                    
+                    deduplicated_enriched_persons.append(merged)
+
+
                 # --- 13) Konvertiere in Person-Objekte ---
 
                 mentioned_persons = []
-                from collections import Counter
-                name_counts = Counter((p["forename"].strip(), p["familyname"].strip()) for p in deduplicated_enriched_persons)
-
                 for pd in deduplicated_enriched_persons:
-                    fn = pd["forename"].strip()
-                    ln = pd["familyname"].strip()
-                    extra = f" (genannt {name_counts[(fn, ln)]}×)" if name_counts[(fn, ln)] > 1 else ""
                     mentioned_persons.append(Person(
-                        forename=fn,
-                        familyname=ln,
-                        alternate_name=(pd.get("alternate_name", "") + extra).strip(),
+                        forename=pd.get("forename", "").strip(),
+                        familyname=pd.get("familyname", "").strip(),
+                        alternate_name=pd.get("alternate_name", ""),
                         title=pd.get("title", ""),
                         role=pd.get("role", ""),
                         associated_place=pd.get("associated_place", ""),
                         associated_organisation=pd.get("associated_organisation", ""),
                         nodegoat_id=pd.get("nodegoat_id", ""),
                         match_score=pd.get("match_score", 0),
-                        confidence=pd.get("confidence", "")
+                        confidence=pd.get("confidence", ""),
+                        mentioned_count=pd.get("mentioned_count", 1)
                     ))
+
 
                 # --- 14) Sammle unmatched persons für Log ---
                 for up in unmatched_persons:
@@ -1313,6 +1414,18 @@ def main():
                 # --- 16) Orte deduplizieren & transformieren ---
                 # (Annahme: unique_places bereits im PlaceMatcher-Teil berechnet)
                 # Für Kürze hier übersprungen
+
+                # nur eine Person pro nodegoat_id
+                seen_ids = set()
+                final_mentioned_persons = []
+                for p in mentioned_persons:
+                    if p.nodegoat_id and p.nodegoat_id in seen_ids:
+                        continue
+                    seen_ids.add(p.nodegoat_id)
+                    final_mentioned_persons.append(p)
+                mentioned_persons = final_mentioned_persons
+
+
 
                 # --- 17) BaseDocument zusammenbauen ---
                 doc = BaseDocument(

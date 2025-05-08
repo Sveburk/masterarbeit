@@ -1,6 +1,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
 \usepackage{minted}  % Für Python-Code
 \usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
@@ -33,6 +36,116 @@
 %dieses Dokument wird blogartig geführt. Neuste Einträge sind oben einzufügen. 
 
 %___________________________________________________________________________
+\noindent\hrulefill
+\section{Systemübersicht Virtuelle Maschine \small 07.05.2025}
+
+Für die Darstellung und Endnutzung der für die Masterarbeit gewonnen Daten ist von Sorin und mir in einem Feedbackgespräch die Idee entstanden, eine Virtuelle Maschine der IT-Services der Uni Basel zu nitzen. dafür wurde Lukas  am 07.10 per Mail angefragt. Ziel ist ein Userinterface zu baeuen, indem per Suchmaske die JSON Dateien durchsucht werden können, per IIIF-Server auf die Bilddateien der Akten zuzugreifen, und in einem weiteren Schritt ggf auch auf meine Nodegoat-Datenbank zuzugreifen.
+
+\begin{center}
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, minimum width=12cm, minimum height=4.5cm, align=center},
+    innerbox/.style={rectangle, draw, fill=gray!10, minimum width=5cm, align=left},
+    small/.style={font=\small},
+    arrow/.style={-{Latex[length=3mm]}, thick}
+]
+
+% Oberer Text über dem Hauptrechteck
+\node[small] at (0,3) {\texttt{maennerchor\_murg.philhist@unibas.ch}};
+
+% Hauptrechteck
+\node[box] (mainbox) at (0,0) {};
+
+% Text im Hauptrechteck: oben links
+\node[innerbox, anchor=north west, align=center] at ([xshift=0.3cm,yshift=-0.3cm]mainbox.north west) {
+    \textbf{Virtuelle Maschine}\\
+    mongod\\
+    DB (json)
+};
+
+% Text im Hauptrechteck: rechts oben
+\node[innerbox, anchor=north east, align=center] at ([xshift=-0.3cm,yshift=-0.3cm]mainbox.north east) {
+    \textbf{cantaloupe}\\
+    IIIF\\
+    für Bilder
+};
+
+
+
+% Text im Zentrum des Rechtecks
+\node[innerbox, anchor=south, align=center] at ([yshift=0.3cm]mainbox.south) {
+    \textbf{mdr-core}\\
+    \texttt{DJANGO}
+};
+
+
+% Pfeil aus dem Hauptrechteck nach unten
+\draw[arrow] (mainbox.south) -- ++(0,-2) node[below] {Userinterface};
+
+\end{tikzpicture}
+\end{center}
+
+
+\subsection{Fehleranalyse und Verbesserungsvorschläge der JSON-Extraktion}
+
+Im aktuellen Stand der automatisierten Extraktion historischer Metadaten aus Transkribus-XML-Dokumenten zeigt sich, dass einige der generierten JSON-Dateien inhaltlich nur teilweise oder gar nicht gefüllt sind. Die Debug-Ausgaben des Skripts deuten auf folgende Hauptprobleme hin:
+
+\begin{itemize}
+    \item \textbf{Leere JSON-Dateien:} In mehreren Fällen (z.\,B. bei \texttt{Akte\_696}) wurden keinerlei Entitäten erkannt. Dies betrifft insbesondere Dokumente mit wenigen klaren semantischen Ankern oder fehlerhafter OCR-Struktur.
+    \item \textbf{Rollen werden häufig nicht erkannt:} Obwohl die Normalisierung deklinierter Rollen (z.\,B. \textit{Ehrenvorsitzenden} → \textit{Ehrenvorsitzender}) implementiert wurde, erscheinen viele Rollen nicht im JSON. Vermutlich erfolgt keine korrekte Zuordnung zum Rollenschema.
+    \item \textbf{Einzelne Namen wie ``Herrn'' oder ``Ortsverbandsleiter'' werden fälschlich als Person erkannt:} Die Blacklist filtert einige dieser Fälle, jedoch nicht konsistent oder umfassend genug.
+    \item \textbf{Falsch-positive Personen:} In Kontexten wie ``Dirigenten'' oder ``mich'' werden Begriffe extrahiert, die keine validen Personennamen sind.
+    \item \textbf{Mehrdeutigkeiten bei zusammengesetzten Ausdrücken:} Konstruktionen wie ``Vereinsführer des Männerchor'' führen zur fehlerhaften Aufspaltung zwischen Personen- und Organisationsentitäten.
+\end{itemize}
+
+\subsection{Vorgeschlagene Verbesserungen}
+
+\begin{itemize}
+    \item \textbf{Erweiterung der Rollenextraktion:} Rollen sollten auch erkannt werden, wenn sie in Verbindung mit Personennamen stehen (z.\,B. ``Ehrenvorsitzenden Burger''). Eine robustere Normalisierung mit Regex-Support für maskuline/feminine Deklinationen ist bereits in Arbeit.
+    \item \textbf{Blacklist für generische Begriffe erweitern:} Begriffe wie ``mich'', ``Herrn'', ``Ortsverbandsleiter'' sollen systematisch ausgeschlossen oder nur in Kombination mit validen Namen akzeptiert werden.
+    \item \textbf{Verbesserung des Kontextverständnisses bei Personenextraktion:} Eine Gewichtung nach Position im Satz (z.\,B. Grußformeln) oder in Verbindung mit Rollenwörtern könnte helfen, valide Personen zu priorisieren.
+    \item \textbf{Evaluation der OCR-Qualität pro Datei:} Ein hoher Anteil fehlerhafter Tokens könnte vorab mit einem Heuristikwert ermittelt und markiert werden.
+    \item \textbf{Fallback-Strategien für autor/recipient:} Falls kein \texttt{author} oder \texttt{recipient} erkannt wird, aber Custom-Tags mit solchen Informationen vorhanden sind, soll ein LLM-gestützter Vorschlag übernommen werden.
+\end{itemize}
+
+Die nächsten Schritte umfassen gezielte Tests mit exemplarischen Dokumenten, um die Wirkung der geplanten Anpassungen zu evaluieren. Besonders relevant ist dabei die korrekte Auflösung von Rollenzuweisungen und die zuverlässige Filterung nicht-personaler Begriffe.
+
+
+\section{Änderungen im assigned\_roles\_module und person\_matcher\small 06.05.2025}
+
+\subsection*{Kernaussagen der Änderungen}
+Die letzten Änderungen konzentrieren sich auf die Verbesserung der Entitäten-Erkennung und das Matching von Personen, Orten und Rollen. Es wurden gezielte Verbesserungen und Anpassungen in den folgenden Bereichen vorgenommen:\\
+
+\begin{itemize}
+    \item Orte werden nun wieder korrekt mit der Nodegoat-ID gematcht. Dies stellt sicher, dass die geografischen Entitäten präzise zugeordnet und identifiziert werden.
+    \item Das \texttt{assigned\_roles\_module}-Script wurde optimiert, um den Genus der erkannten Rollen zu normalisieren und diese im Nominativ Singular darzustellen.
+    \item Es muss jedoch noch weiter optimiert werden, um sicherzustellen, dass auch Einzelrollen wie "Der Vereinsführer" korrekt als erwähnte Personen erkannt werden.
+    \item Der \texttt{person\_matcher} kann nun auch Personen matchen, wenn nur ein Vor- oder Nachname vorhanden ist. Dies erweitert die Flexibilität des Matchings erheblich und verbessert die Erkennungsrate bei unvollständigen Namen.
+    \item Die Deduplizierung von Personen funktioniert weiterhin wie erwartet. Das System sorgt für eine effiziente Zusammenführung ähnlicher Entitäten, ohne Duplikate zu erzeugen.
+\end{itemize}
+
+\subsection*{Nächste Schritte}
+\ding{113} Weiterführung der Optimierungen im Bereich der Rollenerkennung und der Personenzuordnung\\
+\ding{113} Verbesserung der Fehlerbehandlung bei besonderen Rollenkombinationen\\
+\ding{113} Automatisierte Tests für die neuen Matching-Strategien einführen\\
+
+\subsection*{Strategie zur Verbesserung des Rollen-Matchings per ChatGPT}
+
+Idee: überarbeiteter Workflow, der die beiden Module \texttt{assigned\_roles\_module} und \texttt{person\_matcher} systematisch einbindet. Ziel ist die zuverlässige Erkennung von Rollenangaben wie \textit{»Ehrenvorsitzender Burger«} und deren saubere Trennung in Rolle und Person sowie die Ergänzung bereits erkannter Personen um zusätzliche Rollen.
+
+\begin{itemize}
+    \item \textbf{Früherkennung von Rollen in Personenangaben:} \\ Bereits beim Parsen der \texttt{custom\_data["persons"]} wird jeder \texttt{raw\_token} auf Rollen untersucht. Dazu wird \texttt{extract\_role\_in\_name(token)} aufgerufen, um Kombinationen wie \textit{»Ehrenvorsitzender Burger«} zuverlässig aufzuteilen.
+
+    \item \textbf{Rollenerkennung im Fließtext:} \\Zusätzlich wird \texttt{extract\_standalone\_roles(text)} auf das Transkript angewendet, um unabhängig von XML-Metadaten Rollen wie \textit{»Der Vereinsführer«} zu identifizieren.
+
+    \item \textbf{Normalisierung und Abgleich:} \\Die erkannten Rollen werden mit \texttt{normalize\_role\_name()} in ihre Grundform gebracht (z.\,B.\ „Ehrenvorsitzenden“ $\rightarrow$ „Ehrenvorsitzender“). Die zugehörigen Namen werden mit \texttt{normalize\_name()} in Vor- und Nachname getrennt und mit \texttt{match\_person()} gegen bekannte Personen abgeglichen.
+
+    \item \textbf{Erweiterung vorhandener Personen:} \\Stimmen Namen oder IDs mit bereits erkannten Personen überein, wird die Rolle hinzugefügt, ohne ein Duplikat zu erzeugen. Der Abgleich erfolgt über \texttt{normalize\_name\_string()} und \texttt{deduplicate\_persons()}.
+
+    \item \textbf{Bewertung der Übereinstimmung:} \\Bei eindeutigem Match wird \texttt{match\_score = 100} und \texttt{confidence = "llm-matched"} gesetzt. Bei unklarem Abgleich kann \texttt{confidence = "partial"} verwendet werden, um die Herkunft der Information nachvollziehbar zu machen.
+
+    \item \textbf{Zusammenführung aller Kandidaten:} \\Die Ergebnisse aus XML, Fließtext und Rolle-im-Namen-Kombinationen werden zu einer finalen Personenliste kombiniert, die dedupliziert und mit Rollen angereichert als \texttt{mentioned\_persons} im JSON-Dokument gespeichert wird.
+\end{itemize}
+
 \noindent\hrulefill
 
 \section{Verbesserte Deduplizierung in Person- und Orts-Matchern \small 30.04.2025}
@@ -485,7 +598,7 @@ Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{sic}{sic}}}}} werden Wörter mark
 \newpage % Nach dem Inhaltsverzeichnis eine neue Seite
 
 
-\section{Überblick Hilfscript\\CHatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}
+\section{Überblick Hilfscript\\ChatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}
 Dieses Skript verarbeitet XML-Dateien aus einer definierten Ordnerstruktur und sendet deren Inhalt an die OpenAI-API zur automatischen Analyse und Extraktion relevanter Metadaten. Das generierte Ergebnis wird als JSON-Datei gespeichert.
 
 Das Skript ist speziell auf historische Dokumente (z. B. aus dem Männerchor Murg Corpus, 1925-1945) zugeschnitten. Es analysiert und strukturiert die Daten, um relevante Informationen wie Autoren, Empfänger, Orte, Ereignisse und Zeitangaben zu extrahieren.

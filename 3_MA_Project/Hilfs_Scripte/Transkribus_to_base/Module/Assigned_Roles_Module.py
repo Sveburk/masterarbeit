@@ -3,6 +3,7 @@ import pandas as pd
 import xml.etree.ElementTree as ET  
 from typing import List, Dict, Any
 from pathlib import Path
+from Module.document_schemas import Person
 
 # --- Dynamische Ermittlung des Projekt-Root (sucht up bis Data/Nodegoat_Export) ---
 THIS_FILE = Path(__file__).resolve()
@@ -108,38 +109,88 @@ def map_role_to_schema_entry(role_string: str) -> str:
     return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "None")
 
 # === Extraktion Inline-Rollen zu bekannten Personen ===
-def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Dict[str, Any]]:
+def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Person]:
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
         for match in regex.finditer(full_text):
             name = match.group("name") or ""
             raw_role = match.group("role")
             org = (match.group("organisation") or "").strip()
 
-            # Rolle normalisieren
             normalized_role = normalize_and_match_role(raw_role)
-
-            # Kein valider Rollenbegriff erkannt
             if not normalized_role:
                 continue
 
-            # Wenn der Name zu einer Rolle gehört (z.B. Ehrenvorsitzenden -> Ehrenvorsitzender)
             normalized_role = normalize_role_form(normalized_role)
-
             parts = name.strip().split()
             if len(parts) < 2:
                 continue
 
             fn_cand, ln_cand = " ".join(parts[:-1]), parts[-1]
-            
-            # Fallback, wenn keine Übereinstimmung gefunden wurde
-            # Prüfen, ob Vorname oder Nachname mit einer Rolle übereinstimmt
+
             for p in persons:
                 if (p.get("familyname") == ln_cand and fn_cand in p.get("forename", "")) or \
                         fn_cand.lower() in ROLE_MAPPINGS_DE or ln_cand.lower() in ROLE_MAPPINGS_DE:
                     p["role"] = normalized_role
                     p["role_schema"] = map_role_to_schema_entry(normalized_role)
                     p["associated_organisation"] = org
-    return persons
+
+    # 🔁 Am Ende: Alle zu Person-Objekten umwandeln
+    result = []
+    for p in persons:
+        try:
+            result.append(Person.from_dict(p))
+        except Exception as e:
+            print(f"[WARN] Ungültiges Personen-Dict in Rollen-Modul: {p} – {e}")
+    return result
+
+def extract_role_in_token(token: str) -> List[Dict[str, Any]]:
+    """
+    Erkennt Konstruktionen wie 'Ehrenvorsitzender Burger' oder 'Schriftführer Huber' und trennt sie.
+    Gibt eine Liste von Personendictionaries zurück, wenn Rolle und Name erkennbar sind.
+    """
+    results = []
+    token = token.strip()
+    parts = token.split()
+
+    # zu kurz oder kein Leerzeichen → überspringen
+    if len(parts) < 2:
+        return results
+
+    # Kandidaten: alle n-1 Tokens als möglicher Rollenbegriff
+    for i in range(1, len(parts)):
+        role_candidate = " ".join(parts[:i])
+        name_candidate = " ".join(parts[i:])
+
+        normalized_role = normalize_and_match_role(role_candidate)
+        if not normalized_role:
+            continue
+
+        # Name normalisieren
+        fn, ln = "", ""
+        name_parts = name_candidate.split()
+        if len(name_parts) == 2:
+            fn, ln = name_parts
+        else:
+            ln = name_parts[-1] if name_parts else ""
+
+        if ln:
+            results.append({
+                "forename": fn,
+                "familyname": ln,
+                "alternate_name": "",
+                "title": "",
+                "role": normalize_role_form(normalized_role),
+                "role_schema": map_role_to_schema_entry(normalized_role),
+                "associated_place": "",
+                "associated_organisation": "",
+                "nodegoat_id": "",
+                "match_score": 100,
+                "confidence": "llm-matched",
+                "raw_token": token
+            })
+
+    return results
+
 
 
 # === Extraktion reiner Rollenzeilen ===
