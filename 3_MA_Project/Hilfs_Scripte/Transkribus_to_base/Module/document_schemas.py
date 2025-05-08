@@ -26,7 +26,8 @@ class Person:
         associated_organisation: str = "",
         nodegoat_id: str = "",
         match_score: Optional[float] = None,
-        confidence: str = ""
+        confidence: str = "",
+        mentioned_count: int = 1
     ):
         self.anrede = anrede
         self.forename = forename
@@ -39,6 +40,8 @@ class Person:
         self.nodegoat_id = nodegoat_id
         self.match_score = match_score
         self.confidence = confidence
+        self.mentioned_count = mentioned_count
+
 
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert ein Person-Objekt in ein Dictionary."""
@@ -53,7 +56,9 @@ class Person:
             "associated_organisation": self.associated_organisation,
             "nodegoat_id": self.nodegoat_id,
             "match_score": self.match_score,
-            "confidence": self.confidence
+            "confidence": self.confidence,
+            "mentioned_count": self.mentioned_count
+            
         }
 
     @classmethod
@@ -70,7 +75,8 @@ class Person:
             associated_organisation=data.get("associated_organisation", ""),
             nodegoat_id=data.get("nodegoat_id", ""),
             match_score=data.get("match_score"),
-            confidence=data.get("confidence", "")
+            confidence=data.get("confidence", ""),
+            mentioned_count=data.get("mentioned_count", 1)
         )
 
     def is_valid(self) -> bool:
@@ -296,7 +302,6 @@ class BaseDocument:
             "attributes": self.attributes,
             "authors": [a.to_dict() for a in self.authors],
             "recipients": [r.to_dict() for r in self.recipients],
-
             "mentioned_persons": [person.to_dict() for person in self.mentioned_persons],
             "mentioned_organizations": [org.to_dict() for org in self.mentioned_organizations],
             "mentioned_events": [event.to_dict() for event in self.mentioned_events],

@@ -38,7 +38,7 @@ from .organization_matcher import (
 from .type_matcher import get_document_type
 
 # --- Assigned Roles ---
-from .Assigned_Roles_Module import ROLE_MAPPINGS_DE, KNOWN_ROLE_LIST, NAME_RE,assign_roles_to_known_persons,extract_standalone_roles,map_role_to_schema_entry
+from .Assigned_Roles_Module import ROLE_MAPPINGS_DE,KNOWN_ROLE_LIST, NAME_RE,assign_roles_to_known_persons,extract_standalone_roles,map_role_to_schema_entry, extract_role_in_token, process_text
 
 # --- Place Matcher ---
 from .place_matcher import PlaceMatcher, mentioned_places_from_custom_data
@@ -92,6 +92,8 @@ __all__ = [
     "assign_roles_to_known_persons",
     "extract_standalone_roles",
     "map_role_to_schema_entry",
+    "extract_role_in_token",
+    "process_text",
     
 
     # Place Matcher

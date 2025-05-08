@@ -1,6 +1,7 @@
 import os
 import re
 import unicodedata
+import uuid
 from typing import List, Dict, Tuple, Optional, Union, Any
 import pandas as pd
 from rapidfuzz import fuzz
@@ -581,56 +582,107 @@ def deduplicate_persons(
     Dedupliziert Personeneinträge basierend auf nodegoat_id oder normalisierten Namen.
     Priorität haben Personen mit nodegoat_id, gefolgt von der besten Übereinstimmung.
     """
-    # Gruppiere nach nodegoat_id (wenn vorhanden) oder normalisiertem Namen
+    import uuid
+
     person_groups = {}
     candidates = known_candidates or KNOWN_PERSONS
-    
+
     # Erster Durchlauf: Gruppiere nach ID oder Namen
     for p in persons:
-        # Primärer Schlüssel ist nodegoat_id wenn vorhanden, sonst normalisierter Name
-        key = p.get("nodegoat_id", "").strip() or f"{normalize_name_string(p.get('forename', ''))} {normalize_name_string(p.get('familyname', ''))}"
-        
-        if not key:
-            continue
-            
+        nodegoat_id = p.get("nodegoat_id", "").strip()
+        forename = normalize_name_string(p.get("forename", ""))
+        familyname = normalize_name_string(p.get("familyname", ""))
+
+        # Primärer Schlüssel: bevorzugt ID, dann vollständiger Name, dann fallback auf Einzelnamen
+        if nodegoat_id:
+            key = nodegoat_id
+        elif forename and familyname:
+            key = f"{forename} {familyname}"
+        elif familyname:
+            key = familyname
+        elif forename:
+            key = forename
+        else:
+            # Erzeuge eindeutigen Dummy-Key für roll-only-Personen
+            role_label = p.get("role", "").strip() or "unbekannte Rolle"
+            key = f"role_only::{role_label}::{uuid.uuid4().hex[:8]}"
+            print(f"[INFO] Rolle ohne Namen wird übernommen: {role_label}")
+
         if key not in person_groups:
             person_groups[key] = []
         person_groups[key].append(p)
-    
-    # Zweiter Durchlauf: Nimm jeweils nur den besten Eintrag pro Gruppe
+
+    # Zweiter Durchlauf: Wähle aus jeder Gruppe den besten Eintrag zur Repräsentation
     unique = []
+
     for key, group in person_groups.items():
-        # Wenn nodegoat_id vorhanden ist, verwende den Eintrag mit dieser ID
+        # Falls Einträge mit nodegoat_id vorhanden sind, priorisiere diese
         entries_with_id = [p for p in group if p.get("nodegoat_id")]
-        
+
         if entries_with_id:
-            # Sortiere nach match_score (höchster zuerst)
-            best_entry = sorted(entries_with_id, key=lambda p: p.get("match_score", 0), reverse=True)[0]
-            # Füge alle Rollen zusammen (wenn unterschiedlich)
-            roles = list(set(p.get("role", "") for p in group if p.get("role")))
-            if roles:
-                best_entry["role"] = "; ".join(roles)
-            unique.append(best_entry)
+            # Wähle den Eintrag mit höchstem match_score
+            if entries_with_id:
+                # Wähle Eintrag mit höchstem Match-Score
+                best_entry = max(entries_with_id, key=lambda p: float(p.get("match_score", 0) or 0))
+                merged = best_entry.copy()
+
+                # Anzahl Erwähnungen aufsummieren
+                merged["mentioned_count"] = sum(int(p.get("mentioned_count", 1) or 1) for p in group)
+
+                # Rollen kombinieren
+                all_roles = {p.get("role", "").strip() for p in group if p.get("role")}
+                if all_roles:
+                    merged["role"] = "; ".join(sorted(all_roles))
+
+                # Felder ergänzen, wenn leer
+                for field in ["title", "alternate_name", "associated_place", "associated_organisation"]:
+                    if not merged.get(field):
+                        for p in group:
+                            if p.get(field):
+                                merged[field] = p[field]
+                                break
+
+                # match_score & confidence ergänzen, falls noch leer
+                if not merged.get("match_score"):
+                    merged["match_score"] = max(float(p.get("match_score", 0) or 0) for p in group)
+                if not merged.get("confidence"):
+                    merged["confidence"] = next((p.get("confidence") for p in group if p.get("confidence")), "")
+
+                unique.append(merged)
+                print(f"[DEBUG] Behalte Person (ID): {merged.get('forename', '')} {merged.get('familyname', '')}, ID: {merged.get('nodegoat_id', '')}")
+
         else:
-            # Kein Eintrag mit ID, führe Matching durch
             best_entry = sorted(group, key=lambda p: p.get("match_score", 0), reverse=True)[0]
             match, score = match_person(best_entry, candidates)
-            
+
             if match and score >= 90:
-                enriched = {**match, "match_score": score, "confidence": "fuzzy"}
-                # Übernehme zusätzliche Informationen aus dem originalen Eintrag
-                enriched.setdefault("role", best_entry.get("role", ""))
-                enriched.setdefault("role_schema", best_entry.get("role_schema", ""))
-                enriched.setdefault("associated_organisation", best_entry.get("associated_organisation", ""))
-                # Sammle alle Rollen
-                all_roles = list(set(p.get("role", "") for p in group if p.get("role")))
+                enriched = match.copy()
+                enriched["match_score"] = score
+                enriched["confidence"] = "fuzzy"
+                enriched["mentioned_count"] = sum(int(p.get("mentioned_count", 1) or 1) for p in group)
+
+                enriched["associated_place"] = best_entry.get("associated_place", "")
+                enriched["associated_organisation"] = best_entry.get("associated_organisation", "")
+
+                all_roles = list({p.get("role", "").strip() for p in group if p.get("role")})
                 if all_roles:
                     enriched["role"] = "; ".join(all_roles)
+
                 unique.append(enriched)
+                print(f"[DEBUG] Behalte Person (fuzzy): {enriched.get('forename', '')} {enriched.get('familyname', '')}, Score: {score}")
             else:
-                best_entry["match_score"], best_entry["confidence"] = score, "none"
+                best_entry["match_score"] = score
+                best_entry["confidence"] = "none"
+                best_entry["mentioned_count"] = sum(int(p.get("mentioned_count", 1) or 1) for p in group)
+
+                all_roles = list({p.get("role", "").strip() for p in group if p.get("role")})
+                if all_roles:
+                    best_entry["role"] = "; ".join(all_roles)
+
                 unique.append(best_entry)
-    
+                print(f"[DEBUG] Behalte Person (no match): {best_entry.get('forename', '')} {best_entry.get('familyname', '')}, Score: {score}")
+
+
     return unique
 
 
