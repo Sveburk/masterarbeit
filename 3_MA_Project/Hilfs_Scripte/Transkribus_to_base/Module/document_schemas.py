@@ -25,7 +25,7 @@ class Person:
         associated_place: str = "",
         associated_organisation: str = "",
         nodegoat_id: str = "",
-        match_score: Optional[float] = None,
+        match_score: Optional[Union[float, Dict[str, float]]] = None,
         confidence: str = "",
         mentioned_count: int = 1
     ):

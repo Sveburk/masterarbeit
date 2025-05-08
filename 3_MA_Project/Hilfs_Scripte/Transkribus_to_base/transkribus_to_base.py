@@ -1337,24 +1337,32 @@ def main():
 
                     best_entry = max(entries, key=lambda x: float(x.get("match_score", 0)))
 
-                    # Alle Rollen & Confidences sammeln
+                    # Match-Score als Dict pro Methode
+                    score_dict: Dict[str, float] = {}
+                    for e in entries:
+                        confidence_str = e.get("confidence", "").strip()
+                        score = e.get("match_score", 0)
+                        try:
+                            score = float(score)
+                        except (ValueError, TypeError):
+                            score = 0.0
+                        for method in [m.strip() for m in confidence_str.split(",") if m.strip()]:
+                            if method not in score_dict or score > score_dict[method]:
+                                score_dict[method] = score
+
+                    # Restlicher Merge
                     all_roles = sorted(set(r for r in [e.get("role", "").strip() for e in entries] if r))
                     all_confidences = sorted(set(c for c in [e.get("confidence", "").strip() for e in entries] if c))
                     total_mentions = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
 
                     merged = dict(best_entry)
-                    merged["role"] = "; ".join(all_roles)  # bei Bedarf ", " statt "; "
+                    merged["role"] = "; ".join(all_roles)
                     merged["confidence"] = ", ".join(all_confidences)
+                    merged["match_score"] = score_dict
                     merged["mentioned_count"] = total_mentions
 
-                    # Debug: Rolle verloren?
                     print(f"[DEBUG] → Gewählter Eintrag für '{key}': {merged.get('forename')} {merged.get('familyname')} | Role: '{merged['role']}', Confidence: '{merged['confidence']}', Score: {merged['match_score']}")
-                    if not merged["role"]:
-                        print(f"[WARNING] Keine Rolle übernommen für {merged.get('forename')} {merged.get('familyname')} (Key={key})")
 
-
-                    print(f"[DEBUG] → Gewählter Eintrag für '{key}': {merged.get('forename')} {merged.get('familyname')} | Role: '{merged['role']}', Confidence: '{merged['confidence']}', Score: {merged['match_score']}")
-                    
                     deduplicated_enriched_persons.append(merged)
 
 
