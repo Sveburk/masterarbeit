@@ -184,7 +184,7 @@ def extract_role_in_token(token: str) -> List[Dict[str, Any]]:
                 "associated_place": "",
                 "associated_organisation": "",
                 "nodegoat_id": "",
-                "match_score": 100,
+                "match_score": 99,
                 "confidence": "llm-matched",
                 "raw_token": token
             })
@@ -217,10 +217,8 @@ def extract_standalone_roles(persons: List[Dict[str, Any]], full_text: str) -> L
         else:
             fn_cand, ln_cand = "", ""
 
-               # Rolle normalisieren
+        # Rolle normalisieren
         normalized_role = normalize_and_match_role(role)
-
-        # Kein valider Rollenbegriff erkannt
         if not normalized_role:
             continue
 
@@ -234,36 +232,30 @@ def extract_standalone_roles(persons: List[Dict[str, Any]], full_text: str) -> L
         if exists:
             continue
 
-        # Wenn gültiger Name extrahiert → Role-Only mit Name
+        # Fall 1: Gültiger Name
         if NAME_RE.match(fn_cand) and NAME_RE.match(ln_cand):
-            new_entries.append({
-                "forename": fn_cand,
-                "familyname": ln_cand,
-                "alternate_name": "",
-                "title": "",
-                "role": normalized_role,
-                "role_schema": map_role_to_schema_entry(normalized_role),
-                "associated_place": "",
-                "associated_organisation": org,
-                "nodegoat_id": "",
-                "match_score": 0,
-                "confidence": "role_only"
-            })
+            match_score = 60
+        elif ln_cand and NAME_RE.match(ln_cand):
+            match_score = 40
+        # Fall 2: Keine erkennbare Person → reine Rolle
         else:
-            # Reines Role-Only ohne Namen
-            new_entries.append({
-                "forename": "",
-                "familyname": "",
-                "alternate_name": "",
-                "title": "",
-                "role": normalized_role,
-                "role_schema": map_role_to_schema_entry(normalized_role),
-                "associated_place": "",
-                "associated_organisation": org,
-                "nodegoat_id": "",
-                "match_score": 0,
-                "confidence": "role_only"
-            })
+            fn_cand, ln_cand = "", ""
+            match_score = 5
+
+        new_entries.append({
+            "forename": fn_cand,
+            "familyname": ln_cand,
+            "alternate_name": "",
+            "title": "",
+            "role": normalized_role,
+            "role_schema": map_role_to_schema_entry(normalized_role),
+            "associated_place": "",
+            "associated_organisation": org,
+            "nodegoat_id": "",
+            "match_score": match_score,
+            "confidence": "role_only"
+        })
+
     return new_entries
 
 
