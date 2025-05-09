@@ -37,6 +37,24 @@
 
 %___________________________________________________________________________
 \noindent\hrulefill
+\section{Änderungen in Transkribus\_II\_Test.py und infer\_authors\_recipients \small 08.05.2025}
+
+\subsection*{Kernaussagen der Änderungen}
+Die heutigen Änderungen betreffen die Robustheit der JSON-Erstellung sowie die korrekte Verknüpfung von Autoren, Empfängern und erwähnten Personen. Die zentralen Anpassungen im Skript \texttt{Transkribus\_II\_Test.py} sowie in der Hilfsfunktion \texttt{infer\_authors\_recipients} umfassen:
+
+\begin{itemize}
+    \item Die Autoren- und Empfängerfelder im \texttt{BaseDocument} werden zunächst leer gesetzt, um Redundanz zu vermeiden und spätere LLM-basierte Bereinigungen zu ermöglichen.
+    \item Die Funktion \texttt{infer\_authors\_recipients} wurde erweitert: Nach der Erkennung von Autoren und Empfängern wird überprüft, ob diese auch in \texttt{mentioned\_persons} enthalten sind. Falls nicht, werden sie ergänzt.
+    \item Die Funktion \texttt{resolve\_llm\_custom\_authors\_recipients} wird konsequent erst nach dem Aufbau aller Entitäten aufgerufen.
+    \item Die Ortserkennung wurde vereinheitlicht. Orte werden konsistent dedupliziert, mit Nodegoat-IDs angereichert und in das finale JSON übernommen.
+    \item Die Speicherung des finalen Dokuments erfolgt erst nach Validierung und Fehlerausgabe, was die Stabilität des Workflows verbessert.
+\end{itemize}
+
+\subsection*{Nächste Schritte}
+\ding{113} Sicherstellen, dass keine Duplikate durch mehrfaches Setzen von Autoren/Empfängern entstehen\\
+\ding{113} Validierungs-Fehler in Konflikt-Logs systematisch dokumentieren\\
+\ding{113} Einführung eines konsistenten Fallbacks für leere oder fehlerhafte Personen- und Ortsdaten\\
+
 \section{Systemübersicht Virtuelle Maschine \small 07.05.2025}
 
 Für die Darstellung und Endnutzung der für die Masterarbeit gewonnen Daten ist von Sorin und mir in einem Feedbackgespräch die Idee entstanden, eine Virtuelle Maschine der IT-Services der Uni Basel zu nitzen. dafür wurde Lukas  am 07.10 per Mail angefragt. Ziel ist ein Userinterface zu baeuen, indem per Suchmaske die JSON Dateien durchsucht werden können, per IIIF-Server auf die Bilddateien der Akten zuzugreifen, und in einem weiteren Schritt ggf auch auf meine Nodegoat-Datenbank zuzugreifen.

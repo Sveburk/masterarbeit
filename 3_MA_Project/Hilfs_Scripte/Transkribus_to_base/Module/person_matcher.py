@@ -10,18 +10,21 @@ from Module.Assigned_Roles_Module import (
     ROLE_AFTER_NAME_RE,
     ROLE_BEFORE_NAME_RE,
     map_role_to_schema_entry,
+
 )
 from rapidfuzz.distance import Levenshtein
 
 from Module.Assigned_Roles_Module import (
     POSSIBLE_ROLES,
     map_role_to_schema_entry,
+    ROLE_MAPPINGS_DE
 )
 
 #============================================================================
 #   BLACKLIST & CONFIGURATION
 #============================================================================
 # Vereine/Rollen, die niemals als Personenname gelten dürfen
+# Nutze die vollständige Liste aus der CSV via Assigned_Roles_Module
 ROLE_TOKENS = { r.lower() for r in POSSIBLE_ROLES }
 
 # Und zusätzlich Anrede‑Titel (kannst Du beliebig erweitern)
@@ -30,6 +33,14 @@ TITLE_TOKENS = {"herr", "herrn", "frau", "fräulein", "dr", "prof", "der", "pg",
 # ----- Gesamt‑Blacklist -------
 NON_PERSON_TOKENS = ROLE_TOKENS.union(TITLE_TOKENS)
 UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
+
+
+#
+INITIAL_SURNAME = re.compile(r'^(?P<initial>[A-Z])\.?\s+(?P<surname>[A-ZÄÖÜ][a-zäöüß]+)$')
+
+SOLE_ROLE = set(POSSIBLE_ROLES)
+SINGLE_NAME = re.compile(r'^[A-ZÄÖÜ][a-zäöüß]+$')
+
 
 
 
@@ -369,6 +380,8 @@ def match_person(
        d) Vertauschter Vor-/Nachname
        e) Rolle als Name
     """
+    
+
     fn_raw = (person.get("forename") or "").strip()
     ln_raw = (person.get("familyname") or "").strip()
     role_raw = (person.get("role") or "").strip()
@@ -376,15 +389,15 @@ def match_person(
     fn_stripped, roles = strip_roles_from_name(fn_raw)
     fn = re.sub(r"[():]", "", fn_stripped).strip()
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
-
+    print(f"[DEBUG] Starte Matching für: forename='{fn}', familyname='{ln}', role='{role_raw}'")
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
     if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
         print(f"[DEBUG] Dropping because token in blacklist: fn='{fn}', ln='{ln}'")
         return None, 0
 
-    ROLE_TOKENS = {"mutter", "prokurist", "vereinsführer", "errn", "herrn"}
+    # Verwende die vollständige Rolle-Tokens aus der CSV statt hardcoded Liste
     if not ln and fn.lower() in ROLE_TOKENS:
-        print(f"[DEBUG] Dropping token as name: fn='{fn}', ln='{ln}'")
+        print(f"[DEBUG] Dropping token as name (role detected): fn='{fn}', ln='{ln}'")
         return None, 0
 
     thr = get_matching_thresholds()
@@ -465,7 +478,7 @@ def match_person(
         if matched and dist <= 2:
             c = next(x for x in candidates if x["familyname"] == matched)
             return c, 85
-
+    
     return None, 0
 
 
@@ -475,19 +488,35 @@ def match_person(
 def extract_person_data(row: Dict[str,Any]) -> Dict[str,str]:
     # bereits getrennt?
     if row.get("forename") and row.get("familyname"):
-        return {k:str(row.get(k,"")).strip() for k in [
+        result = {k:str(row.get(k,"")).strip() for k in [
             "forename","familyname","alternate_name","title",
             "nodegoat_id","home","birth_date","death_date",
             "organisation","role","role_schema","associated_organisation",
             "stripped_role"
         ]}
+        # Ensure role_schema is populated correctly if role exists
+        if result.get("role") and not result.get("role_schema"):
+            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+            normalized_role = normalize_and_match_role(result["role"])
+            if normalized_role:
+                result["role"] = normalized_role
+            result["role_schema"] = map_role_to_schema_entry(result["role"])
+            print(f"[DEBUG] person_matcher: role_schema = {result['role_schema']!r}")
+        return result
+
     raw = row.get("name","").strip()
     m = re.match(r"^(Herrn?|Frau|Fräulein|Dr\.?|Prof\.?)\s+(.+)$", raw, flags=re.IGNORECASE)
     title = m.group(1).capitalize() if m else ""
     if m: raw = m.group(2).strip()
     clean, roles = strip_roles_from_name(raw)
+
+    # Use normalize_and_match_role for consistency
+    from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
     role = roles[0] if roles else ""
+    normalized_role = normalize_and_match_role(role) if role else ""
+    role = normalized_role if normalized_role else role
     role_schema = map_role_to_schema_entry(role) if role else ""
+
     parts = normalize_name(clean)
     return {
         "forename": parts["forename"],
@@ -566,7 +595,73 @@ def split_and_enrich_persons(
                 "confidence":  "fuzzy",
             })
         else:
-            unmatched.append({"raw_token": raw_token})
+            person["match_score"] = 0
+            person["confidence"] = ""
+            person["raw_token"] = raw_token
+            unmatched.append(person)
+
+        # —– : Spezial-Fälle aus unmatched in matched verschieben —–
+    additional = []
+    role_only_entries = []
+
+    for person in unmatched:
+        name = person["raw_token"].strip()
+        m = INITIAL_SURNAME.match(name)
+
+        # Fall 1: Initial + Nachname (z.B. "A. Müller")
+        if m:
+            person["match_score"] = 50
+            person["confidence"] = "initial"
+            additional.append(person)
+            continue
+
+        # Fall 2: Einzelne Rolle ohne Person (z.B. "Vorsitzender") -> in role_only speichern
+        if name in SOLE_ROLE:
+            # Statt als Person zu behandeln, als reine Rolle ausgeben
+            role_entry = {
+                "forename": "",
+                "familyname": "",
+                "alternate_name": "",
+                "title": "",
+                "role": name,  # Die Rolle ist der gesamte Token
+                "role_schema": map_role_to_schema_entry(name),
+                "associated_place": "",
+                "associated_organisation": person.get("associated_organisation", ""),
+                "nodegoat_id": "",
+                "match_score": 40,
+                "confidence": "role_only",
+                "raw_token": name
+            }
+            role_only_entries.append(role_entry)
+            continue
+
+        # Fall 3: Name, Rolle (z.B. "Schmidt, Vorsitzender")
+        parts = [p.strip() for p in name.split(",")]
+        if len(parts) == 2 and SINGLE_NAME.match(parts[0]) and parts[1] in SOLE_ROLE:
+            person["forename"] = ""
+            person["familyname"] = parts[0]
+            person["role"] = parts[1]
+            person["role_schema"] = map_role_to_schema_entry(parts[1])
+            person["match_score"] = 45
+            person["confidence"] = "name-role"
+            additional.append(person)
+            continue
+
+        # Fall 4: Einzelner Name (z.B. "Schmidt")
+        if SINGLE_NAME.match(name):
+            person["match_score"] = 30
+            person["confidence"] = "single-name"
+            additional.append(person)
+            continue
+
+    matched.extend(additional)
+    # Verwende set() basierend auf Memory-ID für Vergleich
+    matched_ids = {id(p) for p in additional}
+    unmatched = [p for p in unmatched if id(p) not in matched_ids]
+
+    # Reine Rollen dem unmatched-Array hinzufügen (mit spezieller Markierung)
+    if role_only_entries:
+        unmatched.extend(role_only_entries)
 
     return matched, unmatched
 
@@ -633,6 +728,9 @@ def deduplicate_persons(
                 all_roles = {p.get("role", "").strip() for p in group if p.get("role")}
                 if all_roles:
                     merged["role"] = "; ".join(sorted(all_roles))
+                    # Update role_schema based on the combined roles
+                    from Module.Assigned_Roles_Module import map_role_to_schema_entry
+                    merged["role_schema"] = map_role_to_schema_entry(sorted(all_roles)[0]) if sorted(all_roles) else ""
 
                 # Felder ergänzen, wenn leer
                 for field in ["title", "alternate_name", "associated_place", "associated_organisation"]:
@@ -649,7 +747,7 @@ def deduplicate_persons(
                     merged["confidence"] = next((p.get("confidence") for p in group if p.get("confidence")), "")
 
                 unique.append(merged)
-                print(f"[DEBUG] Behalte Person (ID): {merged.get('forename', '')} {merged.get('familyname', '')}, ID: {merged.get('nodegoat_id', '')}")
+                
 
         else:
             best_entry = sorted(group, key=lambda p: p.get("match_score", 0), reverse=True)[0]

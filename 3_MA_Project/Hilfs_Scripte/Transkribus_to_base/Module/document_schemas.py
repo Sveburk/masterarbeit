@@ -12,7 +12,23 @@ import re
 from datetime import datetime
 
 class Person:
-    """Repräsentiert eine Person mit verschiedenen Attributen."""
+    """Repräsentiert eine Person mit verschiedenen Attributen.
+
+    Attributes:
+        anrede: Anrede der Person (z.B. "Herr", "Frau").
+        forename: Vorname der Person.
+        alternate_name: Alternativer Name oder Spitzname der Person.
+        familyname: Nachname der Person.
+        title: Titel der Person (z.B. "Dr.", "Prof.").
+        role: Erkannte Rohrolle als Freitext (z.B. "Malermeister").
+        role_schema: Normierter Schema-Key, der über map_role_to_schema_entry ermittelt wird.
+        associated_place: Mit der Person verbundener Ort.
+        associated_organisation: Mit der Person verbundene Organisation.
+        nodegoat_id: ID der Person in Nodegoat.
+        match_score: Bewertung der Übereinstimmung.
+        confidence: Vertrauenswert für die Zuordnung.
+        mentioned_count: Anzahl der Erwähnungen.
+    """
     
     def __init__(
         self,
@@ -22,6 +38,7 @@ class Person:
         familyname: str = "",
         title: str = "",
         role: str = "",
+        role_schema: str = "",                 
         associated_place: str = "",
         associated_organisation: str = "",
         nodegoat_id: str = "",
@@ -35,6 +52,7 @@ class Person:
         self.familyname = familyname
         self.title = title
         self.role = role
+        self.role_schema = role_schema
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
         self.nodegoat_id = nodegoat_id
@@ -45,21 +63,40 @@ class Person:
 
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert ein Person-Objekt in ein Dictionary."""
-        return {
-            "anrede": self.anrede,
-            "forename": self.forename,
-            "alternate_name": self.alternate_name,
-            "familyname": self.familyname,
-            "title": self.title,
-            "role": self.role,
-            "associated_place": self.associated_place,
-            "associated_organisation": self.associated_organisation,
-            "nodegoat_id": self.nodegoat_id,
-            "match_score": self.match_score,
-            "confidence": self.confidence,
-            "mentioned_count": self.mentioned_count
-            
+        result = {
+            "anrede": self.anrede or "",
+            "forename": self.forename or "",
+            "alternate_name": self.alternate_name or "",
+            "familyname": self.familyname or "",
+            "title": self.title or "",
+            "role": self.role or "",
+            "associated_place": self.associated_place or "",
+            "associated_organisation": self.associated_organisation or "",
+            "nodegoat_id": self.nodegoat_id or "",
+            "confidence": self.confidence or ""
         }
+
+        # Stelle sicher, dass match_score immer ein gültiger Wert ist (nie None)
+        if self.match_score is not None:
+            result["match_score"] = self.match_score
+        else:
+            result["match_score"] = 0
+
+        # Stelle sicher, dass mentioned_count immer ein gültiger Integer ist
+        result["mentioned_count"] = int(self.mentioned_count) if self.mentioned_count else 1
+
+        # Ergänze und normalisiere role_schema, wenn role gesetzt ist
+        if self.role:
+            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+            normalized_role = normalize_and_match_role(self.role)
+            if normalized_role:
+                result["role"] = normalized_role
+            result["role_schema"] = map_role_to_schema_entry(result["role"])
+        else:
+            # Stelle sicher, dass role_schema immer im Ergebnis vorhanden ist
+            result["role_schema"] = getattr(self, "role_schema", "")
+
+        return result
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Person':
@@ -71,6 +108,7 @@ class Person:
             familyname=data.get("familyname", ""),
             title=data.get("title", ""),
             role=data.get("role", ""),
+            role_schema=data.get("role_schema", ""),  
             associated_place=data.get("associated_place", ""),
             associated_organisation=data.get("associated_organisation", ""),
             nodegoat_id=data.get("nodegoat_id", ""),
@@ -297,23 +335,48 @@ class BaseDocument:
     
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert das Dokument in ein Dictionary."""
-        return {
+        result = {
             "object_type": self.object_type,
-            "attributes": self.attributes,
-            "authors": [a.to_dict() for a in self.authors],
-            "recipients": [r.to_dict() for r in self.recipients],
-            "mentioned_persons": [person.to_dict() for person in self.mentioned_persons],
-            "mentioned_organizations": [org.to_dict() for org in self.mentioned_organizations],
-            "mentioned_events": [event.to_dict() for event in self.mentioned_events],
-            "creation_date": self.creation_date,
-            "creation_place": self.creation_place,
-            "mentioned_dates": self.mentioned_dates,
-            "mentioned_places": [place.to_dict() for place in self.mentioned_places],
-            "content_tags_in_german": self.content_tags_in_german,
-            "content_transcription": self.content_transcription,
-            "document_type": self.document_type,
-            "document_format": self.document_format
+            "attributes": self.attributes or {},
+            "authors": [a.to_dict() for a in self.authors] if self.authors else [],
+            "recipients": [r.to_dict() for r in self.recipients] if self.recipients else [],
+            "mentioned_persons": [person.to_dict() for person in self.mentioned_persons] if self.mentioned_persons else [],
+            "mentioned_organizations": [org.to_dict() for org in self.mentioned_organizations] if self.mentioned_organizations else [],
+            "mentioned_events": [event.to_dict() for event in self.mentioned_events] if self.mentioned_events else [],
+            "creation_date": self.creation_date or "",
+            "creation_place": self.creation_place or "",
+            "mentioned_dates": self.mentioned_dates or [],
+            "mentioned_places": [place.to_dict() for place in self.mentioned_places] if self.mentioned_places else [],
+            "content_tags_in_german": self.content_tags_in_german or [],
+            "content_transcription": self.content_transcription or "",
+            "document_type": self.document_type or "",
+            "document_format": self.document_format or ""
         }
+
+        # Stelle sicher, dass required/expected fields nicht fehlen
+        # Überprüfe den Dokumenttyp und füge typspezifische Felder hinzu
+        if self.document_type == "Brief" and not isinstance(self, Brief):
+            result["greeting"] = ""
+            result["closing"] = ""
+        elif self.document_type == "Postkarte" and not isinstance(self, Postkarte):
+            result["postmark"] = ""
+            result["postmark_date"] = ""
+        elif self.document_type == "Protokoll" and not isinstance(self, Protokoll):
+            result["meeting_type"] = ""
+            result["attendees"] = []
+
+        # Stelle sicher, dass role_schema für alle Personen vorhanden ist und role normalisiert ist
+        for person_list_name in ["authors", "recipients", "mentioned_persons"]:
+            if person_list_name in result:
+                for person_dict in result[person_list_name]:
+                    if "role" in person_dict and person_dict["role"]:
+                        from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+                        normalized_role = normalize_and_match_role(person_dict["role"])
+                        if normalized_role:
+                            person_dict["role"] = normalized_role
+                        person_dict["role_schema"] = map_role_to_schema_entry(person_dict["role"])
+
+        return result
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'BaseDocument':

@@ -47,7 +47,6 @@ POSSIBLE_ROLES: List[str] = list(ROLE_MAPPINGS_DE.keys())
 # Bekanntes Rollen-Verzeichnis für externe Nutzung
 KNOWN_ROLE_LIST: List[str] = POSSIBLE_ROLES
 print(f"{len(ROLE_MAPPINGS_DE)} Rollenvarianten geladen.")
-print("Beispiele:", list(ROLE_MAPPINGS_DE.items())[:10])
 
 # === Regex-Patterns ===
 ROLE_AFTER_NAME_RE = re.compile(
@@ -132,13 +131,25 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
                         fn_cand.lower() in ROLE_MAPPINGS_DE or ln_cand.lower() in ROLE_MAPPINGS_DE:
                     p["role"] = normalized_role
                     p["role_schema"] = map_role_to_schema_entry(normalized_role)
+                    print(f"[DEBUG] role_schema = {p['role_schema']!r}")
                     p["associated_organisation"] = org
+
+    # Vor der Rückgabe: Normalisiere alle Rollen ein letztes Mal
+    for p in persons:
+        if p.get("role"):
+            normalized = normalize_and_match_role(p["role"])
+            if normalized:
+                p["role"] = normalized
+                p["role_schema"] = map_role_to_schema_entry(normalized)
+                print(f"[DEBUG] final role_schema = {p['role_schema']!r}")
 
     # 🔁 Am Ende: Alle zu Person-Objekten umwandeln
     result = []
     for p in persons:
         try:
-            result.append(Person.from_dict(p))
+            person = Person.from_dict(p)
+            print(f"[DEBUG] person.role_schema = {person.role_schema!r}")
+            result.append(person)
         except Exception as e:
             print(f"[WARN] Ungültiges Personen-Dict in Rollen-Modul: {p} – {e}")
     return result
@@ -174,13 +185,18 @@ def extract_role_in_token(token: str) -> List[Dict[str, Any]]:
             ln = name_parts[-1] if name_parts else ""
 
         if ln:
+            # Ensure role is consistently normalized
+            final_role = normalize_and_match_role(normalized_role) or normalized_role
+
+            role_schema = map_role_to_schema_entry(final_role)
+            print(f"[DEBUG] extract_role_in_token: role_schema = {role_schema!r}")
             results.append({
                 "forename": fn,
                 "familyname": ln,
                 "alternate_name": "",
                 "title": "",
-                "role": normalize_role_form(normalized_role),
-                "role_schema": map_role_to_schema_entry(normalized_role),
+                "role": final_role,
+                "role_schema": role_schema,
                 "associated_place": "",
                 "associated_organisation": "",
                 "nodegoat_id": "",
@@ -200,6 +216,44 @@ def extract_standalone_roles(persons: List[Dict[str, Any]], full_text: str) -> L
     for idx, line in enumerate(lines):
         segment = line.split(',', 1)[-1].strip()
         m = STANDALONE_ROLE_RE.match(segment)
+        # Zusätzliche Prüfung: ganze Zeile wie "Der Vereinsführer"
+        simple_match = re.match(r"^\s*(Der|Die)?\s*(?P<role>[A-ZÄÖÜa-zäöüß\-]+)(e|er|in)?\s*$", segment)
+        if simple_match:
+            raw_role = simple_match.group("role")
+            normalized_role = normalize_and_match_role(raw_role)
+
+            # Unterscheide zwischen bekannten und unbekannten Rollen
+            if normalized_role:
+                # Bekannte Rolle aus der Liste
+                new_entries.append({
+                    "forename": "",
+                    "familyname": "",
+                    "alternate_name": "",
+                    "title": "",
+                    "role": normalized_role,
+                    "role_schema": map_role_to_schema_entry(normalized_role),
+                    "associated_place": "",
+                    "associated_organisation": "",
+                    "nodegoat_id": "",
+                    "match_score": 5,
+                    "confidence": "role_only"
+                })
+            elif len(raw_role) > 3:  # Mindestlänge für potenzielle Rollen
+                # Unbekannte potenzielle Rolle - für Unmatched-Output
+                new_entries.append({
+                    "forename": "",
+                    "familyname": "",
+                    "alternate_name": "",
+                    "title": "",
+                    "role": raw_role,
+                    "role_schema": "unknown",
+                    "associated_place": "",
+                    "associated_organisation": "",
+                    "nodegoat_id": "",
+                    "match_score": 2,
+                    "confidence": "unknown_role"
+                })
+            continue
         if not m:
             continue
         role = m.group("role")
