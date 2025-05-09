@@ -33,6 +33,18 @@ GREETING_PATTERNS = [
 ]
 _CLOSING_RE = re.compile("|".join(GREETING_PATTERNS), re.IGNORECASE)
 
+
+# --- Grussformeln EMpfänger/recipient ---
+RECIPIENT_PATTERNS = [
+  r"^(?:An\s+Herrn)\b",        # “An Herrn Fritz Jung”
+  r"^(?:An\s+Frau)\b",         # “An Frau Maria Müller”
+  r"^(?:Herrn)\b",             # “Herrn Fritz Jung”
+  r"^(?:Frau)\b",              # “Frau Maria Müller”
+  # … und ggf. “Hochwohlgeboren”, “Gnädige Frau” o.ä.
+]
+_RECIPIENT_RE = re.compile("|".join(RECIPIENT_PATTERNS), re.IGNORECASE)
+
+
 # --- Rollen/Funktions-Patterns für authors-Erkennung ---
 ROLE_PATTERNS = re.compile(
     rf"\b(?:{'|'.join(map(re.escape, KNOWN_ROLE_LIST))})\b",
@@ -250,10 +262,12 @@ def match_authors(text: str, document_type: Optional[str] = None, mentioned_pers
     raw = extract_authors_raw(text)
     return letter_match_and_enrich(raw, text, mentioned_persons)
 
-def match_recipients(text: str, document_type: Optional[str] = None, mentioned_persons: List[Person] = []) -> Dict[str, Any]:
+def match_recipients(text: str,
+                     document_type: Optional[str] = None,
+                     mentioned_persons: List[Person] = None
+                    ) -> Dict[str, Any]:
     raw = extract_recipients_raw(text)
     return letter_match_and_enrich(raw, text, mentioned_persons)
-
 
 
 def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):

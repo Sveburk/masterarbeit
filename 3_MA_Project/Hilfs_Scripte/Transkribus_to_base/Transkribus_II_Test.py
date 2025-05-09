@@ -1171,6 +1171,23 @@ def process_transkribus_file(
             }
             for a in doc.authors
         ]
+        # (1b) Hole die Empfänger-Dicts
+        recipient_dicts = [{
+            "forename": r.forename,
+            "familyname": r.familyname,
+            "alternate_name": r.alternate_name,
+            "title": r.title,
+            "nodegoat_id": r.nodegoat_id
+        } 
+        for r in doc.recipients
+        ]
+        enriched_recipients = assign_roles_to_known_persons(recipient_dicts, transcript_text)
+        for rec, info in zip(doc.recipients, enriched_recipients):
+            role   = info.get("role") if isinstance(info, dict) else info.role
+            schema = info.get("role_schema") if isinstance(info, dict) else getattr(info, "role_schema", "")
+            if role:
+                rec.role        = role
+                rec.role_schema = schema
         # (2) Mappe Rollen und Schemas
         enriched = assign_roles_to_known_persons(author_dicts, transcript_text)
         # (3) Übertrage role & role_schema zurück auf die Person-Objekte
@@ -1395,6 +1412,7 @@ def process_single_xml(
     custom_data = extract_custom_attributes(root)
     print("[DEBUG] custom_data['roles'] in process_single_xml:", custom_data["roles"])
 
+    # 5) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
     mentioned_persons, authors, recipients = extract_and_prepare_persons(
         custom_data["persons"],
         transcript,
@@ -1402,42 +1420,38 @@ def process_single_xml(
         metadata["document_type"]
     )
 
-    # ==== 6b) Custom-Rollen auf Autoren mappen ====
+    # 6) Custom-Rollen auf Autor:innen UND Empfänger:innen mappen
     for role_entry in custom_data["roles"]:
         role_name = role_entry["raw"].rstrip(":").strip()
         if role_name.lower() == "vereinsführer":
-            for author in authors:
-                if author.forename == "Alfons" and author.familyname == "Zimmermann":
-                    author.role        = role_name
-                    author.role_schema = role_name
-                    print(f"[DEBUG] Assigned custom role '{role_name}' to {author.forename} {author.familyname}")
+            for person in authors + recipients:
+                if person.forename == "Alfons" and person.familyname == "Zimmermann":
+                    person.role        = role_name
+                    person.role_schema = role_name
+                    print(f"[DEBUG] Assigned custom role '{role_name}' to {person.forename} {person.familyname}")
 
-    # 5) Sicherstellen, dass Autor:innen/Empfänger:innen in mentioned_persons auftauchen
+    # 7) Sicherstellen, dass alle Authors/Recipients in mentioned_persons sind
     temp_doc = BaseDocument(
-        mentioned_persons=mentioned_persons,
         authors=authors,
-        recipients=recipients
+        recipients=recipients,
+        mentioned_persons=mentioned_persons
     )
     ensure_author_recipient_in_mentions(temp_doc, transcript)
-    
+    authors, recipients = temp_doc.authors, temp_doc.recipients
 
-    # 🔑 Rollen von mentioned_persons in authors/recipients übernehmen
-    for person in temp_doc.authors + temp_doc.recipients:
+    # 8) Rollen aus mentioned_persons final übernehmen
+    for person in authors + recipients:
         for mp in temp_doc.mentioned_persons:
             if person.forename == mp.forename and person.familyname == mp.familyname:
-                person.role = mp.role
-                # falls ihr auch das role_schema braucht:
-                person.role_schema = getattr(mp, "role_schema", "")
-                print(f"[DEBUG] role_schema = {person.role_schema}")
-
+                person.role        = mp.role
+                person.role_schema = mp.role_schema
                 break
-
 
     authors, recipients = temp_doc.authors, temp_doc.recipients
     mentioned_persons = temp_doc.mentioned_persons
 
 
-    # 5) Organisationen matchen (und duplikatfrei halten)
+    # 9) Organisationen matchen (und duplikatfrei halten)
     raw_orgs = custom_data.get("organizations", [])
     matched_orgs = match_organization_entities(raw_orgs, org_list)
     seen = set()
@@ -1448,13 +1462,13 @@ def process_single_xml(
             seen.add(key)
             unique_orgs.append(o)
 
-    # 6) Orte & Daten
+    # 10) Orte & Daten
     mentioned_places = mentioned_places_from_custom_data(
         custom_data, document_id, place_m, get_place_name
     )
     mentioned_dates = custom_data.get("dates", [])
 
-    # 7) BaseDocument zusammenbauen
+    # I) BaseDocument zusammenbauen
     doc = BaseDocument(
         object_type="Dokument",
         attributes=metadata,
@@ -1483,7 +1497,7 @@ def process_single_xml(
         document_format=""
     )
 
-    # 8) JSON speichern
+    # II) JSON speichern
     out_name = xml_file.replace("_preprocessed.xml", ".json")
     out_path = os.path.join(OUTPUT_DIR, f"{folder}_{subdir}_{out_name}")
     with open(out_path, "w", encoding="utf-8") as f:
@@ -1511,29 +1525,35 @@ def deduplicate_and_group_persons(persons: List[Dict[str, Any]]) -> List[Person]
 
     return final
 
-def infer_authors_recipients(text: str, doc_type: str, persons: List[Person]):
+def infer_authors_recipients(
+    text: str,
+    doc_type: Optional[str],
+    persons: List[Person]
+) -> Tuple[List[Person], List[Person]]:
     """
-    Ermittelt Autoren und Empfänger aus dem Text und stellt sicher, dass sie auch in mentioned_persons vorhanden sind.
+    Ermittelt Autoren und Empfänger aus dem Text und stellt sicher,
+    dass sie auch in mentioned_persons landen.
     Returns: Tuple von ([authors], [recipients])
     """
-    # Match authors und recipients und übergebe mentioned_persons als Kontext
-    authors = match_authors(text, doc_type, persons)
-    recipients = match_recipients(text, doc_type, persons)
-    
-    # Sicherstellen, dass es Listen sind
-    authors_list = [authors] if isinstance(authors, Person) else authors if authors else []
-    recipients_list = [recipients] if isinstance(recipients, Person) else recipients if recipients else []
-    
-    # Erstelle temporäres BaseDocument, um ensure_author_recipient_in_mentions anzuwenden
+    # 1) Roh-Extraktion
+    raw_author    = match_authors(text, document_type=doc_type, mentioned_persons=persons)
+    raw_recipient = match_recipients(text, document_type=doc_type, mentioned_persons=persons)
+
+    # 2) In Listen umwandeln
+    authors_list = [raw_author]    if isinstance(raw_author, Person)    else (raw_author    or [])
+    recipients_list = [raw_recipient] if isinstance(raw_recipient, Person) else (raw_recipient or [])
+
+    # 3) Temporäres Dokument für das In-Mentions Einpflegen
     temp_doc = BaseDocument(
-        authors=authors_list,
-        recipients=recipients_list,
-        mentioned_persons=persons
+        authors=            authors_list,
+        recipients=         recipients_list,
+        mentioned_persons=  persons
     )
-    
-    # Stelle sicher, dass Autoren/Empfänger in mentioned_persons sind
+
+    # 4) Autoren und Empfänger in mentioned_persons aufnehmen
     ensure_author_recipient_in_mentions(temp_doc, text)
-    
+
+    # 5) Rückgabe
     return temp_doc.authors, temp_doc.recipients
 
 
