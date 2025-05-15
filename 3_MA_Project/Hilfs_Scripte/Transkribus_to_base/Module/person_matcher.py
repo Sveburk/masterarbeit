@@ -364,6 +364,8 @@ def fuzzy_match_name(name: str, candidates: List[str], threshold: int) -> Tuple[
         if sc > score:
             best, score = c, sc
     return (best, score) if score>=threshold else (None,0)
+
+
 def match_person(
     person: Dict[str, str],
     candidates: List[Dict[str, str]] = KNOWN_PERSONS
@@ -391,8 +393,31 @@ def match_person(
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
     print(f"[DEBUG] Starte Matching für: forename='{fn}', familyname='{ln}', role='{role_raw}'")
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
+
+
+    context = person.get("content_transcription", "") or ""
+    fn_in_unmatchable = fn.lower() in UNMATCHABLE_SINGLE_NAMES
+    ln_in_unmatchable = ln.lower() in UNMATCHABLE_SINGLE_NAMES
+
+    if (fn_in_unmatchable and not ln) or (ln_in_unmatchable and not fn):
+        full = fn + " " + ln
+        inv  = ln + " " + fn
+        if re.search(rf"\b{re.escape(full.strip())}\b", context, flags=re.IGNORECASE) or \
+        re.search(rf"\b{re.escape(inv.strip())}\b", context, flags=re.IGNORECASE):
+            print(f"[DEBUG] Kontext rettet '{fn}'/'{ln}' durch Fund von '{full}' oder '{inv}' im Text")
+        else:
+            print(f"[DEBUG] Unmatchable single name: '{fn}' / '{ln}' → keine Nodegoat-ID, aber wird übernommen.")
+        return None, 0
+
+
+    # Blacklist-Token ohne Nachname
     if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
         print(f"[DEBUG] Dropping because token in blacklist: fn='{fn}', ln='{ln}'")
+        return None, 0
+
+    # Token ist nur Rolle (und kein Nachname)
+    if not ln and fn.lower() in ROLE_TOKENS:
+        print(f"[DEBUG] Dropping token as name (role detected): fn='{fn}', ln='{ln}'")
         return None, 0
 
     # Verwende die vollständige Rolle-Tokens aus der CSV statt hardcoded Liste
@@ -479,6 +504,33 @@ def match_person(
             c = next(x for x in candidates if x["familyname"] == matched)
             return c, 85
     
+    # 7) wenn unverifiable dann in Output zur review speichern
+    if any([fn, ln, role_raw]):
+        if fn and not ln:
+            reason = "forename_only"
+        elif ln and not fn:
+            reason = "familyname_only"
+        elif not fn and not ln and role_raw:
+            reason = "role_only"
+        else:
+            reason = "partial_info"
+
+        unverified = {
+            "forename": fn,
+            "familyname": ln,
+            "role": role_raw,
+            "title": person.get("title", ""),
+            "alternate_name": "",
+            "nodegoat_id": "",
+            "match_score": 0,
+            "confidence": "unverified",
+            "needs_review": True,
+            "review_reason": reason
+        }
+        return unverified, 0
+
+
+    # Komplett leere oder ungültige Person – wirklich ignorieren
     return None, 0
 
 
@@ -581,8 +633,10 @@ def split_and_enrich_persons(
             continue
         seen.add(key)
 
-        # 4) Fuzzy‑Match
+        # 4) Fuzzy‑Match mit Kontextübergabe
+        person["content_transcription"] = content_transcription  # für Kontext-Logik in match_person
         match, score = match_person(person, candidates=cand_list)
+
 
         # 5) Ergebnis sammeln
         if match and score > 0:

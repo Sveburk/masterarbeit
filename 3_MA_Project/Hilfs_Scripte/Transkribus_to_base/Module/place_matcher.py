@@ -32,7 +32,7 @@ class PlaceMatcher:
                 if col in self.places_df.columns:
                     self.places_df[col] = self.places_df[col].apply(sanitize_id)
 
-            print("[DEBUG] Spaltennamen nach Umbenennung:", self.places_df.columns.tolist())
+        
             self.known_name_map = self._build_known_place_map()
         
         except Exception as e:
