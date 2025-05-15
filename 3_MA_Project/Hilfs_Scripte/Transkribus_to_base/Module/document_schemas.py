@@ -43,8 +43,11 @@ class Person:
         associated_organisation: str = "",
         nodegoat_id: str = "",
         match_score: Optional[Union[float, Dict[str, float]]] = None,
+        recipient_score: int = 0,
         confidence: str = "",
-        mentioned_count: int = 1
+        mentioned_count: int = 1,
+        needs_review: bool = False,               
+        review_reason: str = "",
     ):
         self.anrede = anrede
         self.forename = forename
@@ -57,8 +60,11 @@ class Person:
         self.associated_organisation = associated_organisation
         self.nodegoat_id = nodegoat_id
         self.match_score = match_score
+        self.recipient_score = recipient_score or 0
         self.confidence = confidence
         self.mentioned_count = mentioned_count
+        self.needs_review = needs_review          
+        self.review_reason = review_reason 
 
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +79,9 @@ class Person:
             "associated_place": self.associated_place or "",
             "associated_organisation": self.associated_organisation or "",
             "nodegoat_id": self.nodegoat_id or "",
-            "confidence": self.confidence or ""
+            "confidence": self.confidence or "",
+            "needs_review": self.needs_review,  
+            "review_reason": self.review_reason,
         }
 
         # Stelle sicher, dass match_score immer ein gültiger Wert ist (nie None)
@@ -114,6 +122,7 @@ class Person:
             nodegoat_id=data.get("nodegoat_id", ""),
             match_score=data.get("match_score"),
             confidence=data.get("confidence", ""),
+            recipient_score=data.get("recipient_score", 0),
             mentioned_count=data.get("mentioned_count", 1)
         )
 
@@ -369,14 +378,18 @@ class BaseDocument:
         for person_list_name in ["authors", "recipients", "mentioned_persons"]:
             if person_list_name in result:
                 for person_dict in result[person_list_name]:
-                    if "role" in person_dict and person_dict["role"]:
-                        from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
-                        normalized_role = normalize_and_match_role(person_dict["role"])
+                    role_raw = person_dict.get("role", "").strip()
+                    from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+                    if role_raw:
+                        normalized_role = normalize_and_match_role(role_raw)
                         if normalized_role:
                             person_dict["role"] = normalized_role
                         person_dict["role_schema"] = map_role_to_schema_entry(person_dict["role"])
-
-        return result
+                    else:
+                        # Auch wenn keine Rolle: setze leeres role_schema
+                        person_dict["role_schema"] = ""
+                print("[DEBUG] JSON-ready recipients:", result["recipients"])
+                return result
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'BaseDocument':
@@ -408,9 +421,12 @@ class BaseDocument:
             document_format=data.get("document_format", "")
         )
     
+    
     def to_json(self, indent: int = 4) -> str:
         """Konvertiert das Dokument in einen JSON-String."""
         return json.dumps(self.to_dict(), indent=indent, ensure_ascii=False)
+    
+
     
     @classmethod
     def from_json(cls, json_str: str) -> 'BaseDocument':
@@ -525,7 +541,8 @@ class Brief(BaseDocument):
         data["greeting"] = self.greeting
         data["closing"] = self.closing
         return data
-    
+
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Brief':
         """Erstellt ein Brief-Objekt aus einem Dictionary."""

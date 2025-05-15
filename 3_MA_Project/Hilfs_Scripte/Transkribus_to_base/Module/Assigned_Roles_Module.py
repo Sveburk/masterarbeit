@@ -108,50 +108,81 @@ def map_role_to_schema_entry(role_string: str) -> str:
     return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "None")
 
 # === Extraktion Inline-Rollen zu bekannten Personen ===
+
 def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Person]:
+    # 1) Inline-Matches nach ROLE_AFTER_NAME_RE und ROLE_BEFORE_NAME_RE
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
         for match in regex.finditer(full_text):
-            name = match.group("name") or ""
-            raw_role = match.group("role")
-            org = (match.group("organisation") or "").strip()
+            name      = match.group("name") or ""
+            raw_role  = match.group("role")
+            org       = (match.group("organisation") or "").strip()
 
             normalized_role = normalize_and_match_role(raw_role)
             if not normalized_role:
                 continue
-
             normalized_role = normalize_role_form(normalized_role)
+
             parts = name.strip().split()
             if len(parts) < 2:
                 continue
-
             fn_cand, ln_cand = " ".join(parts[:-1]), parts[-1]
 
             for p in persons:
-                if (p.get("familyname") == ln_cand and fn_cand in p.get("forename", "")) or \
-                        fn_cand.lower() in ROLE_MAPPINGS_DE or ln_cand.lower() in ROLE_MAPPINGS_DE:
-                    p["role"] = normalized_role
-                    p["role_schema"] = map_role_to_schema_entry(normalized_role)
-                    print(f"[DEBUG] role_schema = {p['role_schema']!r}")
+                if (p.get("familyname") == ln_cand and fn_cand in p.get("forename", "")):
+                    p["role"]               = normalized_role
+                    p["role_schema"]        = map_role_to_schema_entry(normalized_role)
                     p["associated_organisation"] = org
+                    print(f"[DEBUG] role_schema = {p['role_schema']!r}")
 
-    # Vor der Rückgabe: Normalisiere alle Rollen ein letztes Mal
+    # 2) Finales Normalisieren aller gefundenen Rollen
     for p in persons:
         if p.get("role"):
-            normalized = normalize_and_match_role(p["role"])
-            if normalized:
-                p["role"] = normalized
-                p["role_schema"] = map_role_to_schema_entry(normalized)
+            norm = normalize_and_match_role(p["role"])
+            if norm:
+                p["role"]        = norm
+                p["role_schema"] = map_role_to_schema_entry(norm)
                 print(f"[DEBUG] final role_schema = {p['role_schema']!r}")
-
-    # 🔁 Am Ende: Alle zu Person-Objekten umwandeln
-    result = []
     for p in persons:
+        fn = p.get("forename","").strip()
+        ln = p.get("familyname","").strip()
+        name_token = fn or ln
+        if not p.get("role") and name_token.lower() in ROLE_MAPPINGS_DE:
+            normalized = normalize_and_match_role(name_token)
+            if normalized:
+                p["role"]        = normalized
+                p["role_schema"] = map_role_to_schema_entry(normalized)
+                p["forename"]    = ""
+                p["familyname"]  = ""
+                print(f"[DEBUG] Name-als-Rolle gefixt: '{name_token}' → role='{normalized}'")
+
+
+    # 3) Name-als-Rolle-Fallback auf Dictionary-Ebene
+    cleaned_dicts: List[Dict[str, Any]] = []
+    for p in persons:
+        fn = p.get("forename", "").strip()
+        ln = p.get("familyname", "").strip()
+        name_token = fn or ln  # entweder Vorname oder Nachname
+        # Wenn keine Rolle gesetzt ist, aber der Name-Token in ROLE_MAPPINGS_DE auftaucht:
+        if not p.get("role") and name_token.lower() in ROLE_MAPPINGS_DE:
+            normalized = normalize_and_match_role(name_token)
+            p["role"]        = normalized
+            p["role_schema"] = map_role_to_schema_entry(normalized)
+            print(f"[DEBUG] Name-als-Rolle gefixt: '{name_token}' → role='{normalized}'")
+            # und die Namensfelder löschen
+            p["forename"]    = ""
+            p["familyname"]  = ""
+        cleaned_dicts.append(p)
+
+    # 4) Umwandlung in Person-Objekte
+    result: List[Person] = []
+    for p in cleaned_dicts:
         try:
             person = Person.from_dict(p)
             print(f"[DEBUG] person.role_schema = {person.role_schema!r}")
             result.append(person)
         except Exception as e:
             print(f"[WARN] Ungültiges Personen-Dict in Rollen-Modul: {p} – {e}")
+
     return result
 
 def extract_role_in_token(token: str) -> List[Dict[str, Any]]:
@@ -379,17 +410,17 @@ def process_text(full_text: str) -> Dict[str, Any]:
 
     # 2) Fallback für Author & Recipient aus dem Brieftext
     from .letter_metadata_matcher import (
-        extract_author_raw, extract_recipient_raw, letter_match_and_enrich
+        extract_authors_raw, extract_recipients_raw, letter_match_and_enrich
     )
 
     # Author extrahieren & anreichern
-    raw_author = extract_author_raw(full_text)
+    raw_author = extract_authors_raw(full_text)
     enriched_author = letter_match_and_enrich(raw_author, full_text)
     if enriched_author.get("forename"):
         result["author"] = enriched_author
 
     # Recipient extrahieren & anreichern
-    raw_rec = extract_recipient_raw(full_text)
+    raw_rec = extract_recipients_raw(full_text)
     enriched_rec = letter_match_and_enrich(raw_rec, full_text)
     if enriched_rec.get("forename"):
         result["recipient"] = enriched_rec

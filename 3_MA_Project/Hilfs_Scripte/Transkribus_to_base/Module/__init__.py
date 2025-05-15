@@ -25,7 +25,17 @@ from .person_matcher import (
 )
 
 # --- Letter‑Metadata Matcher ---
-from .letter_metadata_matcher import match_authors, match_recipients, resolve_llm_custom_authors_recipients, extract_authors_recipients_from_mentions, ensure_author_recipient_in_mentions
+from .letter_metadata_matcher import (
+    match_authors,
+    match_recipients,
+    extract_multiple_recipients_raw,
+    resolve_llm_custom_authors_recipients,
+    extract_authors_recipients_from_mentions,
+    ensure_author_recipient_in_mentions,
+    postprocess_roles,
+    enrich_final_recipients,
+    
+    )
 
 # --- Organization Matcher ---
 from .organization_matcher import (
@@ -77,9 +87,13 @@ __all__ = [
     # Letter‑Metadata Matcher
     "match_authors",
     "match_recipients",
-    "resolve_llm_custom_authors_recipients", 
+    "extract_multiple_recipients_raw",
+    "resolve_llm_custom_authors_recipients",
     "extract_authors_recipients_from_mentions",
     "ensure_author_recipient_in_mentions",
+    "postprocess_roles",
+    "enrich_final_recipients",
+    
 
     # Organization Matcher
     "load_organizations_from_csv",

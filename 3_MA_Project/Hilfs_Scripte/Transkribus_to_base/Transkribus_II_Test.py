@@ -55,6 +55,9 @@ from Module import (
     resolve_llm_custom_authors_recipients,
     extract_authors_recipients_from_mentions, 
     ensure_author_recipient_in_mentions,
+    postprocess_roles,
+    enrich_final_recipients,
+
 
 
     # Organisation‐Matcher
@@ -658,6 +661,8 @@ def extract_person_from_custom(
                     person_info["nodegoat_id"]    = match.get("nodegoat_id", "")
                     person_info["alternate_name"] = match.get("alternate_name", "")
                     person_info["title"]          = match.get("title", "")
+                    person_info["match_score"] = score  
+                    print(f"person_info{person_info},score{score}")
 
                 # Ortserkennung (falls im gleichen Tag vorhanden)
                 place_dicts = extract_place_from_custom(custom_attr, text_content)
@@ -882,7 +887,7 @@ def process_transkribus_file(
 
         # 5) Autor/Empfänger matchen und mit LLM bereinigen
         raw_authors    = match_authors(transcript_text, document_type=document_type)
-        raw_recipients = match_recipients(transcript_text, document_type=document_type)
+        raw_recipients = match_recipients(transcript_text, mentioned_persons)
 
         # Baue temp_authors (Person-Instanzen) auf – raw_authors kann Person, dict oder Liste sein
         temp_authors = []
@@ -910,18 +915,16 @@ def process_transkribus_file(
 
         # LLM-Finalisierung von Autoren und Empfängern
                 # ——— LLM-Finalisierung ———
+        # 1) Autoren und Empfänger heuristisch bestimmen
+        authors, recipients = infer_authors_recipients(transcript_text, document_type, mentioned_persons)
+
+        # 2) Temporäres Dokument für Einbindung in mentioned_persons
         temp_doc = BaseDocument(
-            authors=            temp_authors,
-            recipients=         temp_recipients,
-            mentioned_persons=  []
+            authors=            authors,
+            recipients=         recipients,
+            mentioned_persons=  mentioned_persons
         )
-
-
-        # 2) Autoren/Empfänger in mentioned_persons holen
-        temp_doc.mentioned_persons = []
-        temp_doc.authors            = final_authors
-        temp_doc.recipients         = final_recipients
-        ensure_author_recipient_in_mentions(temp_doc)
+        ensure_author_recipient_in_mentions(temp_doc, transcript_text)
 
         # 3) Rollen für Autor:innen nachholen
         author_dicts = [
@@ -932,22 +935,23 @@ def process_transkribus_file(
                 "title": a.title,
                 "nodegoat_id": a.nodegoat_id
             }
-            for a in final_authors
+            for a in authors
         ]
         enriched = assign_roles_to_known_persons(author_dicts, transcript_text)
-        # Einheitlich Person-Instanzen:
         enriched_authors = [
             e if isinstance(e, Person) else Person.from_dict(e)
             for e in enriched
         ]
 
-        # 4) Erkannten Rollen zurück auf exakt dieselben Instanzen schreiben
-        for auth_obj, enrich_obj in zip(final_authors, enriched_authors):
+        for auth_obj, enrich_obj in zip(authors, enriched_authors):
             if enrich_obj.role:
                 auth_obj.role        = enrich_obj.role
                 auth_obj.role_schema = enrich_obj.role_schema
                 print(f"[DEBUG] role_schema = {auth_obj.role_schema}")
-        # dadurch haben final_authors **und** temp_doc.mentioned_persons
+
+        # 4) Finale Daten übernehmen
+        mentioned_persons = temp_doc.mentioned_persons
+
         # die Rollen an den gleichen Instanzen.
 
         # 5) mentionete Personen übernehmen
@@ -1021,7 +1025,7 @@ def process_transkribus_file(
             for p in unique_persons
         ]
         enriched_persons = assign_roles_to_known_persons(role_input_persons, transcript_text)
-        for author in final_authors:
+        for author in authors:
             # 1) Suche passenden enriched-Eintrag via Nodegoat-ID oder Vor-/Nachname
             match = next(
                 (
@@ -1140,14 +1144,16 @@ def process_transkribus_file(
                         break
                 if not mapped:
                     print(f"[DEBUG] Autor {author.forename} {author.familyname} – keine Rolle gefunden.")
-        
+
+    
+
         # 14) BaseDocument zusammenbauen
         doc = BaseDocument(
             object_type             = "Dokument",
             attributes              = metadata_info,
             content_transcription   = transcript_text,
-            authors                 = final_authors,
-            recipients              = final_recipients,
+            authors                 = authors,
+            recipients              = recipients,
             mentioned_persons       = mentioned_persons,
             mentioned_organizations = mentioned_organizations,
             mentioned_places        = mentioned_places,
@@ -1158,6 +1164,8 @@ def process_transkribus_file(
             document_type           = document_type,
             document_format         = ""
         )
+
+        
 
         # ——— Hier die neue Rollenanreicherung einfügen ———
         # (1) Hole die Autoren-Dicts
@@ -1183,30 +1191,43 @@ def process_transkribus_file(
         ]
         enriched_recipients = assign_roles_to_known_persons(recipient_dicts, transcript_text)
         for rec, info in zip(doc.recipients, enriched_recipients):
-            role   = info.get("role") if isinstance(info, dict) else info.role
+            role = info.get("role") if isinstance(info, dict) else info.role
             schema = info.get("role_schema") if isinstance(info, dict) else getattr(info, "role_schema", "")
             if role:
-                rec.role        = role
-                rec.role_schema = schema
+                rec.role = role
+
+                # Only update role_schema if it's empty or the source is role_only
+                role_only_source = (isinstance(info, dict) and info.get("confidence") == "role_only") or \
+                                   (hasattr(info, "confidence") and info.confidence == "role_only")
+
+                if not getattr(rec, "role_schema", "") or role_only_source:
+                    rec.role_schema = schema
+                    print(f"[DEBUG] Updated role_schema for recipient {rec.forename} {rec.familyname}: '{schema}'")
+                else:
+                    print(f"[DEBUG] Kept existing role_schema for recipient {rec.forename} {rec.familyname}: '{rec.role_schema}'")
         # (2) Mappe Rollen und Schemas
         enriched = assign_roles_to_known_persons(author_dicts, transcript_text)
         # (3) Übertrage role & role_schema zurück auf die Person-Objekte
         for author, info in zip(doc.authors, enriched):
-            role   = info.get("role") if isinstance(info, dict) else info.role
+            role = info.get("role") if isinstance(info, dict) else info.role
             schema = info.get("role_schema") if isinstance(info, dict) else getattr(info, "role_schema", "")
             if role:
-                author.role        = role
-                author.role_schema = schema
+                author.role = role
+
+                # Only update role_schema if it's empty or the source is role_only
+                role_only_source = (isinstance(info, dict) and info.get("confidence") == "role_only") or \
+                                   (hasattr(info, "confidence") and info.confidence == "role_only")
+
+                if not getattr(author, "role_schema", "") or role_only_source:
+                    author.role_schema = schema
+                    print(f"[DEBUG] Updated role_schema for {author.forename} {author.familyname}: '{schema}'")
+                else:
+                    print(f"[DEBUG] Kept existing role_schema for {author.forename} {author.familyname}: '{author.role_schema}'")
 
         # Debug: Kontrolle, ob es geklappt hat
         print("[DEBUG] Final authors with roles:")
         for a in doc.authors:
             print(f" → {a.forename} {a.familyname}: role={a.role!r}, schema={a.role_schema!r}")
-
-        # 15) Nun erst das JSON schreiben
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write(doc.to_json(indent=2))
-        print(f"[OK] Gespeichert: {out_path}")
 
         # Konflikt-Log Pfad definieren (einmalig pro Seite)
         conflict_log_path = Path(OUTPUT_DIR_UNMATCHED) / f"conflict_log_{seven_digit_folder}_{subdir}.json"
@@ -1382,7 +1403,45 @@ def extract_and_prepare_persons(
 
     # 5) infer authors + recipients
     authors, recipients = infer_authors_recipients(transcript, document_type, grouped)
+    recipients = sorted(
+        recipients,
+        key=lambda r: getattr(r, "recipient_score", 0),
+        reverse=True
+    )
+    print("[DEBUG] after infer_authors_recipients → authors:", 
+          [f"{a.forename} {a.familyname} (role_schema={a.role_schema})" for a in authors])
+    print("[DEBUG] after infer_authors_recipients → recipients:", 
+          [f"{r.forename} {r.familyname} (role_schema={r.role_schema})" for r in recipients])
+
+    inline_recipients = [p for p in grouped if p.role_schema.lower() == "recipient"]
+    recipients = merge_person_lists(recipients, inline_recipients)
+    recipients = [
+        r for r in recipients
+        if r.forename.strip() or r.familyname.strip()
+    ]
     return grouped, authors, recipients
+
+def merge_person_lists(base: List[Person], extras: List[Person]) -> List[Person]:
+    """
+    Fügt alle Personen aus `extras` zu `base` hinzu, 
+    sofern sie nicht schon in `base` (gleiches nodegoat_id oder Name) vorkommen.
+    """
+    merged = list(base)
+    for p in extras:
+        already = False
+        for q in merged:
+            if p.nodegoat_id and q.nodegoat_id:
+                if p.nodegoat_id == q.nodegoat_id:
+                    already = True
+                    break
+            else:
+                if p.forename == q.forename and p.familyname == q.familyname:
+                    already = True
+                    break
+        if not already:
+            merged.append(p)
+    return merged
+
 
 def process_single_xml(
     xml_path: str,
@@ -1410,6 +1469,7 @@ def process_single_xml(
 
     # 4) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
     custom_data = extract_custom_attributes(root)
+    mentioned_persons = custom_data.get("persons", [])
     print("[DEBUG] custom_data['roles'] in process_single_xml:", custom_data["roles"])
 
     # 5) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
@@ -1419,16 +1479,25 @@ def process_single_xml(
         folder,
         metadata["document_type"]
     )
+    recipients = sorted(
+        recipients,
+        key=lambda r: getattr(r, "recipient_score", 0),
+        reverse=True
+    )
 
-    # 6) Custom-Rollen auf Autor:innen UND Empfänger:innen mappen
-    for role_entry in custom_data["roles"]:
-        role_name = role_entry["raw"].rstrip(":").strip()
-        if role_name.lower() == "vereinsführer":
-            for person in authors + recipients:
-                if person.forename == "Alfons" and person.familyname == "Zimmermann":
-                    person.role        = role_name
-                    person.role_schema = role_name
-                    print(f"[DEBUG] Assigned custom role '{role_name}' to {person.forename} {person.familyname}")
+    print(f"Recipients in Process–Single_XML {recipients}")
+    assert isinstance(authors, list)
+    assert isinstance(recipients, list)
+
+    # 6) Custom-Rollen aus custom_data auf Authors & Recipients mappen
+    for role_entry in custom_data.get("roles", []):
+        role_raw = role_entry.get("raw", "").strip()
+        for person in authors + recipients:
+            if role_raw.lower() in f"{person.forename} {person.familyname}".lower():
+                person.role = person.role or role_raw
+                person.role_schema = person.role_schema or map_role_to_schema_entry(role_raw)
+                print(f"[DEBUG] Assigned custom role '{role_raw}' to {person.forename} {person.familyname}")
+
 
     # 7) Sicherstellen, dass alle Authors/Recipients in mentioned_persons sind
     temp_doc = BaseDocument(
@@ -1496,6 +1565,35 @@ def process_single_xml(
         document_type=metadata["document_type"],
         document_format=""
     )
+    def mark_unmatched_persons(doc):
+        for group_name in ["authors", "recipients", "mentioned_persons"]:
+            for person in getattr(doc, group_name, []):
+                if not person.nodegoat_id and (person.match_score is None or person.match_score == 0):
+                    person.confidence = person.confidence or "unmatched"
+                    print(f"[UNMATCHED] {group_name}: {person.forename} {person.familyname} → keine Nodegoat-ID, Score={person.match_score}")
+    mark_unmatched_persons(doc)
+
+
+    # Die erweiterte postprocess_roles-Funktion wird hier angewendet.
+    # Dies stellt sicher, dass das familyname-Feld konsistent verarbeitet wird.
+    # Die Funktion verifiziert und korrigiert alle Rollen-Personen-Zuordnungen im Dokument.
+    postprocess_roles(doc)
+    enrich_final_recipients(doc)
+    print("[DEBUG] mentioned_persons nach enrich_final_recipients:", [
+    f"{p.forename} {p.familyname} (score={getattr(p, 'recipient_score', '-')})"
+    for p in doc.mentioned_persons
+    ])
+    # Nach Enrichment: Stelle sicher, dass alle enriched Recipients in mentioned_persons enthalten sind
+    for r in doc.recipients:
+        if r not in doc.mentioned_persons:
+            doc.mentioned_persons.append(r)
+
+    # Dann: recipients neu setzen anhand recipient_score
+    doc.recipients = [
+        p for p in doc.mentioned_persons
+    if getattr(p, "recipient_score", 0) > 0
+]
+
 
     # II) JSON speichern
     out_name = xml_file.replace("_preprocessed.xml", ".json")
@@ -1503,21 +1601,110 @@ def process_single_xml(
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(doc.to_json(indent=2))
     print(f"[OK] Gespeichert: {out_path}")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(doc.to_json(indent=2))
+
+
+    needs_review_persons = [
+        p.to_dict()
+        for p in doc.mentioned_persons
+        if getattr(p, "needs_review", False)
+    ]
+
+    if needs_review_persons:
+        unmatched_dir = Path(OUTPUT_DIR) / "unmatched"
+        unmatched_dir.mkdir(parents=True, exist_ok=True)
+
+        unmatched_file = unmatched_dir / "unmatched_persons.json"
+
+        # Bestehende Einträge laden (falls vorhanden)
+        if unmatched_file.exists():
+            with open(unmatched_file, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        else:
+            existing = []
+
+        # Kombinieren und Duplikate vermeiden (nach Vorname+Nachname)
+        combined = {
+            (p.get("forename", ""), p.get("familyname", ""), p.get("role", "")): p
+            for p in existing + needs_review_persons
+            if isinstance(p, dict)
+        }
+
+        with open(unmatched_file, "w", encoding="utf-8") as f:
+            json.dump(list(combined.values()), f, ensure_ascii=False, indent=2)
+        
+        print(f"[UNMATCHED] {len(needs_review_persons)} neue Personen in unmatched_persons.json ergänzt")
 
 
 def deduplicate_and_group_persons(persons: List[Dict[str, Any]]) -> List[Person]:
-    grouped: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    """
+    Enhanced deduplication that properly handles duplicate persons with same nodegoat_id or name,
+    keeping only the entry with highest match_score.
+    """
+    # First, group by nodegoat_id or name
+    nodegoat_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    name_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    role_only_items: List[Dict[str, Any]] = []
+
+    # Step 1: Sort entries into appropriate buckets
     for p in persons:
-        key = p.get("nodegoat_id") or f"{p.get('forename', '')}|{p.get('familyname', '')}" or p.get("role", "") or str(p)
-        grouped[key].append(p)
+        # Handle entries with nodegoat_id
+        if p.get("nodegoat_id"):
+            nodegoat_groups[p.get("nodegoat_id")].append(p)
+        # Handle entries with name but no nodegoat_id
+        elif p.get("forename") or p.get("familyname"):
+            name_key = f"{p.get('forename', '')}|{p.get('familyname', '')}"
+            name_groups[name_key].append(p)
+        # Handle role-only entries (no name, no id)
+        elif p.get("role"):
+            role_only_items.append(p)
 
     final = []
-    for entries in grouped.values():
+
+    # Step 2: Process nodegoat_id groups (highest priority)
+    for nodegoat_id, entries in nodegoat_groups.items():
+        # Get entry with highest match_score
         best = max(entries, key=lambda x: float(x.get("match_score", 0) or 0))
+        # Combine roles from all entries
         combined_roles = "; ".join(sorted(set(r.get("role", "") for r in entries if r.get("role"))))
         best["role"] = combined_roles
         best["mentioned_count"] = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
+        # Ensure recipient_score exists
+        if "recipient_score" not in best:
+            best["recipient_score"] = 0
+        # Convert to Person object and add to final list
         final.append(Person.from_dict(best))
+
+        # Debug output
+        print(f"[DEBUG] Grouped by nodegoat_id {nodegoat_id}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
+
+    # Step 3: Process name groups (second priority)
+    for name_key, entries in name_groups.items():
+        # Get entry with highest match_score
+        best = max(entries, key=lambda x: float(x.get("match_score", 0) or 0))
+        # Combine roles from all entries
+        combined_roles = "; ".join(sorted(set(r.get("role", "") for r in entries if r.get("role"))))
+        best["role"] = combined_roles
+        best["mentioned_count"] = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
+        # Ensure recipient_score exists
+        if "recipient_score" not in best:
+            best["recipient_score"] = 0
+        # Convert to Person object and add to final list
+        final.append(Person.from_dict(best))
+
+        # Debug output
+        print(f"[DEBUG] Grouped by name {name_key}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
+
+    # Step 4: Add role-only entries (lowest priority)
+    for role_entry in role_only_items:
+        # Handle role-only entries
+        if "recipient_score" not in role_entry:
+            role_entry["recipient_score"] = 0
+        final.append(Person.from_dict(role_entry))
+
+        # Debug output
+        print(f"[DEBUG] Added role-only entry: {role_entry.get('role')}")
 
     print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
     for p in final:
@@ -1531,29 +1718,71 @@ def infer_authors_recipients(
     persons: List[Person]
 ) -> Tuple[List[Person], List[Person]]:
     """
-    Ermittelt Autoren und Empfänger aus dem Text und stellt sicher,
-    dass sie auch in mentioned_persons landen.
-    Returns: Tuple von ([authors], [recipients])
+    Ermittelt Autoren und Empfänger aus dem Text, sorgt dafür, 
+    dass sie Person-Instanzen sind, und gibt Debug-Infos aus.
     """
     # 1) Roh-Extraktion
     raw_author    = match_authors(text, document_type=doc_type, mentioned_persons=persons)
-    raw_recipient = match_recipients(text, document_type=doc_type, mentioned_persons=persons)
+    raw_recipient = match_recipients(text, mentioned_persons=persons)
 
-    # 2) In Listen umwandeln
-    authors_list = [raw_author]    if isinstance(raw_author, Person)    else (raw_author    or [])
-    recipients_list = [raw_recipient] if isinstance(raw_recipient, Person) else (raw_recipient or [])
+    # 1b) Leeren dict-Placeholder für recipient entfernen
+    if isinstance(raw_recipient, dict) and not (raw_recipient.get("forename") or raw_recipient.get("familyname")):
+        raw_recipient = []
 
-    # 3) Temporäres Dokument für das In-Mentions Einpflegen
+    # 2) In Listen umwandeln und Dictionaires zu Person konvertieren
+    def to_person_list(raw):
+        result = []
+        if isinstance(raw, Person):
+            result = [raw]
+        elif isinstance(raw, dict):
+            # nur dann, wenn Name vorhanden
+            if raw.get("forename") or raw.get("familyname"):
+                result = [Person.from_dict(raw)]
+        elif isinstance(raw, list):
+            for p in raw:
+                if isinstance(p, Person):
+                    result.append(p)
+                elif isinstance(p, dict) and (p.get("forename") or p.get("familyname")):
+                    result.append(Person.from_dict(p))
+        return result
+
+    authors_list    = to_person_list(raw_author)
+    recipients_list = to_person_list(raw_recipient)
+
+    # 3) Debug-Ausgabe direkt nach Extraktion
+    print("[DEBUG] infer_authors_recipients → authors_list:", 
+          [f"{a.forename} {a.familyname} (role={a.role}, id={a.nodegoat_id})"
+           for a in authors_list])
+    print("[DEBUG] infer_authors_recipients → recipients_list:", 
+          [f"{r.forename} {r.familyname} (role={r.role}, id={r.nodegoat_id})"
+           for r in recipients_list])
+
+    # 4) Temporäres Dokument für das In-Mentions Einpflegen
     temp_doc = BaseDocument(
         authors=            authors_list,
         recipients=         recipients_list,
         mentioned_persons=  persons
     )
 
-    # 4) Autoren und Empfänger in mentioned_persons aufnehmen
+    # 5) Autoren und Empfänger in mentioned_persons aufnehmen
+    print("[DEBUG] recipients vor ensure_author_recipient_in_mentions:", 
+      [f"{r.forename} {r.familyname}" for r in temp_doc.recipients])
+
     ensure_author_recipient_in_mentions(temp_doc, text)
 
-    # 5) Rückgabe
+    print("[DEBUG] recipients nach ensure_author_recipient_in_mentions:", 
+        [f"{r.forename} {r.familyname}" for r in temp_doc.recipients])
+
+
+    # 6) Debug direkt vor Rückgabe
+    print("[DEBUG] infer_authors_recipients → final authors:", 
+          [f"{a.forename} {a.familyname} (role={a.role}, id={a.nodegoat_id})"
+           for a in temp_doc.authors])
+    print("[DEBUG] infer_authors_recipients → final recipients:", 
+          [f"{r.forename} {r.familyname} (role={r.role}, id={r.nodegoat_id})"
+           for r in temp_doc.recipients])
+    print("[DEBUG] raw_recipient:", raw_recipient)
+
     return temp_doc.authors, temp_doc.recipients
 
 
