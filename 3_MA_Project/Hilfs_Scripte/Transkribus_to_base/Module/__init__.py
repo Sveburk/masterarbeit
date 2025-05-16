@@ -60,6 +60,9 @@ from .validation_module import validate_extended, generate_validation_summary
 # --- LLM Enricher ---
 from .llm_enricher import run_enrichment_on_directory
 
+#--- unmatched-logger ---
+from Module.unmatched_logger import (log_unmatched_entities)
+
 
 
 
@@ -121,4 +124,7 @@ __all__ = [
 
     # LLM Enricher
     "run_enrichment_on_directory",
+
+    #unmatched-logger
+    "log_unmatched_entities"
 ]

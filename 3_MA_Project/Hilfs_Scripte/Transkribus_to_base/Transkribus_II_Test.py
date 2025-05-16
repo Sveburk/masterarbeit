@@ -87,6 +87,9 @@ from Module import (
 
     # LLM
     run_enrichment_on_directory,
+
+    #unmatched-logger
+    log_unmatched_entities,
 )
 
 
@@ -1311,25 +1314,6 @@ def extract_page_number_from_filename(filename: str) -> str:
     match = re.search(r"p(\d+)", filename, re.IGNORECASE)
     return match.group(1) if match else "001"
 
-def log_unmatched_entities(doc_id: str, unmatched_persons, unmatched_places, unmatched_roles, unmatched_organizations):
-    log_dir = os.path.join(OUTPUT_DIR, "unmatched_logs")
-    os.makedirs(log_dir, exist_ok=True)
-    log_path = os.path.join(log_dir, f"{doc_id}_unmatched_log.txt")
-    with open(log_path, "w", encoding="utf-8") as log_file:
-        log_file.write("=== UNMATCHED PERSONS ===\n")
-        for p in unmatched_persons:
-            log_file.write(str(p) + "\n")
-        log_file.write("\n=== UNMATCHED PLACES ===\n")
-        for k, v in unmatched_places.items():
-            log_file.write(f"{k}: {v}\n")
-        log_file.write("\n=== UNMATCHED ROLES ===\n")
-        for r in unmatched_roles:
-            log_file.write(str(r) + "\n")
-        log_file.write("\n=== UNMATCHED ORGANIZATIONS ===\n")
-        for o in unmatched_organizations:
-            log_file.write(str(o) + "\n")
-    print(f"[INFO] Unmatched-Daten geloggt nach: {log_path}")
-
 def debug_print_standalone_roles(transcript_text: str, roles: List[Dict[str, Any]]):
     print("\n[DEBUG] Gefundene Einzelrollen im Transkript:")
     for r in roles:
@@ -1600,6 +1584,7 @@ def process_single_xml(
         document_type=metadata["document_type"],
         document_format=""
     )
+
     def mark_unmatched_persons(doc: BaseDocument):
         """
         Markiere alle Personen, die eine menschliche Prüfung benötigen.
@@ -1649,6 +1634,16 @@ def process_single_xml(
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(doc.to_json(indent=2))
     print(f"[OK] Gespeichert: {out_path}")
+    log_unmatched_entities(
+        document_id=document_id,
+        custom_data=custom_data,
+        final_persons=[p.to_dict() for p in doc.mentioned_persons],
+        final_places=mentioned_places,
+        final_roles=custom_data.get("roles", []),
+        unmatched_path=Path(OUTPUT_DIR) / "unmatched.json"
+    )
+
+
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(doc.to_json(indent=2))
 
