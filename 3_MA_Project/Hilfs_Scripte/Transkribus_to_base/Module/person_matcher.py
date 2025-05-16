@@ -837,6 +837,37 @@ def deduplicate_persons(
 
     return unique
 
+def assess_llm_entry_score(
+    forename: str,
+    familyname: str,
+    role: str
+) -> Tuple[int, str, bool, str]:
+    """
+    Bewertet eine LLM-generierte Personeneintragung hinsichtlich Vollständigkeit.
+
+    Gibt zurück:
+    - match_score (int): Score für die Matching-Güte (30 = unvollständig, 50 = brauchbar)
+    - confidence (str): Herkunft und Zuverlässigkeit der Information ("llm", "llm-incomplete")
+    - needs_review (bool): Muss der Eintrag manuell überprüft werden?
+    - review_reason (str): Erklärung für die Prüfbedürftigkeit
+    """
+    is_incomplete = not familyname or not forename or not role
+
+    review_reasons = []
+    if not forename:
+        review_reasons.append("missing_forename")
+    if not familyname:
+        review_reasons.append("missing_familyname")
+    if not role:
+        review_reasons.append("missing_role")
+
+    score = 30 if is_incomplete else 50
+    confidence = "llm-incomplete" if is_incomplete else "llm"
+    needs_review = is_incomplete
+    review_reason = "; ".join(review_reasons) if review_reasons else ""
+
+    return score, confidence, needs_review, review_reason
+
 
 # ----------------------------------------------------------------------------
 # Detail‑Info zum besten Match
