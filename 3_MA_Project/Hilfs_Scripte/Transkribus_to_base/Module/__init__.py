@@ -63,6 +63,10 @@ from .llm_enricher import run_enrichment_on_directory
 #--- unmatched-logger ---
 from Module.unmatched_logger import (log_unmatched_entities)
 
+# --- Date_matcher ---
+from Module.date_matcher import (
+    extract_date_from_custom,combine_dates,extract_custom_date)
+
 
 
 
@@ -126,5 +130,10 @@ __all__ = [
     "run_enrichment_on_directory",
 
     #unmatched-logger
-    "log_unmatched_entities"
+    "log_unmatched_entities",
+
+    #Date_matcher
+    "combine_dates",
+    "extract_date_from_custom",
+    "extract_custom_date"
 ]

@@ -283,7 +283,9 @@ class BaseDocument:
         
         self.object_type = object_type
         self.attributes = attributes or {}
-        
+        self.object_type = self.attributes.get("object_type", "Dokument")
+        self.document_type = self.attributes.get("document_type", "")
+
         # Konvertieren der Person-Objekte für Autoren
         self.authors = self._convert_person_list(authors) or []
         
@@ -345,8 +347,11 @@ class BaseDocument:
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert das Dokument in ein Dictionary."""
         result = {
-            "object_type": self.object_type,
-            "attributes": self.attributes or {},
+            "attributes": {
+                **(self.attributes or {}),
+                "object_type": self.object_type or "",
+                "document_type": self.document_type or ""
+            },
             "authors": [a.to_dict() for a in self.authors] if self.authors else [],
             "recipients": [r.to_dict() for r in self.recipients] if self.recipients else [],
             "mentioned_persons": [person.to_dict() for person in self.mentioned_persons] if self.mentioned_persons else [],
@@ -358,7 +363,6 @@ class BaseDocument:
             "mentioned_places": [place.to_dict() for place in self.mentioned_places] if self.mentioned_places else [],
             "content_tags_in_german": self.content_tags_in_german or [],
             "content_transcription": self.content_transcription or "",
-            "document_type": self.document_type or "",
             "document_format": self.document_format or ""
         }
 
@@ -388,24 +392,29 @@ class BaseDocument:
                     else:
                         # Auch wenn keine Rolle: setze leeres role_schema
                         person_dict["role_schema"] = ""
-                print("[DEBUG] JSON-ready recipients:", result["recipients"])
-                return result
+        print("[DEBUG] JSON-ready recipients:", result["recipients"])
+        print("[DEBUG] Final attributes block:", result["attributes"])
+
+        return result
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'BaseDocument':
         """Erstellt ein Dokumentobjekt aus einem Dictionary."""
-        # Vereinheitlichung der Autoren- und Empfängerfelder
         authors = data.get("authors", [])
         if not authors and "author" in data:
             authors = data.get("author")
-            
+
         recipients = data.get("recipients", [])
         if not recipients and "recipient" in data:
             recipients = data.get("recipient")
-            
+
+        attributes = data.get("attributes", {})
+        document_type = attributes.get("document_type", "")
+        object_type   = attributes.get("object_type", "Dokument")
+
         return cls(
-            object_type=data.get("object_type", "Dokument"),
-            attributes=data.get("attributes", {}),
+            object_type=object_type,
+            attributes=attributes,
             authors=authors,
             recipients=recipients,
             mentioned_persons=data.get("mentioned_persons", []),
@@ -417,9 +426,10 @@ class BaseDocument:
             mentioned_places=data.get("mentioned_places", []),
             content_tags_in_german=data.get("content_tags_in_german", []),
             content_transcription=data.get("content_transcription", ""),
-            document_type=data.get("document_type", ""),
+            document_type=document_type,  # ← wichtig
             document_format=data.get("document_format", "")
         )
+
     
     
     def to_json(self, indent: int = 4) -> str:
@@ -622,7 +632,7 @@ def create_document(data: Dict[str, Any]) -> BaseDocument:
     Returns:
         Ein spezialisiertes Dokumentobjekt oder ein BaseDocument-Objekt
     """
-    document_type = data.get("document_type", "")
+    document_type = data.get("attributes", {}).get("document_type", "")
     
     if document_type == "Brief":
         return Brief.from_dict(data)

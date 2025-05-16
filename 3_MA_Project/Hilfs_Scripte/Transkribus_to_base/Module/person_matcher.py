@@ -96,6 +96,18 @@ def load_known_persons_from_csv(path: str = CSV_PATH_KNOWN_PERSONS) -> List[Dict
 
 KNOWN_PERSONS = load_known_persons_from_csv()
 
+# Groundtruth-Namenslisten für Review-Erkennung vorbereiten
+GROUNDTRUTH_SURNAMES = {p["familyname"].lower() for p in KNOWN_PERSONS if p["familyname"]}
+GROUNDTRUTH_FORENAMES = {p["forename"].lower() for p in KNOWN_PERSONS if p["forename"]}
+
+def appears_in_groundtruth(name: str) -> bool:
+    """
+    Prüft, ob ein Name in bekannten Vor- oder Nachnamen des Groundtruths auftaucht.
+    """
+    n = name.strip().lower()
+    return n in GROUNDTRUTH_SURNAMES or n in GROUNDTRUTH_FORENAMES
+
+
 # Nickname-Map wie ursprünglich definiert (kann angepasst werden)
 NICKNAME_MAP = {    
     # First names
@@ -529,7 +541,35 @@ def match_person(
         }
         return unverified, 0
 
+    # -- Neuer Fallback: Auch unvollständige Namen behalten, wenn plausibel
+    if any([fn, ln, role_raw]):
+        review_reason_parts = []
+        if not fn:
+            review_reason_parts.append("missing_forename")
+        if not ln:
+            review_reason_parts.append("missing_familyname")
+        if not role_raw:
+            review_reason_parts.append("missing_role")
 
+        review_reason = "; ".join(review_reason_parts)
+
+        keep_name = (fn and appears_in_groundtruth(fn)) or (ln and appears_in_groundtruth(ln))
+        if keep_name or role_raw:
+            print(f"[NEEDS_REVIEW] Aufnahme trotz fehlender ID: {fn} {ln} ({role_raw})")
+            return {
+                "forename": fn,
+                "familyname": ln,
+                "title": person.get("title", ""),
+                "alternate_name": "",
+                "nodegoat_id": "",
+                "role": role_raw,
+                "role_schema": map_role_to_schema_entry(role_raw),
+                "match_score": None,
+                "confidence": "partial-no-id",
+                "needs_review": True,
+                "review_reason": review_reason
+            }, 0
+        
     # Komplett leere oder ungültige Person – wirklich ignorieren
     return None, 0
 
