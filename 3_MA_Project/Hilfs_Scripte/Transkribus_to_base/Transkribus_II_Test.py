@@ -59,12 +59,17 @@ from Module import (
     enrich_final_recipients,
     deduplicate_recipients,
 
+    # Date Matcher
+    extract_date_from_custom,
+    combine_dates,
+    extract_custom_date,
+
 
 
     # Organisation‐Matcher
     match_organization_from_text,
     load_organizations_from_csv, 
-    match_organization_from_text, 
+
     match_organization_entities,
 
     # Type‐Matcher
@@ -578,7 +583,7 @@ def extract_custom_attributes(
             result["organizations"].extend(orgs)
 
         # 4) Daten
-        dates = extract_date_from_custom(custom_attr, text_content)
+        dates = extract_date_from_custom(custom_attr)
         if dates:
             result["dates"].extend(dates)
 
@@ -719,45 +724,6 @@ def extract_organization_from_custom(custom_attr: str, text_content: str) -> Lis
 
     return organizations
 
-def extract_date_from_custom(custom_attr: str, text_content: str) -> List[str]:
-    dates = []
-    # Fix regex pattern - try different variations
-    for pattern in [r"date\s+\{([^}]+)\}", r"date {([^}]+)}"]:
-        date_matches = re.finditer(pattern, custom_attr)
-        for date_match in date_matches:
-            if not text_content:
-                continue
-                
-            date_data = parse_custom_attributes(date_match.group(1))
-            # print(f"[DEBUG] Date data: {date_data}")
-            
-            if "when" in date_data:
-                date_str = date_data.get("when", "")
-                print(f"[DEBUG] Erkanntes Datum: {date_str}")
-                
-                # Process date format
-                date_parts = date_str.split(".")
-                if len(date_parts) == 3:
-                    day, month, year = date_parts
-                    formatted_date = f"{year}.{month}.{day}"
-                elif len(date_parts) == 2:
-                    month, year = date_parts
-                    formatted_date = f"{year}.{month}"
-                else:
-                    # Try other date patterns
-                    date_regex_match = re.match(r"(\d{2})\.(\d{2})\.(\d{4})", date_str)
-                    if date_regex_match:
-                        day, month, year = date_regex_match.groups()
-                        formatted_date = f"{year}.{month}.{day}"
-                    elif re.match(r"\d{4}-\d{2}-\d{2}", date_str):
-                        year, month, day = date_str.split("-")
-                        formatted_date = f"{year}.{month}.{day}"
-                    else:
-                        formatted_date = date_str
-                
-                # print(f"[DEBUG] Formatiertes Datum: {formatted_date}")
-                dates.append(formatted_date)
-    return dates
 
 def extract_place_from_custom(custom_attr: str, text_content: str) -> List[Dict[str, Any]]:
     places = []
@@ -859,7 +825,50 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
             result[key.strip()] = value.strip()
     
     return result
- 
+# --- total_json schreiben ---
+def update_total_json(out_path: str, doc: BaseDocument):
+    total_path = Path(out_path).parent / "total_json.json"
+    print (f"{total_path}")
+
+    # Bestehende Datei laden oder initialisieren
+    if total_path.exists():
+        with open(total_path, "r", encoding="utf-8") as f:
+            total = json.load(f)
+    else:
+        total = {}
+
+    # Dateiname analysieren (z. B. 6489797_Akte_136_pdf_0001_p001[_preprocessed])
+    filename = Path(out_path).stem
+    print(f"[DEBUG] filename = {filename}")
+
+
+    match = re.search(
+        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",
+        filename
+    )
+
+
+
+    if not match:
+        print(f"[WARN] Kann Akte/Seite aus Dateiname nicht extrahieren: {filename}")
+        return
+
+    akte = match.group("akte")  # z. B. 6489797_Akte_136
+    page = match.group("page")  # z. B. 001
+    print(f"hier behandeln wir {akte} und {page}")
+
+    # Neue Struktur anlegen, falls nötig
+    if akte not in total:
+        total[akte] = {}
+
+    # Speichern
+    total[akte][page] = doc.to_dict()
+
+    with open(total_path, "w", encoding="utf-8") as f:
+        json.dump(total, f, ensure_ascii=False, indent=2)
+
+    print(f"[DEBUG] total_json.json aktualisiert: {akte} / Seite {page}")
+
 def process_transkribus_file(
     xml_path: str,
     seven_digit_folder: str,
@@ -877,8 +886,14 @@ def process_transkribus_file(
         print(f"[DEBUG] Dokumenttyp erkannt für {full_doc_id}: {document_type}")
 
         # 3) Metadaten extrahieren (sofern vorhanden)
-        metadata_info = extract_metadata_from_xml(root)
-        metadata_info["document_type"] = document_type
+        metadata = extract_metadata_from_xml(root)
+        filename = f"{folder}_{subdir}_{xml_file.replace('.xml', '')}"
+        document_type = get_document_type(filename, xml_path)
+        metadata["object_type"] = "Dokument"
+
+        document_type = get_document_type(filename, xml_path, debug=True)
+
+
 
         # 4) Transkript holen und auf Länge prüfen
         transcript_text = "\n".join(
@@ -890,7 +905,7 @@ def process_transkribus_file(
             return None
 
         # 5) Autor/Empfänger matchen und mit LLM bereinigen
-        raw_authors    = match_authors(transcript_text, document_type=document_type)
+        raw_authors    = match_authors(transcript_text)
         raw_recipients = match_recipients(transcript_text, mentioned_persons)
 
         # Baue temp_authors (Person-Instanzen) auf – raw_authors kann Person, dict oder Liste sein
@@ -1153,21 +1168,25 @@ def process_transkribus_file(
 
         # 14) BaseDocument zusammenbauen
         doc = BaseDocument(
-            object_type             = "Dokument",
-            attributes              = metadata_info,
-            content_transcription   = transcript_text,
-            authors                 = authors,
-            recipients              = recipients,
-            mentioned_persons       = mentioned_persons,
-            mentioned_organizations = mentioned_organizations,
-            mentioned_places        = mentioned_places,
-            mentioned_dates         = custom_data["dates"],
-            content_tags_in_german  = [],
-            creation_date           = "",
-            creation_place          = "",
-            document_type           = document_type,
-            document_format         = ""
+        attributes              = metadata,
+        content_transcription   = transcript,
+        authors                 = authors,
+        recipients              = recipients,
+        mentioned_persons       = mentioned_persons,
+        mentioned_organizations = mentioned_organizations,
+        mentioned_places        = mentioned_places,
+        mentioned_dates         = custom_data["dates"],
+        content_tags_in_german  = [],
+        creation_date           = "",
+        creation_place          = "",
+        document_format         = ""
         )
+        
+
+
+        
+
+
 
         
 
@@ -1283,6 +1302,7 @@ def process_transkribus_file(
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(doc.to_json(indent=2))
             print(f"Gespeichert: {output_path}")
+            update_total_json(output_path, doc)
         except Exception as e:
             print(f"[ERROR] Fehler beim Speichern von {output_path}: {e}")
 
@@ -1471,27 +1491,37 @@ def process_single_xml(
     org_list: List[Dict[str, Any]]
 ):
     print(f"Verarbeite Datei: {xml_file}")
+    document_id = f"{folder}_{subdir}"
+
 
     # 1) XML parsen
     root = ET.parse(xml_path).getroot()
 
     # 2) Metadaten + document_type
     metadata = extract_metadata_from_xml(root)
-    document_id = f"{folder}_{subdir}"
-    metadata["document_type"] = get_document_type(document_id, xml_path)
+    filename = f"{folder}_{subdir}_{xml_file.replace('.xml','')}"
+    document_type = get_document_type(filename, xml_path)
+    metadata["document_type"] = document_type
+    metadata["object_type"] = "Dokument" 
+    print (f"die Metadaten sind {metadata}")
 
     # 3) Transkript
     transcript = extract_text_from_xml(root)
     if not transcript or len(transcript.strip()) < 10:
         print(f"[WARN] Leeres oder zu kurzes Transkript: {xml_file}")
         return
-
-    # 4) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
+    # 4) Datumsangaben aus Fließtext extrahieren (Module/date_matcher.py)
     custom_data = extract_custom_attributes(root)
+    custom_attrs = extract_custom_date(root, NS)
+    counted_dates = combine_dates(custom_attrs)
+    custom_data["dates"] = counted_dates
+    print(f"[DEBUG] Gefundene kombinierte Datumsangaben (counted): {counted_dates}")
+    # sicher stellen, dass die Datumsangaben im richtigen Format sind
+    custom_data["dates"] = counted_dates
+    
+    # 5) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
     mentioned_persons = custom_data.get("persons", [])
     print("[DEBUG] custom_data['roles'] in process_single_xml:", custom_data["roles"])
-
-    # 5) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
     mentioned_persons, authors, recipients = extract_and_prepare_persons(
         custom_data["persons"],
         transcript,
@@ -1556,9 +1586,17 @@ def process_single_xml(
     )
     mentioned_dates = custom_data.get("dates", [])
 
+
+
+
+    #11) Document Type
+    if "document_type" not in metadata or not metadata["document_type"]:
+        metadata["document_type"] = document_type
+
     # I) BaseDocument zusammenbauen
     doc = BaseDocument(
         object_type="Dokument",
+        document_type=metadata.get("document_type", ""),  
         attributes=metadata,
         content_transcription=transcript,
         authors=authors,
@@ -1580,10 +1618,11 @@ def process_single_xml(
         mentioned_dates=mentioned_dates,
         content_tags_in_german=[],
         creation_date="",
-        creation_place="",
-        document_type=metadata["document_type"],
-        document_format=""
+        creation_place=""
     )
+    print("[CHECK] attributes in BaseDocument:", doc.attributes)
+    print("[CHECK] document_type explizit:", getattr(doc, "document_type", "n/a"))  
+
 
     def mark_unmatched_persons(doc: BaseDocument):
         """
@@ -1632,8 +1671,10 @@ def process_single_xml(
     out_name = xml_file.replace("_preprocessed.xml", ".json")
     out_path = os.path.join(OUTPUT_DIR, f"{folder}_{subdir}_{out_name}")
     with open(out_path, "w", encoding="utf-8") as f:
+        
         f.write(doc.to_json(indent=2))
     print(f"[OK] Gespeichert: {out_path}")
+    update_total_json(out_path, doc)
     log_unmatched_entities(
         document_id=document_id,
         custom_data=custom_data,
@@ -1679,82 +1720,87 @@ def process_single_xml(
         
         print(f"[UNMATCHED] {len(needs_review_persons)} neue Personen in unmatched_persons.json ergänzt")
 
-
 def deduplicate_and_group_persons(persons: List[Dict[str, Any]]) -> List[Person]:
     """
-    Enhanced deduplication that properly handles duplicate persons with same nodegoat_id or name,
-    keeping only the entry with highest match_score.
+    Enhanced deduplication that handles:
+    - duplicate persons with same nodegoat_id
+    - swapped forename/familyname
+    - role mistakenly used as name or vice versa
+    - fallbacks for unassigned persons
     """
-    # First, group by nodegoat_id or name
     nodegoat_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
-    name_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
-    role_only_items: List[Dict[str, Any]] = []
+    grouped: List[Dict[str, Any]] = []
+    unmatched: List[Dict[str, Any]] = []
 
-    # Step 1: Sort entries into appropriate buckets
+    def normalize(s: str) -> str:
+        return s.strip().lower()
+
+    # Step 1: Group by nodegoat_id
     for p in persons:
-        # Handle entries with nodegoat_id
         if p.get("nodegoat_id"):
-            nodegoat_groups[p.get("nodegoat_id")].append(p)
-        # Handle entries with name but no nodegoat_id
-        elif p.get("forename") or p.get("familyname"):
-            name_key = f"{p.get('forename', '')}|{p.get('familyname', '')}"
-            name_groups[name_key].append(p)
-        # Handle role-only entries (no name, no id)
-        elif p.get("role"):
-            role_only_items.append(p)
+            nodegoat_groups[p["nodegoat_id"]].append(p)
+        else:
+            unmatched.append(p)
 
     final = []
 
-    # Step 2: Process nodegoat_id groups (highest priority)
+    # Step 2: Process nodegoat_id groups
     for nodegoat_id, entries in nodegoat_groups.items():
-        # Get entry with highest match_score
         best = max(entries, key=lambda x: float(x.get("match_score", 0) or 0))
-        # Combine roles from all entries
         combined_roles = "; ".join(sorted(set(r.get("role", "") for r in entries if r.get("role"))))
         best["role"] = combined_roles
         best["mentioned_count"] = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
-        # Ensure recipient_score exists
-        if "recipient_score" not in best:
-            best["recipient_score"] = 0
-        # Convert to Person object and add to final list
+        best["recipient_score"] = best.get("recipient_score", 0)
         final.append(Person.from_dict(best))
-
-        # Debug output
         print(f"[DEBUG] Grouped by nodegoat_id {nodegoat_id}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
 
-    # Step 3: Process name groups (second priority)
-    for name_key, entries in name_groups.items():
-        # Get entry with highest match_score
-        best = max(entries, key=lambda x: float(x.get("match_score", 0) or 0))
-        # Combine roles from all entries
-        combined_roles = "; ".join(sorted(set(r.get("role", "") for r in entries if r.get("role"))))
-        best["role"] = combined_roles
-        best["mentioned_count"] = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
-        # Ensure recipient_score exists
-        if "recipient_score" not in best:
-            best["recipient_score"] = 0
-        # Convert to Person object and add to final list
-        final.append(Person.from_dict(best))
+    # Step 3: Advanced grouping by normalized name + fuzzy/semantic logic
+    seen_keys = set()
 
-        # Debug output
-        print(f"[DEBUG] Grouped by name {name_key}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
+    for entry in unmatched:
+        fn = normalize(entry.get("forename", ""))
+        ln = normalize(entry.get("familyname", ""))
+        role = normalize(entry.get("role", ""))
+        key = f"{fn}|{ln}|{role}"
 
-    # Step 4: Add role-only entries (lowest priority)
-    for role_entry in role_only_items:
-        # Handle role-only entries
-        if "recipient_score" not in role_entry:
-            role_entry["recipient_score"] = 0
-        final.append(Person.from_dict(role_entry))
+        # Try to match with already finalized entries
+        matched = False
+        for target in final:
+            tfn = normalize(getattr(target, "forename", ""))
+            tln = normalize(getattr(target, "familyname", ""))
+            tr  = normalize(getattr(target, "role", ""))
 
-        # Debug output
-        print(f"[DEBUG] Added role-only entry: {role_entry.get('role')}")
+            conditions = [
+                # exact name match
+                (fn and ln and fn == tfn and ln == tln),
+                # name swap
+                (fn and ln and fn == tln and ln == tfn),
+                # role accidentally in name
+                (fn == tr or ln == tr or role == tfn or role == tln)
+            ]
+
+            if any(conditions):
+                print(f"[MERGE] Kombiniere {fn} {ln} ({role}) mit {tfn} {tln} ({tr})")
+                target.mentioned_count += int(entry.get("mentioned_count", 1) or 1)
+                if entry.get("role"):
+                    combined = set(filter(None, (target.role or "").split("; ")))
+                    combined.add(entry["role"])
+                    target.role = "; ".join(sorted(combined))
+                matched = True
+                break
+
+        if not matched:
+            best = entry.copy()
+            best["mentioned_count"] = int(best.get("mentioned_count", 1) or 1)
+            best["recipient_score"] = best.get("recipient_score", 0)
+            final.append(Person.from_dict(best))
+            print(f"[DEBUG] Neuer Eintrag übernommen: {best.get('forename')} {best.get('familyname')} {best.get('role')}")
 
     print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
     for p in final:
         print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
 
     return final
-
 def infer_authors_recipients(
     text: str,
     doc_type: Optional[str],
