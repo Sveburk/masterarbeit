@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json, re, time, xml.etree.ElementTree as ET
 from datetime import datetime
-import openai
+#import openai
 
 #Zeitstempel
 now = datetime.now()
@@ -57,6 +57,7 @@ from Module import (
     ensure_author_recipient_in_mentions,
     postprocess_roles,
     enrich_final_recipients,
+    deduplicate_recipients,
 
 
 
@@ -1224,6 +1225,40 @@ def process_transkribus_file(
                 else:
                     print(f"[DEBUG] Kept existing role_schema for {author.forename} {author.familyname}: '{author.role_schema}'")
 
+
+
+        # 🔁 Finaler Deduplikationsschritt – ersetzt alle vorherigen Autoren/Empfänger-Listen durch bereinigte Fassung
+        # Alle Personen aus authors, recipients und mentioned_persons zusammenführen
+        combined_persons = [
+            a.to_dict() for a in doc.authors
+        ] + [
+            r.to_dict() for r in doc.recipients
+        ] + [
+            p.to_dict() for p in doc.mentioned_persons
+        ]
+
+        # Finale Deduplikation (inkl. Merging von Scores, Rollen etc.)
+        deduplicated_final = deduplicate_and_group_persons(combined_persons)
+
+        # Repliziere deduplizierte Personen in die Zielgruppen
+        doc.mentioned_persons = deduplicated_final
+
+        # Autoren identifizieren
+        doc.authors = [
+            p for p in deduplicated_final
+            if any(p.nodegoat_id == a.nodegoat_id and a.nodegoat_id
+                or (p.forename == a.forename and p.familyname == a.familyname)
+                for a in authors)
+        ]
+
+        # Empfänger identifizieren – basierend auf recipient_score
+        doc.recipients = sorted(
+            [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+            key=lambda p: getattr(p, "recipient_score", 0),
+            reverse=True
+        )
+
+
         # Debug: Kontrolle, ob es geklappt hat
         print("[DEBUG] Final authors with roles:")
         for a in doc.authors:
@@ -1565,12 +1600,36 @@ def process_single_xml(
         document_type=metadata["document_type"],
         document_format=""
     )
-    def mark_unmatched_persons(doc):
+    def mark_unmatched_persons(doc: BaseDocument):
+        """
+        Markiere alle Personen, die eine menschliche Prüfung benötigen.
+        """
         for group_name in ["authors", "recipients", "mentioned_persons"]:
             for person in getattr(doc, group_name, []):
-                if not person.nodegoat_id and (person.match_score is None or person.match_score == 0):
-                    person.confidence = person.confidence or "unmatched"
-                    print(f"[UNMATCHED] {group_name}: {person.forename} {person.familyname} → keine Nodegoat-ID, Score={person.match_score}")
+                needs_review = False
+                reasons = []
+
+                if not person.nodegoat_id:
+                    needs_review = True
+                    reasons.append("no_nodegoat_id")
+
+                if person.match_score is None or person.match_score < 70:
+                    needs_review = True
+                    reasons.append(f"low_score={person.match_score}")
+
+                if not person.familyname or len(person.familyname.strip()) < 2:
+                    needs_review = True
+                    reasons.append("missing_familyname")
+
+                if getattr(person, "confidence", "") == "String_direct_from_text":
+                    needs_review = True
+                    reasons.append("extracted_from_text_only")
+
+                if needs_review:
+                    person.needs_review = True
+                    person.review_reason = "; ".join(reasons)
+                    print(f"[NEEDS_REVIEW] {group_name}: {person.forename} {person.familyname} → {person.review_reason}")
+
     mark_unmatched_persons(doc)
 
 
@@ -1583,17 +1642,6 @@ def process_single_xml(
     f"{p.forename} {p.familyname} (score={getattr(p, 'recipient_score', '-')})"
     for p in doc.mentioned_persons
     ])
-    # Nach Enrichment: Stelle sicher, dass alle enriched Recipients in mentioned_persons enthalten sind
-    for r in doc.recipients:
-        if r not in doc.mentioned_persons:
-            doc.mentioned_persons.append(r)
-
-    # Dann: recipients neu setzen anhand recipient_score
-    doc.recipients = [
-        p for p in doc.mentioned_persons
-    if getattr(p, "recipient_score", 0) > 0
-]
-
 
     # II) JSON speichern
     out_name = xml_file.replace("_preprocessed.xml", ".json")

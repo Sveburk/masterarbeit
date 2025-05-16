@@ -34,6 +34,7 @@ from .letter_metadata_matcher import (
     ensure_author_recipient_in_mentions,
     postprocess_roles,
     enrich_final_recipients,
+    deduplicate_recipients
     
     )
 
@@ -93,6 +94,7 @@ __all__ = [
     "ensure_author_recipient_in_mentions",
     "postprocess_roles",
     "enrich_final_recipients",
+    "deduplicate_recipients",
     
 
     # Organization Matcher

@@ -1,13 +1,12 @@
 import re
 from typing import Dict, Any, Optional, List, Tuple
-from .document_schemas import BaseDocument
-from .document_schemas import Person
+from collections import defaultdict
+from .document_schemas import BaseDocument, Person
 from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry, ROLE_MAPPINGS_DE, KNOWN_ROLE_LIST
 
 import json
 from pathlib import Path
-from .person_matcher import match_person, KNOWN_PERSONS
-from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds
+from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
 from .Assigned_Roles_Module import assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role
 
 # --- Dokumenttypen für authors-/recipients-Erkennung ---
@@ -172,87 +171,92 @@ def extract_authors_raw(text: str) -> Dict[str, str]:
     return {"forename": "", "familyname": "", "role": "", "closing": closing}
 
 
-def extract_recipients_raw(text: str) -> Dict[str, str]:
-    """
-    Extrahiert den (Roh-)Empfänger aus dem Briefkopf:
-     - Inline: “Herrn Fritz Jung” / “An Herrn Fritz Jung” / “Frau Maria Meier”
-     - Zweizeilig: “Herrn” in Zeile N, Name in Zeile N+1
-     - Rollenanrede: “An den Bürgermeister”
-    """
-    parts = re.split(r"\n\s*\n", text, maxsplit=1)
-    header_block = parts[0]
-    lines = header_block.splitlines()
+def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
+        """
+        Sammelt alle potenziellen Empfänger aus dem Briefkopf (mehrere Zeilen analysieren),
+        vergibt recipient_score (z. B. 90 für vollständig, 70 für Zweizeiler usw.),
+        und gibt eine Liste zurück.
+        """
+        parts = re.split(r"\n\s*\n", text, maxsplit=1)
+        header_block = parts[0]
+        lines = header_block.splitlines()
 
-    # 1) Versuch: Inline-Pattern auf einer Zeile
-    inline_re = re.compile(
-        r"""^(?:An\s+)?           # optional “An ”
-            (Herrn?|Frau)\s+      # Anrede
-            ([A-ZÄÖÜ][\wäöüß]+)   # Vorname
-            (?:\s+([A-ZÄÖÜ][\wäöüß]+))?  # optional Nachname
-        """, re.IGNORECASE | re.VERBOSE
-    )
+        recipients = []
 
-    for idx, line in enumerate(lines[:5]):
-        line_clean = line.strip()
-        m = inline_re.search(line_clean)
-        if m:
-            anrede = m.group(1)
-            fn     = m.group(2)
-            ln     = m.group(3) or ""
-            role   = ""
+        # 1) Einzeiler: z. B. "An Herrn Otto Bollinger"
+        inline_re = re.compile(
+            r"""^(?:An\s+)?(Herrn?|Frau)\s+([A-ZÄÖÜ][\wäöüß]+)(?:\s+([A-ZÄÖÜ][\wäöüß]+(?:\s+[A-ZÄÖÜ][\wäöüß]+)*))?""",
+            re.IGNORECASE | re.VERBOSE,
+        )
+        for line in lines[:5]:
+            m = inline_re.search(line.strip())
+            if m:
+                recipients.append({
+                    "anrede": m.group(1),
+                    "forename": m.group(2),
+                    "familyname": m.group(3) or "",
+                    "role": "",
+                    "recipient_score": 90,
+                    "confidence": "header-inline"
+                })
 
-            # 🔍 Rollenerkennung auch aus derselben Zeile
-            role_match = re.search(r"An\s+(?:den|die|das)\s+([A-ZÄÖÜa-zäöüß ]+)", line_clean)
-            if role_match:
-                raw_role = role_match.group(1).strip()
-                role = normalize_and_match_role(raw_role) or raw_role
+        # 2) Dreizeiler: An\nHerrn\nOtto Bollinger
+        for i, line in enumerate(lines[:5]):
+            if line.strip().lower() == "an" and i + 2 < len(lines):
+                honorific = lines[i + 1].strip()
+                name_line = lines[i + 2].strip()
+                if re.match(r"^(Herrn?|Frau)$", honorific, re.IGNORECASE):
+                    parts = name_line.split()
+                    if parts:
+                        recipients.append({
+                            "anrede": honorific,
+                            "forename": parts[0],
+                            "familyname": parts[1] if len(parts) > 1 else "",
+                            "role": "",
+                            "recipient_score": 80,
+                            "confidence": "header-3line"
+                        })
 
-            # Falls keine Rolle erkannt → prüfe nächste Zeile
-            elif idx + 1 < len(lines):
-                nxt = lines[idx + 1].strip()
-                if nxt and not inline_re.match(nxt):
-                    role = nxt.rstrip('.,;:')
+        # 3) Zweizeiler: "Herrn" in einer Zeile, Name darunter
+        honorific_re = re.compile(r"^(Herrn?|Frau)\s*$", re.IGNORECASE)
+        for i, line in enumerate(lines[:5]):
+            if honorific_re.match(line.strip()) and i + 1 < len(lines):
+                name_line = lines[i + 1].strip().rstrip(".,;:")
+                parts = name_line.split()
+                if parts:
+                    recipients.append({
+                        "anrede": line.strip(),
+                        "forename": parts[0],
+                        "familyname": parts[1] if len(parts) > 1 else "",
+                        "role": "",
+                        "recipient_score": 70,
+                        "confidence": "header-2line"
+                    })
 
-            return {
-                "anrede": anrede,
-                "forename": fn,
-                "familyname": ln,
-                "role": role,
-                "closing": ""
-            }
+        return recipients
 
+def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None) -> Optional[Dict[str, Any]]:
     
-    # 2) Zweizeiliger Fall: “Herrn” auf eigener Zeile
-    honorific_re = re.compile(r"^(Herrn?|Frau)\s*$", re.IGNORECASE)
-    for i, line in enumerate(lines[:5]):
-        if honorific_re.match(line.strip()):
-            # nächster non-empty line ist Name
-            for nxt in lines[i+1:i+4]:
-                name = nxt.strip().rstrip('.,;:')
-                parts = name.split()
-                if len(parts) >= 1 and parts[0][0].isupper():
-                    fn = parts[0]
-                    ln = parts[1] if len(parts) > 1 else ""
-                    return {"anrede": line.strip(), "forename": fn, "familyname": ln, "role": "", "closing": ""}
-
-    # 3) Fallback: nichts gefunden
-    return {"anrede": "", "forename": "", "familyname": "", "role": "", "closing": ""}
-
-
-def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None) -> Dict[str, Any]:
-    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds
-    from .Assigned_Roles_Module import assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role
+    if raw.get("forename") and not raw.get("familyname"):
+        for p in mentioned_persons:
+            if (
+                p.forename == raw["forename"]
+                and p.familyname  # Nur wenn Nachname vorhanden
+            ):
+                print(f"[DEBUG] Verwende vollständigere Person statt unvollständigem Recipient: {p.forename} {p.familyname}")
+                enriched = p.to_dict()
+                for k, v in raw.items():
+                    if not enriched.get(k) and v:
+                        enriched[k] = v
+                return enriched
 
     if mentioned_persons is None:
         mentioned_persons = []
-
-    
 
     # Process role if it exists in raw data using CSV lookup
     role_raw = raw.get("role", "").strip()
     role_schema = ""
     if role_raw:
-        # Use normalize_and_match_role to get canonical role from CSV
         normalized_role = normalize_and_match_role(role_raw)
         if normalized_role:
             role_schema = map_role_to_schema_entry(normalized_role)
@@ -260,27 +264,25 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
             raw["role_schema"] = role_schema
             print(f"[DEBUG] Rolle normalisiert: '{role_raw}' → '{normalized_role}' (Schema: {role_schema})")
 
-    # 1) Schon in mentioned_persons?
+    # --- 1) Schon in mentioned_persons vorhanden? ---
     for p in mentioned_persons:
         if p.forename == raw.get("forename") and p.familyname == raw.get("familyname"):
             print(f"[DEBUG-RECIPIENT] matched in mentioned_persons: {p.forename} {p.familyname}")
             enriched = p.to_dict()
-            enriched["confidence"]  = "LLM_Tag_match_in_mentioned_persons"
+            enriched["confidence"] = "LLM_Tag_match_in_mentioned_persons"
             enriched["match_score"] = 100
 
             for k, v in raw.items():
                 if not enriched.get(k) and v:
                     enriched[k] = v
 
-            # 🛠️ Fallback-Zuweisung role_schema, falls Rolle vorhanden, aber kein Schema
             if enriched.get("role") and not enriched.get("role_schema"):
                 enriched["role_schema"] = map_role_to_schema_entry(enriched["role"])
                 print(f"[DEBUG-RECIPIENT] role_schema ergänzt aus Rolle: {enriched['role']} → {enriched['role_schema']}")
-
             return enriched
 
-    # 2) # --- Fuzzy-Match ---
-    person_query = {"forename": raw.get("forename",""), "familyname": raw.get("familyname","")}
+    # --- 2) Fuzzy-Match gegen known_persons ---
+    person_query = {"forename": raw.get("forename", ""), "familyname": raw.get("familyname", "")}
     match, score = match_person(person_query, KNOWN_PERSONS)
     thresholds = get_matching_thresholds()
 
@@ -298,27 +300,35 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
         for k, v in raw.items():
             if v and not enriched.get(k):
                 enriched[k] = v
-        for key in ["anrede", "forename", "familyname", "role", "closing", "nodegoat_id", 
-                   "associated_place", "associated_organisation", "match_score", "confidence"]:
+        for key in ["anrede", "forename", "familyname", "role", "closing", "nodegoat_id",
+                    "associated_place", "associated_organisation", "match_score", "confidence"]:
             enriched.setdefault(key, "")
         return enriched
 
-    # --- Fallback: keine Person erkannt, aber evtl. Rolle extrahierbar ---
+    # --- 3) Kein Match: Fallback mit Scoring ---
+    score, confidence, needs_review, review_reason = assess_llm_entry_score(
+        raw.get("forename", ""),
+        raw.get("familyname", ""),
+        raw.get("role", "")
+    )
+
     result = {
         **raw,
-        "nodegoat_id":             "",
-        "associated_place":        "",
+        "nodegoat_id": "",
+        "associated_place": "",
         "associated_organisation": "",
-        "match_score":             0,
-        "confidence":              "unverified",
-        "needs_review":            True,
-        "review_reason":           "solitary_role_only"
+        "match_score": score,
+        "confidence": confidence,
+        "needs_review": needs_review,
+        "review_reason": review_reason,
+        "role_schema": role_schema
     }
 
+    # Ergänze leere Schlüssel zur Sicherheit
     for key in ["anrede", "forename", "familyname", "role", "closing"]:
         result.setdefault(key, "")
 
-    # 🔍 Fallback-Rollenextraktion erneut versuchen
+    # Versuche nochmal Rollenextraktion
     enriched_role = assign_roles_to_known_persons([result], text)[0]
     if isinstance(enriched_role, Person):
         enriched_role = enriched_role.to_dict()
@@ -328,7 +338,8 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
         result["role_schema"] = enriched_role.get("role_schema", "")
         print(f"[DEBUG] Rolle (nachträglich) erkannt im Fallback: {result['role']} ({result['role_schema']})")
 
-    if result.get("role"):
+    # Nur zurückgeben, wenn wenigstens ein Namensbestandteil vorhanden ist
+    if result.get("forename") or result.get("familyname"):
         return result
 
     return None
@@ -398,19 +409,32 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
     if mentioned_persons is None:
         mentioned_persons = []
 
-    # Klassischer Kopf-Empfänger (z. B. "Herrn Fritz Jung")
-    primary = extract_recipients_raw(text)
-    enriched_primary = letter_match_and_enrich(primary, text, mentioned_persons)
+    # --- 1) Mehrere potenzielle Kopf-Empfänger extrahieren ---
+    raw_head_recipients = extract_recipients_raw(text)
+    enriched_head = []
+    for raw in raw_head_recipients:
+        enriched = letter_match_and_enrich(raw, text, mentioned_persons)
+        if enriched:
+            enriched["recipient_score"] = raw.get("recipient_score", 50)
+            enriched["confidence"] = raw.get("confidence", "header")
+            enriched_head.append(enriched)
 
-    # 🔐 Nur wenn etwas zurückkam
-    if enriched_primary:
-        enriched_primary["recipient_score"] = 90
-        enriched_primary["confidence"] = enriched_primary.get("confidence", "header")
-        all_recipients = [enriched_primary]
-    else:
-        all_recipients = []
+    # ⬇️ Wähle den vollständigsten mit Vor- und Nachname
+    def score_completeness(p: Dict[str, Any]) -> int:
+        return (1 if p.get("forename") else 0) + (2 if p.get("familyname") else 0)
 
-   # Weitere mögliche Empfänger
+    enriched_head.sort(key=score_completeness, reverse=True)
+    all_recipients = [enriched_head[0]] if enriched_head else []
+    # --- 1) Klassischer Kopf-Empfänger (z. B. "An Herrn Otto Bolliger") ---
+    raw_head_recipients = extract_recipients_raw(text)
+    for raw in raw_head_recipients:
+        enriched = letter_match_and_enrich(raw, text, mentioned_persons)
+        if enriched:
+            enriched["recipient_score"] = raw.get("recipient_score", 90)
+            enriched["confidence"] = raw.get("confidence", "header")
+            all_recipients.append(enriched)
+
+    # --- 2) Weitere mögliche Empfänger (z. B. Anredeformen) ---
     additional_raw = extract_multiple_recipients_raw(text)
     enriched_list = []
     for raw in additional_raw:
@@ -422,23 +446,26 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
 
     all_recipients.extend(enriched_list)
 
-    # Deduplizieren (nach forename + familyname)
+    # --- 3) Deduplizieren (nach forename + familyname) ---
     seen = set()
-    final = []
-
+    grouped = defaultdict(list)
     for rec in all_recipients:
-        key = (rec.get("forename", "").strip(), rec.get("familyname", "").strip())
-
-        if key in seen or not any(key):
-            print(f"[DEBUG-DROP] Recipient gedroppt: {rec}")  # 👈 Hier ist der Debug-Print korrekt
+        key = rec.get("forename", "").strip().lower()
+        if not key:
             continue
+        grouped[key].append(rec)
 
-        seen.add(key)
-        final.append(rec)
+    final = []
+    for forename, candidates in grouped.items():
+        # Wähle den mit den meisten Namensbestandteilen
+        candidates.sort(key=lambda x: (1 if x.get("forename") else 0) + (2 if x.get("familyname") else 0), reverse=True)
+        best = candidates[0]
+        final.append(best)
         if len(final) >= 4:
             break
 
     return final
+
 
 def enrich_final_recipients(base_doc: BaseDocument):
     from Module.person_matcher import match_person, KNOWN_PERSONS
@@ -476,6 +503,28 @@ def enrich_final_recipients(base_doc: BaseDocument):
         f"{p.forename} {p.familyname}: {getattr(p, 'recipient_score', '-')}"
         for p in base_doc.mentioned_persons
     ])
+
+def deduplicate_recipients(recipients: List[Person]) -> List[Person]:
+    deduped = []
+    seen = {}
+
+    for rec in recipients:
+        key = (rec.forename.strip(), rec.familyname.strip(), rec.nodegoat_id)
+
+        if key in seen:
+            existing = seen[key]
+
+            # Kombiniere recipient_score
+            if getattr(rec, "recipient_score", 0) > getattr(existing, "recipient_score", 0):
+                existing.recipient_score = rec.recipient_score
+                existing.confidence = rec.confidence or existing.confidence
+            continue
+        else:
+            seen[key] = rec
+            deduped.append(rec)
+
+    return deduped
+
 
 
 
@@ -672,7 +721,7 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                     # Nur überschreiben, wenn role_schema leer oder von role_only
                     if not person.role_schema or person.confidence == "role_only":
                         person.role_schema = map_role_to_schema_entry(person.role)
-                person.match_score = 100
+                person.match_score = 100 if matched.nodegoat_id else 20
                 person.confidence = "llm"
             else:
                 from Module.person_matcher import match_person, KNOWN_PERSONS
@@ -692,17 +741,25 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                         from Module.Assigned_Roles_Module import map_role_to_schema_entry
                         role_schema = map_role_to_schema_entry(role)
 
+                    score, confidence, needs_review, review_reason = assess_llm_entry_score(
+                        entry.get("forename", ""),
+                        entry.get("familyname", ""),
+                        entry.get("role", "")
+                    )
+
                     person = Person(
                         forename=entry.get("forename", ""),
                         familyname=entry.get("familyname", ""),
                         title="",
-                        role=role,
+                        role=entry.get("role", ""),
                         role_schema=role_schema,
                         associated_place="",
                         associated_organisation="",
                         nodegoat_id="",
-                        match_score="llm-matched",
-                        confidence="llm"
+                        match_score=score,
+                        confidence=confidence,
+                        needs_review=needs_review,
+                        review_reason=review_reason
                     )
 
             # Skip persons with empty names
