@@ -43,7 +43,7 @@ class Person:
         associated_organisation: str = "",
         nodegoat_id: str = "",
         match_score: Optional[Union[float, Dict[str, float]]] = None,
-        recipient_score: int = 0,
+        recipient_score: Optional[int] = 0,
         confidence: str = "",
         mentioned_count: int = 1,
         needs_review: bool = False,               
@@ -89,6 +89,9 @@ class Person:
             result["match_score"] = self.match_score
         else:
             result["match_score"] = 0
+            
+        # Stelle sicher, dass recipient_score immer im Ergebnis vorhanden ist
+        result["recipient_score"] = self.recipient_score if self.recipient_score is not None else 0
 
         # Stelle sicher, dass mentioned_count immer ein gültiger Integer ist
         result["mentioned_count"] = int(self.mentioned_count) if self.mentioned_count else 1
@@ -107,24 +110,25 @@ class Person:
         return result
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Person':
-        """Erstellt ein Person-Objekt aus einem Dictionary."""
+    def from_dict(cls, data: Dict[str, Any]) -> "Person":
         return cls(
-            anrede=data.get("anrede", ""),
             forename=data.get("forename", ""),
-            alternate_name=data.get("alternate_name", ""),
             familyname=data.get("familyname", ""),
+            alternate_name=data.get("alternate_name", ""),
             title=data.get("title", ""),
             role=data.get("role", ""),
-            role_schema=data.get("role_schema", ""),  
             associated_place=data.get("associated_place", ""),
             associated_organisation=data.get("associated_organisation", ""),
             nodegoat_id=data.get("nodegoat_id", ""),
             match_score=data.get("match_score"),
-            confidence=data.get("confidence", ""),
+            mentioned_count=data.get("mentioned_count", 1),
             recipient_score=data.get("recipient_score", 0),
-            mentioned_count=data.get("mentioned_count", 1)
+            confidence=data.get("confidence", ""),
+            needs_review=data.get("needs_review", False),
+            review_reason=data.get("review_reason", ""),
+            role_schema=data.get("role_schema", "")
         )
+
 
     def is_valid(self) -> bool:
         """Mindestens Vor- oder Nachname muss vorhanden sein."""
@@ -378,20 +382,6 @@ class BaseDocument:
             result["meeting_type"] = ""
             result["attendees"] = []
 
-        # Stelle sicher, dass role_schema für alle Personen vorhanden ist und role normalisiert ist
-        for person_list_name in ["authors", "recipients", "mentioned_persons"]:
-            if person_list_name in result:
-                for person_dict in result[person_list_name]:
-                    role_raw = person_dict.get("role", "").strip()
-                    from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
-                    if role_raw:
-                        normalized_role = normalize_and_match_role(role_raw)
-                        if normalized_role:
-                            person_dict["role"] = normalized_role
-                        person_dict["role_schema"] = map_role_to_schema_entry(person_dict["role"])
-                    else:
-                        # Auch wenn keine Rolle: setze leeres role_schema
-                        person_dict["role_schema"] = ""
         print("[DEBUG] JSON-ready recipients:", result["recipients"])
         print("[DEBUG] Final attributes block:", result["attributes"])
 

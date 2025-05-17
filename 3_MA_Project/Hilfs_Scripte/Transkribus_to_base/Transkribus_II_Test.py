@@ -48,6 +48,8 @@ from Module import (
     get_best_match_info, 
     extract_person_data,
     split_and_enrich_persons,
+    deduplicate_and_group_persons, 
+    count_mentions_in_transcript,
     
     #letter-metadata-matcher
     match_authors,
@@ -1251,19 +1253,16 @@ def process_transkribus_file(
 
         # 🔁 Finaler Deduplikationsschritt – ersetzt alle vorherigen Autoren/Empfänger-Listen durch bereinigte Fassung
         # Alle Personen aus authors, recipients und mentioned_persons zusammenführen
-        combined_persons = [
-            a.to_dict() for a in doc.authors
-        ] + [
-            r.to_dict() for r in doc.recipients
-        ] + [
-            p.to_dict() for p in doc.mentioned_persons
-        ]
+        combined_persons = doc.authors + doc.recipients + doc.mentioned_persons
 
         # Finale Deduplikation (inkl. Merging von Scores, Rollen etc.)
         deduplicated_final = deduplicate_and_group_persons(combined_persons)
+        deduplicated_final = count_mentions_in_transcript(deduplicated_final, transcript_text)
+        
 
         # Repliziere deduplizierte Personen in die Zielgruppen
         doc.mentioned_persons = deduplicated_final
+        deduplicated_final = count_mentions_in_transcript(deduplicated_final, transcript_text)
 
         # Autoren identifizieren
         doc.authors = [
@@ -1667,6 +1666,58 @@ def process_single_xml(
     for p in doc.mentioned_persons
     ])
 
+    # Kombiniere alle Personen (author, recipient, mentioned_persons)
+    combined_persons = doc.authors + doc.recipients + doc.mentioned_persons
+
+    # 1) Deduplizieren
+    deduplicated_final = deduplicate_and_group_persons(combined_persons)
+
+    # 2) Zählen im Transkript
+    deduplicated_final = count_mentions_in_transcript(deduplicated_final, transcript)
+
+    # 3) Übernehmen in mentioned_persons
+    doc.mentioned_persons = deduplicated_final
+
+    for p in deduplicated_final:
+        print(f"[CHECK] {p.forename} {p.familyname} → recipient_score={getattr(p, 'recipient_score', 'MISSING')}")
+
+    # 4) FINAL: recipients extrahieren
+    doc.recipients = sorted(
+        [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+        key=lambda p: getattr(p, "recipient_score", 0),
+        reverse=True
+    )
+    print("[CHECK] Alle Personen mit recipient_score > 0:",
+      [f"{p.forename} {p.familyname}, recipient_score={getattr(p, 'recipient_score', 0)}"
+       for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0])
+
+    # 5) Debug-Ausgabe
+    debug_recipients = [p.to_dict() for p in doc.recipients]
+
+    print("[DEBUG] JSON-ready recipients:", [f"{p['forename']} {p['familyname']}" for p in debug_recipients])
+
+    doc.recipients = sorted(
+    [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+    key=lambda p: getattr(p, "recipient_score", 0),
+    reverse=True
+)
+
+
+    # Autoren aus der deduplizierten Liste wiederherstellen
+    doc.authors = [
+        p for p in deduplicated_final
+        if any(p.nodegoat_id == a.nodegoat_id and a.nodegoat_id
+            or (p.forename == a.forename and p.familyname == a.familyname)
+            for a in authors)
+    ]
+
+    # Empfänger aus der deduplizierten Liste wiederherstellen (mit recipient_score)
+    doc.recipients = sorted(
+        [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+        key=lambda p: getattr(p, "recipient_score", 0),
+        reverse=True
+    )
+
     # II) JSON speichern
     out_name = xml_file.replace("_preprocessed.xml", ".json")
     out_path = os.path.join(OUTPUT_DIR, f"{folder}_{subdir}_{out_name}")
@@ -1683,11 +1734,6 @@ def process_single_xml(
         final_roles=custom_data.get("roles", []),
         unmatched_path=Path(OUTPUT_DIR) / "unmatched.json"
     )
-
-
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write(doc.to_json(indent=2))
-
 
     needs_review_persons = [
         p.to_dict()
@@ -1720,87 +1766,6 @@ def process_single_xml(
         
         print(f"[UNMATCHED] {len(needs_review_persons)} neue Personen in unmatched_persons.json ergänzt")
 
-def deduplicate_and_group_persons(persons: List[Dict[str, Any]]) -> List[Person]:
-    """
-    Enhanced deduplication that handles:
-    - duplicate persons with same nodegoat_id
-    - swapped forename/familyname
-    - role mistakenly used as name or vice versa
-    - fallbacks for unassigned persons
-    """
-    nodegoat_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
-    grouped: List[Dict[str, Any]] = []
-    unmatched: List[Dict[str, Any]] = []
-
-    def normalize(s: str) -> str:
-        return s.strip().lower()
-
-    # Step 1: Group by nodegoat_id
-    for p in persons:
-        if p.get("nodegoat_id"):
-            nodegoat_groups[p["nodegoat_id"]].append(p)
-        else:
-            unmatched.append(p)
-
-    final = []
-
-    # Step 2: Process nodegoat_id groups
-    for nodegoat_id, entries in nodegoat_groups.items():
-        best = max(entries, key=lambda x: float(x.get("match_score", 0) or 0))
-        combined_roles = "; ".join(sorted(set(r.get("role", "") for r in entries if r.get("role"))))
-        best["role"] = combined_roles
-        best["mentioned_count"] = sum(int(e.get("mentioned_count", 1) or 1) for e in entries)
-        best["recipient_score"] = best.get("recipient_score", 0)
-        final.append(Person.from_dict(best))
-        print(f"[DEBUG] Grouped by nodegoat_id {nodegoat_id}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
-
-    # Step 3: Advanced grouping by normalized name + fuzzy/semantic logic
-    seen_keys = set()
-
-    for entry in unmatched:
-        fn = normalize(entry.get("forename", ""))
-        ln = normalize(entry.get("familyname", ""))
-        role = normalize(entry.get("role", ""))
-        key = f"{fn}|{ln}|{role}"
-
-        # Try to match with already finalized entries
-        matched = False
-        for target in final:
-            tfn = normalize(getattr(target, "forename", ""))
-            tln = normalize(getattr(target, "familyname", ""))
-            tr  = normalize(getattr(target, "role", ""))
-
-            conditions = [
-                # exact name match
-                (fn and ln and fn == tfn and ln == tln),
-                # name swap
-                (fn and ln and fn == tln and ln == tfn),
-                # role accidentally in name
-                (fn == tr or ln == tr or role == tfn or role == tln)
-            ]
-
-            if any(conditions):
-                print(f"[MERGE] Kombiniere {fn} {ln} ({role}) mit {tfn} {tln} ({tr})")
-                target.mentioned_count += int(entry.get("mentioned_count", 1) or 1)
-                if entry.get("role"):
-                    combined = set(filter(None, (target.role or "").split("; ")))
-                    combined.add(entry["role"])
-                    target.role = "; ".join(sorted(combined))
-                matched = True
-                break
-
-        if not matched:
-            best = entry.copy()
-            best["mentioned_count"] = int(best.get("mentioned_count", 1) or 1)
-            best["recipient_score"] = best.get("recipient_score", 0)
-            final.append(Person.from_dict(best))
-            print(f"[DEBUG] Neuer Eintrag übernommen: {best.get('forename')} {best.get('familyname')} {best.get('role')}")
-
-    print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
-    for p in final:
-        print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
-
-    return final
 def infer_authors_recipients(
     text: str,
     doc_type: Optional[str],

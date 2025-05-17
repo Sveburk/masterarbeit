@@ -458,8 +458,14 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
     final = []
     for forename, candidates in grouped.items():
         # Wähle den mit den meisten Namensbestandteilen
-        candidates.sort(key=lambda x: (1 if x.get("forename") else 0) + (2 if x.get("familyname") else 0), reverse=True)
+        # Sort by name completeness first, then by recipient_score
+        candidates.sort(key=lambda x: (
+            (1 if x.get("forename") else 0) + (2 if x.get("familyname") else 0),
+            x.get("recipient_score", 0) or 0
+        ), reverse=True)
+        
         best = candidates[0]
+        print(f"[DEBUG-FINAL] Selected best recipient: {best.get('forename')} {best.get('familyname')} with score={best.get('recipient_score', 0)}")
         final.append(best)
         if len(final) >= 4:
             break
@@ -515,13 +521,20 @@ def deduplicate_recipients(recipients: List[Person]) -> List[Person]:
             existing = seen[key]
 
             # Kombiniere recipient_score
-            if getattr(rec, "recipient_score", 0) > getattr(existing, "recipient_score", 0):
-                existing.recipient_score = rec.recipient_score
+            existing_score = getattr(existing, "recipient_score", 0) or 0
+            new_score = getattr(rec, "recipient_score", 0) or 0
+            
+            print(f"[DEBUG-DEDUP] Combining recipient_scores: existing={existing_score}, new={new_score}")
+            
+            if new_score > existing_score:
+                existing.recipient_score = new_score
                 existing.confidence = rec.confidence or existing.confidence
+                print(f"[DEBUG-DEDUP] Updated recipient_score to {existing.recipient_score}")
             continue
         else:
             seen[key] = rec
             deduped.append(rec)
+            print(f"[DEBUG-DEDUP] Added new recipient with score={getattr(rec, 'recipient_score', 0)}: {rec.forename} {rec.familyname}")
 
     return deduped
 
