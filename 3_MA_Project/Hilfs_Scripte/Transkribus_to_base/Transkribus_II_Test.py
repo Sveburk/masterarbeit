@@ -1,5 +1,5 @@
 """
-Dieser Code wurde mit unterschützung von LLMs erstellt. vornehmlich sind das ChatGPT 4o; ChatGPT 40 Mini High und Claude Code,
+Dieser Code wurde mit Unterstützung von LLMs erstellt. vornehmlich sind das ChatGPT 4o; ChatGPT 40 Mini High und Claude Code,
 Extraktion von Basisinformationen aus Transkribus XML‑Dateien und Konvertierung in das Basis‑Schema.
 
 Dieses Skript liest Transkribus XML‑Dateien, extrahiert die Metadaten und den Text
