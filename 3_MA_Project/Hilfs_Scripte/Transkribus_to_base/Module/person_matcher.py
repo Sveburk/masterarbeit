@@ -4,21 +4,23 @@ import unicodedata
 import uuid
 from typing import List, Dict, Tuple, Optional, Union, Any
 import pandas as pd
+from collections import defaultdict
 from rapidfuzz import fuzz
+from rapidfuzz.distance import Levenshtein
+
+from Module.document_schemas import Person
+
 from Module.Assigned_Roles_Module import (
     POSSIBLE_ROLES,
     ROLE_AFTER_NAME_RE,
     ROLE_BEFORE_NAME_RE,
     map_role_to_schema_entry,
+    ROLE_MAPPINGS_DE,
 
 )
-from rapidfuzz.distance import Levenshtein
 
-from Module.Assigned_Roles_Module import (
-    POSSIBLE_ROLES,
-    map_role_to_schema_entry,
-    ROLE_MAPPINGS_DE
-)
+
+
 
 #============================================================================
 #   BLACKLIST & CONFIGURATION
@@ -925,3 +927,120 @@ def get_best_match_info(
         "match_id":           match.get("nodegoat_id") if match else None,
         "score":              score
     }
+
+
+def count_mentions_in_transcript(persons: List[Person], transcript: str) -> List[Person]:
+    updated = []
+    for p in persons:
+        count = 0
+        fn = (p.forename or "").strip()
+        ln = (p.familyname or "").strip()
+
+        # (1) Bevorzugt vollständiger Name
+        if fn and ln:
+            full_pattern = re.compile(rf"\b{re.escape(fn)}\s+{re.escape(ln)}\b", re.IGNORECASE)
+            count = len(full_pattern.findall(transcript))
+
+        # (2) Wenn nur Nachname vorhanden
+        elif ln:
+            last_pattern = re.compile(rf"\b{re.escape(ln)}\b", re.IGNORECASE)
+            count = len(last_pattern.findall(transcript))
+
+        # (3) Wenn nur Vorname vorhanden (z. B. Otto)
+        elif fn:
+            first_pattern = re.compile(rf"\b{re.escape(fn)}\b", re.IGNORECASE)
+            count = len(first_pattern.findall(transcript))
+
+        p.mentioned_count = count
+        updated.append(p)
+
+    return updated
+def deduplicate_and_group_persons(persons: List[Union[Dict[str, Any], Person]]) -> List[Person]:
+    from collections import defaultdict
+    nodegoat_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    unmatched: List[Dict[str, Any]] = []
+
+    def normalize(s: str) -> str:
+        return s.strip().lower()
+
+    def ensure_dict(p: Union[Person, Dict[str, Any]]) -> Dict[str, Any]:
+        return p.to_dict() if isinstance(p, Person) else p
+
+    final: List[Person] = []
+
+    # 1) Mit nodegoat_id gruppieren
+    for p in persons:
+        p = ensure_dict(p)
+        if p.get("nodegoat_id"):
+            nodegoat_groups[p["nodegoat_id"].strip()].append(p)
+        else:
+            unmatched.append(p)
+
+    for nodegoat_id, group in nodegoat_groups.items():
+        best = max(group, key=lambda x: float(x.get("match_score", 0) or 0))
+        combined_roles = "; ".join(sorted(set(p.get("role", "") for p in group if p.get("role"))))
+
+        best["role"] = combined_roles
+        best["mentioned_count"] = sum(int(p.get("mentioned_count", 1)) for p in group)
+        best["recipient_score"] = max(int(p.get("recipient_score", 0) or 0) for p in group)
+        final.append(Person.from_dict(best))
+        print(f"[DEBUG] Grouped by nodegoat_id {nodegoat_id}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
+
+    # 2) Manuelle Gruppierung nach Namen (nur wenn keine ID)
+    for entry in unmatched:
+        entry = ensure_dict(entry)
+        fn = normalize(entry.get("forename", ""))
+        ln = normalize(entry.get("familyname", ""))
+        role = normalize(entry.get("role", ""))
+        key = f"{fn}|{ln}|{role}"
+
+        matched = False
+        for target in final:
+            tfn = normalize(getattr(target, "forename", ""))
+            tln = normalize(getattr(target, "familyname", ""))
+            tr  = normalize(getattr(target, "role", ""))
+
+            conditions = [
+                fn and ln and fn == tfn and ln == tln,
+                fn and ln and fn == tln and ln == tfn,
+                fn == tr or ln == tr or role == tfn or role == tln
+            ]
+
+            if any(conditions):
+                print(f"[MERGE] Kombiniere {fn} {ln} ({role}) mit {tfn} {tln} ({tr})")
+                target.mentioned_count += int(entry.get("mentioned_count", 1))
+                if entry.get("role"):
+                    combined = set(filter(None, (target.role or "").split("; ")))
+                    combined.add(entry["role"])
+                    target.role = "; ".join(sorted(combined))
+                
+                target.recipient_score = max(getattr(target, "recipient_score", 0), entry.get("recipient_score", 0))
+                
+                matched = True
+                break
+
+        if not matched:
+            entry["mentioned_count"] = int(entry.get("mentioned_count", 1))
+            # Ensure recipient_score is preserved in new entries
+            entry["recipient_score"] = int(entry.get("recipient_score", 0) or 0)
+            # Print recipient_score for debugging
+            print(f"[DEBUG] Neuer Eintrag mit recipient_score={entry['recipient_score']} übernommen: {entry.get('forename')} {entry.get('familyname')} {entry.get('role')}")
+            final.append(Person.from_dict(entry))
+            
+    recipient_score_lookup = {
+        ensure_dict(p)["nodegoat_id"]: ensure_dict(p).get("recipient_score", 0)
+        for p in persons
+        if ensure_dict(p).get("recipient_score", 0) > 0 and ensure_dict(p).get("nodegoat_id")
+    }
+
+    # Weise recipient_score zurück an deduplizierte finale Personen
+    for person in final:
+        nid = person.nodegoat_id
+        if nid in recipient_score_lookup:
+            person.recipient_score = max(person.recipient_score or 0, recipient_score_lookup[nid])    
+
+    print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
+    for p in final:
+        print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
+
+    return final

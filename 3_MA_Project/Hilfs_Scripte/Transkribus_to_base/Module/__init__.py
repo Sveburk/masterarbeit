@@ -22,6 +22,8 @@ from .person_matcher import (
     get_best_match_info,
     extract_person_data,
     split_and_enrich_persons,
+    deduplicate_and_group_persons, 
+    count_mentions_in_transcript
 )
 
 # --- Letter‑Metadata Matcher ---
@@ -91,6 +93,8 @@ __all__ = [
     "get_best_match_info",
     "extract_person_data",
     "split_and_enrich_persons",
+    "deduplicate_and_group_persons", 
+    "count_mentions_in_transcript",
 
     # Letter‑Metadata Matcher
     "match_authors",
