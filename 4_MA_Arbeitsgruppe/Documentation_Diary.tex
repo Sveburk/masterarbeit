@@ -44,6 +44,7 @@
 %___________________________________________________________________________
 \noindent\hrulefill
 \section{Prozessablauf Grafiken erstellen\small 29.05.2025}
+
 \begin{center}
 \resizebox{0.9\textwidth}{!}{
 \begin{tikzpicture}[
@@ -87,57 +88,73 @@ label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf
 \begin{center}
 \begin{tikzpicture}
 
-% ============================================
-% MINI: Übersicht oben rechts (sehr klein, nur schematisch)
-% ============================================
-\begin{scope}[xscale=0.1, yscale=0.1, shift={(95,0)}]
-
+% TikZ styles
 \tikzset{
   module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.8cm, minimum height=0.4cm},
   highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.8cm, minimum height=0.4cm},
-  arrow/.style={-Latex},
-  node distance=0.4cm and 0.8cm
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={<->, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
 }
 
-
+% Mini-Diagramm oben rechts
+\begin{scope}[shift={(8,8)}]
 \node[module] (init) at (0, 0) {};
-\node[module, below=of init] (xml) {};
-\node[highlight, below left=0.6cm and 1.5cm of xml] (persons) {\tiny \faUser}; % ← aktuell
-\node[module, below=of persons] (authors) {};
-\node[module, below=0.6cm of xml] (orgs) {};
-\node[module, below=of orgs] (dates) {};
-\node[module, below=of dates] (events) {};
-\node[module, below right=0.6cm and 1.5cm of xml] (places) {};
-\node[module, below=0.6cm of events] (json) {};
-\node[module, below=of json] (save) {};
+\node[module] (xml) at (0, -1) {};
+\node[module]    (events)  at (-3.3, -2) {};
+\node[module]    (roles)   at (-1.9, -2) {};
+\node[highlight] (persons) at (-0.5, -2) {};
+\node[module]    (orgs)    at (0.9, -2) {};
+\node[module]    (places)  at (2.3, -2) {};
+\node[module]    (dates)   at (3.7, -2) {};
+\node[module] (authors) at (-0.5, -3) {};
+\node[module] (json)    at (-0, -4.0) {};
+\node[module] (save)    at (-0, -5.2) {};
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -2.3cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
 
-\draw[arrow] (init.south) -- (xml.north);
-\draw[arrow] (xml.south west) -- (persons.north);
-\draw[arrow] (xml.south) -- (orgs.north);
-\draw[arrow] (xml.south east) -- (places.north);
-\draw[arrow] (persons.south) -- (authors.north);
-\draw[arrow] (orgs.south) -- (dates.north);
-\draw[arrow] (dates.south) -- (events.north);
-\draw[arrow] (events.south) -- (json.north);
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (joinpoint.south) -- (json.north);
 \draw[arrow] (json.south) -- (save.north);
-\draw[<->, thick] (orgs.west) -- (persons.east); 
-\draw[<->, thick] (orgs.east) -- (places.west); 
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
 
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
 \end{scope}
 
-% ============================================
-% GROSS: Prozess für person_matcher.py (unverändert)
-% ============================================
-\begin{scope}
-\tikzset{
-  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
-  arrow/.style={-Latex, thick},
-  node distance=1cm and 2.2cm
-}
-
-\node[module] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
-
+% Großes Prozessdiagramm
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
 \node[process, below=1.2cm of personsmod] (split)  {\textbf{Extrahiere Rohpersonen} \\ (split\_and\_enrich\_persons)};
 \node[process, below=of split]            (parse)  {\textbf{Zerlege Namen \& erkenne Rollen} \\ (extract\_person\_data)};
 \node[process, below=of parse]            (match)  {\textbf{Vergleiche mit Groundtruth} \\ (match\_person)};
@@ -145,7 +162,6 @@ label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf
 \node[process, below=of roles]            (score)  {\textbf{Berechne recipient\_score} \\ (aus Kontext im Text)};
 \node[process, below=of score]            (dedup)  {\textbf{Dedupliziere Personen} \\ (deduplicate\_and\_group\_persons)};
 \node[process, below=of dedup]            (count)  {\textbf{Kontextuelle Nennungszählung} \\ (count\_mentions\_in\_transcript\_contextual)};
-
 \draw[arrow] (personsmod.south) -- (split.north);
 \draw[arrow] (split.south) -- (parse.north);
 \draw[arrow] (parse.south) -- (match.north);
@@ -153,13 +169,10 @@ label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf
 \draw[arrow] (roles.south) -- (score.north);
 \draw[arrow] (score.south) -- (dedup.north);
 \draw[arrow] (dedup.south) -- (count.north);
-
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
-
-\end{scope}
-
 \end{tikzpicture}
 \end{center}
+
 
 
 %___________________________________________________________________________
