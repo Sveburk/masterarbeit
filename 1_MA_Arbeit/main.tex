@@ -800,7 +800,7 @@ Dein\\
 \node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
 \node[module, below=1.2cm of persons] (authors) {Autoren \& Empfänger \\ infer, dedup, score};
 \node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
-\node[coordinate] (joinpoint) at ($(json.north) + (0, 1cm)$) {};
+\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
 \node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
 \node[module, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
 
@@ -823,7 +823,7 @@ Dein\\
   (places)(joinpoint), name=flowchartbox] {};
 
 % --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
-\node[group, fit=(main)(flowchartbox),
+\node[group, fit=(main)(flowchartbox)(save),
   label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{Hauptverarbeitung der Transkribus\_II-Pipeline}}] {};
 
 
