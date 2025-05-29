@@ -21,7 +21,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[fixed]{fontawesome5} %Fontawesome für Icons und Symbole; siehe https://mirrors.ibiblio.org/CTAN/fonts/fontawesome5/doc/fontawesome5.pdf
 \usepackage{amsmath,amssymb}
-\usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage{afterpage}
 \usepackage{hyperref} 
@@ -30,6 +29,7 @@
 \usepackage{setspace}  % Für den Befehl \setstretch
 \usepackage{transparent}
 \usepackage{tikz}
+  \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
 \usepackage{eso-pic} % Für Hintergrundbilder
 \usepackage{fvextra}     % Muss vor csquotes geladen werden
 \usepackage{csquotes}    % Nach fvextra laden
@@ -44,8 +44,6 @@
     }%
     
 }
-
-\usepackage{minted} % Für Python-Code im Text
 
 \usepackage[ngerman]{babel}
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
@@ -231,8 +229,6 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
-\babelprovide[main,import]{ngerman}
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands%
 \def\languageshorthands#1{}
@@ -259,10 +255,10 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\title{\vspace*{4cm} \LARGE Von Papier zur digitalen Netzwerkanalyse 
-\color{UniMint} \rule{8cm}{0.4pt} \\  
+\title{\vspace*{4cm} \LARGE Digitale Harmonie aus historischer Dissonanz
+\color{UniMint} \rule{8cm}{1pt} \\  
 \vspace{0.2cm}  
-\color{white}\large Digitalisierung, Modellierung und Untersuchung\\historischer Vereinsakten\\mit Machine Learning und Nodegoat}
+\color{white}\large Extraktion, Ordnung und Analyse\\unstrukturierter Archivdaten\\des Männerchor Murg}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -271,7 +267,7 @@
 \makeatother
 \subtitle{}
 \author{Sven Burkhardt}
-\date{2025-01-17} % chktex 8
+\date{2025-08-15} % chktex 8
 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
@@ -298,7 +294,7 @@
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
   mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ % chktex 8 %logo Unibas + Link + Immatrikulationsnummer
     
-    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}17-01-2025}% chktex 8
+    \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}15.08.2025}% chktex 8
   \end{figure}
   \setcounter{figure}{0}
 \end{center}
@@ -699,9 +695,197 @@ Dein\\
 
 
 
-      \subsection{Wechsel von Linked Open Data (LOD zu Nodegoat)}
-        \subsubsection{Definition und Nutzen von LOD}
-        \subsubsection{Aufbau der LOD Ontologie}
+\subsection{Aufbau XML to JSON Pipeline}
+\subsubsection{Übersichtsgrafik der Pipeline}
+
+\begin{center}
+\resizebox{0.5\textwidth}{!}{ % Skalierung auf halbe Seitenbreite
+\begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=3.5cm, minimum height=1cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4cm, minimum height=1cm, align=center},
+  group/.style={draw=gray, dashed, rounded corners, inner sep=0.3cm},
+  arrow/.style={-Latex, thick},
+  node distance=1cm and 1.5cm
+]
+  % --- Hauptknoten ---
+  \node[process] (dir) at (0, -4) {\textbf{Dateiverzeichnis} \\ der XML-Dateien};
+  \node[process] (llmpre) at (6, -4) {\textbf{llm\_XML\_preprocessing.py}};
+  \node[process, below=2.2cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ steuert Verarbeitung};
+  \node[process] (transkribus) at (-7, 0) {\textbf{app.transkribus.org} \\ Transkription};
+
+  % --- Neu angeordnete Verarbeitungsmodule ---
+
+% Linke Spalte: über Elemente im Dokument
+\node[module, below left=of main] (org)     {organization\_matcher.py};
+\node[module, below=of org]       (person)  {person\_matcher.py};
+\node[module, below=of person]    (place)   {place\_matcher.py};
+
+% Mittlere Spalte: über das Dokument
+\node[module, below=of main]      (roles)   {Assigned\_Roles\_Module.py};
+\node[module, below=of roles]     (event)   {event\_matcher.py};
+\node[module, below=of event]     (date)    {date\_matcher.py};
+
+% Rechte Spalte: Dokument-bezogene Module
+\node[module, below right=of main] (type)    {type\_matcher.py};
+\node[module, below=of type]       (enrich)  {enrich\_pipeline.py};
+\node[module, below=of enrich]     (schema)  {document\_schemas.py};
+\node[module, below=of schema]     (letter)  {letter\_metadata\_matcher.py};
+
+
+% --- Gruppenrahmen (nur blaue Boxen) ---
+\node[group, fit=(
+  org)(person)(place)        % linke Spalte
+  (roles)(event)(date)       % mittlere Spalte
+  (type)(enrich)(schema)(letter)  % rechte Spalte
+, name=modulebox] {};
+
+% --- Gruppenrahmen (blaue Boxen + Transkribus_II_Test.py) ---
+\node[group, fit=(main)(org)(letter), name=processingbox,
+  label={[anchor=north west, xshift=0cm, yshift=+0.7cm]north west:\textbf{Hauptverarbeitung}}] {};
+
+  % --- Beschriftung für Modulblock ---
+\node at ($(main.south) + (0,-0.5)$) [font=\bfseries] {};
+
+% --- Verbindungen mit eckigen Pfeilen ---
+\draw[arrow] 
+  (transkribus.south) |- ([xshift=-0.4cm]dir.west)
+  node[pos=0.6, left, font=\small, xshift=2.2cm, yshift=2.4cm]{\textit{Export als XML-Datei}};
+
+
+\draw[arrow] (dir.east) -- (llmpre.west);
+\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{XML Custom Tag Erweiterung}} (dir.north);
+\draw[arrow] (dir.south) -- (main.north);
+\draw[arrow] (main.south) -- ($(main.south |- modulebox.north)$);
+\end{tikzpicture}
+}
+\end{center}
+
+
+
+
+
+\section{ Pipeline grafik refined}
+
+
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
+  source/.style={rectangle, draw=black, fill=green!30!gray!20, thick, minimum width=4.2cm, minimum height=0.7cm, align=center},
+  group/.style={draw=gray, dashed, rounded corners, inner sep=0.5cm},
+  arrow/.style={-Latex, thick}, arrowboth/.style={<Latex>-<Latex>, thick},
+  node distance=0.8cm and 1.6cm
+]
+
+
+% --- Hauptquellen oben ---
+\node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transkription};
+\node[process] (dir) at (0, -3.2) {\textbf{Dateiverzeichnis} \\ mit XML-Dateien};
+\node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
+\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Hauptverarbeitung};
+
+% ------------------- MODULE (FLOWCHART) ------------------------
+\node[module, below=2cm of main] (init) {Initialisierung \\ (CSV-Import, Matcher)};
+\node[module, below=of init]    (xml)  {XML \& Custom-Tags \\ Parsen, extract\_metadata};
+
+% Referenzpunkt zentriert unter xml
+\coordinate (modcenter) at ($(xml.south) + (0,-1.8)$);
+
+\node[module] (roles)   at ($(modcenter) + (-8cm, -0.5)$) {Rollen \\ zuweisen, anreichern};
+\node[module] (persons) at ($(modcenter) + (-2.7cm, -0.5)$) {Personen \\ match, split, enrich};
+\node[module] (orgs)    at ($(modcenter) + (2.7cm, -0.5)$)  {Organisationen \\ extrahieren, deduplizieren};
+\node[module] (places)  at ($(modcenter) + (8cm, -0.5)$)  {Orte \\ Kontext + Kombination};
+\node[module] (dates)  at ($(modcenter) + (13cm, -0.5)$) {Daten \\ combine\_dates(), count};
+\node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
+\node[module, below=1.2cm of persons] (authors) {Autoren \& Empfänger \\ infer, dedup, score};
+\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
+\node[coordinate] (joinpoint) at ($(json.north) + (0, 1cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
+\node[module, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
+
+% CSV-Quellen
+\node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
+\node[source, below=0.6cm of csv1] (csv2) {\textbf{export-place.csv}};
+\node[source, below=0.6cm of csv2] (csv3) {\textbf{export-roles.csv}};
+\node[source, below=0.6cm of csv3] (csv4) {\textbf{export-organisationen.csv}};
+
+\node[group, fit=(csv1)(csv2)(csv3)(csv4), name=nodegoatbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Nodegoat-Exporte}}] {};
+
+\node[group, fit=(transkribus), name=pretranskribusbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Transkribus}}] {};
+
+  % --- Gruppenrahmen für Modulblock ---
+\node[group, fit=
+  (persons)(authors)(roles)
+  (orgs)(dates)(events)
+  (places)(joinpoint), name=flowchartbox] {};
+
+% --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
+\node[group, fit=(main)(flowchartbox),
+  label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{Hauptverarbeitung der Transkribus\_II-Pipeline}}] {};
+
+
+% Verbindungen
+\draw[arrow] (transkribus.east) -- ++(1.2,0)-- ++(0,-3.2)-- node[pos=0.6, left, font=\small, xshift=-2cm, yshift=1.3cm]{\textit{Export als XML}} (dir.west);  
+\draw[arrow] (dir.east) -- (llmpre.west);
+\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{Custom-Tags}} (dir.north);
+\draw[arrow] (dir.south) -- (main.north);
+\draw[arrow] (main.south) -- (init.north);
+\draw[arrow] (init.south) -- (xml.north);
+
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (persons.west) -- (roles.east);
+\draw[arrow] (roles.east) -- (persons.west);   
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west) -- (persons.east); 
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west)-- (persons.east)  ;      
+\draw[arrow] (orgs.east) -- (places.west);  
+\draw[arrow] (places.west) -- (orgs.east);   
+             
+% Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] 
+  (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
+  node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{liefert Groundtruth}};
+\end{tikzpicture}
+}
+\end{center}
+
+
+
+
+
+
         \subsubsection{Gründe für den Wechsel zu Nodegoat}
         \subsubsection{Nodegoat Modelierung}
 

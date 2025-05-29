@@ -1,9 +1,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
-\usepackage[utf8]{inputenc}
 \usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta}
+  \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
+\usepackage{fontawesome5} % für ausgefallenere Emojis
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
 \usepackage{minted}  % Für Python-Code
 \usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
@@ -17,13 +17,12 @@
 \definecolor{place}{RGB}{204,153,255}       % Lila
 \definecolor{person}{RGB}{153,255,153}      % Hellgrün
 \definecolor{signature}{RGB}{153,255,153}   % Hellgrün (gleiche Farbe wie Person)
+\definecolor{highlight}{RGB}{255,255,170}
 
 \usepackage[hidelinks]{hyperref} % Für die Hyperlinks im Inhaltsverzeichnis
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=2cm, bottom=2cm]{geometry}
 
 \title{\Huge Masterarbeit Tagebuch}
-\author{Sven Burkhardt}
-\date{}
 
 \begin{document}
 \maketitle
@@ -34,6 +33,301 @@
 \tableofcontents
 
 %dieses Dokument wird blogartig geführt. Neuste Einträge sind oben einzufügen. 
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%!
+%   darauf achten, dass " " nicht als Leerzeichen interpretiert wird.  !!!
+%!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+%___________________________________________________________________________
+\noindent\hrulefill
+\section{Prozessablauf Grafiken erstellen\small 29.05.2025}
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  arrow/.style={-Latex, thick},
+  node distance=1cm and 2.2cm
+]
+
+% --- Modulrahmen ---
+\node[module] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+% --- Prozesse innerhalb des Moduls ---
+\node[process, below=1.2cm of personsmod] (split)  {Extrahiere Rohpersonen \\ (split\_and\_enrich\_persons)};
+\node[process, below=of split]            (parse)  {Zerlege Namen \& erkenne Rollen \\ (extract\_person\_data)};
+\node[process, below=of parse]            (match)  {Vergleiche mit Groundtruth \\ (match\_person)};
+\node[process, below=of match]            (roles)  {Rollen + Organisationen zuweisen \\ (assign\_roles\_to\_known\_persons)};
+\node[process, below=of roles]            (score)  {Berechne recipient\_score \\ (aus Kontext im Text)};
+\node[process, below=of score]            (dedup)  {Dedupliziere Personen \\ (deduplicate\_and\_group\_persons)};
+\node[process, below=of dedup]            (count)  {Kontextuelle Nennungszählung \\ (count\_mentions\_in\_transcript\_contextual)};
+
+% Verbindungspfeile
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+% Optional: Rahmen um alle Prozessboxen
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count),
+label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf im Modul person\_matcher.py}}] (group) {};
+
+\end{tikzpicture}
+}
+\end{center}
+
+
+
+\begin{center}
+\begin{tikzpicture}
+
+% ============================================
+% MINI: Übersicht oben rechts (sehr klein, nur schematisch)
+% ============================================
+\begin{scope}[xscale=0.1, yscale=0.1, shift={(95,0)}]
+
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.8cm, minimum height=0.4cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.8cm, minimum height=0.4cm},
+  arrow/.style={-Latex},
+  node distance=0.4cm and 0.8cm
+}
+
+
+\node[module] (init) at (0, 0) {};
+\node[module, below=of init] (xml) {};
+\node[highlight, below left=0.6cm and 1.5cm of xml] (persons) {\tiny \faUser}; % ← aktuell
+\node[module, below=of persons] (authors) {};
+\node[module, below=0.6cm of xml] (orgs) {};
+\node[module, below=of orgs] (dates) {};
+\node[module, below=of dates] (events) {};
+\node[module, below right=0.6cm and 1.5cm of xml] (places) {};
+\node[module, below=0.6cm of events] (json) {};
+\node[module, below=of json] (save) {};
+
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrow] (xml.south west) -- (persons.north);
+\draw[arrow] (xml.south) -- (orgs.north);
+\draw[arrow] (xml.south east) -- (places.north);
+\draw[arrow] (persons.south) -- (authors.north);
+\draw[arrow] (orgs.south) -- (dates.north);
+\draw[arrow] (dates.south) -- (events.north);
+\draw[arrow] (events.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[<->, thick] (orgs.west) -- (persons.east); 
+\draw[<->, thick] (orgs.east) -- (places.west); 
+
+\end{scope}
+
+% ============================================
+% GROSS: Prozess für person_matcher.py (unverändert)
+% ============================================
+\begin{scope}
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  arrow/.style={-Latex, thick},
+  node distance=1cm and 2.2cm
+}
+
+\node[module] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{Extrahiere Rohpersonen} \\ (split\_and\_enrich\_persons)};
+\node[process, below=of split]            (parse)  {\textbf{Zerlege Namen \& erkenne Rollen} \\ (extract\_person\_data)};
+\node[process, below=of parse]            (match)  {\textbf{Vergleiche mit Groundtruth} \\ (match\_person)};
+\node[process, below=of match]            (roles)  {\textbf{Rollen + Organisationen zuweisen} \\ (assign\_roles\_to\_known\_persons)};
+\node[process, below=of roles]            (score)  {\textbf{Berechne recipient\_score} \\ (aus Kontext im Text)};
+\node[process, below=of score]            (dedup)  {\textbf{Dedupliziere Personen} \\ (deduplicate\_and\_group\_persons)};
+\node[process, below=of dedup]            (count)  {\textbf{Kontextuelle Nennungszählung} \\ (count\_mentions\_in\_transcript\_contextual)};
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+
+\end{scope}
+
+\end{tikzpicture}
+\end{center}
+
+
+%___________________________________________________________________________
+\noindent\hrulefill
+\section{Debugging place\_names mit Malus und Bonus - GND-ID Überlegungen \small 23.05.2025}
+
+\noindent\textbf{Noch offene Fehler:}
+\begin{itemize}
+    \item\faExclamationTriangle\  \textbf{Wichtigster: Aufnahme von ungematchten Rollen, Personen etc.} \\ im moment gibt es kein Fallback, wie ungematchte Personen, Orte, Rollen etc in die Groundtruth gelangen. Ggf. das postprocessing Modul LLM dafür benutzen?
+    \item \textbf{Postprocessing} \\ Personen mit GND abgleichen, Orte mit Nodegoat
+    \item \textbf{Rollenmatching verbessern}\\ Rollen brauchen associated Place und Org (Bürgermeister Murg \textrightarrow{} "Murg"). Bürgermeister wurde auch nicht mit Theodor Grass gematched (Akte 132); Wegen Zeilenumbruch. Hier Verfeinern. \\Auch \verb|!\nR Weiss\nOrtsverbandsleiter des V.D.A."| wird nicht richtig dargestellt
+    \item \textbf{\texttt{role\_schema} bleibt häufig leer – trotz vorhandener Rolle}\\Beispiel: \texttt{Alfons Zimmermann}, Rolle: \texttt{Vereinsführer}, aber \texttt{role\_schema: ''}\\Obwohl \texttt{Vereinsführer} ein bekannter Rollenwert ist, wird keine \texttt{role\_schema}-Zuordnung vorgenommen.
+    \item \textbf{asssociated Organisationen noch nicht dedupliziert}\\Beispiel Akte\_098:
+      \begin{minted}[linenos,highlightlines={10,14-38},highlightcolor=highlight]{python}
+      "recipients": [
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+
+      "associated_organisation": 
+      {
+        "name": {
+          "name": {
+            "name": "Männerchor Murg",
+            "nodegoat_id": "Männerchor Murg"
+          },
+          "nodegoat_id": {
+            "name": "Männerchor Murg",
+            "nodegoat_id": "Männerchor Murg"
+          }
+        },
+        "nodegoat_id": {
+          "name": {
+            "name": "Männerchor Murg",
+            "nodegoat_id": "Männerchor Murg"
+          },
+          "nodegoat_id": {
+            "name": "Männerchor Murg",
+            "nodegoat_id": "Männerchor Murg"
+          }
+        }
+      }
+    }
+    ]
+
+    \end{minted}
+    Vermutung: Der Aufbau und das Befüllen des Associated\_org Dicts ist beschädigt. Überprüfen, und die Org um Place ergänzen?
+     \item \textbf{Geringster Fehler: Confidence Output}\\ der ist im moment noch nicht aussagekräftig
+    
+
+
+\end{itemize}    
+
+\vspace{0.5em}
+\noindent\textbf{Zusammenfassung:}
+\begin{itemize}
+    \item \textbf{Erkennung zusammengesetzter Ortsnamen:} \\
+    Ortskombinationen wie \texttt{Laufenburg-Rhina} werden nun erkannt, wenn Teilorte (z.\,B. \texttt{Rhina}) in benachbarten Zeilen gemeinsam mit einem Hauptort (z.\,B. \texttt{Laufenburg}) auftreten. Dafür wurde \texttt{extract\_place\_lines\_from\_xml()} angepasst und \texttt{matcher.surrounding\_place\_lines} korrekt befüllt. Ein kombinierter Treffer wird mit einem Bonus von +5 Punkten bewertet.
+    
+    \item \textbf{Kontextsensitives Orts-Matching:} \\
+    Wird in der vorherigen Zeile ein Organisationsbegriff (z.\,B. \texttt{Männerchor}) erkannt, erhält ein potentieller Ort in der Folgezeile einen Malus (-5 Punkte) beim \texttt{recipient\_place}-Scoring.
+    
+    \item \textbf{Fehlerbehebung im JSON-Output:} \\
+    Inkorrekte Verschachtelungen von \texttt{associated\_organisation} wurden identifiziert (z.\,B. \texttt{"name": \{"name": ...\}}) und bereinigt. Die Organisationseinträge werden nun flach und eindeutig gespeichert.
+    
+    \item \textbf{Modulpflege:} \\
+    Diverse zentrale Module der Pipeline (\texttt{place\_matcher.py}, \texttt{organization\_matcher.py}, \texttt{document\_schemas.py} u.\,a.) wurden aktualisiert und hochgeladen.
+    
+    \item \textbf{recipient\_place-Debugging:} \\
+    Die Funktion \texttt{assign\_sender\_and\_recipient\_place(...)} wurde erweitert und mit gezielten Debug-Ausgaben versehen, um das Matching-Verhalten besser nachvollziehen zu können.
+    
+    \item \textbf{Modularisierung der Orts-Extraktion:} \\
+    Die Extraktion von Absende- und Empfangsorten wurde in eine Plug-and-Play-Funktion \texttt{extract\_places\_and\_date()} ausgelagert.
+\end{itemize}
+
+\vspace{0.5em}
+\noindent Während der Analyse wurde festgestellt, dass zusammengesetzte Ortsnamen (z.\,B. \texttt{Laufenburg-Rhina}) bislang nicht korrekt erkannt wurden. Stattdessen wurde nur der erste Teilname (z.\,B. \texttt{Laufenburg}) extrahiert.\\
+Dies wurde korrigiert: Im Umfeld von \texttt{+-1 Zeile} und \texttt{+-3 Wörtern} werden nun ergänzende Ortsbestandteile gesucht und mit \texttt{name} sowie \texttt{alternative\_placenames} aus der Groundtruth-Liste abgeglichen.\\
+
+\noindent\ding{51} Ergänzend wurde ein kontextbasierter Malus eingeführt: Wenn in der Zeile vor einem Ortsnamen ein Organisationsbegriff (z.\,B. \texttt{Männerchor}) erscheint, wird der \texttt{recipient\_place}-Score um 5 Punkte reduziert.\\
+
+\noindent\ding{51} Im Rahmen eines GND-Tests wurde festgestellt, dass einzelne Personen (z.\,B. \texttt{Alfred Joos}) in der GND vorhanden sind. Ein erstes Skript zur API-Abfrage wurde implementiert, liefert aktuell jedoch noch keine Treffer. Weitere Prüfung erforderlich.\\
+
+\noindent\ding{51} Die fehlerhafte Struktur in \texttt{associated\_organisation}, bei der Organisationen ohne \texttt{nodegoat\_id} mehrfach verschachtelt wurden, ist nun bereinigt. Die Ausgabe erfolgt in flacher Struktur mit \texttt{name} und \texttt{nodegoat\_id}.\\
+
+
+\vspace{0.5em}
+\noindent\textbf{Erledigt:}
+\begin{itemize}
+    \item Matching von \texttt{creation\_place} und \texttt{recipient\_place} mittels LLM-Custom-Tags und Regex
+    \item Erkennung und Zusammenführung zusammengesetzter Ortsnamen (\texttt{Laufenburg} + \texttt{Rhina} → \texttt{Laufenburg-Rhina})
+    \item Erweiterung der Orts-Kontextverarbeitung über \texttt{surrounding\_place\_lines}
+    \item Korrektur der JSON-Struktur bei \texttt{associated\_organisation}
+    \item Erweiterung des Personenmodells um \texttt{gnd\_id} und Referenzlinks nach Nodegoat
+\end{itemize}
+
+
+\noindent\hrulefill
+\section{Debugging \small 22.05.2025}
+
+\faStepForward\ Nächste Schritte (Priorisiert)
+\begin{itemize}
+\item Filter mentioned\_persons auf realistische Einträge (Name oder ID oder Rolle mit Kontext)
+\item role\_schema sicher zuweisen (auch bei späteren Zuordnungen)
+\item Debug-Ausgabe bereinigen: viele Wiederholungen (z.B. JSON-ready recipients mehrfach)
+\end{itemize}
+
+\subsection*{Kritische Bewertung der Pipeline-Ausgabe}
+
+\textbf{Schwächen und akute Baustellen}
+\begin{enumerate}
+    \item \textbf{Viel zu viele False Positives in \texttt{mentioned\_persons}}\\
+    \texttt{Herrn, Otto, Zimmermann} (ohne Kontext), \texttt{"Dirigenten"} \textrightarrow{} werden als Personen behandelt, obwohl sie ohne ID und ohne echten Namen sind.\\
+    Diese Einträge müssen \textbf{immer} im finalen JSON landen, obwohl sie vorher nach \texttt{review\_reason} als droppable klassifiziert wurden.\\
+    \textit{Lösung:} Die \texttt{droppable}-Klassifikation so überarbeiten, dass alles, was menschlich oder eine Rolle ist, im JSON bleibt – mit \verb|needs_review = true| und Eintrag in \texttt{unmatched\_persons.json}.
+    
+    \item \textbf{\texttt{role\_schema} bleibt häufig leer – trotz vorhandener Rolle}\\
+    Beispiel: \texttt{Alfons Zimmermann}, Rolle: \texttt{Vereinsführer}, aber \texttt{role\_schema: ''}\\
+    Obwohl \texttt{Vereinsführer} ein bekannter Rollenwert ist, wird keine \texttt{role\_schema}-Zuordnung vorgenommen.
+    
+    \item \textbf{Mehrere identische Personen mit unterschiedlichen Schreibweisen}\\
+    Beispiel: \texttt{Zimmermann} ohne Vorname (Score 30, ohne ID)\\
+    vs. \texttt{Alfons Zimmermann} (Score 100, mit ID)\\
+    Beide landen dedupliziert im Output, sollten aber zusammengeführt werden – idealerweise mit erklärendem Kommentar im JSON.
+    
+    \item \textbf{Rollenextraktion aus 2-Zeilenblöcken funktioniert nur selektiv}\\
+    Beispiel: \texttt{R Weiss} in Zeile 1, Folgezeile: „Ortsverbandsleiter des V.D.A."\\
+    Zwar wird „Ortsverbandsleiter" erkannt, aber nicht korrekt der Person in der Zeile davor zugewiesen, wenn dort nur Initialen stehen.
+    
+    \item \textbf{Datumserkennung zählt doppelt}\\
+    Für das Datum \texttt{01.01.1938} wird in manchen Fällen ein \texttt{count = 2} erzeugt, obwohl es nur einmal im Text vorkommt.
+    
+    \item \textbf{Events über mehrere Zeilen werden nicht zusammengeführt}\\
+    Beispiel: Zwei aufeinanderfolgende Zeilen mit Eventinformationen werden getrennt gespeichert. Es fehlt die Fusion zu einem vollständigen \texttt{event["name"]}.
+\end{enumerate}
+
+
+%___________________________________________________________________________
+\section{Event- und Orts-Matching Debugging \small 18.05.2025}
+
+\subsection*{Kurzbeschreibung}
+
+\faExclamationTriangle\ Begriff für die MA: Co-Kreativität für die Verschmelzung von Mensch und Maschine.\\
+Erkennung und Speicherung von Ortsangaben in Events funktioniert noch nicht zuverlässig. Einzelwörter wie „Stifter", „75jährigen" werden fälschlich als Orte erkannt. Orte aus Eventblöcken werden nicht korrekt übernommen oder dedupliziert.
+
+\subsection*{Identifizierte Probleme}
+\faExclamationTriangle\ Debugging von \texttt{event\_matcher.py}, fehlerhafte Zeilen-fusion identifiziert\\
+\faExclamationTriangle\ Naives Token-Matching führt zu falsch-positiven Orten\\
+\faExclamationTriangle\ Ortseinträge aus Event-texten bleiben leer, obwohl valide Orte im Text enthalten sind\\
+\faExclamationTriangle\ Wikidata- und Geonames-Ergänzung funktioniert nur eingeschränkt
+
+\subsection*{Nächste Schritte}
+\ding{113} Token-Filter für ungeeignete Wörter in \texttt{event\_matcher} einbauen\\
+\ding{113} Orts-Matching kontext-basiert statt token-basiert umsetzen\\
+\ding{113} Fehlende IDs automatisch ergänzen, falls Nodegoat-Eintrag vorhanden\\
+\ding{113} Orte aus Events mit globaler \texttt{mentioned\_places}-Liste deduplizieren
+
+\subsection*{Offene Fragen}
+\ding{113} Können strukturierte Event-blöcke direkt mit Ortserkennung kombiniert werden?\\
+\ding{113} Wie sollen Einzel-tokens ohne Kontext (z.B. „am", „Stifter") behandelt werden?\\
 
 %___________________________________________________________________________
 \noindent\hrulefill
@@ -155,7 +449,7 @@ Idee: überarbeiteter Workflow, der die beiden Module \texttt{assigned\_roles\_m
 
     \item \textbf{Rollenerkennung im Fließtext:} \\Zusätzlich wird \texttt{extract\_standalone\_roles(text)} auf das Transkript angewendet, um unabhängig von XML-Metadaten Rollen wie \textit{»Der Vereinsführer«} zu identifizieren.
 
-    \item \textbf{Normalisierung und Abgleich:} \\Die erkannten Rollen werden mit \texttt{normalize\_role\_name()} in ihre Grundform gebracht (z.\,B.\ „Ehrenvorsitzenden“ $\rightarrow$ „Ehrenvorsitzender“). Die zugehörigen Namen werden mit \texttt{normalize\_name()} in Vor- und Nachname getrennt und mit \texttt{match\_person()} gegen bekannte Personen abgeglichen.
+    \item \textbf{Normalisierung und Abgleich:} \\Die erkannten Rollen werden mit \texttt{normalize\_role\_name()} in ihre Grundform gebracht (z.\,B.\ „Ehrenvorsitzenden" $\rightarrow$ „Ehrenvorsitzender"). Die zugehörigen Namen werden mit \texttt{normalize\_name()} in Vor- und Nachname getrennt und mit \texttt{match\_person()} gegen bekannte Personen abgeglichen.
 
     \item \textbf{Erweiterung vorhandener Personen:} \\Stimmen Namen oder IDs mit bereits erkannten Personen überein, wird die Rolle hinzugefügt, ohne ein Duplikat zu erzeugen. Der Abgleich erfolgt über \texttt{normalize\_name\_string()} und \texttt{deduplicate\_persons()}.
 
@@ -250,7 +544,7 @@ Erweiterung des Validierungsmoduls für strukturierte Prüfung exportierter JSON
 \ding{51} Erweiterte Validierungslogik \texttt{validate\_extended()} implementiert\\
 \ding{51} Prüfung auf Pflichtfelder: \texttt{recipient}, \texttt{creation\_date}, \texttt{creation\_place}\\
 \ding{51} Prüfung von \texttt{mentioned\_places} auf Geonames- und Nodegoat-ID\\
-\ding{51} Ausgabe einer statistischen Fehlerübersicht (z.B. „Geonames-ID fehlt: 5×“)
+\ding{51} Ausgabe einer statistischen Fehlerübersicht (z.B. „Geonames-ID fehlt: 5×")
 
 \subsubsection*{\small Transkribus-Hauptskript}
 \ding{51} Einbindung des erweiterten Validierungsmoduls\\
@@ -272,7 +566,7 @@ Erweiterung des Validierungsmoduls für strukturierte Prüfung exportierter JSON
 
 \subsection*{Offene Fragen}
 \ding{113} Wie bekomme ich die Groundtruth-Daten?
-\ding{113} Prüfung auf fehlerhafte Personenentitäten (z.B. „des“, „Vereinsführer“)\\
+\ding{113} Prüfung auf fehlerhafte Personenentitäten (z.B. „des", „Vereinsführer")\\
 
 
 

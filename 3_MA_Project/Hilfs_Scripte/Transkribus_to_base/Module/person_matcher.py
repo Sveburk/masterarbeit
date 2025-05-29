@@ -9,7 +9,6 @@ from rapidfuzz import fuzz
 from rapidfuzz.distance import Levenshtein
 
 from Module.document_schemas import Person
-
 from Module.Assigned_Roles_Module import (
     POSSIBLE_ROLES,
     ROLE_AFTER_NAME_RE,
@@ -396,7 +395,12 @@ def match_person(
        d) Vertauschter Vor-/Nachname
        e) Rolle als Name
     """
-    
+    if person.get("role_schema") and not person.get("familyname") and not person.get("forename"):
+        person["match_score"] = 30
+        person["needs_review"] = True
+        person["review_reason"] = f"Nur Rolle ohne vollständigen Namen erkannt: {person.get('role', '')}"
+
+        return person, 30
 
     fn_raw = (person.get("forename") or "").strip()
     ln_raw = (person.get("familyname") or "").strip()
@@ -405,7 +409,6 @@ def match_person(
     fn_stripped, roles = strip_roles_from_name(fn_raw)
     fn = re.sub(r"[():]", "", fn_stripped).strip()
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
-    print(f"[DEBUG] Starte Matching für: forename='{fn}', familyname='{ln}', role='{role_raw}'")
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
 
 
@@ -419,20 +422,44 @@ def match_person(
         if re.search(rf"\b{re.escape(full.strip())}\b", context, flags=re.IGNORECASE) or \
         re.search(rf"\b{re.escape(inv.strip())}\b", context, flags=re.IGNORECASE):
             print(f"[DEBUG] Kontext rettet '{fn}'/'{ln}' durch Fund von '{full}' oder '{inv}' im Text")
-        else:
-            print(f"[DEBUG] Unmatchable single name: '{fn}' / '{ln}' → keine Nodegoat-ID, aber wird übernommen.")
         return None, 0
 
 
     # Blacklist-Token ohne Nachname
     if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
-        print(f"[DEBUG] Dropping because token in blacklist: fn='{fn}', ln='{ln}'")
-        return None, 0
+        reason = f"Dropping because token in blacklist: fn='{fn}', ln='{ln}'"
+        print(f"[DEBUG] {reason}")
+        return {
+            "forename": fn,
+            "familyname": ln,
+            "role": role_raw,
+            "title": person.get("title", ""),
+            "alternate_name": "",
+            "nodegoat_id": "",
+            "match_score": 0,
+            "confidence": "blacklist",
+            "needs_review": True,
+            "review_reason": reason,
+            "raw_token": person.get("raw_token") or f"{fn} {ln}".strip()
+        }, 0
 
     # Token ist nur Rolle (und kein Nachname)
     if not ln and fn.lower() in ROLE_TOKENS:
-        print(f"[DEBUG] Dropping token as name (role detected): fn='{fn}', ln='{ln}'")
-        return None, 0
+        reason = f"Dropping token as name (role detected): fn='{fn}', ln='{ln}'"
+        print(f"[DEBUG] {reason}")
+        return {
+            "forename": fn,
+            "familyname": ln,
+            "role": role_raw,
+            "title": person.get("title", ""),
+            "alternate_name": "",
+            "nodegoat_id": "",
+            "match_score": 0,
+            "confidence": "blacklist",
+            "needs_review": True,
+            "review_reason": reason,
+            "raw_token": person.get("raw_token") or fn
+        }, 0
 
     # Verwende die vollständige Rolle-Tokens aus der CSV statt hardcoded Liste
     if not ln and fn.lower() in ROLE_TOKENS:
@@ -500,7 +527,7 @@ def match_person(
             if role_raw.lower() in (c.get("role", "").lower(), c.get("alternate_name", "").lower()):
                 return c, 80
 
-    # 5) Rolle als Vorname/Nachname erkannt (z. B. „Ehrenvorsitzender Burger“)
+    # 5) Rolle als Vorname/Nachname erkannt (z. B. „Ehrenvorsitzender Burger“)
     if fn.lower() in NON_PERSON_TOKENS and ln:
         for c in candidates:
             if normalize_name_string(ln) == normalize_name_string(c["familyname"]):
@@ -603,12 +630,19 @@ def extract_person_data(row: Dict[str,Any]) -> Dict[str,str]:
     title = m.group(1).capitalize() if m else ""
     if m: raw = m.group(2).strip()
     clean, roles = strip_roles_from_name(raw)
-
+        
     # Use normalize_and_match_role for consistency
     from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
-    role = roles[0] if roles else ""
-    normalized_role = normalize_and_match_role(role) if role else ""
-    role = normalized_role if normalized_role else role
+    # 1. Übernehme Rolle aus row, falls vorhanden
+    role_raw = row.get("role", "").strip()
+
+    # 2. Wenn strip_roles_from_name etwas gefunden hat → übersteuere
+    if roles:
+        role_raw = roles[0]
+
+    # 3. Normalisieren und Schema zuweisen
+    normalized_role = normalize_and_match_role(role_raw) if role_raw else ""
+    role = normalized_role or role_raw
     role_schema = map_role_to_schema_entry(role) if role else ""
 
     parts = normalize_name(clean)
@@ -629,6 +663,34 @@ def extract_person_data(row: Dict[str,Any]) -> Dict[str,str]:
     }
 from typing import List, Dict, Tuple, Optional, Any, Union
 
+def get_review_reason_for_person(p: Dict[str, str]) -> str:
+    reasons = []
+    if not p.get("forename"): reasons.append("missing_forename")
+    if not p.get("familyname"): reasons.append("missing_familyname")
+    if not p.get("role"): reasons.append("missing_role")
+
+    return "; ".join(reasons)
+
+
+# Neue Fallback-Regel: Einwort-Personen, die als Rolle erkannt werden
+def detect_and_convert_role_only_entries(person: Dict[str, Any]) -> Dict[str, Any]:
+    word = person.get("forename", "").strip().lower()
+    role_schema = map_role_to_schema_entry(word)
+
+    if role_schema and not person.get("familyname"):
+        return {
+            "forename": "",
+            "familyname": "",
+            "role": role_schema,
+            "role_schema": role_schema,
+            "needs_review": True,
+            "review_reason": f"Nur Rolle ohne vollständigen Namen erkannt: {word}"
+        }
+    print(f"[DEBUG] Dummy-Rolle erkannt und übernommen: {role_schema}")
+
+    return person
+
+
 # ----------------------------------------------------------------------------
 # Split und Enrichment
 # ----------------------------------------------------------------------------
@@ -638,6 +700,9 @@ def split_and_enrich_persons(
     document_id: Optional[str] = None,
     candidates: Optional[List[Dict[str, str]]] = None
 ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
+    
+    
+
     
     # 0) Normalisiere alle Eingaben zu Dicts mit 'name'
     normalized = []
@@ -656,6 +721,18 @@ def split_and_enrich_persons(
         normalized.append({"name": name_str})
     raw_persons = normalized
 
+    lines = content_transcription.splitlines()
+    for i, p in enumerate(raw_persons):
+        token = p["name"]
+        for idx, line in enumerate(lines):
+            if token.strip() in line.strip():
+                role, org = infer_role_and_organisation(idx, lines, token, p.get("forename", ""), p.get("familyname", ""))
+                if role:
+                    p["role"] = role
+                    p["associated_organisation"] = org
+                break
+
+
     # 1) Duplikat‑Filter & Matching
     seen, matched, unmatched = set(), [], []
     cand_list = candidates or KNOWN_PERSONS
@@ -666,11 +743,19 @@ def split_and_enrich_persons(
         # 2) Extrahiere sauberes Person‑Dict
         person = extract_person_data({"name": raw_token})
 
-        # 3) Key für Duplikat‑Filter
-        key = person.get("nodegoat_id") or (
-            f"{normalize_name_string(person['forename'])} "
-            f"{normalize_name_string(person['familyname'])}"
-        )
+        # 3) Key für Duplikat‑Filter — auch Dummy-Rollen berücksichtigen
+        fn_norm = normalize_name_string(person.get("forename", ""))
+        ln_norm = normalize_name_string(person.get("familyname", ""))
+        role_norm = normalize_name_string(person.get("role_schema", "") or person.get("role", ""))
+
+        # Generiere robusten Key
+        key = person.get("nodegoat_id") or f"{fn_norm} {ln_norm}".strip()
+
+        # Falls kein Name, aber Rolle vorhanden → nutze Rolle als Key
+        if not key and role_norm:
+            key = f"role_schema::{role_norm}"
+
+        # Überspringen, wenn Key bereits verarbeitet
         if not key or key in seen:
             continue
         seen.add(key)
@@ -678,6 +763,9 @@ def split_and_enrich_persons(
         # 4) Fuzzy‑Match mit Kontextübergabe
         person["content_transcription"] = content_transcription  # für Kontext-Logik in match_person
         match, score = match_person(person, candidates=cand_list)
+         # → Dummy-Rollen prüfen, wenn kein Match
+        if not match or score == 0:
+            person = detect_and_convert_role_only_entries(person)
 
 
         # 5) Ergebnis sammeln
@@ -693,6 +781,7 @@ def split_and_enrich_persons(
         else:
             person["match_score"] = 0
             person["confidence"] = ""
+            person["review_reason"] = get_review_reason_for_person(person)
             person["raw_token"] = raw_token
             unmatched.append(person)
 
@@ -761,6 +850,36 @@ def split_and_enrich_persons(
 
     return matched, unmatched
 
+def infer_role_and_organisation(index: int, lines: List[str], raw_token: str, forename: str = "", familyname: str = "") -> Tuple[str, str]:
+    """
+    Analysiert die nachfolgende Zeile auf Rollen + Organisationen.
+    Beispiel:
+      R Weiss
+      Ortsverbandsleiter des V.D.A.
+    → Rolle: Ortsverbandsleiter, Organisation: V.D.A.
+    """
+    if index + 1 >= len(lines):
+        return "", ""
+
+    next_line = lines[index + 1].strip()
+
+    # Versuch 1: Klassisches Muster: <Rolle> des/der <Organisation>
+    m = re.match(r"^(?P<role>[\w\s\-ÄÖÜäöüß]+?)\s+(?:des|der|vom|von)\s+(?P<org>.+)$", next_line)
+    if m:
+        return m.group("role").strip(), m.group("org").strip()
+
+    # Versuch 2: Kontext mit vollem Namen kombinieren
+    full_name = f"{forename} {familyname}".strip().lower()
+    current_line = lines[index].strip().lower()
+
+    if full_name and full_name in current_line:
+        if "leiter" in next_line.lower() or "führer" in next_line.lower():
+            role_candidate = next_line.split()[0]
+            org_candidate = " ".join(next_line.split()[1:])
+            return role_candidate.strip(), org_candidate.strip()
+
+    return "", ""
+
 
 # ----------------------------------------------------------------------------
 # Deduplication
@@ -827,14 +946,44 @@ def deduplicate_persons(
                     # Update role_schema based on the combined roles
                     from Module.Assigned_Roles_Module import map_role_to_schema_entry
                     merged["role_schema"] = map_role_to_schema_entry(sorted(all_roles)[0]) if sorted(all_roles) else ""
+                
+                def flatten_organisation(org):
+                    """Entfernt tiefe Verschachtelung aus Organisationseinträgen und gibt flache Struktur zurück."""
+                    result = {}
+                    visited = set()
+                    current = org
 
+                    while isinstance(current, dict):
+                        if id(current) in visited:
+                            break  # zyklische Struktur vermeiden
+                        visited.add(id(current))
+                        for key in ["name", "nodegoat_id"]:
+                            if key in current and not isinstance(current[key], dict):
+                                result[key] = current[key]
+                        # gehe tiefer, falls 'name' oder 'nodegoat_id' ein dict ist
+                        if "name" in current and isinstance(current["name"], dict):
+                            current = current["name"]
+                        elif "nodegoat_id" in current and isinstance(current["nodegoat_id"], dict):
+                            current = current["nodegoat_id"]
+                        else:
+                            break
+
+                    return result if result else org
+
+                
                 # Felder ergänzen, wenn leer
                 for field in ["title", "alternate_name", "associated_place", "associated_organisation"]:
                     if not merged.get(field):
                         for p in group:
-                            if p.get(field):
-                                merged[field] = p[field]
+                            value = p.get(field)
+                            if value:
+                                if field == "associated_organisation":
+                                    value = flatten_organisation(value)
+                                merged[field] = value
                                 break
+                
+
+
 
                 # match_score & confidence ergänzen, falls noch leer
                 if not merged.get("match_score"):
@@ -929,32 +1078,6 @@ def get_best_match_info(
     }
 
 
-def count_mentions_in_transcript(persons: List[Person], transcript: str) -> List[Person]:
-    updated = []
-    for p in persons:
-        count = 0
-        fn = (p.forename or "").strip()
-        ln = (p.familyname or "").strip()
-
-        # (1) Bevorzugt vollständiger Name
-        if fn and ln:
-            full_pattern = re.compile(rf"\b{re.escape(fn)}\s+{re.escape(ln)}\b", re.IGNORECASE)
-            count = len(full_pattern.findall(transcript))
-
-        # (2) Wenn nur Nachname vorhanden
-        elif ln:
-            last_pattern = re.compile(rf"\b{re.escape(ln)}\b", re.IGNORECASE)
-            count = len(last_pattern.findall(transcript))
-
-        # (3) Wenn nur Vorname vorhanden (z. B. Otto)
-        elif fn:
-            first_pattern = re.compile(rf"\b{re.escape(fn)}\b", re.IGNORECASE)
-            count = len(first_pattern.findall(transcript))
-
-        p.mentioned_count = count
-        updated.append(p)
-
-    return updated
 def deduplicate_and_group_persons(persons: List[Union[Dict[str, Any], Person]]) -> List[Person]:
     from collections import defaultdict
     nodegoat_groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
@@ -984,7 +1107,6 @@ def deduplicate_and_group_persons(persons: List[Union[Dict[str, Any], Person]]) 
         best["mentioned_count"] = sum(int(p.get("mentioned_count", 1)) for p in group)
         best["recipient_score"] = max(int(p.get("recipient_score", 0) or 0) for p in group)
         final.append(Person.from_dict(best))
-        print(f"[DEBUG] Grouped by nodegoat_id {nodegoat_id}: {best.get('forename')} {best.get('familyname')}, Score: {best.get('match_score')}")
 
     # 2) Manuelle Gruppierung nach Namen (nur wenn keine ID)
     for entry in unmatched:
@@ -1000,24 +1122,48 @@ def deduplicate_and_group_persons(persons: List[Union[Dict[str, Any], Person]]) 
             tln = normalize(getattr(target, "familyname", ""))
             tr  = normalize(getattr(target, "role", ""))
 
-            conditions = [
-                fn and ln and fn == tfn and ln == tln,
-                fn and ln and fn == tln and ln == tfn,
-                fn == tr or ln == tr or role == tfn or role == tln
-            ]
+            conditions = []
 
+            # Nur wenn vollständiger Name identisch
+            if fn and ln and fn == tfn and ln == tln:
+                conditions.append(True)
+
+            # Nur wenn beide Personen *keine ID* haben UND identischer Nachname ODER identische Kombination aus fn/ln
+            if not target.nodegoat_id and (
+                (ln and ln == tln) or
+                (fn and ln and fn == tln and ln == tfn)
+            ):
+                conditions.append(True)
+
+            # Rollenvergleich nur bei identischem Namen
+            if fn and ln and f"{fn} {ln}".strip() == tr and not entry.get("nodegoat_id"):
+                conditions.append(True)
+
+
+            # Erweiterung: Erlaube Kombination, wenn nur der entry keinen nodegoat_id hat, aber der Name übereinstimmt (z. B. "Otto" → "Otto Bolliger")
             if any(conditions):
-                print(f"[MERGE] Kombiniere {fn} {ln} ({role}) mit {tfn} {tln} ({tr})")
-                target.mentioned_count += int(entry.get("mentioned_count", 1))
+                print(f"[DEBUG] Fuzzy-Deduplikation: '{fn} {ln}' → '{tfn} {tln}' mit ID={target.nodegoat_id or '∅'}")
+
+                # Merge mention count (default to 1 if missing)
+                entry_count = int(entry.get("mentioned_count", 1))
+                target.mentioned_count = int(getattr(target, "mentioned_count", 1)) + entry_count
+
+                # Merge recipient score
+                target.recipient_score = max(getattr(target, "recipient_score", 0), entry.get("recipient_score", 0))
+
+                # Merge role if present
                 if entry.get("role"):
                     combined = set(filter(None, (target.role or "").split("; ")))
                     combined.add(entry["role"])
                     target.role = "; ".join(sorted(combined))
-                
-                target.recipient_score = max(getattr(target, "recipient_score", 0), entry.get("recipient_score", 0))
-                
+                # Merge role_schema falls vorhanden
+                if entry.get("role_schema") and not getattr(target, "role_schema", ""):
+                    target.role_schema = entry.get("role_schema")
+                    print(f"[DEBUG] → role_schema von '{entry.get('role')}' übernommen als '{entry.get('role_schema')}'")
+
                 matched = True
                 break
+
 
         if not matched:
             entry["mentioned_count"] = int(entry.get("mentioned_count", 1))
@@ -1044,3 +1190,38 @@ def deduplicate_and_group_persons(persons: List[Union[Dict[str, Any], Person]]) 
         print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
 
     return final
+
+def count_mentions_in_transcript_contextual(persons: List[Person], transcript: str) -> List[Person]:
+    lines = [line.strip().lower() for line in transcript.splitlines()]
+    num_lines = len(lines)
+
+    for p in persons:
+        fn = (p.forename or "").lower().strip()
+        ln = (p.familyname or "").lower().strip()
+        role = (p.role or "").lower().strip()
+
+        count = 0
+        matched_line_indices = set()
+
+        for i, line in enumerate(lines):
+            # Suche nach vollständigem Namen, Nachnamen oder Vornamen
+            name_hit = (fn and ln and f"{fn} {ln}" in line) or (ln and ln in line) or (fn and fn in line)
+            if not name_hit:
+                continue
+
+            # Suche ±1 Zeile nach Rolle
+            role_found = False
+            for j in [i - 1, i, i + 1]:
+                if 0 <= j < num_lines:
+                    if role and role in lines[j]:
+                        role_found = True
+                        break
+
+            # Zähle nur einmal pro Block (nicht mehrfach dieselbe Name-Rolle-Kombi)
+            if i not in matched_line_indices:
+                count += 1
+                matched_line_indices.update([i - 1, i, i + 1])
+
+        p.mentioned_count = max(count, 1)
+
+    return persons

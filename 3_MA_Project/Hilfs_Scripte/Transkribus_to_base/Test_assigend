@@ -1,0 +1,35 @@
+# test_assign_roles_debug.py
+
+from pathlib import Path
+import json
+from Module.Assigned_Roles_Module import process_text
+
+# Beispieltext für Debug-Zwecke
+test_text = """
+An Herrn Alfons Zimmermann, Vereinsführer des Männerchors Murg.
+
+Mit freundlichen Grüßen
+Der Schriftführer Huber
+"""
+
+# Hauptfunktion für Testzwecke
+def test_assign_roles_to_known_persons():
+    print("\n[INFO] Starte Test für Rollen- und Organisationszuweisung …")
+    
+    result = process_text(test_text)
+
+    print("\n[RESULT] Personen mit Rollen:\n" + "-" * 30)
+    for person in result.get("persons_with_roles", []):
+        print(json.dumps(person.to_dict(), indent=2, ensure_ascii=False))
+
+    if "author" in result:
+        print("\n[AUTHOR] Erkannter Autor:\n" + "-" * 30)
+        print(json.dumps(result["author"], indent=2, ensure_ascii=False))
+
+    if "recipient" in result:
+        print("\n[RECIPIENT] Erkannter Empfänger:\n" + "-" * 30)
+        print(json.dumps(result["recipient"], indent=2, ensure_ascii=False))
+
+# Entry Point
+if __name__ == "__main__":
+    test_assign_roles_to_known_persons()
