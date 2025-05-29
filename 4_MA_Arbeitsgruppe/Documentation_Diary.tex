@@ -99,7 +99,7 @@ label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf
 }
 
 % Mini-Diagramm oben rechts
-\begin{scope}[shift={(8,8)}]
+\begin{scope}[shift={(8,0)}]
 \node[module] (init) at (0, 0) {};
 \node[module] (xml) at (0, -1) {};
 \node[module]    (events)  at (-3.3, -2) {};
@@ -117,6 +117,7 @@ label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf
 \draw[arrow, dashed] (persons.south) -- (authors.north);
 \draw[arrow] (joinpoint.south) -- (json.north);
 \draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
 \draw[arrowboth] (roles.east) -- (persons.west);
 \draw[arrowboth] (persons.east) -- (orgs.west);
 \draw[arrowboth] (orgs.east) -- (places.west);
