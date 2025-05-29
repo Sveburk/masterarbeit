@@ -1,0 +1,63 @@
+import csv
+import requests
+import time
+from urllib.parse import quote
+import pandas as pd
+import os
+
+
+INPUT_FILE = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
+OUTPUT_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/GND_Daten"
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "personen_mit_gnd.csv")
+
+def search_gnd_by_name(name: str) -> str:
+    """
+    Führt eine Suche in der DNB-SRU-Schnittstelle nach dem Namen (CQL) durch.
+    Gibt die GND-ID zurück und gibt bei Erfolg den Namen + GND-ID aus.
+    """
+    base_url = "https://services.dnb.de/sru/authorities"
+    query = f'personalName all "{name}"'
+    params = {
+        "version": "1.1",
+        "operation": "searchRetrieve",
+        "query": query,
+        "recordSchema": "GND",
+        "maximumRecords": "1"
+    }
+
+    try:
+        response = requests.get(base_url, params=params, timeout=10)
+        if response.status_code == 200 and "<recordIdentifier>" in response.text:
+            gnd_id = response.text.split("<recordIdentifier>")[1].split("</recordIdentifier>")[0]
+            print(f"✔️ GND-Treffer: {name} → {gnd_id}")
+            return gnd_id
+    except Exception as e:
+        print(f"[Fehler bei Suche] {name}: {e}")
+    
+    return ""
+
+
+def process_persons_csv(input_path: str, output_path: str):
+    # Lade CSV mit Semikolon-Trenner
+    df = pd.read_csv(input_path, sep=';')
+
+    # Füge neue Spalte an
+    df["GND_ID"] = ""
+
+    for i, row in df.iterrows():
+        vorname = str(row.get("Vorname", "")).strip()
+        nachname = str(row.get("Nachname", "")).strip()
+        if not nachname:
+            continue
+
+        full_name = f"{vorname} {nachname}".strip()
+        print(f"[{i+1}] Suche nach: {full_name}")
+        gnd_id = search_gnd_by_name(full_name)
+        df.at[i, "GND_ID"] = gnd_id
+        time.sleep(0.5)  # fair use: DNB nicht überlasten
+
+    df.to_csv(output_path, sep=';', index=False, encoding="utf-8")
+    print(f"[Fertig] Ergebnisse gespeichert in: {output_path}")
+
+# Starte Verarbeitung
+process_persons_csv(INPUT_FILE, OUTPUT_FILE)

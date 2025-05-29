@@ -15,7 +15,6 @@ class Person:
     """Repräsentiert eine Person mit verschiedenen Attributen.
 
     Attributes:
-        anrede: Anrede der Person (z.B. "Herr", "Frau").
         forename: Vorname der Person.
         alternate_name: Alternativer Name oder Spitzname der Person.
         familyname: Nachname der Person.
@@ -32,7 +31,6 @@ class Person:
     
     def __init__(
         self,
-        anrede: str = "",
         forename: str = "",
         alternate_name: str = "",
         familyname: str = "",
@@ -41,6 +39,7 @@ class Person:
         role_schema: str = "",                 
         associated_place: str = "",
         associated_organisation: str = "",
+        associated_organisation_id: str = "",
         nodegoat_id: str = "",
         match_score: Optional[Union[float, Dict[str, float]]] = None,
         recipient_score: Optional[int] = 0,
@@ -49,15 +48,15 @@ class Person:
         needs_review: bool = False,               
         review_reason: str = "",
     ):
-        self.anrede = anrede
         self.forename = forename
         self.alternate_name = alternate_name
         self.familyname = familyname
         self.title = title
-        self.role = role
+        self.role = role_schema
         self.role_schema = role_schema
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
+        self.associated_organisation_id = associated_organisation_id
         self.nodegoat_id = nodegoat_id
         self.match_score = match_score
         self.recipient_score = recipient_score or 0
@@ -70,44 +69,43 @@ class Person:
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert ein Person-Objekt in ein Dictionary."""
         result = {
-            "anrede": self.anrede or "",
             "forename": self.forename or "",
             "alternate_name": self.alternate_name or "",
             "familyname": self.familyname or "",
             "title": self.title or "",
-            "role": self.role or "",
+            "role": self.role_schema or "",
             "associated_place": self.associated_place or "",
-            "associated_organisation": self.associated_organisation or "",
             "nodegoat_id": self.nodegoat_id or "",
             "confidence": self.confidence or "",
-            "needs_review": self.needs_review,  
+            "needs_review": self.needs_review,
             "review_reason": self.review_reason,
         }
 
-        # Stelle sicher, dass match_score immer ein gültiger Wert ist (nie None)
-        if self.match_score is not None:
-            result["match_score"] = self.match_score
-        else:
-            result["match_score"] = 0
-            
-        # Stelle sicher, dass recipient_score immer im Ergebnis vorhanden ist
+        # Optional: Organisation nur dann ergänzen, wenn Name oder ID vorhanden
+        if self.associated_organisation or self.associated_organisation_id:
+            result["associated_organisation"] = {
+                "name": self.associated_organisation or "",
+                "nodegoat_id": self.associated_organisation_id or ""
+            }
+
+        # match_score
+        result["match_score"] = self.match_score if self.match_score is not None else 0
+
+        # recipient_score
         result["recipient_score"] = self.recipient_score if self.recipient_score is not None else 0
 
-        # Stelle sicher, dass mentioned_count immer ein gültiger Integer ist
+        # mentioned_count
         result["mentioned_count"] = int(self.mentioned_count) if self.mentioned_count else 1
 
-        # Ergänze und normalisiere role_schema, wenn role gesetzt ist
+        # Normierung der Rolle (optional)
         if self.role:
-            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+            from Module.Assigned_Roles_Module import normalize_and_match_role
             normalized_role = normalize_and_match_role(self.role)
             if normalized_role:
                 result["role"] = normalized_role
-            result["role_schema"] = map_role_to_schema_entry(result["role"])
-        else:
-            # Stelle sicher, dass role_schema immer im Ergebnis vorhanden ist
-            result["role_schema"] = getattr(self, "role_schema", "")
 
         return result
+
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Person":
@@ -119,6 +117,7 @@ class Person:
             role=data.get("role", ""),
             associated_place=data.get("associated_place", ""),
             associated_organisation=data.get("associated_organisation", ""),
+            associated_organisation_id=data.get("associated_organisation", ""),
             nodegoat_id=data.get("nodegoat_id", ""),
             match_score=data.get("match_score"),
             mentioned_count=data.get("mentioned_count", 1),
@@ -131,8 +130,15 @@ class Person:
 
 
     def is_valid(self) -> bool:
-        """Mindestens Vor- oder Nachname muss vorhanden sein."""
-        return bool(self.forename.strip() or self.familyname.strip())
+        """
+        Eine Person ist gültig, wenn:
+        – Vorname oder Nachname vorhanden ist,
+        – ODER eine gültige Rolle (role_schema) ohne Namen → Dummy-Rollenperson.
+        """
+        has_name = bool(self.forename.strip() or self.familyname.strip())
+        has_role_only = bool(self.role_schema.strip()) and not has_name
+        return has_name or has_role_only
+
 
 class Organization:
     """Repräsentiert eine Organisation, angereichert mit Nodegoat-ID, Alternativnamen, Match-Score und Confidence."""
@@ -224,38 +230,61 @@ class Place:
         """Prüft, ob die Ortsdaten gültig sind."""
         return bool(self.name.strip())
 
+
 class Event:
-    """Repräsentiert ein Ereignis."""
-    
-    def __init__(self, name: str = "", date: str = "", location: str = "", description: str = ""):
+    """Repräsentiert ein Ereignis mit optionalen Referenzen auf Personen, Organisationen, Orte und Datumsangaben."""
+
+    def __init__(
+        self,
+        name: str = "",
+        date: str = "",
+        location: str = "",
+        description: str = "",
+        involved_persons: Optional[List[Person]] = None,
+        involved_organizations: Optional[List[Organization]] = None,
+        involved_places: Optional[List[Place]] = None,
+        dates: Optional[List[Dict[str, Optional[str]]]] = None
+    ):
         self.name = name
         self.date = date
         self.location = location
         self.description = description
-    
-    def to_dict(self) -> Dict[str, str]:
+        self.involved_persons = involved_persons or []
+        self.involved_organizations = involved_organizations or []
+        self.involved_places = involved_places or []
+        self.dates = dates or []
+
+    def to_dict(self) -> Dict[str, Any]:
         """Konvertiert Ereignisobjekt in ein Dictionary."""
         return {
             "name": self.name,
             "date": self.date,
             "location": self.location,
-            "description": self.description
+            "description": self.description,
+            "involved_persons": [p.to_dict() for p in self.involved_persons],
+            "involved_organizations": [o.to_dict() for o in self.involved_organizations],
+            "involved_places": [pl.to_dict() for pl in self.involved_places],
+            "dates": self.dates
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, str]) -> 'Event':
+    def from_dict(cls, data: Dict[str, Any]) -> 'Event':
         """Erstellt ein Ereignisobjekt aus einem Dictionary."""
         return cls(
             name=data.get("name", ""),
             date=data.get("date", ""),
             location=data.get("location", ""),
-            description=data.get("description", "")
+            description=data.get("description", ""),
+            involved_persons=[Person.from_dict(p) for p in data.get("involved_persons", [])],
+            involved_organizations=[Organization.from_dict(o) for o in data.get("involved_organizations", [])],
+            involved_places=[Place.from_dict(pl) for pl in data.get("involved_places", [])],
+            dates=data.get("dates", [])
         )
-    
+
     def is_valid(self) -> bool:
         """Prüft, ob die Ereignisdaten gültig sind."""
         return bool(self.name.strip())
-
+    
 class BaseDocument:
     """Basis-Dokumentenklasse, die gemeinsame Attribute für alle Dokumente definiert."""
     
@@ -349,41 +378,29 @@ class BaseDocument:
         return result
     
     def to_dict(self) -> Dict[str, Any]:
-        """Konvertiert das Dokument in ein Dictionary."""
-        result = {
-            "attributes": {
-                **(self.attributes or {}),
-                "object_type": self.object_type or "",
-                "document_type": self.document_type or ""
-            },
-            "authors": [a.to_dict() for a in self.authors] if self.authors else [],
-            "recipients": [r.to_dict() for r in self.recipients] if self.recipients else [],
-            "mentioned_persons": [person.to_dict() for person in self.mentioned_persons] if self.mentioned_persons else [],
-            "mentioned_organizations": [org.to_dict() for org in self.mentioned_organizations] if self.mentioned_organizations else [],
-            "mentioned_events": [event.to_dict() for event in self.mentioned_events] if self.mentioned_events else [],
-            "creation_date": self.creation_date or "",
-            "creation_place": self.creation_place or "",
-            "mentioned_dates": self.mentioned_dates or [],
-            "mentioned_places": [place.to_dict() for place in self.mentioned_places] if self.mentioned_places else [],
-            "content_tags_in_german": self.content_tags_in_german or [],
-            "content_transcription": self.content_transcription or "",
-            "document_format": self.document_format or ""
+        """Convert document to a JSON-serializable dict with unified English attribute names."""
+        # Baue den attributes-Block mit fünf Feldern, Default="" wenn nichts da
+        attrs = {
+            "document_type":   self.attributes.get("document_type", "") or self.document_type or "",
+            "object_type":     self.attributes.get("object_type", "")   or self.object_type   or "",
+            "creation_date":   self.creation_date or self.attributes.get("creation_date", ""),
+            "creation_place":  self.creation_place or self.attributes.get("creation_place", ""),
+            "recipient_place": self.attributes.get("recipient_place", "")
         }
 
-        # Stelle sicher, dass required/expected fields nicht fehlen
-        # Überprüfe den Dokumenttyp und füge typspezifische Felder hinzu
-        if self.document_type == "Brief" and not isinstance(self, Brief):
-            result["greeting"] = ""
-            result["closing"] = ""
-        elif self.document_type == "Postkarte" and not isinstance(self, Postkarte):
-            result["postmark"] = ""
-            result["postmark_date"] = ""
-        elif self.document_type == "Protokoll" and not isinstance(self, Protokoll):
-            result["meeting_type"] = ""
-            result["attendees"] = []
-
-        print("[DEBUG] JSON-ready recipients:", result["recipients"])
-        print("[DEBUG] Final attributes block:", result["attributes"])
+        result = {
+            "attributes": attrs,
+            "authors":                  [a.to_dict() for a in self.authors] if self.authors else [],
+            "recipients":               [r.to_dict() for r in self.recipients] if self.recipients else [],
+            "mentioned_persons":        [p.to_dict() for p in self.mentioned_persons] if self.mentioned_persons else [],
+            "mentioned_organizations":  [o.to_dict() for o in self.mentioned_organizations] if self.mentioned_organizations else [],
+            "mentioned_events":         [e.to_dict() for e in self.mentioned_events] if self.mentioned_events else [],
+            "mentioned_dates":          self.mentioned_dates or [],
+            "mentioned_places":         [pl.to_dict() for pl in self.mentioned_places] if self.mentioned_places else [],
+            "content_tags_in_german":   self.content_tags_in_german or [],
+            "content_transcription":    self.content_transcription or "",
+            "document_format":          self.document_format or ""
+        }
 
         return result
     

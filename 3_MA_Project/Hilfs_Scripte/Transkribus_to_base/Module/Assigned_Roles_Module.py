@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 from typing import List, Dict, Any
 from pathlib import Path
 from Module.document_schemas import Person
+from Module.organization_matcher import (KNOWN_ORGS, extract_organization, match_organization)
 
 # --- Dynamische Ermittlung des Projekt-Root (sucht up bis Data/Nodegoat_Export) ---
 THIS_FILE = Path(__file__).resolve()
@@ -46,7 +47,6 @@ for _, row in _df.iterrows():
 POSSIBLE_ROLES: List[str] = list(ROLE_MAPPINGS_DE.keys())
 # Bekanntes Rollen-Verzeichnis für externe Nutzung
 KNOWN_ROLE_LIST: List[str] = POSSIBLE_ROLES
-print(f"{len(ROLE_MAPPINGS_DE)} Rollenvarianten geladen.")
 
 # === Regex-Patterns ===
 ROLE_AFTER_NAME_RE = re.compile(
@@ -69,6 +69,73 @@ STANDALONE_ROLE_RE = re.compile(
 NAME_RE = re.compile(
     r"^[A-ZÄÖÜ][a-zäöüß]+(?:[- ][A-Za-zäöüÄÖÜß]+)*$"
 )
+
+# ----------------------------------------------------------------------------
+# Helfer zur Vereinheitlichung von Organisationseinträgen
+# ----------------------------------------------------------------------------
+def resolve_nested_value(d: dict, key: str) -> str:
+    val = d.get(key, "")
+    while isinstance(val, dict):
+        val = val.get(key, "")
+    return val if isinstance(val, str) else ""
+
+def is_flat_organisation(org: dict) -> bool:
+    """
+    Prüft, ob der Organisationseintrag bereits flach vorliegt (alle relevanten Felder sind Strings).
+    """
+    if not isinstance(org, dict):
+        return False
+    if not isinstance(org.get("name"), str):
+        return False
+    if not isinstance(org.get("nodegoat_id", ""), str):
+        return False
+    if not isinstance(org.get("wikidata_id", ""), str):
+        return False
+    if "place" in org and isinstance(org["place"], dict):
+        if not isinstance(org["place"].get("name", ""), str):
+            return False
+        if not isinstance(org["place"].get("nodegoat_id", ""), str):
+            return False
+    return True
+
+def flatten_organisation_entry(org: dict) -> dict:
+    if not isinstance(org, dict):
+        print(f"[WARN] Ungültiger org-Typ für flatten_organisation_entry: {org!r}")
+        return {}
+
+    # Wenn bereits flach → nichts tun
+    if (
+        isinstance(org.get("name"), str)
+        and isinstance(org.get("nodegoat_id", ""), str)
+        and isinstance(org.get("wikidata_id", ""), str)
+        and (
+            "place" not in org
+            or (
+                isinstance(org["place"], dict)
+                and isinstance(org["place"].get("name", ""), str)
+                and isinstance(org["place"].get("nodegoat_id", ""), str)
+            )
+        )
+    ):
+        return org
+
+    # Flache Struktur erzeugen
+    flat = {
+        "name": resolve_nested_value(org, "name"),
+        "nodegoat_id": resolve_nested_value(org, "nodegoat_id"),
+        "wikidata_id": resolve_nested_value(org, "wikidata_id"),
+    }
+
+    if "place" in org and isinstance(org["place"], dict):
+        flat["place"] = {
+            "name": resolve_nested_value(org["place"], "name"),
+            "nodegoat_id": resolve_nested_value(org["place"], "nodegoat_id")
+        }
+
+    print(f"[DEBUG] Flattened associated_organisation: {flat}")
+    return flat
+
+
 
 def normalize_and_match_role(text: str) -> str:
     text_clean = text.lower().strip()
@@ -100,16 +167,46 @@ def load_known_persons() -> List[Dict[str, Any]]:
     df.rename(columns={"Vorname": "forename", "Name": "familyname", "Alternativname": "alternate_name", "Titel": "title"}, inplace=True)
     persons = df[["forename", "familyname", "alternate_name", "title"]].to_dict(orient="records")
     for p in persons:
-        p.update({"role": "", "role_schema": "", "associated_organisation": "", "associated_place": "", "nodegoat_id": "", "match_score": 0, "confidence": ""})
+        p.update({"role": "", "role_schema": "", "associated_organisation": {}, "associated_place": "", "nodegoat_id": "", "match_score": 0, "confidence": ""})
     return persons
 
 # === Mapping-Funktion ===
 def map_role_to_schema_entry(role_string: str) -> str:
-    return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "None")
+    return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "")
 
 # === Extraktion Inline-Rollen zu bekannten Personen ===
 
 def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Person]:
+    # 0) Frühprüfung: Wenn Vor-/Nachname eigentlich eine Rolle ist → umwandeln
+    for p in persons:
+        fn = p.get("forename", "").strip().lower()
+        ln = p.get("familyname", "").strip().lower()
+
+        if fn in ROLE_MAPPINGS_DE and not p.get("role"):
+            print(f"[FIX] '{fn}' ist keine Person, sondern Rolle – wird verschoben.")
+            role = normalize_and_match_role(fn)
+            p["role"] = role
+            p["role_schema"] = map_role_to_schema_entry(role)
+            p["confidence"] = "single-name"
+            p["needs_review"] = True
+            p["review_reason"] = "role_without_person (mixed Role and Name)"
+            p["match_score"] = 30
+            p["mentioned_count"] = 1
+            # NICHT löschen – damit Dummy sichtbar bleibt
+
+        elif ln in ROLE_MAPPINGS_DE and not p.get("role"):
+            print(f"[FIX] '{ln}' ist keine Person, sondern Rolle – wird verschoben.")
+            role = normalize_and_match_role(ln)
+            p["role"] = role
+            p["role_schema"] = map_role_to_schema_entry(role)
+            p["confidence"] = "single-name"
+            p["needs_review"] = True
+            p["review_reason"] = "role_without_person (mixed Role and Name)"
+            p["match_score"] = 30
+            p["mentioned_count"] = 1
+
+
+
     # 1) Inline-Matches nach ROLE_AFTER_NAME_RE und ROLE_BEFORE_NAME_RE
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
         for match in regex.finditer(full_text):
@@ -129,9 +226,56 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
 
             for p in persons:
                 if (p.get("familyname") == ln_cand and fn_cand in p.get("forename", "")):
-                    p["role"]               = normalized_role
-                    p["role_schema"]        = map_role_to_schema_entry(normalized_role)
-                    p["associated_organisation"] = org
+                    p["role"] = normalized_role
+                    p["role_schema"] = map_role_to_schema_entry(normalized_role)
+
+                    if org:
+                        org_candidate = " ".join(org.split()[:3])
+                       
+                        org_raw = re.sub(r"\s+", " ", org_candidate.replace("\n", " ")).strip()
+                       
+                        org_clean = extract_organization(org_raw)
+                       
+                        if org_clean:
+                            # 1. Erst normaler Fuzzy-Match
+                            best_match, score = match_organization({"name": org_clean}, KNOWN_ORGS, threshold=80)
+
+                            # 2. Falls das fehlschlägt → manuelle Substring-Suche als Fallback
+                            if not best_match:
+                                for org in KNOWN_ORGS:
+                                    if org["name"].lower() in org_clean.lower():
+                                        best_match = org
+                                        score = 81
+                                        break
+                            if best_match:
+                                # Stelle sicher, dass alle Felder Strings sind
+                                assoc_org = {
+                                    "name": str(best_match.get("name", "")),
+                                    "nodegoat_id": str(best_match.get("nodegoat_id", "")),
+                                    "wikidata_id": str(best_match.get("wikidata_id", "")),
+                                }
+
+                                place_info = best_match.get("place", {})
+                                if isinstance(place_info, dict):
+                                    assoc_org["place"] = {
+                                        "name": place_info.get("name", ""),
+                                        "nodegoat_id": place_info.get("nodegoat_id", "")
+                                    }
+
+                                p["associated_organisation"] = {
+                                    "name": str(best_match.get("name", "")),
+                                    "nodegoat_id": str(best_match.get("nodegoat_id", "")),
+                                    "wikidata_id": str(best_match.get("wikidata_id", "")),
+                                    "place": {
+                                        "name": str(place_info.get("name", "")),
+                                        "nodegoat_id": str(place_info.get("nodegoat_id", ""))
+                                    } if isinstance(place_info, dict) else {"name": "", "nodegoat_id": ""}
+                                }
+
+
+                        else:
+                            print(f"[DEBUG] extract_organization() lieferte None für '{org_raw}'")
+
                     print(f"[DEBUG] role_schema = {p['role_schema']!r}")
 
     # 2) Finales Normalisieren aller gefundenen Rollen
@@ -173,15 +317,79 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
             p["familyname"]  = ""
         cleaned_dicts.append(p)
 
-    # 4) Umwandlung in Person-Objekte
+
+    # 5) Füge explizit Dummy-Personen für Rollen-Tokens ein, wenn keine passende Person da ist
+    for p in persons:
+        fn = p.get("forename", "").strip().lower()
+        ln = p.get("familyname", "").strip().lower()
+
+        if fn in ROLE_MAPPINGS_DE and not p.get("role"):
+            role = normalize_and_match_role(fn)
+            role_schema = map_role_to_schema_entry(role)
+            dummy = {
+                "forename": "",
+                "familyname": "",
+                "alternate_name": "",
+                "title": "",
+                "role": role,
+                "role_schema": role_schema,
+                "associated_place": "",
+                "associated_organisation": "",
+                "nodegoat_id": "",
+                "match_score": 30,
+                "recipient_score": 0,
+                "mentioned_count": 1,
+                "confidence": "single-name",
+                "needs_review": True,
+                "review_reason": "role_without_person"
+            }
+            print(f"[ADDED] Dummy-Person mit Rolle '{role}' angelegt.")
+            try:
+                result.append(Person.from_dict(dummy))
+            except Exception as e:
+                print(f"[WARN] Ungültiger Dummy: {dummy} – {e}")
+
+        elif ln in ROLE_MAPPINGS_DE and not p.get("role"):
+            role = normalize_and_match_role(ln)
+            role_schema = map_role_to_schema_entry(role)
+            dummy = {
+                "forename": "",
+                "familyname": "",
+                "alternate_name": "",
+                "title": "",
+                "role": role,
+                "role_schema": role_schema,
+                "associated_place": "",
+                "associated_organisation": "",
+                "nodegoat_id": "",
+                "match_score": 30,
+                "recipient_score": 0,
+                "mentioned_count": 1,
+                "confidence": "single-name",
+                "needs_review": True,
+                "review_reason": "role_without_person"
+            }
+            print(f"[ADDED] Dummy-Person mit Rolle '{role}' angelegt.")
+            try:
+                result.append(Person.from_dict(dummy))
+            except Exception as e:
+                print(f"[WARN] Ungültiger Dummy: {dummy} – {e}")
+
     result: List[Person] = []
     for p in cleaned_dicts:
         try:
+            org = p.get("associated_organisation", {})
+            if isinstance(org, dict):
+                if not isinstance(org.get("name"), str):
+                    p["associated_organisation"] = flatten_organisation_entry(org)
+
             person = Person.from_dict(p)
             print(f"[DEBUG] person.role_schema = {person.role_schema!r}")
             result.append(person)
         except Exception as e:
             print(f"[WARN] Ungültiges Personen-Dict in Rollen-Modul: {p} – {e}")
+
+
 
     return result
 
@@ -335,7 +543,7 @@ def extract_standalone_roles(persons: List[Dict[str, Any]], full_text: str) -> L
             "role": normalized_role,
             "role_schema": map_role_to_schema_entry(normalized_role),
             "associated_place": "",
-            "associated_organisation": org,
+            "associated_organisation": match_organization({"name": org}, KNOWN_ORGS)[0]["data"] if org else {},
             "nodegoat_id": "",
             "match_score": match_score,
             "confidence": "role_only"
@@ -380,7 +588,7 @@ def extract_mentioned_roles(full_text: str) -> List[Dict[str, Any]]:
             "role": role,
             "role_schema": map_role_to_schema_entry(role),
             "associated_place": "",
-            "associated_organisation": org,
+            "associated_organisation": match_organization({"name": org}, KNOWN_ORGS)[0]["data"] if org else {},
             "nodegoat_id": "",
             "match_score": 0,
             "confidence": "mentioned_role"
@@ -427,7 +635,3 @@ def process_text(full_text: str) -> Dict[str, Any]:
 
     return result
 
-# Beispielaufruf
-if __name__ == "__main__":
-    full_text = """... dein Transkript ..."""
-    print(process_text(full_text))

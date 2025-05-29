@@ -38,74 +38,122 @@ def annotate_with_llm(xml_content: str,
       }
     """
     prompt = f"""
-Du bist ein spezialisiertes XML-Annotationstool für historische Transkribus-Dokumente.
+    Systemrolle:
+    Du bist ein spezialisiertes XML-Annotationstool für historische Transkribus-Dokumente.
 
-Deine Aufgabe:
+    Aufgabe:
+    Analysiere das gesamte PAGE-XML-Dokument. Extrahiere Entitäten aus dem Unicode-Text aller <TextLine>-Elemente und füge strukturierte `custom="..."`-Attribute hinzu. 
 
-1. Lies das komplette XML-Dokument ein und analysiere den darin enthaltenen Unicode-Text aller <TextLine>-Elemente.
+    Strikte Regeln:
 
-2. **Globale Personenerkennung**  
-   a) Durchsuche das gesamte Dokument nach Personennamen (inkl. Vornamen, Nachnamen, ggf. Titeln).  
-   b) Merke Dir jede gefundene Person einmalig mit Offset und Länge im jeweiligen <TextLine>-Unicode-Text.  
-   c) Verwende für alle späteren Referenzen dieselben Offsets.
+    1. Dokumentanalyse:
+    - Verarbeite ausschließlich <TextLine>-Elemente.
+    - Verwende nur <Unicode>-Inhalte als Eingabetext.
 
-3. **Empfänger-Suche (recipient)**  
-   a) Identifiziere im **Kopfbereich** (alles bis zur ersten Leerzeile) eine mögliche Anrede wie  
-      „Herr“, „Frau“, „Sehr geehrter Herr …“ oder vergleichbare Ausdrücke.  
-   b) Ordne die gefundene Anrede der passenden Person aus Schritt 2 zu.  
-   c) Annotiere sie als `recipient {{offset:X; length:Y;}}` im jeweiligen <TextLine>.
+    2. Globale Personenerkennung:
+    - Erkenne Personen (inkl. Titel, Vorname, Nachname).
+    - Speichere `offset` und `length` für jede erkannte Person pro TextLine.
+    - Verwende **immer dieselben Offsets** bei wiederholten Nennungen im Dokument.
 
-4. **Autor-Suche (author)**  
-   a) Identifiziere im **Fußbereich** (alles nach der letzten Grußformel wie „Mit freundlichen Grüßen“, „Heil Hitler“, etc.)  
-      eine oder mehrere Personen, die als Verfasser auftreten (z. B. „Max Mustermann, Vereinsführer“).  
-   b) Annotiere den Namen als `author {{offset:X; length:Y;}}`.  
-   c) Falls im Text eine Funktionsbezeichnung (z. B. „Chorleiter“) vorkommt, annotiere diese zusätzlich als separate `role {{offset:X; length:Y;}}`.
+    3. Empfängerkennung (`recipient`):
+    - Der Kopfbereich endet an der ersten komplett leeren TextLine.
+    - Erkenne dort Anreden (z. B. „Herr“, „Frau“, „Sehr geehrter Herr …“).
+    - Verknüpfe Anrede mit passender Person und annotiere mit:
+    `recipient {{offset:X; length:Y;}}`
+    
+    4. Autorenkennung (`author`):
+    - Der Fußbereich beginnt nach der letzten Grußformel (z. B. „Mit freundlichen Grüßen“).
+    - Namen → `author {{offset:X; length:Y;}}`.
+    - Funktion (z. B. „Chorleiter“) → `role {{offset:X; length:Y;}}`.
 
-5. **Annotation pro TextLine**  
-   Füge jedem <TextLine> (sofern zutreffend) **ein einziges** Attribut `custom="..."` hinzu, das alle erkannten Entitäten in dieser festen Reihenfolge enthält:
-   
-    person {{offset:X; length:Y;}}  
-    recipient {{offset:X; length:Y;}}  
-    author {{offset:X; length:Y;}}  
-    organization {{offset:X; length:Y;}}  
-    place {{offset:X; length:Y;}}  
-    date {{offset:X; length:Y; when:TT.MM.JJJJ;}}  
+     5. Ort- und Datumsannotation:
+    - **Absendeort** (creation_place) und **Erstellungsdatum** (creation_date):
+        zusätzlich zu den Tags place und date hinzu:
+        creation_place {{offset:X; length:Y;}} und creation_date {{offset:X; length:Y; when:TT.MM.JJJJ;}}.
+    - **Empfangsort** (recipient_place):
+        Füge im Empfänger-Block die passende Zeile mit:
+        place {{offset:X; length:Y;}}.
+
+    6. Entitäten pro Zeile (in dieser Reihenfolge):
+    Füge **ein** Attribut `custom="..."` ein mit nur den tatsächlich erkannten Entitäten:
+
+
+    person {{offset:X; length:Y;}}
+    recipient {{offset:X; length:Y;}}
+    author {{offset:X; length:Y;}}
+    organization {{offset:X; length:Y;}}
+    place {{offset:X; length:Y;}}
+    date {{offset:X; length:Y; when:TT.MM.JJJJ;}}
     role {{offset:X; length:Y;}}
+    event {{offset:X; length:Y;}} → optional mit when:TT.MM.JJJJ;
 
-– Füge nur die Entitäten hinzu, die **tatsächlich** vorkommen (keine leeren Platzhalter).  
-– Gib `date` immer im Format `TT.MM.JJJJ` mit dem Zusatz `when:` an.
+    Hinweise:
+    - Füge **nur tatsächlich vorhandene Entitäten** ein.
+    - Keine Platzhalter.
+    - Format für `date` und `event` (falls Datum erkennbar): `when:TT.MM.JJJJ;`
+    - Mehrzeilige Events (z. B. bei Bindestrich am Ende oder fortgeführtem Satz) erhalten dieselbe `event`-Annotation in allen betroffenen Zeilen.
 
-6. **Behalte alle anderen Inhalte des XML unverändert bei.**  
-Du darfst ausschließlich `custom="..."`-Attribute in <TextLine>-Tags verändern oder hinzufügen.
+    6. XML-Regeln:
+    - **Verändere nur** `custom`-Attribute innerhalb von `<TextLine>`.
+    - Belasse alle anderen XML-Strukturen vollständig unverändert.
 
-7. **Antwortformat:** Gib ausschließlich das vollständige, gültige und annotierte XML zurück – **ohne** erklärenden Text oder Markdown-Formatierung.
+    7. Ausgabe:
+    - Gib ausschließlich ein vollständiges, wohlgeformtes XML zurück.
+    - Kein Freitext, kein Kommentar, kein Markdown.
 
-**Beispiel**  
-<!-- Kopfzeile mit Empfänger und Ort -->
-<TextLine id="tl_header"
-          custom="recipient {{offset:17; length:13;}} place {{offset:32; length:10;}}">
-  <Unicode>Sehr geehrter Herr Müller, Murg/Baden</Unicode>
-</TextLine>
+    Beispielausgabe:
+    <?xml version="1.0" encoding="UTF-8"?>
+    <PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15">
+    <Page imageFilename="dummy.jpg" imageWidth="1000" imageHeight="1000">
+        <TextRegion id="r1">
+        <TextLine id="tl1" custom="place {{offset:0; length:7;}} creation_place {{offset:0; length:7;}} date {{offset:8; length:9; when:28.05.1942;}} creation_date {{offset:8; length:9; when:28.05.1942;}}">
+            <Coords points="0,0 100,0 100,10 0,10"/>
+            <TextEquiv><Unicode>München 28.V.1942</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl2" custom="recipient {{offset:7; length:5;}} person {{offset:7; length:5;}} place {{offset:15; length:6;}} recipient_place {{offset:15; length:6;}}">
+            <Coords points="0,20 100,20 100,30 0,30"/>
+            <TextEquiv><Unicode>Lieber Otto, Berlin</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl3" custom="event {{offset:24; length:38; when:28.05.1942;}} place {{offset:42; length:7;}}">
+            <Coords points="0,40 100,40 100,50 0,50"/>
+            <TextEquiv><Unicode>Heute abend fand ein Konzert im Opernhaus in München statt, und ich</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl4" custom="organization {{offset:43; length:28;}} place {{offset:66; length:16;}}">
+            <Coords points="0,60 100,60 100,70 0,70"/>
+            <TextEquiv><Unicode>lauschte den himmlischen Stimmen des Männerchors Hintertuüpfingen eV.</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl5" custom="organization {{offset:34; length:3;}} organization {{offset:40; length:18;}}">
+            <Coords points="0,80 100,80 100,90 0,90"/>
+            <TextEquiv><Unicode>Das alles fand im Rahmen des WhW - des Winterhilfswerk statt.</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl6" custom="organization  {{offset:50; length:17;}} place {{offset:72; length:4;}} place {{offset:83; length:6;}}">
+            <Coords points="0,100 100,100 100,110 0,110"/>
+            <TextEquiv><Unicode>Ich hoffe wir sehen uns bald bei einem Auftritt des Männerchors Murg wieder, oder in Hänner?</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl7" custom="role {{offset:14; length:14;}} person {{offset:29; length:4;}}">
+            <Coords points="0,120 100,120 100,130 0,130"/>
+            <TextEquiv><Unicode>Grüss mir den Vereinsführer Asal,</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl8">
+            <Coords points="0,140 100,140 100,150 0,150"/>
+            <TextEquiv><Unicode>Alles Liebe,</Unicode></TextEquiv>
+        </TextLine>
+        <TextLine id="tl9" custom="author {{offset:6; length:17;}} person {{offset:6; length:17;}}">
+            <Coords points="0,160 100,160 100,170 0,170"/>
+            <TextEquiv><Unicode>Deine Lina Fingerdick</Unicode></TextEquiv>
+        </TextLine>
+        <!-- Neue Zeile für den Empfangsort -->
+        <TextLine id="tl10" custom="salutation {{offset:0; length:2;}} recipient {{offset:3; length:13;}} address {{offset:18; length:21;}} place {{offset:41; length:4;}}">
+            <Coords points="0,180 100,180 100,190 0,190"/>
+            <TextEquiv>
+            <Unicode>An Otto Bolliger, Adolf-Hitler Platz 1, Murg</Unicode>
+            </TextEquiv>
+        </TextLine>
+        </TextRegion>
+    </Page>
+    </PcGts>
 
-<!-- Organisation -->
-<TextLine id="tl_org"
-          custom="organization {{offset:0; length:15;}}">
-  <Unicode>Männerchor Murg</Unicode>
-</TextLine>
-
-<!-- Datum -->
-<TextLine id="tl_date"
-          custom="date {{offset:0; length:10; when:01.09.1939;}}">
-  <Unicode>01.09.1939</Unicode>
-</TextLine>
-
-<!-- Grußformel mit Autor -->
-<TextLine id="tl_footer"
-          custom="author {{offset:29; length:15;}} role {{offset:46; length:10;}}">
-  <Unicode>Mit freundlichen Grüßen Max Mustermann, Chorleiter</Unicode>
-</TextLine>
-
-Hier ist das zu annotierende XML:
+    Hier ist das zu annotierende XML:
 
 ```
 {xml_content}

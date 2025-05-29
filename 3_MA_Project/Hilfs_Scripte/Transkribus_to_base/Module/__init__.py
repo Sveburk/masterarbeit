@@ -1,6 +1,8 @@
 # File: Module/__init__.py
 
 
+# Event-Matcher
+from Module.event_matcher import extract_events_from_xml
 
 
 # --- Enrich Pipeline ---
@@ -23,7 +25,8 @@ from .person_matcher import (
     extract_person_data,
     split_and_enrich_persons,
     deduplicate_and_group_persons, 
-    count_mentions_in_transcript
+    count_mentions_in_transcript_contextual
+
 )
 
 # --- Letter‑Metadata Matcher ---
@@ -36,8 +39,9 @@ from .letter_metadata_matcher import (
     ensure_author_recipient_in_mentions,
     postprocess_roles,
     enrich_final_recipients,
-    deduplicate_recipients
-    
+    deduplicate_recipients,
+    assign_sender_and_recipient_place,
+    finalize_recipient_places,
     )
 
 # --- Organization Matcher ---
@@ -45,16 +49,30 @@ from .organization_matcher import (
     load_organizations_from_csv,
     match_organization_from_text,
     match_organization_entities,
+    match_organization_by_name,
 )
 
 # --- Type Matcher ---
 from .type_matcher import get_document_type
 
 # --- Assigned Roles ---
-from .Assigned_Roles_Module import ROLE_MAPPINGS_DE,KNOWN_ROLE_LIST, NAME_RE,assign_roles_to_known_persons,extract_standalone_roles,map_role_to_schema_entry, extract_role_in_token, process_text
+from .Assigned_Roles_Module import(
+    ROLE_MAPPINGS_DE,
+    KNOWN_ROLE_LIST,
+    NAME_RE,
+    assign_roles_to_known_persons,
+    extract_standalone_roles,
+    map_role_to_schema_entry, 
+    extract_role_in_token, 
+    process_text, 
+    flatten_organisation_entry,
+    )
 
 # --- Place Matcher ---
-from .place_matcher import PlaceMatcher, mentioned_places_from_custom_data
+from .place_matcher import(
+    PlaceMatcher, 
+    mentioned_places_from_custom_data, 
+    extract_place_lines_from_xml)
 
 # --- Validation ---
 from .validation_module import validate_extended, generate_validation_summary
@@ -74,6 +92,8 @@ from Module.date_matcher import (
 
 
 __all__ = [
+    #event-matcher
+    "extract_events_from_xml",
 
     # Pipeline
     "enrich_pipeline",
@@ -94,7 +114,7 @@ __all__ = [
     "extract_person_data",
     "split_and_enrich_persons",
     "deduplicate_and_group_persons", 
-    "count_mentions_in_transcript",
+    "count_mentions_in_transcript_contextual",
 
     # Letter‑Metadata Matcher
     "match_authors",
@@ -106,12 +126,17 @@ __all__ = [
     "postprocess_roles",
     "enrich_final_recipients",
     "deduplicate_recipients",
+    "assign_sender_and_recipient_place",
+    "finalize_recipient_places",
+    "flatten_organisation_entry",   
     
 
     # Organization Matcher
     "load_organizations_from_csv",
     "match_organization_from_text",
     "match_organization_entities",
+    "match_organization_by_name",
+    
 
     # Type Matcher
     "get_document_type",
@@ -122,10 +147,11 @@ __all__ = [
     "map_role_to_schema_entry",
     "extract_role_in_token",
     "process_text",
-    
 
     # Place Matcher
-    "PlaceMatcher", "mentioned_places_from_custom_data",
+    "PlaceMatcher", 
+    "mentioned_places_from_custom_data",
+    "extract_place_lines_from_xml",
 
     # Validation
     "validate_extended", "generate_validation_summary",

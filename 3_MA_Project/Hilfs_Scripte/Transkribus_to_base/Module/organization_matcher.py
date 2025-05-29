@@ -1,3 +1,4 @@
+import os
 import re
 import pandas as pd
 from rapidfuzz import fuzz
@@ -145,3 +146,24 @@ def match_organization_entities(
         if best_match:
             matched.append({**best_match, "match_score": score, "confidence": "fuzzy"})
     return matched
+
+# Optional: anpassen oder dynamisch setzen, falls du einen Konfigurationspfad nutzt
+CSV_ORG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-organisationen.csv"
+
+# Globale Liste aller bekannten Organisationen
+try:
+    KNOWN_ORGS = load_organizations_from_csv(CSV_ORG_PATH)
+except Exception as e:
+    KNOWN_ORGS = []
+    print(f"[WARN] Konnte export-organisationen.csv nicht laden: {e}")
+
+def match_organization_by_name(name: str, threshold: int = 85) -> Optional[Dict[str, str]]:
+    """
+    Führt ein Fuzzy-Matching gegen alle bekannten Organisationen durch.
+    Gibt das beste Match zurück (inkl. Name, nodegoat_id etc.), wenn Score ≥ threshold.
+    """
+    clean = extract_organization(name)
+    if not clean:
+        return None
+    match, score = match_organization({"name": clean}, KNOWN_ORGS, threshold)
+    return match

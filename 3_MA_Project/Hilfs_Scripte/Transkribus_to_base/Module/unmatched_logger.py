@@ -10,80 +10,118 @@ def log_unmatched_entities(document_id: str,
                            final_roles: List[Dict[str, Any]],
                            unmatched_path: Path):
     """
-    Schreibt ein zentrales JSON namens "unmatched.json" mit allen gedroppten Personen, Orten und Rollen,
-    die einen relevanten XML-Tag haben, aber nicht in die finale JSON-Struktur übernommen wurden.
+    Führt ein zentrales unmatched.json nach Namen als Schlüssel.
+    Jeder Name wird nur einmal gespeichert, mit Liste aller Akten, in denen er unmatched auftrat.
     """
+    def person_name(person: Dict[str, Any]) -> str:
+        """Generiert einen konsistenten Namen (für Schlüsselzwecke)."""
+        fn = person.get("forename", "").strip()
+        ln = person.get("familyname", "").strip()
+        full = f"{fn} {ln}".strip()
+        return full if full else fn or ln or person.get("role", "")
+    def is_in_final(person: Dict[str, Any]) -> bool:
+        fn = person.get("forename", "").strip()
+        ln = person.get("familyname", "").strip()
+        return any(
+            p.get("forename", "").strip() == fn and p.get("familyname", "").strip() == ln
+            for p in final_persons
+        )
+
+
     def is_dropped(name, pool, key="name"):
         return not any(name == (getattr(p, key, None) if not isinstance(p, dict) else p.get(key)) for p in pool)
 
-    unmatched_entries = []
+    def add_or_update_entry(entry_dict, name: str, tag: str, reason: str):
+        if name not in entry_dict:
+            entry_dict[name] = {
+                "tag": tag,
+                "akten": [document_id],
+                "grund": reason
+            }
+        else:
+            if document_id not in entry_dict[name]["akten"]:
+                entry_dict[name]["akten"].append(document_id)
 
-    # Personen prüfen (nur wenn ein name enthalten ist)
-    for person in custom_data.get("persons", []):
-        fn, ln = person.get("forename", ""), person.get("familyname", "")
-        name = f"{fn} {ln}".strip() if fn or ln else ""
-        if not name:
-            continue
+    # Vorhandene Datei laden
+    unmatched_path.parent.mkdir(parents=True, exist_ok=True)
+    if unmatched_path.exists():
+        with open(unmatched_path, "r", encoding="utf-8") as f:
+            loaded = json.load(f)
+            if isinstance(loaded, list):
+                # Alte Struktur gefunden: konvertieren (vorsichtiger Fallback)
+                unmatched_data = {}
+                for entry in loaded:
+                    name = entry.get("Name")
+                    if not name:
+                        continue
+                    tag = entry.get("Tag", "")
+                    grund = entry.get("Grund", "")
+                    akte = entry.get("Akte", "")
+                    unmatched_data[name] = {
+                        "tag": tag,
+                        "akten": [akte] if akte else [],
+                        "grund": grund
+                    }
+            else:
+                unmatched_data = loaded  # korrektes dict
+    else:
+        unmatched_data = {}
 
-        is_unmatched = all(
-            not (p.get("forename") == fn and p.get("familyname") == ln)
-            for p in final_persons
-        )
-        if is_unmatched:
-            unmatched_entries.append({
-                "Akte": document_id,
-                "Name": name,
-                "Context": "",
-                "Tag": "person",
-                "Grund": "nicht in mentioned_persons aufgenommen"
-            })
-
-    # Orte prüfen
     for place in custom_data.get("places", []):
         name = place.get("name")
-        if not name:
-            continue
-        if is_dropped(name, final_places):
-            unmatched_entries.append({
-                "Akte": document_id,
-                "Name": name,
-                "Context": "",
-                "Tag": "place",
-                "Grund": "nicht in mentioned_places aufgenommen"
-            })
+        if name and is_dropped(name, final_places):
+            add_or_update_entry(unmatched_data, name, "place", "nicht in mentioned_places aufgenommen")
 
-    # Rollen prüfen
+    # Rollen
     for role in final_roles:
-        raw = role.get("raw")
+        raw = role.get("raw", "").strip()
         if not raw:
             continue
-        role_matched = False
-        for p in final_persons:
-            role_in_p = p.get("role", "")
-            if raw.lower() in role_in_p.lower():
-                role_matched = True
-                break
-        if not role_matched:
-            unmatched_entries.append({
-                "Akte": document_id,
-                "Name": raw,
-                "Context": "",
-                "Tag": "role",
-                "Grund": "nicht in Personenrolle übernommen"
-            })
+        matched = any(
+            raw.lower() in (p.get("role", "").lower())
+            for p in final_persons
+        )
+        if not matched:
+            add_or_update_entry(unmatched_data, raw, "role", "nicht in Personenrolle übernommen")
 
-    # Schreibe Datei
-    if unmatched_entries:
-        unmatched_path.parent.mkdir(parents=True, exist_ok=True)
-        if unmatched_path.exists():
-            with open(unmatched_path, "r", encoding="utf-8") as f:
-                existing = json.load(f)
-        else:
-            existing = []
+    # Speichern
+    with open(unmatched_path, "w", encoding="utf-8") as f:
+        json.dump(unmatched_data, f, ensure_ascii=False, indent=2)
 
-        combined = existing + unmatched_entries
+    print(f"[UNMATCHED] Unmatched-Log aktualisiert: {len(unmatched_data)} Einträge.")
 
-        with open(unmatched_path, "w", encoding="utf-8") as f:
-            json.dump(combined, f, ensure_ascii=False, indent=2)
+def log_unmatched_person(person_data: dict, document_id: str, reason: str, tag: str = "person"):
+    from pathlib import Path
+    import os, json
 
-        print(f"[UNMATCHED] {len(unmatched_entries)} neue Einträge in unmatched.json ergänzt")
+    unmatched_path = Path("unmatched/unmatched_persons.json")
+    unmatched_path.parent.mkdir(parents=True, exist_ok=True)
+
+    name = (
+        person_data.get("raw_token") or
+        f"{person_data.get('forename', '').strip()} {person_data.get('familyname', '').strip()}"
+    ).strip()
+
+    if not name:
+        name = person_data.get("role", "") or "Unbekannt"
+
+    if unmatched_path.exists():
+        with open(unmatched_path, "r", encoding="utf-8") as f:
+            unmatched_data = json.load(f)
+    else:
+        unmatched_data = {}
+
+    if name not in unmatched_data:
+        unmatched_data[name] = {
+            "tag": tag,
+            "akten": [document_id],
+            "grund": reason
+        }
+    else:
+        if document_id not in unmatched_data[name]["akten"]:
+            unmatched_data[name]["akten"].append(document_id)
+
+    with open(unmatched_path, "w", encoding="utf-8") as f:
+        json.dump(unmatched_data, f, ensure_ascii=False, indent=2)
+
+    print(f"[UNMATCHED] Einzelperson geloggt: {name} ({reason})")

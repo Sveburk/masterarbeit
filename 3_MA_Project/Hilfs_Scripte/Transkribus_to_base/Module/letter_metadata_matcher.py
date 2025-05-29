@@ -1,4 +1,5 @@
 import re
+import xml.etree.ElementTree as ET
 from typing import Dict, Any, Optional, List, Tuple
 from collections import defaultdict
 from .document_schemas import BaseDocument, Person
@@ -7,7 +8,10 @@ from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_
 import json
 from pathlib import Path
 from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
-from .Assigned_Roles_Module import assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role
+from .Assigned_Roles_Module import(assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role)
+from Module.place_matcher import PlaceMatcher, consolidate_places
+from .date_matcher import extract_custom_date
+
 
 # --- Dokumenttypen für authors-/recipients-Erkennung ---
 ALLOWED_ADDRESSING_TYPES = ["Brief", "Postkarte"]
@@ -174,7 +178,7 @@ def extract_authors_raw(text: str) -> Dict[str, str]:
 def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
         """
         Sammelt alle potenziellen Empfänger aus dem Briefkopf (mehrere Zeilen analysieren),
-        vergibt recipient_score (z. B. 90 für vollständig, 70 für Zweizeiler usw.),
+        vergibt recipient_score (z. B. 90 für vollständig, 70 für Zweizeiler usw.),
         und gibt eine Liste zurück.
         """
         parts = re.split(r"\n\s*\n", text, maxsplit=1)
@@ -183,7 +187,7 @@ def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
 
         recipients = []
 
-        # 1) Einzeiler: z. B. "An Herrn Otto Bollinger"
+        # 1) Einzeiler: z. B. "An Herrn Otto Bollinger"
         inline_re = re.compile(
             r"""^(?:An\s+)?(Herrn?|Frau)\s+([A-ZÄÖÜ][\wäöüß]+)(?:\s+([A-ZÄÖÜ][\wäöüß]+(?:\s+[A-ZÄÖÜ][\wäöüß]+)*))?""",
             re.IGNORECASE | re.VERBOSE,
@@ -329,7 +333,10 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
         result.setdefault(key, "")
 
     # Versuche nochmal Rollenextraktion
-    enriched_role = assign_roles_to_known_persons([result], text)[0]
+    enriched_results = assign_roles_to_known_persons([result], text)
+    if not enriched_results:
+        return result  # keine Anreicherung möglich – gib Original zurück
+    enriched_role = enriched_results[0]
     if isinstance(enriched_role, Person):
         enriched_role = enriched_role.to_dict()
 
@@ -425,7 +432,7 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
 
     enriched_head.sort(key=score_completeness, reverse=True)
     all_recipients = [enriched_head[0]] if enriched_head else []
-    # --- 1) Klassischer Kopf-Empfänger (z. B. "An Herrn Otto Bolliger") ---
+    # --- 1) Klassischer Kopf-Empfänger (z. B. "An Herrn Otto Bolliger") ---
     raw_head_recipients = extract_recipients_raw(text)
     for raw in raw_head_recipients:
         enriched = letter_match_and_enrich(raw, text, mentioned_persons)
@@ -434,7 +441,7 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
             enriched["confidence"] = raw.get("confidence", "header")
             all_recipients.append(enriched)
 
-    # --- 2) Weitere mögliche Empfänger (z. B. Anredeformen) ---
+    # --- 2) Weitere mögliche Empfänger (z. B. Anredeformen) ---
     additional_raw = extract_multiple_recipients_raw(text)
     enriched_list = []
     for raw in additional_raw:
@@ -959,9 +966,10 @@ def postprocess_roles(base_doc: BaseDocument):
 
         # Blacklist check - skip persons with only blacklisted terms and low match score
         if ((fn.lower() in NON_PERSON_TOKENS and not ln) or
-            (ln.lower() in NON_PERSON_TOKENS and not fn)) and getattr(p, "match_score", 0) < 40:
-            print(f"[DEBUG] Person[{idx}] skipped due to blacklist: '{fn}'/'{ln}' with match_score {getattr(p, 'match_score', 0)}")
-            continue
+            (ln.lower() in NON_PERSON_TOKENS and not fn)):
+            if not (p.match_score >= 50 or p.recipient_score > 0 or p.nodegoat_id):
+                print(f"[DEBUG] Person[{idx}] skipped due to blacklist: '{fn}'/'{ln}' with match_score={p.match_score}, recipient_score={p.recipient_score}")
+                continue
 
         # Skip unmatchable single names with low match score
         if ((fn.lower() in UNMATCHABLE_SINGLE_NAMES and not ln) or
@@ -972,67 +980,63 @@ def postprocess_roles(base_doc: BaseDocument):
         # Rohes Lowercase
         raw_fn_lower = fn.lower()
         raw_ln_lower = ln.lower()
-        print(f"[DEBUG] raw_fn_lower={raw_fn_lower!r}, raw_ln_lower={raw_ln_lower!r}")
+
 
         # Normierungen
         norm_fn = normalize_and_match_role(raw_fn_lower) if fn else None
         norm_ln = normalize_and_match_role(raw_ln_lower) if ln else None
-        print(f"[DEBUG] norm_fn={norm_fn!r}, norm_ln={norm_ln!r}")
+
 
         # Fallback: Singularform für deutsche Plural "-en"
         if fn and not norm_fn and raw_fn_lower.endswith('en'):
             singular = raw_fn_lower[:-2]
             norm_fn = normalize_and_match_role(singular)
-            print(f"[DEBUG] Fallback singular forename='{singular}', norm_fn={norm_fn!r}")
+
         if ln and not norm_ln and raw_ln_lower.endswith('en'):
             singular_ln = raw_ln_lower[:-2]
             norm_ln = normalize_and_match_role(singular_ln)
-            print(f"[DEBUG] Fallback singular familyname='{singular_ln}', norm_ln={norm_ln!r}")
+
 
         # 1) reine Rolle im Vornamen
         if not rl and norm_fn:
             p.role      = norm_fn
             p.forename  = ""
-            print(f"[DEBUG] Regel 1 angewendet: moved fn to role -> role='{p.role}'")
+
 
         # 2) reine Rolle im Nachnamen
         elif not rl and norm_ln:
             p.role        = norm_ln
             p.familyname  = ""
-            print(f"[DEBUG] Regel 2 angewendet: moved ln to role -> role='{p.role}'")
+
 
         # 3) role enthält Namen, forename enthält Rolle → tauschen
         elif rl and norm_fn:
             old_role = p.role
             p.forename, p.role = rl, norm_fn
-            print(f"[DEBUG] Regel 3 angewendet: swapped role and fn -> forename='{p.forename}', role='{p.role}' (old='{old_role}')")
+
 
         # 4) role enthält Namen, familyname enthält Rolle → tauschen
         elif rl and norm_ln:
             old_role = p.role
             p.familyname, p.role = rl, norm_ln
-            print(f"[DEBUG] Regel 4 angewendet: swapped role and ln -> familyname='{p.familyname}', role='{p.role}' (old='{old_role}')")
 
-        else:
-            print("[DEBUG] Keine Regel angewendet.")
-
-        # One final check after applying rules
-        # Skip persons with only blacklisted terms after role processing
+        # Nach Regelanwendung: Dropping nur, wenn keine Rolle übrig und keine ID, kein Score
         if ((not p.forename or p.forename.lower() in NON_PERSON_TOKENS) and
             (not p.familyname or p.familyname.lower() in NON_PERSON_TOKENS) and
-            getattr(p, "match_score", 0) < 40):
-            print(f"[DEBUG] Person skipped after rule application: '{p.forename}'/'{p.familyname}' with match_score {getattr(p, 'match_score', 0)}")
+            not p.role and not p.role_schema and
+            p.match_score < 40 and p.recipient_score == 0 and not p.nodegoat_id):
+            print(f"[DEBUG] Person skipped after rule application: '{p.forename}'/'{p.familyname}' ohne Rolle, ohne ID")
             continue
 
         filtered.append(p)
 
-    print(f"[DEBUG postprocess_roles] Nach erster Schleife: {len(filtered)} filtered")
+
 
     # 5) role_schema setzen und reine-Rollen-Einträge final bereinigen
     for idx, p in enumerate(filtered):
         has_name = bool(p.forename or p.familyname)
         has_id   = bool(p.nodegoat_id)
-        print(f"[DEBUG] Finalizing[{idx}]: forename='{p.forename}', familyname='{p.familyname}', role='{p.role}', has_name={has_name}, has_id={has_id}")
+        
 
         if p.role and not has_name and not has_id:
             normalized = normalize_and_match_role(p.role.lower()) or p.role
@@ -1048,3 +1052,224 @@ def postprocess_roles(base_doc: BaseDocument):
 
     base_doc.mentioned_persons = filtered
     print("[DEBUG postprocess_roles] Ende")
+
+
+# =================================================
+# Orte und Daten
+# =================================================
+#Liste ändern nach Org_matcher:
+ORG_KEYWORDS = {"Männerchor", "Verein", "Schule", "Chor", "Club"}
+
+
+# =================================================
+# Orte und Daten
+# =================================================
+
+def extract_places_and_date(
+    xml_root: ET.Element
+) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """
+    Liest aus dem PAGE-XML alle custom-Tags
+    für creation_place, recipient_place und creation_date
+    und gibt zurück: (raw_creation_place, raw_recipient_place, creation_date).
+    Falls keine Custom-Tags gefunden werden, gibt es Fallback via Header-Regex.
+    """
+    ns = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+    raw_creation = raw_recipient = creation_date = None
+
+    # 1) Custom-Tags
+    for tl in xml_root.findall(".//pc:TextLine", namespaces=ns):
+        custom = tl.attrib.get("custom", "")
+        text = (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip()
+
+        if "creation_place" in custom:
+            m = re.search(r"creation_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)", custom)
+            raw_creation = (
+                text[int(m.group(1)):int(m.group(1))+int(m.group(2))].strip().rstrip(".,")
+                if m else text.split()[0].rstrip(".,")
+            )
+
+        if "recipient_place" in custom:
+            m = re.search(r"recipient_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)", custom)
+            raw_recipient = (
+                text[int(m.group(1)):int(m.group(1))+int(m.group(2))].strip().rstrip(".,")
+                if m else text.split()[0].rstrip(".,")
+            )
+
+        if "creation_date" in custom or "date" in custom:
+            m = re.search(r"(?:creation_date|date)\s*\{[^}]*when\s*:\s*([^;]+)", custom)
+            if m:
+                creation_date = m.group(1).strip()
+
+        if raw_creation and raw_recipient and creation_date:
+            break
+
+    # 2) Fallback über Header (falls nötig)
+    if not (raw_creation and creation_date) or not raw_recipient:
+        header_lines = []
+        for tl in xml_root.findall(".//pc:TextLine", namespaces=ns):
+            txt = (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip()
+            if txt:
+                header_lines.append(txt)
+            if len(header_lines) >= 5:
+                break
+        header = "\n".join(header_lines)
+
+        if not (raw_creation and creation_date):
+            m = re.search(
+                r"^(?P<place>[A-ZÄÖÜ][\w\s\-/]+?),\s*(?:den\s*)?(?P<date>\d{1,2}\.\d{1,2}\.\d{2,4})",
+                header, flags=re.MULTILINE
+            )
+            if m:
+                raw_creation  = raw_creation  or m.group("place").strip()
+                creation_date = creation_date or m.group("date").strip()
+
+        if not raw_recipient:
+            m2 = re.search(
+                r"\bAn\s+(?:Herrn?|Frau|Frl\.?)\s+[A-ZÄÖÜ][\w\.\s-]+?\s+in\s+(?P<place>[A-ZÄÖÜ][\w\s\-/]+)",
+                header
+            )
+            if m2:
+                raw_recipient = m2.group("place").strip()
+
+    return raw_creation, raw_recipient, creation_date
+
+
+def assign_sender_and_recipient_place(    xml_root: ET.Element,
+    matcher: PlaceMatcher,
+    mentioned_places: List[Any],
+    allow_multiple: bool = True,
+    score_threshold: float = 80.0
+) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]], Optional[str]]:
+    raw_creation, _, creation_date = extract_places_and_date(xml_root)
+
+    ns = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+    lines = [
+        (tl.attrib.get("id", ""), (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip())
+        for tl in xml_root.findall(".//pc:TextLine", namespaces=ns)
+    ]
+
+    all_line_texts = " ".join(text for _, text in lines)
+
+    def find_combined_place(line_texts: List[str], mentioned_places: List[Any]) -> Optional[Dict[str, Any]]:
+        """
+        Sucht in benachbarten Zeilen nach Ortsnamen, die in Kombination in den Alt-Namen eines Groundtruth-Ortes vorkommen.
+        Gibt den vollständigeren Ortseintrag zurück, falls erkannt, und vergibt einen Bonus.
+        """
+        text_by_line = {i: line for i, line in enumerate(line_texts)}
+
+        for i, line in text_by_line.items():
+            for j in [i-1, i+1]:  # Vor- und Nachzeile prüfen
+                if j not in text_by_line:
+                    continue
+
+                combined_line = f"{line} {text_by_line[j]}"
+
+                for place in mentioned_places:
+                    alt_names = getattr(place, "alt_names", []) or getattr(place, "alternate_place_name", "")
+                    if isinstance(alt_names, str):
+                        alt_names = [alt.strip() for alt in alt_names.split(";")]
+
+                    for alt in alt_names:
+                        if "-" not in alt:
+                            continue
+
+                        # Teile aufsplitten: z. B. "Laufenburg-Rhina"
+                        alt_parts = re.split(r"[-–—\s]", alt)
+                        if len(alt_parts) < 2:
+                            continue
+
+                        # Check: Sind alle Bestandteile in der kombinierten Zeile vorhanden (unscharf)
+                        if all(any(re.search(rf"\b{re.escape(part)}\b", combined_line, flags=re.IGNORECASE) for part in alt_parts) for part in alt_parts):
+                            print(f"[DEBUG] Kombinierter Ort erkannt in Kontext: {alt} in Zeilen {i}/{j}")
+                            return {
+                                "name": place.name,
+                                "nodegoat_id": place.nodegoat_id,
+                                "score": 100.0 + 5.0,  # Bonus für kombinierte Erkennung
+                                "alternate_place_name": ";".join(alt_names)
+                            }
+
+        return None
+
+    def enrich_place_candidate(candidate_raw: str) -> Optional[Dict[str, Any]]:
+        for place in mentioned_places:
+            alt = getattr(place, "alt_names", []) or getattr(place, "alternative_names", [])
+            if candidate_raw == place.name or candidate_raw in alt:
+                return {"name": place.name, "nodegoat_id": place.nodegoat_id, "score": 100.0}
+
+        fuzzy = matcher.match_place(candidate_raw)
+        if not fuzzy:
+            return None
+        best = max(fuzzy, key=lambda m: float(m.get("match_score", 0)))
+        data = dict(best["data"])
+        score = float(best.get("match_score", 0))
+
+        # Penalty
+        penalty = 0.0
+        if any(org in all_line_texts for org in ORG_KEYWORDS):
+            if candidate_raw in all_line_texts:
+                penalty = 5.0
+        final_score = max(0.0, score - penalty)
+
+        return {
+            "name": data["name"],
+            "nodegoat_id": data.get("nodegoat_id", ""),
+            "score": final_score
+        }
+
+    # Alle Ortskandidaten aus dem gesamten XML
+    candidates = []
+
+    # 1) Normaler Kandidatenscan
+    for _, line in lines:
+        for place in mentioned_places:
+            if place.name in line or any(alt in line for alt in getattr(place, "alt_names", [])):
+                result = enrich_place_candidate(place.name)
+                if result and result["score"] >= score_threshold:
+                    candidates.append(result)
+
+    # 2) Ergänze kombinierte Orte (z. B. "Laufenburg-Rhina")
+    combined = find_combined_place([text for _, text in lines], mentioned_places)
+    if combined and combined["score"] >= score_threshold:
+        # Überschreibe bestehenden, wenn name bereits als Teil vorhanden ist
+        already = [c for c in candidates if c["name"] in combined["name"] or combined["name"] in c["name"]]
+        if already:
+            # ersetze ggf. einfachsten durch vollständigen
+            for old in already:
+                candidates.remove(old)
+        candidates.append(combined)
+
+    # Duplikate entfernen (nach Name)
+    seen = set()
+    unique_candidates = []
+    for c in candidates:
+        if c["name"] not in seen:
+            unique_candidates.append(c)
+            seen.add(c["name"])
+
+    # ✏️ Creation_place nur EIN Eintrag
+    creation_match = enrich_place_candidate(raw_creation) if raw_creation else None
+    if creation_match and creation_match["score"] < matcher.threshold:
+        creation_match = None
+
+    return creation_match, unique_candidates if allow_multiple else unique_candidates[:1], creation_date
+
+
+def finalize_recipient_places(
+    recipient_places: List[Dict[str, any]]
+) -> Tuple[Optional[Dict[str, any]], List[Dict[str, any]]]:
+    """
+    Gibt den besten Ort (nach Score) als primären recipient_place zurück,
+    alle weiteren mit needs_review = True als alternative Orte.
+    """
+    if not recipient_places:
+        return None, []
+
+    sorted_places = sorted(recipient_places, key=lambda x: (-x["score"], x["name"]))
+    main = sorted_places[0]
+    alts = sorted_places[1:]
+
+    for alt in alts:
+        alt["needs_review"] = True
+
+    return main, alts
