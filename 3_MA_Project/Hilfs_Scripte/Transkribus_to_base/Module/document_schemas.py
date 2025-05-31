@@ -109,6 +109,18 @@ class Person:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Person":
+        # Sicherer Umgang mit 'associated_organisation'
+        assoc_org = data.get("associated_organisation", {})
+        if isinstance(assoc_org, dict):
+            assoc_name = assoc_org.get("name", "")
+            assoc_id = assoc_org.get("nodegoat_id", "")
+        elif isinstance(assoc_org, str):
+            assoc_name = assoc_org
+            assoc_id = data.get("associated_organisation_id", "")
+        else:
+            assoc_name = ""
+            assoc_id = ""
+
         return cls(
             forename=data.get("forename", ""),
             familyname=data.get("familyname", ""),
@@ -116,8 +128,8 @@ class Person:
             title=data.get("title", ""),
             role=data.get("role", ""),
             associated_place=data.get("associated_place", ""),
-            associated_organisation=data.get("associated_organisation", ""),
-            associated_organisation_id=data.get("associated_organisation", ""),
+            associated_organisation=assoc_name,
+            associated_organisation_id=assoc_id,
             nodegoat_id=data.get("nodegoat_id", ""),
             match_score=data.get("match_score"),
             mentioned_count=data.get("mentioned_count", 1),

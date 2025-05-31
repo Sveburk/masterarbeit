@@ -135,6 +135,11 @@ def flatten_organisation_entry(org: dict) -> dict:
     print(f"[DEBUG] Flattened associated_organisation: {flat}")
     return flat
 
+# Felder, die Du in associated_organisation haben willst
+ORG_KEYS   = ("name", "nodegoat_id")
+PLACE_KEYS = ("name", "nodegoat_id")
+
+
 
 
 def normalize_and_match_role(text: str) -> str:
@@ -247,7 +252,11 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
                                         best_match = org
                                         score = 81
                                         break
+                            
+                            best_match_counter = 0
                             if best_match:
+                                best_match_counter += 1
+                                print(f"[DEBUG]  best_match #{best_match_counter}: {best_match}")
                                 # Stelle sicher, dass alle Felder Strings sind
                                 assoc_org = {
                                     "name": str(best_match.get("name", "")),
@@ -257,21 +266,18 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
 
                                 place_info = best_match.get("place", {})
                                 if isinstance(place_info, dict):
+                                    print (f"instance is {isinstance}")
                                     assoc_org["place"] = {
                                         "name": place_info.get("name", ""),
                                         "nodegoat_id": place_info.get("nodegoat_id", "")
                                     }
+                                    print (f"assoc_org is {assoc_org}")
 
                                 p["associated_organisation"] = {
                                     "name": str(best_match.get("name", "")),
                                     "nodegoat_id": str(best_match.get("nodegoat_id", "")),
-                                    "wikidata_id": str(best_match.get("wikidata_id", "")),
-                                    "place": {
-                                        "name": str(place_info.get("name", "")),
-                                        "nodegoat_id": str(place_info.get("nodegoat_id", ""))
-                                    } if isinstance(place_info, dict) else {"name": "", "nodegoat_id": ""}
+                                    "wikidata_id": str(best_match.get("wikidata_id", ""))
                                 }
-
 
                         else:
                             print(f"[DEBUG] extract_organization() lieferte None für '{org_raw}'")
