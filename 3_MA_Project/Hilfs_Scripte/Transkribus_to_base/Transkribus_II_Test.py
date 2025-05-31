@@ -72,7 +72,7 @@ from Module import (
     deduplicate_recipients,
     assign_sender_and_recipient_place,
     finalize_recipient_places,
-    flatten_organisation_entry,
+    #flatten_organisation_entry,
 
 
     # Date Matcher

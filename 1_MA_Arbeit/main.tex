@@ -66,6 +66,8 @@
 \definecolor{signature}{RGB}{153,255,153}           % Hellgrün (gleiche Farbe wie Person) für Tags
 \definecolor{eventTag}{HTML}{05A9FF}                % Blau für Tags
 \definecolor{oldLetter}{RGB}{246,238,227}           % Beige für Hintergrund  
+\definecolor{vscode-blue}{HTML}{569CD6}             % VSCode Blau für python
+\definecolor{vscode-yellow}{HTML}{DCDCAA}           % VSCode Gelb für python
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{booktabs}
@@ -880,6 +882,126 @@ Dein\\
 \end{tikzpicture}
 }
 \end{center}
+
+
+\subsection{Person-Matcher}
+\begin{center}
+\begin{tikzpicture}
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0)}]
+\node at (0, -3.7) {\textit{Oben: Gesamtübersicht-Schema}};
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+\node[module] (json)       at (-0,  -2.8 ) {};
+\node[module] (save)       at (-0, -3.3  ) {};
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% Großes Prozessdiagramm
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
+
+\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
+
+\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
+
+\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
+
+\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
+
+
+\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
+
+\node[below=of count, align=center] 
+  {\textit{Oben: Prozess person\_matcher.py}\\\textit{Rechts: Input aus role\_matcher.py} und organization\_matcher.py};
+
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] 
+  (orgmatch.west) 
+  -- ++(-0.5,0) 
+  |- (roles.east);
+
+\draw[arrow] (rolematch.west) -- (roles.east);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{tikzpicture}
+\end{center}
+
+
 
 
 

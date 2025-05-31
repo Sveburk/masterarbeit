@@ -65,7 +65,7 @@ from .Assigned_Roles_Module import(
     map_role_to_schema_entry, 
     extract_role_in_token, 
     process_text, 
-    flatten_organisation_entry,
+    #flatten_organisation_entry,
     )
 
 # --- Place Matcher ---
