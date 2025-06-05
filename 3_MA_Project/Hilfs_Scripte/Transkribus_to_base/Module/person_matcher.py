@@ -2,7 +2,7 @@ import os
 import re
 import unicodedata
 import uuid
-from typing import List, Dict, Tuple, Optional, Union, Any
+from typing import List, Dict, Tuple, Optional, Any, Union
 import pandas as pd
 from collections import defaultdict
 from rapidfuzz import fuzz
@@ -15,7 +15,7 @@ from Module.Assigned_Roles_Module import (
     ROLE_BEFORE_NAME_RE,
     map_role_to_schema_entry,
     ROLE_MAPPINGS_DE,
-
+    extract_role_from_raw_name,
 )
 
 
@@ -261,40 +261,6 @@ def ocr_error_match(
     return best_match, best_dist, score
 
 
-# ----------------------------------------------------------------------------
-# Rollennamen strippen
-# ----------------------------------------------------------------------------
-def strip_roles_from_name(raw_name: str) -> Tuple[str, List[str]]:
-    """
-    Trennt bekannte Rollennamen ab und gibt bereinigten Namen sowie Liste normierter Rollen.
-    """
-    # 1) Whitespace trimmen & Punkt, Komma, Doppelpunkt, Semikolon am Ende entfernen
-    name = raw_name.strip().rstrip(".,:;")
-    lower = name.lower()
-    found: List[str] = []
-
-    # Suffix "..., Rolle"
-    for key in sorted(POSSIBLE_ROLES, key=len, reverse=True):
-        pat = rf"(?:,\s*)?{re.escape(key)}$"
-        if re.search(pat, lower):
-            canon = map_role_to_schema_entry(key)
-            found.append(canon)
-            lower = re.sub(pat, "", lower).strip(' ,')
-            break
-
-    # Prefix "Rolle ..."
-    for key in sorted(POSSIBLE_ROLES, key=len, reverse=True):
-        pat = rf"^{re.escape(key)}\s+"
-        if re.search(pat, lower):
-            canon = map_role_to_schema_entry(key)
-            found.append(canon)
-            lower = re.sub(pat, "", lower).strip()
-            break
-
-    # 2) verbleibenden Namen title‑cased ausgeben
-    cleaned = lower.title()
-    return cleaned, found
-
 
 #============================================================================
 #   NORMALISIERUNG
@@ -406,7 +372,7 @@ def match_person(
     ln_raw = (person.get("familyname") or "").strip()
     role_raw = (person.get("role") or "").strip()
 
-    fn_stripped, roles = strip_roles_from_name(fn_raw)
+    fn_stripped, roles = extract_role_from_raw_name(fn_raw)
     fn = re.sub(r"[():]", "", fn_stripped).strip()
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
@@ -606,62 +572,53 @@ def match_person(
 # ----------------------------------------------------------------------------
 # Extract Person Data mit Rolleninfos
 # ----------------------------------------------------------------------------
-def extract_person_data(row: Dict[str,Any]) -> Dict[str,str]:
-    # bereits getrennt?
-    if row.get("forename") and row.get("familyname"):
-        result = {k:str(row.get(k,"")).strip() for k in [
-            "forename","familyname","alternate_name","title",
-            "nodegoat_id","home","birth_date","death_date",
-            "organisation","role","role_schema","associated_organisation",
-            "stripped_role"
-        ]}
-        # Ensure role_schema is populated correctly if role exists
-        if result.get("role") and not result.get("role_schema"):
-            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
-            normalized_role = normalize_and_match_role(result["role"])
-            if normalized_role:
-                result["role"] = normalized_role
-            result["role_schema"] = map_role_to_schema_entry(result["role"])
-            print(f"[DEBUG] person_matcher: role_schema = {result['role_schema']!r}")
-        return result
+# Groundtruth-Listen
+KNOWN_SURNAMES = {p["familyname"].lower() for p in KNOWN_PERSONS if p.get("familyname")}
+KNOWN_FORENAMES = {p["forename"].lower() for p in KNOWN_PERSONS if p.get("forename")}
+print(f"[DEBUG] KNOWN_FORENAMES count: {len(KNOWN_FORENAMES)}")
 
-    raw = row.get("name","").strip()
+def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
+    from Module.person_matcher import extract_role_from_raw_name
+    from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+
+    raw = row.get("name", "").strip()
     m = re.match(r"^(Herrn?|Frau|Fräulein|Dr\.?|Prof\.?)\s+(.+)$", raw, flags=re.IGNORECASE)
     title = m.group(1).capitalize() if m else ""
-    if m: raw = m.group(2).strip()
-    clean, roles = strip_roles_from_name(raw)
-        
-    # Use normalize_and_match_role for consistency
-    from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
-    # 1. Übernehme Rolle aus row, falls vorhanden
-    role_raw = row.get("role", "").strip()
+    if m:
+        raw = m.group(2).strip()
 
-    # 2. Wenn strip_roles_from_name etwas gefunden hat → übersteuere
+    clean, roles = extract_role_from_raw_name(raw)
+    parts = clean.split()
+    forename = parts[0] if len(parts) >= 1 else ""
+    familyname = parts[-1] if len(parts) >= 2 else ""
+
+    role_raw = row.get("role", "").strip()
     if roles:
         role_raw = roles[0]
 
-    # 3. Normalisieren und Schema zuweisen
     normalized_role = normalize_and_match_role(role_raw) if role_raw else ""
-    role = normalized_role or role_raw
-    role_schema = map_role_to_schema_entry(role) if role else ""
+    role_schema = map_role_to_schema_entry(normalized_role) if normalized_role else ""
 
-    parts = normalize_name(clean)
     return {
-        "forename": parts["forename"],
-        "familyname": parts["familyname"],
-        "alternate_name": row.get("alternate_name","").strip(),
-        "title": title or parts["title"],
-        "nodegoat_id": row.get("nodegoat_id","").strip(),
-        "home": row.get("home","").strip(),
-        "birth_date": row.get("birth_date","").strip(),
-        "death_date": row.get("death_date","").strip(),
-        "organisation": row.get("organisation","").strip(),
+        "forename": forename,
+        "familyname": familyname,
+        "alternate_name": row.get("alternate_name", "").strip(),
+        "title": title,
+        "nodegoat_id": row.get("nodegoat_id", "").strip(),
+        "home": row.get("home", "").strip(),
+        "birth_date": row.get("birth_date", "").strip(),
+        "death_date": row.get("death_date", "").strip(),
+        "organisation": row.get("organisation", "").strip(),
         "stripped_role": roles,
-        "role": role,
+        "role": normalized_role,
         "role_schema": role_schema,
-        "associated_organisation": row.get("associated_organisation","").strip(),
+        "associated_organisation": row.get("associated_organisation", "").strip(),
+        "confidence": "",
+        "match_score": 0,
+        "needs_review": True if not row.get("nodegoat_id") else False,
+        "review_reason": "low_score or no nodegoat_id",
     }
-from typing import List, Dict, Tuple, Optional, Any, Union
+
 
 def get_review_reason_for_person(p: Dict[str, str]) -> str:
     reasons = []
@@ -701,7 +658,39 @@ def split_and_enrich_persons(
     candidates: Optional[List[Dict[str, str]]] = None
 ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
     
-    
+     # --- Zusammenführen von Personenteilen aus aufeinanderfolgenden Zeilen ---
+    # z. B. ["Gertrud", "Harsch"] → ["Gertrud Harsch"] wenn kein Komma und keine Rolle erkannt
+    merged_raw_persons = []
+    i = 0
+    while i < len(raw_persons):
+        current = raw_persons[i]
+        current_name = current.get("name", "") if isinstance(current, dict) else str(current)
+
+        if not current_name.strip():
+            i += 1
+            continue
+
+        # Prüfe, ob nächster Eintrag existiert und kein Satzzeichen am Ende
+        if (
+            i + 1 < len(raw_persons)
+            and isinstance(raw_persons[i + 1], dict)
+        ):
+            next_name = raw_persons[i + 1].get("name", "").strip()
+            if not re.search(r"[,.;:]$", current_name.strip()) and next_name:
+                combined = f"{current_name.strip()} {next_name}"
+
+                # Nur wenn beide Namen keine Rolle enthalten
+                if not any(r.lower() in combined.lower() for r in ROLE_TOKENS):
+                    print(f"[DEBUG] Merge von Mehrzeiliger Person: '{current_name}' + '{next_name}' → '{combined}'")
+                    merged_raw_persons.append({"name": combined})
+                    i += 2
+                    continue
+
+        # Andernfalls normalen Eintrag übernehmen
+        merged_raw_persons.append(current)
+        i += 1
+
+    raw_persons = merged_raw_persons
 
     
     # 0) Normalisiere alle Eingaben zu Dicts mit 'name'
@@ -739,6 +728,13 @@ def split_and_enrich_persons(
 
     for p in raw_persons:
         raw_token = p["name"]
+
+        clean_name, roles = extract_role_from_raw_name(raw_token)
+        p["name"] = clean_name
+        if roles and not p.get("role"):
+            p["role"] = roles[0]
+        print(f"[DEBUG] clean='{clean_name}', role='{p.get('role')}', input='{raw_token}'")
+
 
         # 2) Extrahiere sauberes Person‑Dict
         person = extract_person_data({"name": raw_token})
