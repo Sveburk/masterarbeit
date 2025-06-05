@@ -1,0 +1,115 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[11pt
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+
+\usepackage{ifpdf}
+\ifpdf
+\usepackage{orcidlink}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmdefault]{Ligatures=TeX,Scale=1}
+
+
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Navigating Bias in AI Models of Migratorial Heritage},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\usepackage[normalem]{ulem}
+% Avoid problems with \sout in headers with hyperref
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\usepackage[margin=3cm]{geometry}
+
+
+%title page
+
+\title{Bias Is Not a Bug: Towards Methodological Awareness in AI-Assisted Humanities}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+
+\author{Sven Burkhardt \\
+\small{sven.burkhardt@unibas.ch}\\
+\small\emph{Digital Humanities Lab, University of Basel, Switzerland} \\
+\footnotesize\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}
+}
+
+\date{\vspace{-3ex}}
+
+\begin{document}
+\maketitle
+\subsection{Abstract}
+This talk examines the intersecting layers of bias that emerge when applying large language models (LLMs) to historical sources—specifically, a corpus of letters from Nazi-era Germany (1939–1945). Drawing on a Digital Humanities project that uses neural networks and LLMs to extract named entities (persons, roles, places, organizations), I argue that machine bias does not act in isolation, but rather interacts with and amplifies existing archival and source-based distortions.
+
+The first layer is archival bias: not all individuals, voices, or materials are preserved equally. The second is source bias: even within surviving documents, representation is uneven—particularly for women and marginalized groups. For example, female actors often appear only in relational forms, making them nearly untraceable. The third layer is model bias: LLMs trained on modern or biased datasets tend to misclassify, erase, or flatten these already fragile traces.
+
+Rather than viewing these biases as mere technical errors, I propose treating them as structural epistemic problems. The talk discusses how we address these issues within the annotation pipeline by implementing review flags (needs\_review), context-sensitive deduplication, and uncertainty tracking—turning machine limitations into analytical tools.
+
+This presentation aims to offer perspectives on how we engage with AI in the humanities. Existing biases in our research data can be amplified by the tools we use—especially by powerful systems such as LLMs. What we call “AI” becomes, through our application of it, a co-producer of historical interpretation and meaning. Recognizing and documenting bias at every level—within archives, within source texts, and within computational models—is not a limitation, but a methodological necessity.
+
+This case study offers a practical and critical reflection on the ethical responsibilities of DH projects that rely on AI, and calls for bias-aware annotation frameworks that foreground what remains invisible, uncertain, or contested in historical data.
+
+\subsection{Biography}
+
+Sven Burkhardt is a master’s student in Digital Humanities and History at the University of Basel, where he also completed his bachelor’s degree in Sociology and History. His academic work explores the intersection of historical research and computational methods, with a particular interest in social networks and historical data modeling.
+
+He is currently writing his master’s thesis, which investigates personal and institutional networks in Germany between 1939–1945. The project focuses on extracting messy data from a corpus of historical letters and analyzing it using a mixed-methods approach that combines neural network–based OCR, language processing with LLMs, and algorithmic data extraction for network analysis.
+
+Alongside his studies, Sven works as a research assistant at the Digital Humanities Lab Basel (DHLab) and completed a research internship with the University of Basel’s RISE program (Research Infrastructure and Support in the Humanities). There, he contributed to projects dealing with the conceptual design of computer-assisted research, the processing and analysis of historical data, and the development of sustainable strategies for the open and reusable publication of digital research data.
+
+Beyond academia, he is actively involved in university governance and student representation. He currently serves as President of the Student Council (Studierendenrat) and is boardmember for the Studentassociation Digital Humanities (Fachgruppe Digital Humanities)\end{document}

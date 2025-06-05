@@ -5,6 +5,8 @@
   \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
 \usepackage{fontawesome5} % für ausgefallenere Emojis
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
+\newcommand{\cmark}{\ding{51}} % ✓
+\newcommand{\xmark}{\ding{55}} % ✗
 \usepackage{minted}  % Für Python-Code
 \usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
 \definecolor{LightGray}{gray}{0.9}
@@ -43,6 +45,62 @@
 
 %___________________________________________________________________________
 \noindent\hrulefill
+\section{Genderspezifischer Bias \small 02.06.2025}
+
+\textbf{Feststellung:} Rollen werden nicht genderunabhängig gegengeprüft.
+
+\faBrain~ \textbf{Analyse durch ChatGPT:}
+
+Derzeitige Lage in deinem Code:
+
+\begin{itemize}
+  \item Die Rolle-Regex \texttt{ROLE\_BEFORE\_NAME\_RE} sowie die Funktion \texttt{normalize\_and\_match\_role()} sind nicht geschlechtsspezifisch differenziert.
+  \item Fokus liegt auf maskulinen Endungen: \texttt{s, n, en, ern, em, e, er}.
+  \item Feminine Endungen wie \texttt{"in", "innen", "e"} werden nicht behandelt.
+  \item Die \texttt{ROLE\_MAPPINGS\_DE} arbeiten meist mit Grundformen wie \texttt{"Vorsitzender"}, \texttt{"Führer"}, \texttt{"Leiter"}.
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Beispiel:}
+
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{Eingabe} & \textbf{Erwartung} & \textbf{Aktuell erkannt?} \\
+\hline
+\texttt{Vorsitzende Maria Müller} & Vorsitzender & \xmark~Nein \\
+\texttt{Führerin Anna Schmidt} & Führer & \xmark~Nein \\
+\texttt{Schriftleiterin} & Schriftleiter & \xmark~Nein \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+\faCheck~ \textbf{Lösung: Gender-sensitives Suffix-Matching ergänzen}
+
+Füge in \texttt{normalize\_and\_match\_role()} folgenden Block ein:
+
+\begin{minted}[bgcolor=LightGray,fontsize=\small]{python}
+# 2b. Versuch feminine Endungen zurückzuführen
+feminine_suffixes = ["in", "innen", "e"]
+for suffix in feminine_suffixes:
+    if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
+        base = text_clean[: -len(suffix)]
+        candidate = base + "er"
+        if candidate in ROLE_MAPPINGS_DE:
+            return ROLE_MAPPINGS_DE[candidate]
+\end{minted}
+
+\vspace{0.5em}
+\textbf{Wirkung:}
+
+\begin{itemize}
+  \item \texttt{Führerin} $\rightarrow$ \texttt{Führer}
+  \item \texttt{Lehrerin} $\rightarrow$ \texttt{Lehrer}
+  \item \texttt{Vorsitzende} $\rightarrow$ \texttt{Vorsitzender}
+\end{itemize}
+
+\vspace{1em}
+\noindent\hrulefill
+
 \section{Prozessablauf Grafiken erstellen\small 29.05.2025}
 
 \begin{center}

@@ -100,6 +100,7 @@ from Module import (
     map_role_to_schema_entry,
     extract_role_in_token,
     process_text,
+    extract_role_from_raw_name,
 
     # PlaceMatcher
     PlaceMatcher,
@@ -1682,9 +1683,10 @@ def process_single_xml(
             print(f"[RETRY] Ort '{p.get('name')}' hatte keinen ID-Treffer – versuche API-Match")
             try:
                 print(f"[DEBUG] place_m.surrounding_place_lines BEFORE match_place: {place_m.surrounding_place_lines}")
-                retry_match = place_m.match_place(p.get("name"))
-                if retry_match:
-                    data = retry_match["data"]
+                retry_matches = place_m.match_place(p.get("name"))
+                if retry_matches:
+                    best = max(retry_matches, key=lambda x: x.get("score", 0))  # bestes Match auswählen
+                    data = best.get("data", {})
                     print(f"[MATCHED-API] '{p['name']}' → {data.get('name')} (Nodegoat-ID: {data.get('nodegoat_id')})")
 
                     # Ort konstruieren und ergänzen (aber mit needs_review=True)
@@ -1699,9 +1701,14 @@ def process_single_xml(
                     )
                     if not any(pl.name == new_place.name and pl.nodegoat_id == new_place.nodegoat_id for pl in mentioned_places):
                         mentioned_places.append(new_place)
+
             except Exception as e:
                 print(f"[WARN] API-Fallback für Ort '{p['name']}' fehlgeschlagen: {e}")
+
+    with open(os.path.join(OUTPUT_DIR, "unmatched", "unmatched_places.json"), "w", encoding="utf-8") as f:
+        json.dump(place_m.unmatched_places, f, ensure_ascii=False, indent=2)
     mentioned_dates = custom_data.get("dates", [])
+
 
     # 14) Event
     events = extract_events_from_xml(xml_path, place_m)
@@ -1846,7 +1853,7 @@ def process_single_xml(
         final_persons=[p.to_dict() for p in doc.mentioned_persons],
         final_places=mentioned_places,
         final_roles=custom_data.get("roles", []),
-        unmatched_path=Path(OUTPUT_DIR) / "unmatched.json"
+        unmatched_dir=Path(OUTPUT_DIR) / "unmatched"
     )
 
     needs_review_persons = [
@@ -1857,7 +1864,10 @@ def process_single_xml(
 
     if needs_review_persons:
         unmatched_dir = Path(OUTPUT_DIR) / "unmatched"
+        if unmatched_dir.exists() and unmatched_dir.is_file():
+            raise RuntimeError(f"[Fehler] {unmatched_dir} ist eine Datei, aber ein Verzeichnis wurde erwartet.")
         unmatched_dir.mkdir(parents=True, exist_ok=True)
+
 
         unmatched_file = unmatched_dir / "unmatched.json"
 

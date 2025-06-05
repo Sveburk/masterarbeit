@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} 2b. Versuch feminine Endungen zurückzuführen}
+\PYG{n}{feminine\PYGZus{}suffixes} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}in\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}innen\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}e\PYGZdq{}}\PYG{p}{]}
+\PYG{k}{for} \PYG{n}{suffix} \PYG{o+ow}{in} \PYG{n}{feminine\PYGZus{}suffixes}\PYG{p}{:}
+    \PYG{k}{if} \PYG{n}{text\PYGZus{}clean}\PYG{o}{.}\PYG{n}{endswith}\PYG{p}{(}\PYG{n}{suffix}\PYG{p}{)} \PYG{o+ow}{and} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{text\PYGZus{}clean}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{suffix}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{p}{:}
+        \PYG{n}{base} \PYG{o}{=} \PYG{n}{text\PYGZus{}clean}\PYG{p}{[:} \PYG{o}{\PYGZhy{}}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{suffix}\PYG{p}{)]}
+        \PYG{n}{candidate} \PYG{o}{=} \PYG{n}{base} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}er\PYGZdq{}}
+        \PYG{k}{if} \PYG{n}{candidate} \PYG{o+ow}{in} \PYG{n}{ROLE\PYGZus{}MAPPINGS\PYGZus{}DE}\PYG{p}{:}
+            \PYG{k}{return} \PYG{n}{ROLE\PYGZus{}MAPPINGS\PYGZus{}DE}\PYG{p}{[}\PYG{n}{candidate}\PYG{p}{]}
+\end{Verbatim}

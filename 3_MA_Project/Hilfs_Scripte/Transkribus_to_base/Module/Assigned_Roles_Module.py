@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 import xml.etree.ElementTree as ET  
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 from pathlib import Path
 from Module.document_schemas import Person
 from Module.organization_matcher import (KNOWN_ORGS, extract_organization, match_organization)
@@ -56,11 +56,32 @@ ROLE_AFTER_NAME_RE = re.compile(
     re.IGNORECASE | re.UNICODE
 )
 ROLE_BEFORE_NAME_RE = re.compile(
-    rf"(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})\s+(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*"
-    rf"(?: (?P<organisation>[A-ZÄÖÜ][\w\s\-]+)\s+ )?"
-    rf"(?P<name>[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)?)",
-    re.IGNORECASE | re.UNICODE
+    rf"""
+    (?P<role>
+        (?:
+            {"|".join(map(re.escape, POSSIBLE_ROLES))}
+        )
+        (?:s|es|en|em|ern|e|er|n)?  # Genitiv- und Pluralformen zulassen
+    )
+    \s+
+    (?:
+        des|der|dem|den|vom|zum|zur|im|in|am|an|beim
+    )?
+    \s*
+    (?:
+        (?P<organisation>
+            (?:[A-ZÄÖÜ][\w\-]+(?:\s+(?:der|des|dem|den|vom)?\s*)?){{1,4}}
+        )
+        \s+
+    )?
+    (?P<name>
+        [A-ZÄÖÜ][\w\-]+
+        (?:\s+[A-ZÄÖÜ][\w\-]+)*
+    )
+    """,
+    re.IGNORECASE | re.UNICODE | re.VERBOSE
 )
+
 STANDALONE_ROLE_RE = re.compile(
     rf"^\s*(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*(?P<role>{'|'.join(map(re.escape, POSSIBLE_ROLES))})"
     rf"(?:\s*(?:des|der|dem|den|vom|zum|zur|im|in|am|an|beim)?\s*(?P<organisation>[A-ZÄÖÜ][\w\s\-]+))?\s*$",
@@ -149,22 +170,39 @@ def normalize_and_match_role(text: str) -> str:
     if text_clean in ROLE_MAPPINGS_DE:
         return ROLE_MAPPINGS_DE[text_clean]
 
-    # 2. Versuche über häufige Flexionsendungen zur Grundform
-    suffixes = ["en", "ern", "em", "e", "es", "n", "r", "s", "ns", "nt", "ner", "ners"]
+    # 2. Genitiv-Erkennung (z. B. „Führers“ → „Führer“)
+    if text_clean.endswith("s") and len(text_clean) > 4:
+        base = text_clean[:-1]
+        if base in ROLE_MAPPINGS_DE:
+            print(f"[DEBUG] Genitiv erkannt: {text_clean} → {base}")
+            return ROLE_MAPPINGS_DE[base]
+
+    # 3. Maskuline Flexionsendungen zurückführen (z. B. „vorsitzenden“ → „vorsitzender“)
+    suffixes = ["en", "ern", "em", "e", "n", "er", "es", "nt", "ner", "ners"]
     for suffix in suffixes:
         if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
-            base = text_clean[: -len(suffix)]
-            candidate = base + "er"
-            if candidate in ROLE_MAPPINGS_DE:
-                return ROLE_MAPPINGS_DE[candidate]
+            base = text_clean[: -len(suffix)] + "er"
+            if base in ROLE_MAPPINGS_DE:
+                print(f"[DEBUG] Maskuline Flexion erkannt: {text_clean} → {base}")
+                return ROLE_MAPPINGS_DE[base]
 
-    # 3. Startswith-Fallback
+    # 4. Feminine Rollenformen (z. B. „Führerin“ → „Führer“)
+    feminine_suffixes = ["in", "innen", "e"]
+    for suffix in feminine_suffixes:
+        if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
+            base = text_clean[: -len(suffix)] + "er"
+            if base in ROLE_MAPPINGS_DE:
+                print(f"[DEBUG] Feminine Rolle erkannt: {text_clean} → {base}")
+                return ROLE_MAPPINGS_DE[base]
+
+    # 5. Fallback: startswith
     for role in ROLE_MAPPINGS_DE:
         if role.startswith(text_clean):
+            print(f"[DEBUG] Fallback startswith: {text_clean} → {role}")
             return ROLE_MAPPINGS_DE[role]
 
+    # 6. Kein Treffer
     return ""
-
 
 # === Laden der Bekanntpersonen ===
 def load_known_persons() -> List[Dict[str, Any]]:
@@ -641,3 +679,48 @@ def process_text(full_text: str) -> Dict[str, Any]:
 
     return result
 
+def extract_role_from_raw_name(raw_name: str) -> Tuple[str, List[str]]:
+    """
+    Nutzt ROLE_BEFORE_NAME_RE + Fallbacks, um Rollennamen aus einem kombinierten Namensstring zu extrahieren.
+    Gibt zurück: (bereinigter Name, Liste erkannter Rollen).
+    """
+    name = raw_name.strip().rstrip(".,:;")
+    roles_found: List[str] = []
+
+    # 1) Regex-Extraktion (inkl. Genitivformen etc.)
+    match = ROLE_BEFORE_NAME_RE.match(name)
+    if match:
+        role_raw = match.group("role")
+        cleaned_name = match.group("name").strip()
+        org = match.group("organisation") or ""
+        role_base = normalize_and_match_role(role_raw)
+        if role_base:
+            roles_found.append(role_base)
+        print(f"[DEBUG] extract_role_from_raw_name: regex match → role='{role_raw}', org='{org}', name='{cleaned_name}'")
+        return cleaned_name, roles_found
+
+    # 2) Fallback: ", Rolle" am Ende
+    lower = name.lower()
+    for key in sorted(POSSIBLE_ROLES, key=len, reverse=True):
+        pat = rf"(?:,\s*)?{re.escape(key)}$"
+        if re.search(pat, lower):
+            canon = map_role_to_schema_entry(key)
+            roles_found.append(canon)
+            lower = re.sub(pat, "", lower).strip(' ,')
+            cleaned = lower.title()
+            print(f"[DEBUG] extract_role_from_raw_name: fallback suffix → role='{key}', name='{cleaned}'")
+            return cleaned, roles_found
+
+    # 3) Fallback: "Rolle ..." am Anfang
+    for key in sorted(POSSIBLE_ROLES, key=len, reverse=True):
+        pat = rf"^{re.escape(key)}\s+"
+        if re.search(pat, lower):
+            canon = map_role_to_schema_entry(key)
+            roles_found.append(canon)
+            lower = re.sub(pat, "", lower).strip()
+            cleaned = lower.title()
+            print(f"[DEBUG] extract_role_from_raw_name: fallback prefix → role='{key}', name='{cleaned}'")
+            return cleaned, roles_found
+
+    # 4) Keine Rolle erkannt
+    return name, roles_found

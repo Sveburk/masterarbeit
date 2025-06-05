@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from typing import List, Dict, Any, Optional, Tuple
 from Module.document_schemas import Place
 
+
 def sanitize_id(v) -> str:
     """
     Gibt eine ID exakt so zurück, wie sie im CSV steht – als String.
@@ -29,6 +30,7 @@ def extract_place_lines_from_xml(xml_root: ET.Element) -> List[str]:
 
 class PlaceMatcher:
     def __init__(self, csv_path, threshold=80, geonames_login="demo"):
+        self.unmatched_places: List[Dict[str, Any]] = []
         """
         Initialisiert den PlaceMatcher mit Pfad zur CSV-Datei, Match-Threshold und optionalem Geonames-Login.
         
@@ -76,6 +78,26 @@ class PlaceMatcher:
             self.known_name_map = {}
 
         self.surrounding_place_lines: List[str] = []
+    
+    def log_unmatched_place(self, name: str, reason: str, geonames_id=None, wikidata_id=None, nodegoat_id=None):
+        """
+        Dedupliziert und speichert einen nicht übernommenen Ort in self.unmatched_places
+        """
+        key = (name.strip().lower(), geonames_id or "", wikidata_id or "", nodegoat_id or "")
+        already_logged = any(
+            (entry["input"].strip().lower(), entry.get("geonames_id", ""), entry.get("wikidata_id", ""), entry.get("nodegoat_id", ""))
+            == key
+            for entry in self.unmatched_places
+        )
+        if not already_logged:
+            self.unmatched_places.append({
+                "input": name.strip(),
+                "geonames_id": geonames_id or "",
+                "wikidata_id": wikidata_id or "",
+                "nodegoat_id": nodegoat_id or "",
+                "reason": reason
+            })
+
 
     def _normalize_place_name(self, name: str) -> str:
         name = name.lower()
@@ -310,6 +332,8 @@ class PlaceMatcher:
                     return [self._build_match_result(entry, input_place, best_score, f"fuzzy_partial ({best_score})")]
                 else:
                     print(f"[DEBUG] Best Match '{best_match}' ist zu kurz für Eingabe '{input_place}'")
+                    self.log_unmatched_place(input_place, "best match too short")
+                    return None
 
             # 4) Weitere Fuzzy-Matchstrategien
             match_strategies = [
@@ -337,7 +361,8 @@ class PlaceMatcher:
             geonames_result_id = lookup_geonames(input_place, username=self.geonames_login)
             wikidata_result_id = lookup_wikidata(input_place)
 
-            return [{
+            # Zusammenbauen des Datenobjekts
+            unmatched_entry = {
                 "matched_name": None,
                 "matched_raw_input": input_place.strip(),
                 "score": 0,
@@ -350,7 +375,20 @@ class PlaceMatcher:
                     "alternate_place_name": "",
                     "needs_review": True
                 }
-            }]
+            }
+
+            # In die unmatched-Liste eintragen
+            self.log_unmatched_place(
+                name=input_place,
+                reason="not in Groundtruth; external lookup used",
+                geonames_id=geonames_result_id,
+                wikidata_id=wikidata_result_id,
+                nodegoat_id=""
+            )
+
+
+            return [unmatched_entry]
+
 
         except Exception as e:
             logging.warning(f"Fehler beim Orts-Matching: {e}")

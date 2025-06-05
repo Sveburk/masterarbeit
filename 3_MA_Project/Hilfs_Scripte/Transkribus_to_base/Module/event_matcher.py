@@ -28,17 +28,19 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
                 continue
             if token_clean[0].islower():
                 continue
-            match = place_matcher.match_place(token)
-            if match:
-                places.append(Place(
-                    name=match["data"].get("name", ""),
-                    type="",
-                    alternate_place_name=match["data"].get("alternate_place_name", ""),
-                    geonames_id=match["data"].get("geonames_id", ""),
-                    wikidata_id=match["data"].get("wikidata_id", ""),
-                    nodegoat_id=match["data"].get("nodegoat_id", "")
-                ))
 
+            match_list = place_matcher.match_place(token)
+            if match_list:
+                # Nimm besten Treffer
+                best_match = match_list[0]
+                places.append(Place(
+                    name=best_match["data"].get("name", ""),
+                    type="",
+                    alternate_place_name=best_match["data"].get("alternate_place_name", ""),
+                    geonames_id=best_match["data"].get("geonames_id", ""),
+                    wikidata_id=best_match["data"].get("wikidata_id", ""),
+                    nodegoat_id=best_match["data"].get("nodegoat_id", "")
+                ))
         # Datum (aus erster Zeile bzw. Blockquelle)
         dates = extract_custom_date(line_obj, namespace)
 
@@ -101,23 +103,19 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
 
         is_event_line = "event" in custom_attr.lower()
 
-        if is_event_line:
-            if not buffer:
+        if buffer:
+            # Prüfe, ob die aktuelle Zeile zur vorherigen passt (z. B. Fortsetzung)
+            if is_event_line or is_continuation(buffer[-1], line_text, text_line):
                 buffer.append(line_text)
-                line_obj = text_line
             else:
-                prev = buffer[-1]
-                if is_continuation(prev, line_text, text_line):
-                    buffer.append(line_text)
-                else:
-                    events.append(build_event(buffer, line_obj))
-                    buffer = [line_text]
-                    line_obj = text_line
-        else:
-            if buffer:
+                # Bisherigen Block abschließen
                 events.append(build_event(buffer, line_obj))
-                buffer = []
-                line_obj = None
+                buffer = [line_text] if is_event_line else []
+                line_obj = text_line if is_event_line else None
+        else:
+            if is_event_line:
+                buffer = [line_text]
+                line_obj = text_line
 
     if buffer:
         events.append(build_event(buffer, line_obj))
