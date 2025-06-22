@@ -16,9 +16,13 @@ from Module.Assigned_Roles_Module import (
     ROLE_BEFORE_NAME_RE,
     map_role_to_schema_entry,
     ROLE_MAPPINGS_DE,
-    extract_role_from_raw_name,
+    extract_role_from_raw_name,)
+from Module.letter_metadata_matcher import (
+    _RECIPIENT_RE,
+    INDIRECT_RECIPIENT_PATTERNS,
+    GREETING_PATTERNS as CLOSING_PATTERNS,
+    ROLE_PATTERNS, direct_patterns
 )
-
 # ============================================================================
 #   BLACKLIST & CONFIGURATION
 # ============================================================================
@@ -75,12 +79,33 @@ CSV_PATH_KNOWN_PERSONS = os.path.expanduser(
     "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
 )
 
+def clean_string(val):
+    if val is None:
+        return ""
+    if isinstance(val, float) and pd.isna(val):
+        return ""
+    if isinstance(val, str):
+        v = val.strip()
+        if v.lower() == "nan":
+            return ""
+        return v
+    return str(val).strip()
+
 
 def load_known_persons_from_csv(
     path: str = CSV_PATH_KNOWN_PERSONS,
 ) -> List[Dict[str, str]]:
     def safe_strip(val: Any) -> str:
-        return str(val).strip() if isinstance(val, str) and pd.notna(val) else ""
+        if val is None:
+            return ""
+        if isinstance(val, float) and pd.isna(val):
+            return ""
+        if isinstance(val, str):
+            v = val.strip()
+            if v.lower() == "nan":
+                return ""
+            return v
+        return str(val).strip()
 
     try:
         df = pd.read_csv(path, sep=";", dtype=str, keep_default_na=False)
@@ -122,8 +147,6 @@ def load_known_persons_from_csv(
                 "weiblich": "female",
                 "divers": "other"
             }.get(raw_gender, "")
-            if r['familyname'] == "Tröndle":
-                print(f"[DEBUG] {r['familyname']} → Mapped Gender: '{gender}'")
 
             if raw_gender and not gender:
                 print(f"[WARN] Unbekannter Gender-Wert: '{raw_gender}' in Zeile: {r.to_dict()}")
@@ -358,9 +381,11 @@ def ocr_error_match(
     return best_match, best_dist, score
 
 
+
 # ----------------------------------------------------------------------------
 # Fuzzy Matching
 # ----------------------------------------------------------------------------
+
 def fuzzy_match_name(
     name: str, candidates: List[str], threshold: int
 ) -> Tuple[Optional[str], int]:
@@ -407,6 +432,40 @@ def match_person(
     fn_stripped, roles = extract_role_from_raw_name(fn_raw)
     fn = re.sub(r"[():]", "", fn_stripped).strip()
     ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
+    # -------------------------
+    #  UNIQUE-NAME HEURISTIK
+    # -------------------------
+    # Wenn nur Vorname da ist und dieser in der Groundtruth genau einmal vorkommt,
+    # dann ist es definitiv diese Person.
+    if fn and not ln:
+        matches = [
+            c for c in candidates
+            if normalize_name_string(c["forename"]) == normalize_name_string(fn)
+        ]
+        if len(matches) == 1:
+            result = dict(matches[0])
+            result.update({
+                "confidence": "single_name_in_GT",
+                "needs_review": False,
+                "match_score": 90,           
+            })
+            return result, result["match_score"]
+
+    if ln and not fn:
+        matches = [
+            c for c in candidates
+            if normalize_name_string(c["familyname"]) == normalize_name_string(ln)
+        ]
+        if len(matches) == 1:
+            result = dict(matches[0])
+            result.update({
+                "confidence": "single_name_in_GT",
+                "needs_review": False,
+                "match_score": 90,
+            })
+            return result, result["match_score"]
+
+
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
 
     context = str(person.get("content_transcription") or "")
@@ -504,14 +563,9 @@ def match_person(
         ) and norm_ln == normalize_name_string(c["forename"]):
             return dict(c), 100
 
-    if best:
-        print(f"[DEBUG-MATCH] best match for {fn} {ln}: {best} → gender={best.get('gender')}")
-    else:
-        print(f"[DEBUG-MATCH] best match for {fn} {ln}: None → kein gender verfügbar")
-
     if best_score >= max(thr.values()):
         result = dict(best)
-        print(f"[DEBUG] Gender im best match: {result.get('gender')}")
+
         result["gender"] = (
             result.get("gender", "")  # bevorzugt, falls im dict schon gesetzt (oft identisch mit best.get("gender", ""))
             or best.get("gender", "")  # falls aus irgendeinem Grund im dict leer
@@ -648,7 +702,7 @@ def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
         map_role_to_schema_entry(normalized_role) if normalized_role else ""
     )
 
-    raw_gender = safe_strip(row.get("gender", "")).lower()
+    raw_gender = clean_string(row.get("gender", "")).lower()
     gender = {
         "männlich": "male",
         "weiblich": "female",
@@ -658,18 +712,18 @@ def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
     return {
         "forename": forename,
         "familyname": familyname,
-        "alternate_name": safe_strip(row.get("alternate_name", "")),
+        "alternate_name": clean_string(row.get("alternate_name", "")),
         "title": title,
-        "nodegoat_id": safe_strip(row.get("nodegoat_id", "")),
-        "home": safe_strip(row.get("home", "")),
-        "birth_date": safe_strip(row.get("birth_date", "")),
-        "death_date": safe_strip(row.get("death_date", "")),
-        "organisation": safe_strip(row.get("organisation", "")),
+        "nodegoat_id": clean_string(row.get("nodegoat_id", "")),
+        "home": clean_string(row.get("home", "")),
+        "birth_date": clean_string(row.get("birth_date", "")),
+        "death_date": clean_string(row.get("death_date", "")),
+        "organisation": clean_string(row.get("organisation", "")),
         "stripped_role": roles,
         "role": normalized_role,
         "role_schema": role_schema,
         "gender": gender,
-        "associated_organisation": safe_strip(row.get("associated_organisation", "")),
+        "associated_organisation": clean_string(row.get("associated_organisation", "")),
         "confidence": "",
         "match_score": 0,
         "needs_review": True if not row.get("nodegoat_id") else False,
@@ -703,11 +757,10 @@ def infer_gender_for_person(
 
     fn = person.get("forename", "").strip().lower()
     ln = person.get("familyname", "").strip().rstrip(".").lower()
-    print(f"[CHECK] Prüfe Gender für: {fn} {ln}")
+
 
     # 2. Titelbasiertes Matching (aus Transkribus)
     title = (person.get("title") or "").strip().lower()
-    print(f"[CHECK] Titel: '{title}'")
     title_map = {
         #männliche Titel
         "herr": "male", "herrn": "male", "witwer": "male",
@@ -729,16 +782,15 @@ def infer_gender_for_person(
         if fn_known == fn and ln_known == ln:
             gender_raw = known.get("gender", "").strip().lower()
             if gender_raw in {"männlich", "male"}:
-                print(f"[MATCH] CSV-Gender: {gender_raw} → male")
-                return "Männlich"
+                
+                return "male"
             elif gender_raw in {"weiblich", "female"}:
-                print(f"[MATCH] CSV-Gender: {gender_raw} → female")
-                return "Weiblich"
+                
+                return "female"
 
             else:
                 print(f"[WARN] CSV-Gender ungültig oder leer: '{gender_raw}'")
 
-    print(f"[NO MATCH] Kein Gender gefunden für {fn} {ln}")
     return ""
 
 
@@ -762,6 +814,58 @@ def detect_and_convert_role_only_entries(
 
     return person
 
+import re
+
+# benutze deine bereits definierten Patterns
+from Module.letter_metadata_matcher import (
+    _RECIPIENT_RE,
+    INDIRECT_RECIPIENT_PATTERNS,
+    GREETING_PATTERNS as CLOSING_PATTERNS,
+    ROLE_PATTERNS,
+)
+
+def extract_metadata_names(text: str) -> list[str]:
+    from Module.letter_metadata_matcher import _CLOSING_RE, INDIRECT_RECIPIENT_PATTERNS, direct_patterns
+    names = []
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        # 1) Direkte Adressierung (An…, Herrn…, Frau…)
+        m = _RECIPIENT_RE.match(line)
+        if m:
+            # „An Frau Maria Müller“ → „Maria Müller“
+            cleaned = re.sub(r'^(?:An\s+|Herrn?\s+|Frau\s+|Liebe[rn]?\s+)', '',
+                             line, flags=re.IGNORECASE).strip()
+            names.append(cleaned)
+            continue
+
+        # 2) Indirekte „zu Händen von …“
+        for pat in INDIRECT_RECIPIENT_PATTERNS:
+            mi = re.search(pat, line, flags=re.IGNORECASE)
+            if mi:
+                # Gruppe 1=Vorname, 2=Nachname
+                names.append(f"{mi.group(1)} {mi.group(2)}")
+                break
+
+        # 3) Direkte Anrede‐Patterns („Lieber Otto“, „Liebe Maria“)
+        for pat in direct_patterns:
+            md = re.search(pat, line)
+            if md:
+                names.append(md.group(1))
+                break
+
+        # 4) Closing‐Formeln („Mit freundlichen Grüßen“, „Hochachtungsvoll“)
+        #    und davor ggf. den Namen
+        if _CLOSING_RE.search(line):
+            # suche nach „…,\n<Name>“ oder zeilenvorher nach Großwortfolge
+            if i > 0:
+                prev = lines[i-1].strip()
+                # z.B. „Otto Müller,“
+                m2 = re.match(r"^([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)[,\.]?$", prev)
+                if m2:
+                    names.append(m2.group(1))
+            continue
+
+    return names
 
 # ----------------------------------------------------------------------------
 # Split und Enrichment
@@ -772,19 +876,24 @@ def split_and_enrich_persons(
     document_id: Optional[str] = None,
     candidates: Optional[List[Dict[str, str]]] = None,
 ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
+    from Module.Assigned_Roles_Module import POSSIBLE_ROLES
 
-    print(
-        f"[DEBUG] Split_and_enrich in Person_matcher.py erhält folgende raw_persons: {raw_persons}"
-    )
 
-    print("===========>", raw_persons)
-    for p in raw_persons:
-        for key, value in p.items():
-            if (isinstance(key, str) and "Adolf" in key) or (isinstance(value, str) and "Adolf" in value):
-                print("**********************>", key, value)
+    # print(
+    #     f"[DEBUG] Split_and_enrich in Person_matcher.py erhält folgende raw_persons: {raw_persons}"
+    # )
+
+    # print("===========>", raw_persons)
+    # for p in raw_persons:
+    #     for key, value in p.items():
+    #         if (isinstance(key, str) and "Adolf" in key) or (isinstance(value, str) and "Adolf" in value):
+    #             print("**********************>", key, value)
 
     # --- 1. Zeilen zusammenführen ---
     merged_raw_persons = []
+    meta_names = extract_metadata_names(content_transcription)
+    for nm in meta_names:
+        merged_raw_persons.append({"name": nm})
     i = 0
     while i < len(raw_persons):
         current = raw_persons[i]
@@ -795,9 +904,15 @@ def split_and_enrich_persons(
             and current.get("familyname")
             and current.get("nodegoat_id")
         ):
+            # CLEANUP!
+            current["forename"] = clean_string(current.get("forename"))
+            current["familyname"] = clean_string(current.get("familyname"))
+            current["alternate_name"] = clean_string(current.get("alternate_name"))
+            # und ggf. weitere Felder wie "title", "role" etc., falls betroffen
             merged_raw_persons.append(current)
             i += 1
             continue
+ 
 
         current_name = (
             current.get("name", "")
@@ -958,13 +1073,13 @@ def split_and_enrich_persons(
 
     for person in unmatched:
         name = person["raw_token"].strip()
-        if INITIAL_SURNAME.match(name):
+        if is_initial(name):
             person["match_score"] = 50
             person["confidence"] = "initial"
             additional.append(person)
             continue
 
-        if name in SOLE_ROLE:
+        if name in POSSIBLE_ROLES:
             role_entry = {
                 "forename": "",
                 "familyname": "",
@@ -987,8 +1102,8 @@ def split_and_enrich_persons(
         parts = [p.strip() for p in name.split(",")]
         if (
             len(parts) == 2
-            and SINGLE_NAME.match(parts[0])
-            and parts[1] in SOLE_ROLE
+            and normalize_name(parts[0])
+            and parts[1] in POSSIBLE_ROLES
         ):
             person["forename"] = ""
             person["familyname"] = parts[0]
@@ -999,7 +1114,7 @@ def split_and_enrich_persons(
             additional.append(person)
             continue
 
-        if SINGLE_NAME.match(name):
+        if normalize_name(name):
             person["match_score"] = 30
             person["confidence"] = "single-name"
             additional.append(person)
@@ -1023,6 +1138,7 @@ def infer_role_and_organisation(
     forename: str = "",
     familyname: str = "",
 ) -> Tuple[str, str]:
+    from Module.letter_metadata_matcher import _CLOSING_RE, _RECIPIENT_RE, GREETING_PATTERNS, RECIPIENT_PATTERNS, INDIRECT_RECIPIENT_PATTERNS
     """
     Analysiert die nachfolgende Zeile auf Rollen + Organisationen.
     Beispiel:
@@ -1035,7 +1151,7 @@ def infer_role_and_organisation(
 
     next_line = lines[index + 1].strip()
 
-    # Versuch 1: Klassisches Muster: <Rolle> des/der <Organisation>
+    # 1) Klassisches Muster: "<Rolle> des/der <Organisation>"
     m = re.match(
         r"^(?P<role>[\w\s\-ÄÖÜäöüß]+?)\s+(?:des|der|vom|von)\s+(?P<org>.+)$",
         next_line,
@@ -1043,15 +1159,19 @@ def infer_role_and_organisation(
     if m:
         return m.group("role").strip(), m.group("org").strip()
 
-    # Versuch 2: Kontext mit vollem Namen kombinieren
+    # 2) Wenn der volle Name in der aktuellen Zeile vorkommt
     full_name = f"{forename} {familyname}".strip().lower()
-    current_line = lines[index].strip().lower()
+    if full_name and full_name in lines[index].lower():
+        parts = next_line.split()
+        if parts and any(k in next_line.lower() for k in ("leiter", "führer")):
+            return parts[0].strip(), " ".join(parts[1:]).strip()
 
-    if full_name and full_name in current_line:
-        if "leiter" in next_line.lower() or "führer" in next_line.lower():
-            role_candidate = next_line.split()[0]
-            org_candidate = " ".join(next_line.split()[1:])
-            return role_candidate.strip(), org_candidate.strip()
+    # 3) Beliebiges Rollen-Pattern
+    m_role = ROLE_PATTERNS.search(next_line)
+    if m_role:
+        role = m_role.group(0).strip()
+        # org nicht gefunden → leer lassen oder mit map_role_to_schema_entry normalisieren
+        return role, ""
 
     return "", ""
 

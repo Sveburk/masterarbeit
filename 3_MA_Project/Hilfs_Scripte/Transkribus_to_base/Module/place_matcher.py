@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from Module.document_schemas import Place
 
 
+
 def sanitize_id(v) -> str:
     """
     Gibt eine ID exakt so zurück, wie sie im CSV steht – als String.
@@ -18,17 +19,101 @@ def sanitize_id(v) -> str:
         return ""
     return str(v).strip()
 
-def extract_place_lines_from_xml(xml_root: ET.Element) -> List[str]:
-        lines = []
-        for tl in xml_root.findall(".//{*}TextLine"):
-            custom = tl.attrib.get("custom", "")
-            if "place" in custom:
-                unicode_el = tl.find(".//{*}Unicode")
-                if unicode_el is not None and unicode_el.text:
-                    lines.append(unicode_el.text.strip())
-        return lines
+def safe_split_semicolon(val):
+    """
+    Gibt eine Liste von Strings zurück, egal ob Input String, List oder Dict ist.
+    - Bei String: .split(";")
+    - Bei List:  einfach zurückgeben
+    - Bei Dict:  Werte als Liste zurückgeben
+    - Sonst:     leere Liste
+    """
+    if isinstance(val, str):
+        return [v.strip() for v in val.split(";") if v.strip()]
+    elif isinstance(val, list):
+        return val
+    elif isinstance(val, dict):
+        # Im Fehlerfall: alles als String nehmen
+        print(f"[WARN] safe_split_semicolon: Dict statt String/List – Inhalt: {val}")
+        return list(val.values())
+    else:
+        print(f"[WARN] safe_split_semicolon: Unerwarteter Typ: {type(val)} – Inhalt: {val}")
+        return []
+
+
+def extract_places_from_textline_custom(custom: str) -> List[Dict[str, str]]:
+    """
+    Extrahiert alle Orte (und optionale IDs, placeName etc.) aus einem Custom-String.
+    Rückgabe: Liste von Dicts mit allen vorhandenen Feldern.
+    """
+    place_pattern = r"place\s*\{([^}]*)\}"
+    results = []
+    for m in re.finditer(place_pattern, custom):
+        place_str = m.group(1)
+        d = {}
+        print(type(place_str), place_str)
+        # Hier die sichere Funktion nutzen:
+        for field in safe_split_semicolon(place_str):
+            if ":" in field:
+                k, v = field.split(":", 1)
+                d[k.strip()] = v.strip()
+        results.append(d)
+    return results
+
+def extract_place_lines_from_xml(xml_root: ET.Element) -> List[Dict[str, Any]]:
+    lines = []
+    for tl in xml_root.findall(".//{*}TextLine"):
+        custom = tl.attrib.get("custom", "")
+        if "place" in custom:
+            unicode_el = tl.find(".//{*}Unicode")
+            line_text = unicode_el.text.strip() if unicode_el is not None and unicode_el.text else ""
+            place_pattern = r"(place|creation_place|recipient_place)\s*\{([^}]*)\}"
+            place_tags = []
+            for m in re.finditer(place_pattern, custom):
+                tag = m.group(1)
+                fields_str = m.group(2)
+                d = {"tag": tag}
+                for field in safe_split_semicolon(fields_str):
+                    if isinstance(field, str) and ":" in field:
+                        k, v = field.split(":", 1)
+                        d[k.strip()] = v.strip()
+                    else:
+                        print(f"[WARN] Unerwarteter Typ/Feld in place_str: {field} ({type(field)})")
+
+                # Extrahiere Namen aus offset/length, falls vorhanden
+                if "offset" in d and "length" in d and line_text:
+                    try:
+                        offset = int(d["offset"])
+                        length = int(d["length"])
+                        raw_name = line_text[offset:offset+length]
+                        d["raw_extractedName"] = raw_name
+                        # initialer extracted
+                        d["extracted_placeName"] = raw_name
+                    except Exception:
+                        d["raw_extractedName"] = ""
+                        d["extracted_placeName"] = ""
+                # placeName explizit im Tag überschreibt nur extracted_placeName,
+                # raw_extractedName bleibt erhalten
+                if "placeName" in d and d["placeName"]:
+                    d["extracted_placeName"] = d["placeName"]
+                place_tags.append(d)
+            lines.append({
+                "line_text": line_text,
+                "places": place_tags
+            })
+    return lines
+
 
 class PlaceMatcher:
+    def safe_split_semicolon(value):
+        if isinstance(value, str):
+            return value.split(";")
+        elif isinstance(value, list):
+            return value
+        elif isinstance(value, dict):
+            return list(value.values())
+        else:
+            return []
+
     def __init__(self, csv_path, threshold=80, geonames_login="demo"):
         self.unmatched_places: List[Dict[str, Any]] = []
         """
@@ -60,7 +145,7 @@ class PlaceMatcher:
             self.alt_name_to_main = {}
             for _, row in self.places_df.iterrows():
                 alt_names_raw = str(row.get("alternate_place_name", "")).lower()
-                alt_names = [name.strip() for name in alt_names_raw.split(";") if name.strip()]
+                alt_names = [name.strip() for name in safe_split_semicolon(alt_names_raw) if name.strip()]                
                 main_name = row.get("name")
                 for alt in alt_names:
                     self.alt_name_to_main[alt] = main_name
@@ -112,8 +197,18 @@ class PlaceMatcher:
         Erzeugt kombinierte Ortsnamen aus benachbarten Zeilen ±1 und Wörter ±window_size.
         Nutzt self.surrounding_place_lines.
         """
-        def tokenize(line: str) -> List[str]:
+        def tokenize(line):
+            if isinstance(line, dict):
+                if "line_text" in line:
+                    line = line["line_text"]
+                else:
+                    print(f"[WARN] Kein String in tokenize: {line} ({type(line)})")
+                    return []
+            if not isinstance(line, str):
+                print(f"[WARN] Kein String in tokenize: {line} ({type(line)})")
+                return []
             return [w.strip(".,;()[]").lower() for w in line.split() if w.strip(".,;()[]")]
+
 
         lines_tokens = [tokenize(line) for line in self.surrounding_place_lines]
         combined_names = set()
@@ -212,7 +307,7 @@ class PlaceMatcher:
                 if primary_name:
                     merged_places[place_id]["all_variants"].add(primary_name)
                 if alt_name:
-                    alt_names_split = [n.strip() for n in alt_name.split(";") if n.strip()]
+                    alt_names_split = [n.strip() for n in safe_split_semicolon(alt_name) if n.strip()]
                     for alt in alt_names_split:
                         merged_places[place_id]["all_variants"].add(alt)
 
@@ -293,9 +388,28 @@ class PlaceMatcher:
 
 
     def match_place(self, input_place: str) -> Optional[List[Dict[str, Any]]]:
-        if not input_place or not input_place.strip():
-            print(f"[DEBUG] Empty input_place: '{input_place}'")
-            return None
+        for line in self.surrounding_place_lines:
+            for tag in line.get("places", []):
+                # wir vergleichen jetzt mit raw_extractedName, nicht mit placeName!
+                if tag.get("raw_extractedName") == input_place and tag.get("placeName"):
+                    real_name = tag["placeName"]
+                    # Ground-Truth-Lookup im DataFrame
+                    gt_df = self.places_df[self.places_df["name"] == real_name]
+                    if not gt_df.empty:
+                        row = gt_df.iloc[0].to_dict()
+                        return [ self._build_match_result(
+                            entry={
+                                "matched_name": row["name"],
+                                "all_variants": [row["name"]],
+                                "data": row
+                            },
+                            raw_input=input_place,
+                            score=120,
+                            method="custom_tag_placeName"
+                        ) ]
+            if not input_place or not input_place.strip():
+                print(f"[DEBUG] Empty input_place: '{input_place}'")
+                return None
 
         try:
             normalized_input = self._normalize_place_name(input_place)
@@ -303,7 +417,7 @@ class PlaceMatcher:
             # 0) Kombinierte Ortsnamen aus Kontext
             combined_match = self._match_combined_place_from_context(input_place)
             if combined_match:
-                return [combined_match]  # 🔁 LISTEN-WRAPPING
+                return combined_match  # 🔁 LISTEN-WRAPPING
 
             variants = [v for v in self.known_name_map.keys() if len(v) > 3]
 
@@ -387,69 +501,86 @@ class PlaceMatcher:
             )
 
 
-            return [unmatched_entry]
+            return unmatched_entry
 
 
         except Exception as e:
             logging.warning(f"Fehler beim Orts-Matching: {e}")
+            print(f"[ERROR] Fehler beim Matching von '{input_place}': {e}")
             return None
 
     def is_known_place(self, input_place: str):
-        return self.match_place(input_place) is not None
+        result = self.match_place(input_place)
+        return bool(result)  
     
 
     def deduplicate_places(
-            self,
-            raw_places: List[Dict[str, Any]],
-            document_id: Optional[str] = None
-        ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        self,
+        raw_places: List[Dict[str, Any]],
+        document_id: Optional[str] = None
+    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
         """
         Entfernt Duplikate in raw_places und teilt auf in:
         - matched: alle Treffer (auch fuzzy ohne nodegoat_id)
         - unmatched: nur die mit matched_name=None
-        
+
         Optimierte Version mit nodegoat_id-Priorisierung und Gruppierung
         """
         place_groups = {}
         matched = []
         unmatched = []
-
+        
         # 1. Phase: Gruppiere Orte nach nodegoat_id oder normalisiertem Namen
         for pl in raw_places:
             data = pl.get("data", {})
             # Primärer Schlüssel: nodegoat_id (falls vorhanden) oder normalisierter Name
             key = data.get("nodegoat_id") or self._normalize_place_name(pl.get("matched_raw_input", ""))
-            
+
             if not key:
                 continue
-                
+
             if key not in place_groups:
                 place_groups[key] = []
             place_groups[key].append(pl)
-        
+
         # 2. Phase: Wähle für jede Gruppe den besten Eintrag aus
         for key, group in place_groups.items():
             # Priorisiere Einträge mit nodegoat_id
             entries_with_id = [p for p in group if p.get("data", {}).get("nodegoat_id")]
-            
+
             if entries_with_id:
                 # Nimm den Eintrag mit dem höchsten Score
                 best_entry = sorted(entries_with_id, key=lambda p: p.get("score", 0), reverse=True)[0]
-                
+
                 # Sammle alle original inputs für alternate_place_name
                 orig_inputs = set()
                 for entry in group:
                     orig_input = entry.get("matched_raw_input", "")
                     if orig_input and orig_input != best_entry.get("matched_name", ""):
                         orig_inputs.add(orig_input)
-                
+
                 # Füge Originaleinträge zu alternate_place_name hinzu, wenn nicht schon dort
                 if orig_inputs:
-                    alt_names = best_entry.get("data", {}).get("alternate_place_name", "").split(";")
+                    alt_name_field = best_entry.get("data", {}).get("alternate_place_name", "")
+
+                    # Sicherstellen, dass wir eine Liste von Namen bekommen, egal ob input String, List oder Dict
+                    if isinstance(alt_name_field, str):
+                        alt_names = safe_split_semicolon(alt_name_field)
+                    elif isinstance(alt_name_field, list):
+                        alt_names = alt_name_field
+                    elif isinstance(alt_name_field, dict):
+                        print(f"[WARN] alternate_place_name ist Dict, kein String! Inhalt: {alt_name_field}")
+                        alt_names = list(alt_name_field.values())
+                    else:
+                        print(f"[WARN] Unerwarteter Typ für alternate_place_name: {type(alt_name_field)} Inhalt: {alt_name_field}")
+                        alt_names = []
+
                     alt_names.extend(orig_inputs)
-                    alt_names = [n.strip() for n in alt_names if n.strip()]
-                    best_entry["data"]["alternate_place_name"] = ";".join(set(alt_names))
-                
+                    # Einmal alles in Strings umwandeln und sauber trimmen
+                    alt_names = [str(n).strip() for n in alt_names if n and str(n).strip()]
+                    # Duplikate entfernen, wieder als String speichern
+                    best_entry["data"]["alternate_place_name"] = ";".join(sorted(set(alt_names)))
+
                 matched.append(best_entry)
             else:
                 # Kein Eintrag mit ID, prüfe ob es matched einträge gibt
@@ -466,9 +597,12 @@ class PlaceMatcher:
                     unmatched.append(entry)
 
         return matched, unmatched
-    
+
     def _extract_name_only(self, raw: str) -> str:
-        return raw.split(",", 1)[0]
+        if isinstance(raw, dict):
+            raw = raw.get("name") or raw.get("extracted_placeName") or ""
+        return str(raw).split(",", 1)[0]
+
 def enrich_and_deduplicate(
     self,
     raw_places: List[Dict[str, Any]],
@@ -483,6 +617,7 @@ def enrich_and_deduplicate(
     for raw in raw_places:
         place_str = raw.get("name", "").strip()
         match = self.match_place(place_str)
+        print(f"[DEBUG] Matching '{place_str}' → {match} type: {type}")
         if match:
             enriched.extend(match)  # wichtig: statt append
         else:
@@ -552,6 +687,107 @@ def mentioned_places_from_custom_data(
         )
         for mp in matched_places
     ]
+
+
+def match_place_with_custominfo(place_matcher: PlaceMatcher, line_entry: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Erwartet ein Dict: {"line_text": ..., "place_tags": [...]}
+    Nutzt place_tags für IDs oder placeName, und merged ggf. den Zeilentext als Variante.
+    Gibt immer eine Liste von Matches zurück.
+    """
+    matches = []
+
+    # 1. Priorisiere Wikidata/Geonames im Tag
+    for tag in line_entry.get("place_tags", []):
+        gt_entry = None
+        id_val = None
+
+        # -- Wikidata bevorzugt --
+        if "wikiData" in tag or "wikidata" in tag:
+            id_val = tag.get("wikiData") or tag.get("wikidata")
+            gt_df = place_matcher.places_df[place_matcher.places_df["wikidata_id"] == id_val]
+            if not gt_df.empty:
+                row = gt_df.iloc[0].to_dict()
+                row["matched_name"] = row.get("name", "")
+                row["matched_raw_input"] = tag.get("placeName", line_entry.get("line_text", ""))
+                row["score"] = 120
+                row["confidence"] = "custom_tag_wikidata"
+                matches.append({
+                    "matched_name": row["matched_name"],
+                    "matched_raw_input": row["matched_raw_input"],
+                    "score": row["score"],
+                    "confidence": row["confidence"],
+                    "data": row,
+                })
+                continue  # **Niemals Fuzzy, wenn Wikidata passt!**
+            else:
+                # Wikidata-ID nicht im Groundtruth → trotzdem aufnehmen
+                matches.append({
+                    "matched_name": tag.get("placeName", ""),
+                    "matched_raw_input": line_entry.get("line_text", ""),
+                    "score": 100,
+                    "confidence": "custom_tag_wikidata",
+                    "data": {
+                        "name": tag.get("placeName", ""),
+                        "wikidata_id": id_val,
+                        "alternate_place_name": line_entry.get("line_text", ""),
+                        "matched_name": tag.get("placeName", ""),
+                        "matched_raw_input": line_entry.get("line_text", ""),
+                        "score": 100,
+                        "confidence": "custom_tag_wikidata",
+                    },
+                })
+                continue
+
+        # -- Geonames als zweite Priorität --
+        elif "geonames" in tag or "geonames_id" in tag:
+            id_val = tag.get("geonames") or tag.get("geonames_id")
+            gt_df = place_matcher.places_df[place_matcher.places_df["geonames_id"] == id_val]
+            if not gt_df.empty:
+                row = gt_df.iloc[0].to_dict()
+                row["matched_name"] = row.get("name", "")
+                row["matched_raw_input"] = tag.get("placeName", line_entry.get("line_text", ""))
+                row["score"] = 110
+                row["confidence"] = "custom_tag_geonames"
+                matches.append({
+                    "matched_name": row["matched_name"],
+                    "matched_raw_input": row["matched_raw_input"],
+                    "score": row["score"],
+                    "confidence": row["confidence"],
+                    "data": row,
+                })
+                continue
+
+        # -- placeName als dritter Versuch --
+        elif "placeName" in tag:
+            name = tag.get("placeName")
+            name_matches = place_matcher.match_place(name)
+            if name_matches:
+                for nm in name_matches:
+                    nm_data = nm["data"].copy()
+                    nm_data["matched_name"] = nm.get("matched_name")
+                    nm_data["matched_raw_input"] = nm.get("matched_raw_input")
+                    nm_data["score"] = 105
+                    nm_data["confidence"] = "custom_tag_placeName"
+                    matches.append({
+                        "matched_name": nm_data["matched_name"],
+                        "matched_raw_input": nm_data["matched_raw_input"],
+                        "score": nm_data["score"],
+                        "confidence": nm_data["confidence"],
+                        "data": nm_data,
+                    })
+                continue
+
+    # Fallback: Wenn kein Tag-Match → Zeilentext als Fuzzy
+    if not matches:
+        fallback_matches = place_matcher.match_place(line_entry.get("line_text", ""))
+        if fallback_matches:
+            for fm in fallback_matches:
+                matches.append(fm)
+
+    # Immer eine **Liste** zurückgeben
+    return matches
+
 
 def lookup_geonames(place_name: str, username: str) -> Optional[str]:
     url = "http://api.geonames.org/searchJSON"
@@ -701,3 +937,4 @@ def consolidate_places(custom_data: Dict[str, Any],
     custom_data["creation_place"] = creation
     custom_data["recipient_place"] = recipient
     return custom_data
+

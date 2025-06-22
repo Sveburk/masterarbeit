@@ -104,6 +104,7 @@ from Module import (
     PlaceMatcher,
     mentioned_places_from_custom_data,
     extract_place_lines_from_xml,
+    match_place_with_custominfo,
     # Validation
     validate_extended,
     generate_validation_summary,
@@ -568,8 +569,10 @@ def parse_custom_attrs(attr_str: str) -> Dict[str, str]:
     """
     Wandelt z.B. "offset:36; length:13;" in {"offset":"36", "length":"13"} um.
     """
+    if not isinstance(attr_str, str):
+        print(f"[WARN] parse_custom_attrs aufgerufen mit {type(attr_str)}: {attr_str}")
+        return dict(attr_str) if isinstance(attr_str, dict) else {}
     result: Dict[str, str] = {}
-    # Splitte am Semikolon und filtere leere Einträge
     for part in attr_str.split(";"):
         if ":" not in part:
             continue
@@ -578,9 +581,6 @@ def parse_custom_attrs(attr_str: str) -> Dict[str, str]:
     return result
 
 
-import re
-import xml.etree.ElementTree as ET
-from typing import List, Dict, Any, Optional
 
 # Assuming parse_custom_attrs, extract_person_from_custom, extract_date_from_custom,
 # extract_place_from_custom are defined/imported elsewhere in your module
@@ -644,6 +644,8 @@ def extract_custom_attributes(
         custom_attr = text_line.get("custom", "")
         if not custom_attr:
             continue
+        
+        print(f"[DEBUG] CUSTOM-TAG in Zeile: '{text_line.find('.//ns:TextEquiv/ns:Unicode', NS).text if text_line.find('.//ns:TextEquiv/ns:Unicode', NS) is not None else ''}'"f" / custom: '{custom_attr}'")
 
         # Extract the line text
         text_equiv = text_line.find(".//ns:TextEquiv/ns:Unicode", NS)
@@ -681,11 +683,17 @@ def extract_custom_attributes(
             custom_attr, text_content, place_matcher_instance
         )
         if places:
+            print(f"[DEBUG] extract_custom_attributes: Erkannte Orte in Zeile: {places} (Typ: {type(places)})")
+            for idx, p in enumerate(places):
+                print(f"  [DEBUG]   Place[{idx}]: {p} (Typ: {type(p)})")
             result["places"].extend(places)
+        else:
+            print(f"[DEBUG] extract_custom_attributes: Keine Orte erkannt in Zeile: '{text_content}' / custom: '{custom_attr}'")
+
 
     # Debug-Ausgabe
     print(
-        f"[DEBUG] Extracted entities: persons={len(result['persons'])}, "
+        f"[DEBUG] Extracted custom_attributes entities: persons={len(result['persons'])}, "
         f"roles={len(result['roles'])}, "
         f"places={len(result['places'])}, "
         f"organizations={len(result['organizations'])}, "
@@ -742,6 +750,44 @@ def extract_person_from_custom(
                 continue
 
             person_data = parse_custom_attributes(person_match.group(1))
+
+            # ─── Tag-basiertes Lookup ───
+            fn = person_data.get("firstname", "").strip()
+            ln = person_data.get("lastname", "").strip()
+            if fn or ln:
+                base = {"forename": fn, "familyname": ln}
+                match, score = match_person(base, candidates=known_persons)
+                if match and score > 0:
+                    persons.append({
+                        "forename":         match["forename"],
+                        "familyname":       match["familyname"],
+                        "role":             "",  
+                        "associated_place": "",
+                        "associated_organisation": "",
+                        "alternate_name":   match.get("alternate_name", ""),
+                        "title":            match.get("title", ""),
+                        "gender":           match.get("gender", ""),
+                        "nodegoat_id":      match.get("nodegoat_id", ""),
+                        "match_score":      score,
+                        "confidence":       "custom_tag_name",
+                    })
+                else:
+                    # keine Ground-Truth gefunden → trotzdem vermerken und review flag setzen
+                    persons.append({
+                        "forename":         fn,
+                        "familyname":       ln,
+                        "role":             "",
+                        "associated_place": "",
+                        "associated_organisation": "",
+                        "alternate_name":   "",
+                        "title":            "",
+                        "gender":           "",
+                        "nodegoat_id":      "",
+                        "match_score":      0,
+                        "confidence":       "custom_tag_name",
+                        "needs_review":     True,
+                    })
+                continue   # ganz wichtig: verlasse hier die weitere Offset-Logik
             if "offset" in person_data and "length" in person_data:
                 offset = int(person_data["offset"])
                 length = int(person_data["length"])
@@ -985,24 +1031,20 @@ def extract_place_from_custom(
 def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     """
     Parst einen String mit custom-Attributen
-
-    Args:
-        attr_str: String mit Attributen (z.B. "offset:0; length:5;")
-
-    Returns:
-        Dictionary mit den geparsten Attributen
     """
+    # Defensive: Nur String akzeptieren
+    if not isinstance(attr_str, str):
+        print(f"[WARN] parse_custom_attributes aufgerufen mit {type(attr_str)}: {attr_str}")
+        return dict(attr_str) if isinstance(attr_str, dict) else {}
     result = {}
     for part in attr_str.split(";"):
         part = part.strip()
         if not part:
             continue
-
         key_value = part.split(":", 1)
         if len(key_value) == 2:
             key, value = key_value
             result[key.strip()] = value.strip()
-
     return result
 
 
@@ -1845,7 +1887,7 @@ def process_single_xml(
 
     lines = extract_place_lines_from_xml(root)
     place_m.surrounding_place_lines = lines
-
+    
     # 2) Basis-Metadaten + document_type
     metadata = extract_metadata_from_xml(root)
     filename = f"{folder}_{subdir}_{xml_file.replace('.xml','')}"
@@ -2007,12 +2049,9 @@ def process_single_xml(
                 print(
                     f"[DEBUG] place_m.surrounding_place_lines BEFORE match_place: {place_m.surrounding_place_lines}"
                 )
-                retry_matches = place_m.match_place(p.get("name"))
-                if retry_matches:
-                    best = max(
-                        retry_matches, key=lambda x: x.get("score", 0)
-                    )  # bestes Match auswählen
-                    data = best.get("data", {})
+                retry_match = place_m.match_place(p.get("name"))
+                if retry_match:
+                    data = retry_match.get("data", {})
                     print(
                         f"[MATCHED-API] '{p['name']}' → {data.get('name')} (Nodegoat-ID: {data.get('nodegoat_id')})"
                     )
@@ -2035,6 +2074,7 @@ def process_single_xml(
                         for pl in mentioned_places
                     ):
                         mentioned_places.append(new_place)
+
 
             except Exception as e:
                 print(
@@ -2341,10 +2381,7 @@ def infer_authors_recipients(
 
     ensure_author_recipient_in_mentions(temp_doc, text)
 
-    print(
-        "[DEBUG] recipients nach ensure_author_recipient_in_mentions:",
-        [f"{r.forename} {r.familyname}" for r in temp_doc.recipients],
-    )
+
 
     return temp_doc.authors, temp_doc.recipients
 
