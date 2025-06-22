@@ -73,7 +73,8 @@ from .Assigned_Roles_Module import(
 from .place_matcher import(
     PlaceMatcher, 
     mentioned_places_from_custom_data, 
-    extract_place_lines_from_xml)
+    extract_place_lines_from_xml,
+    match_place_with_custominfo,)
 
 # --- Validation ---
 from .validation_module import validate_extended, generate_validation_summary
@@ -155,6 +156,7 @@ __all__ = [
     "PlaceMatcher", 
     "mentioned_places_from_custom_data",
     "extract_place_lines_from_xml",
+    "match_place_with_custominfo",
 
     # Validation
     "validate_extended", "generate_validation_summary",

@@ -291,9 +291,9 @@ def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str)
 
                             # 2. Falls das fehlschlägt → manuelle Substring-Suche als Fallback
                             if not best_match:
-                                for org in KNOWN_ORGS:
-                                    if org["name"].lower() in org_clean.lower():
-                                        best_match = org
+                                for org_entry in KNOWN_ORGS:
+                                    if org_entry["name"].lower() in org_clean.lower():
+                                        best_match = org_entry
                                         score = 81
                                         break
                             

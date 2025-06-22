@@ -7,7 +7,6 @@ from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_
 
 import json
 from pathlib import Path
-from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
 from .Assigned_Roles_Module import(assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role)
 from Module.place_matcher import PlaceMatcher, consolidate_places
 from .date_matcher import extract_custom_date
@@ -240,6 +239,7 @@ def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
         return recipients
 
 def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None) -> Optional[Dict[str, Any]]:
+    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
     
     if raw.get("forename") and not raw.get("familyname"):
         for p in mentioned_persons:
@@ -357,8 +357,33 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
 
 def match_authors(text: str, document_type: Optional[str] = None, mentioned_persons: List[Person] = []) -> Dict[str, Any]:
     raw = extract_authors_raw(text)
-    return letter_match_and_enrich(raw, text, mentioned_persons)
+    enriched = letter_match_and_enrich(raw, text, mentioned_persons)
 
+    # Sonderfall: nur Rolle, kein Name → trotzdem übernehmen
+    if not enriched and raw.get("role") and not raw.get("forename") and not raw.get("familyname"):
+        print(f"[DEBUG-AUTHOR] Solitäre Rolle erkannt als Autor: {raw['role']}")
+        normalized_role = normalize_and_match_role(raw["role"])
+        role_schema = map_role_to_schema_entry(normalized_role)
+        return {
+            "forename": "",
+            "familyname": "",
+            "role": normalized_role,
+            "role_schema": role_schema,
+            "nodegoat_id": "",
+            "match_score": 10,
+            "confidence": "role_only",
+            "needs_review": True,
+            "review_reason": "Nur Rolle ohne Name",
+        }
+
+    return enriched
+
+# --- Direkte Anredeformen (recipient_score: 100) ---
+direct_patterns = [
+    r"\bLieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
+    r"\bLiebe[rn]?\s+([A-ZÄÖÜ][a-zäöüß]+)",
+    r"\bmein\s+lieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
+]
 def extract_multiple_recipients_raw(text: str) -> List[Dict[str, Any]]:
     """
     Extrahiert mehrere mögliche Empfänger:
@@ -369,12 +394,7 @@ def extract_multiple_recipients_raw(text: str) -> List[Dict[str, Any]]:
     lines = text.splitlines()
     recipients = []
 
-    # --- Direkte Anredeformen (recipient_score: 100) ---
-    direct_patterns = [
-        r"\bLieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
-        r"\bLiebe[rn]?\s+([A-ZÄÖÜ][a-zäöüß]+)",
-        r"\bmein\s+lieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
-    ]
+    
     for pat in direct_patterns:
         for line in lines:
             m = re.search(pat, line)
@@ -446,6 +466,23 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
     enriched_list = []
     for raw in additional_raw:
         enriched = letter_match_and_enrich(raw, text, mentioned_persons)
+        # Sonderfall: recipient mit Rolle, aber ohne Name
+        if not enriched and raw.get("role") and not raw.get("forename") and not raw.get("familyname"):
+            print(f"[DEBUG-RECIPIENT] Solitäre Rolle erkannt als Empfänger: {raw['role']}")
+            normalized_role = normalize_and_match_role(raw["role"])
+            role_schema = map_role_to_schema_entry(normalized_role)
+            enriched = {
+                "forename": "",
+                "familyname": "",
+                "role": normalized_role,
+                "role_schema": role_schema,
+                "nodegoat_id": "",
+                "match_score": 10,
+                "confidence": "role_only",
+                "needs_review": True,
+                "review_reason": "Nur Rolle ohne Name",
+                "recipient_score": raw.get("recipient_score", 50)
+            }
         if enriched:
             enriched["recipient_score"] = raw.get("recipient_score", 50)
             enriched["confidence"] = raw.get("confidence", "indirect")
@@ -671,6 +708,7 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
     import xml.etree.ElementTree as ET
     import re
     import json
+    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
 
     log = []
 
@@ -981,7 +1019,6 @@ def ensure_author_recipient_in_mentions(
         p for p in base_doc.mentioned_persons
         if p.nodegoat_id or (p.forename and p.familyname) or p.role
     ]
-    print(f"[DEBUG] Final mentioned_persons count after filtering nameless persons: {len(base_doc.mentioned_persons)}")
 
 
 def postprocess_roles(base_doc: BaseDocument):
@@ -1133,11 +1170,15 @@ def extract_places_and_date(
 
 
 def assign_sender_and_recipient_place(    xml_root: ET.Element,
+    
     matcher: PlaceMatcher,
     mentioned_places: List[Any],
     allow_multiple: bool = True,
     score_threshold: float = 80.0
 ) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]], Optional[str]]:
+    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
+    
+    
     raw_creation, _, creation_date = extract_places_and_date(xml_root)
 
     ns = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
@@ -1197,7 +1238,13 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
         fuzzy = matcher.match_place(candidate_raw)
         if not fuzzy:
             return None
-        best = max(fuzzy, key=lambda m: float(m.get("match_score", 0)))
+        fuzzy_valid = [m for m in fuzzy if isinstance(m, dict) and m.get("match_score") is not None]
+        if fuzzy_valid:
+            best = max(fuzzy_valid, key=lambda m: float(m.get("match_score", 0)))
+        else:
+            best = None
+        if best is None:
+            return None
         data = dict(best["data"])
         score = float(best.get("match_score", 0))
 
