@@ -1,9 +1,31 @@
-% Options for packages loaded elsewhere
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, fit, backgrounds, calc, positioning}
+\usepackage{fontawesome5} % für ausgefallenere Emojis
+\usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
+\newcommand{\cmark}{\ding{51}} % ✓
+\newcommand{\xmark}{\ding{55}} % ✗
+\usepackage{minted}  % Für Python-Code
+\usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{abbrev}{RGB}{255,153,153}      % Rot
+\definecolor{add}{RGB}{204,255,238}         % Hellgrün/Türkis
+\definecolor{sic}{RGB}{255,255,153}         % Hellgelb
+\definecolor{unclear}{RGB}{255,230,184}     % Hellorange
+\definecolor{date}{RGB}{153,153,255}        % Blau
+\definecolor{organization}{RGB}{255,153,255}% Pink
+\definecolor{place}{RGB}{204,153,255}       % Lila
+\definecolor{person}{RGB}{153,255,153}      % Hellgrün
+\definecolor{signature}{RGB}{153,255,153}   % Hellgrün (gleiche Farbe wie Person)
+\definecolor{highlight}{RGB}{255,255,170}
+
+\usepackage[hidelinks]{hyperref} % Für die Hyperlinks im Inhaltsverzeichnis
+
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[11pt
-]{article}
+
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
 
@@ -12,16 +34,15 @@
 \usepackage{orcidlink}
 \usepackage{iftex}
 \ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmdefault]{Ligatures=TeX,Scale=1}
-
-
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\else
+\usepackage{unicode-math}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmdefault]{Ligatures=TeX,Scale=1}
+\fi 
 \fi
+
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \IfFileExists{microtype.sty}{% use microtype if available
@@ -38,7 +59,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
@@ -47,6 +67,7 @@
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
 \usepackage{graphicx}
+
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -113,3 +134,165 @@ He is currently writing his master’s thesis, which investigates personal and i
 Alongside his studies, Sven works as a research assistant at the Digital Humanities Lab Basel (DHLab) and completed a research internship with the University of Basel’s RISE program (Research Infrastructure and Support in the Humanities). There, he contributed to projects dealing with the conceptual design of computer-assisted research, the processing and analysis of historical data, and the development of sustainable strategies for the open and reusable publication of digital research data.
 
 Beyond academia, he is actively involved in university governance and student representation. He currently serves as President of the Student Council (Studierendenrat) and is boardmember for the Studentassociation Digital Humanities (Fachgruppe Digital Humanities)\end{document}
+
+\newpage
+
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  arrow/.style={-Latex, thick},
+  node distance=1cm and 2.2cm
+]
+
+% --- Modulrahmen ---
+\node[module] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+% --- Prozesse innerhalb des Moduls ---
+\node[process, below=1.2cm of personsmod] (split)  {Extract raw persons \\ (split\_and\_enrich\_persons)};
+\node[process, below=of split]            (parse)  {Parse names and detect roles \\ (extract\_person\_data)};
+\node[process, below=of parse]            (match)  {Match with groundtruth \\ (match\_person)};
+\node[process, below=of match]            (roles)  {Assign roles + organizations \\ (assign\_roles\_to\_known\_persons)};
+\node[process, below=of roles]            (score)  {Calculate recipient\_score \\ (based on text context)};
+\node[process, below=of score]            (dedup)  {Deduplicate persons \\ (deduplicate\_and\_group\_persons)};
+\node[process, below=of dedup]            (count)  {Contextual mention counting \\ (count\_mentions\_in\_transcript\_contextual)};
+
+
+% Verbindungspfeile
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+% Optional: Rahmen um alle Prozessboxen
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count),
+label={[anchor=north west, xshift=-0.5cm, yshift=0.4cm]north west:\texttt{Ablauf im Modul person\_matcher.py}}] (group) {};
+
+\end{tikzpicture}
+}
+\end{center}
+
+
+
+\begin{center}
+\begin{tikzpicture}
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0)}]
+\node at (0, -3.7) {\textit{Oben: Gesamtübersicht-Schema}};
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+\node[module] (json)       at (-0,  -2.8 ) {};
+\node[module] (save)       at (-0, -3.3  ) {};
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% Großes Prozessdiagramm
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
+
+\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
+
+\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
+
+\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
+
+\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
+
+
+\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
+
+\node[below=of count, align=center] 
+  {\textit{Oben: Prozess person\_matcher.py}\\\textit{Rechts: Input aus role\_matcher.py} und organization\_matcher.py};
+
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] 
+  (orgmatch.west) 
+  -- ++(-0.5,0) 
+  |- (roles.east);
+
+\draw[arrow] (rolematch.west) -- (roles.east);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{tikzpicture}
+\end{center}
+
+
+\end{document}

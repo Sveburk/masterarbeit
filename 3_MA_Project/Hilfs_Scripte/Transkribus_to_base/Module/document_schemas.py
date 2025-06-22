@@ -36,7 +36,8 @@ class Person:
         familyname: str = "",
         title: str = "",
         role: str = "",
-        role_schema: str = "",                 
+        role_schema: str = "",
+        gender: str = "",                  
         associated_place: str = "",
         associated_organisation: str = "",
         associated_organisation_id: str = "",
@@ -54,6 +55,7 @@ class Person:
         self.title = title
         self.role = role_schema
         self.role_schema = role_schema
+        self.gender = gender                 
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
         self.associated_organisation_id = associated_organisation_id
@@ -74,6 +76,7 @@ class Person:
             "familyname": self.familyname or "",
             "title": self.title or "",
             "role": self.role_schema or "",
+            "gender": self.gender or "",
             "associated_place": self.associated_place or "",
             "nodegoat_id": self.nodegoat_id or "",
             "confidence": self.confidence or "",
@@ -127,6 +130,7 @@ class Person:
             alternate_name=data.get("alternate_name", ""),
             title=data.get("title", ""),
             role=data.get("role", ""),
+            gender=data.get("gender", ""), 
             associated_place=data.get("associated_place", ""),
             associated_organisation=assoc_name,
             associated_organisation_id=assoc_id,

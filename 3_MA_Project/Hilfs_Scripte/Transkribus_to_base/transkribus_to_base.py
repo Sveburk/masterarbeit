@@ -6,36 +6,40 @@ Dieses Skript liest Transkribus XML‑Dateien, extrahiert die Metadaten und den 
 und konvertiert sie in das in WORKFLOW.md definierte Basis‑Schema unter Verwendung der
 in document_schemas.py definierten Klassen für Objektorientierung und Datenvalidierung.
 """
+
 # source .venv/bin/activate
 
 # --------------- Modulpfade vorbereiten ---------------
 import os
 import sys
+#from tkinter import N
 import traceback
 from collections import defaultdict, Counter
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json, re, time, xml.etree.ElementTree as ET
 from datetime import datetime
+
 # --------------- Externe Abhängigkeiten ---------------
 import pandas as pd
 import spacy
 from rapidfuzz import fuzz, process
-#import openai
 
-#Zeitstempel
+# import openai
+
+# Zeitstempel
 now = datetime.now()
 formatted = now.strftime("%d.%m.%Y. %H:%M")
-print ("==========================") # Beginn Übersichtsblock,
-print ("\n")
-print(formatted) # Zeit
+print("==========================")  # Beginn Übersichtsblock,
+print("\n")
+print(formatted)  # Zeit
 
 
 # Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
 THIS_FILE = Path(__file__).resolve()
-BASE_DIR  = THIS_FILE.parents[2]
+BASE_DIR = THIS_FILE.parents[2]
 
-THIS_FILE    = Path(__file__).resolve()
+THIS_FILE = Path(__file__).resolve()
 PROJECT_ROOT = THIS_FILE.parent  # …/Transkribus_to_base
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -43,144 +47,142 @@ if str(PROJECT_ROOT) not in sys.path:
 # --------------- Eigene Module (aus /Module) ---------------
 from Module import (
     enrich_pipeline,
-
-    #event-matcher
+    # event-matcher
     extract_events_from_xml,
-
     # Schemas
-    BaseDocument, Person, Place, Event, Organization,
-
+    BaseDocument,
+    Person,
+    Place,
+    Event,
+    Organization,
     # Person‐Matcher
-    KNOWN_PERSONS,match_person,
+    KNOWN_PERSONS,
+    match_person,
     deduplicate_persons,
-    normalize_name, 
+    normalize_name,
     load_known_persons_from_csv,
-    get_best_match_info, 
+    get_best_match_info,
     extract_person_data,
     split_and_enrich_persons,
-    deduplicate_and_group_persons, 
+    deduplicate_and_group_persons,
     count_mentions_in_transcript_contextual,
-    
-    #letter-metadata-matcher
+    infer_gender_for_person,
+    # letter-metadata-matcher
     match_authors,
     match_recipients,
     resolve_llm_custom_authors_recipients,
-    extract_authors_recipients_from_mentions, 
+    extract_authors_recipients_from_mentions,
     ensure_author_recipient_in_mentions,
     postprocess_roles,
     enrich_final_recipients,
     deduplicate_recipients,
     assign_sender_and_recipient_place,
     finalize_recipient_places,
-    #flatten_organisation_entry,
-
-
+    # flatten_organisation_entry,
     # Date Matcher
     extract_date_from_custom,
     combine_dates,
     extract_custom_date,
-
-
-
     # Organisation‐Matcher
     match_organization_from_text,
-    load_organizations_from_csv, 
+    load_organizations_from_csv,
     match_organization_entities,
     match_organization_by_name,
-
-
     # Type‐Matcher
     get_document_type,
-
     # Rollen‑Enricher
     KNOWN_ROLE_LIST,
     ROLE_MAPPINGS_DE,
-    NAME_RE,assign_roles_to_known_persons,
+    NAME_RE,
+    assign_roles_to_known_persons,
     extract_standalone_roles,
     map_role_to_schema_entry,
     extract_role_in_token,
     process_text,
     extract_role_from_raw_name,
-
     # PlaceMatcher
     PlaceMatcher,
     mentioned_places_from_custom_data,
     extract_place_lines_from_xml,
-
     # Validation
-    validate_extended, 
+    validate_extended,
     generate_validation_summary,
-
     # LLM
     run_enrichment_on_directory,
-
-    #unmatched-logger
+    # unmatched-logger
     log_unmatched_entities,
 )
 
 
-
-
 # --------------- Pfadkonfiguration ---------------
-TRANSKRIBUS_DIR          = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
-OUTPUT_DIR               = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
-OUTPUT_DIR_UNMATCHED   = os.path.join(OUTPUT_DIR, "unmatched")
-OUTPUT_CSV_PATH          = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
+OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
+OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
 
 # ——— Pfade für Personen-Listen ———
-CSV_PATH_KNOWN_PERSONS  = BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
-CSV_PATH_METADATA       = CSV_PATH_KNOWN_PERSONS
-LOG_PATH                = BASE_DIR / "Data" / "new_persons.log"
+CSV_PATH_KNOWN_PERSONS = (
+    BASE_DIR / "Data" / "Nodegoat_Export" / "export-person.csv"
+)
+CSV_PATH_METADATA = CSV_PATH_KNOWN_PERSONS
+LOG_PATH = BASE_DIR / "Data" / "new_persons.log"
 
 # --- Pfad für Rollen ---
 known_role_list = KNOWN_ROLE_LIST
 
 # ——— Pfad für Orte ———
-PLACE_CSV_PATH          = BASE_DIR / "Data" / "Nodegoat_Export" / "export-place.csv"
+PLACE_CSV_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-place.csv"
 
 
 # ——— Pfad für Organisationen ———
-ORG_CSV_PATH            = BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
-
+ORG_CSV_PATH = (
+    BASE_DIR / "Data" / "Nodegoat_Export" / "export-organisationen.csv"
+)
 
 
 # --------------- CSV‑Dateien laden (immer mit denselben Optionen) ---------------
 read_opts = dict(sep=";", dtype=str, keep_default_na=False)
 
 df = pd.read_csv(CSV_PATH_KNOWN_PERSONS, **read_opts)
-#print(df.isna().sum())           # Kontrolle: keine NaN → keine Floats
+# print(df.isna().sum())           # Kontrolle: keine NaN → keine Floats
 
-# --------------- CSV‑Dateien Inhaltsübersicth-Print ---------------
+# --------------- CSV‑Dateien Inhaltsübersicht-Print ---------------
 print("\n[INFO] Übersicht Groundtruth-Daten:")
+
+# Personen
 try:
     df_persons = pd.read_csv(CSV_PATH_KNOWN_PERSONS, **read_opts)
-    
+    print(f"→ Personen:            {len(df_persons):>5} Einträge")
+
 except Exception as e:
     print(f"[FEHLER] Personenliste konnte nicht geladen werden: {e}")
 
+# Orte
 try:
     df_places = pd.read_csv(PLACE_CSV_PATH, **read_opts)
-    
+    print(f"→ Orte:                {len(df_places):>5} Einträge")
+
 except Exception as e:
     print(f"[FEHLER] Orte konnten nicht geladen werden: {e}")
 
+# Organisationen
 try:
     df_orgs = pd.read_csv(ORG_CSV_PATH, **read_opts)
-    
+    print(f"→ Organisationen:      {len(df_orgs):>5} Einträge")
+
 except Exception as e:
     print(f"[FEHLER] Organisationen konnten nicht geladen werden: {e}")
 
-# Optional: Rollenliste, falls vorhanden
+# Rollen (optional)
 try:
     ROLES_CSV_PATH = BASE_DIR / "Data" / "Nodegoat_Export" / "export-roles.csv"
     df_roles = pd.read_csv(ROLES_CSV_PATH, **read_opts)
-    
+    print(f"→ Rollenvarianten:     {len(df_roles):>5} Einträge")
+
 except Exception:
     print("→ Rollenvarianten:     [nicht vorhanden oder Fehler beim Laden]")
 
-print("\n")
-print("==========================")
-
+print("==========================\n")
 
 
 # === LLM API Key für Enrichment ===
@@ -212,9 +214,11 @@ known_persons_list = [
     {
         "forename": str(row.get("Vorname", "") or "").strip(),
         "familyname": str(row.get("Nachname", "") or "").strip(),
-        "alternate_name": str(row.get("Alternativer Vorname", "") or "").strip(),
+        "alternate_name": str(
+            row.get("Alternativer Vorname", "") or ""
+        ).strip(),
         "title": "",
-        "nodegoat_id": str(row.get("nodegoat ID", "") or "").strip()
+        "nodegoat_id": str(row.get("nodegoat ID", "") or "").strip(),
     }
     for _, row in known_persons_df.iterrows()
 ]
@@ -223,36 +227,39 @@ known_persons_list = [
 # nodegoat_persons = load_nodegoat_persons(CSV_PATH_METADATA)
 
 
-#=== Bekannte Organisationen laden ===
+# === Bekannte Organisationen laden ===
 org_list = load_organizations_from_csv(str(ORG_CSV_PATH))
-                                       
-# === Bekannte Orte Laden ===
-place_matcher = PlaceMatcher(PLACE_CSV_PATH, geonames_login=os.getenv("GEONAMES_USERNAME", "demo"))
 
+# === Bekannte Orte Laden ===
+place_matcher = PlaceMatcher(
+    PLACE_CSV_PATH, geonames_login=os.getenv("GEONAMES_USERNAME", "demo")
+)
 
 
 # === Teste API KEY ===
 if not OPENAI_API_KEY:
-    print("Warnung: Kein API-Schlüssel gesetzt. Enrichment wird am Ende übersprungen.")
-
+    print(
+        "Warnung: Kein API-Schlüssel gesetzt. Enrichment wird am Ende übersprungen."
+    )
 
 
 def save_new_csv(df: pd.DataFrame):
     try:
         # Erstelle das Output-Verzeichnis, wenn es nicht existiert
         os.makedirs(os.path.dirname(OUTPUT_CSV_PATH), exist_ok=True)
-        
+
         # Speichern der DataFrame als neue CSV im Output-Ordner
         df.to_csv(OUTPUT_CSV_PATH, sep=";", index=False)
         print(f"Neue CSV gespeichert: {OUTPUT_CSV_PATH}")
     except Exception as e:
         print(f"Fehler beim Speichern der neuen CSV: {e}")
 
+
 # Funktion zum Speichern der neuen Personen in CSV
 def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
     """
     Speichert eine neue Person in der CSV-Datei, wenn sie noch nicht vorhanden ist.
-    
+
     Args:
         forename (str): Vorname der Person
         familyname (str): Nachname der Person
@@ -262,7 +269,7 @@ def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
     if person_exists_in_known_list(forename, familyname, known_persons_list):
         print(f"{forename} {familyname} existiert bereits in der CSV.")
         return
-    
+
         # Wenn nicht, füge die Person hinzu
     #     # Wenn nicht, füge die Person hinzu
     #     new_row = {
@@ -276,60 +283,75 @@ def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
     #         "Lfd_No.": f"{len(known_persons_df) 1:05d}"  # Neue ID mit führenden Nullen
 
     # }
-    known_persons_df = pd.concat([known_persons_df, pd.DataFrame([new_row])], ignore_index=True)
-    
+    known_persons_df = pd.concat(
+        [known_persons_df, pd.DataFrame([new_row])], ignore_index=True
+    )
+
     # Speichern der aktualisierten CSV
     known_persons_df.to_csv(csv_path, sep=";", index=False)
-    
+
     # Aktualisieren der Liste bekannter Personen
-    known_persons_list.append({
-        "forename": forename,
-        "familyname": familyname,
-        "alternate_name": "",
-        "title": "",
-        "nodegoat_id": ""
-    })
+    known_persons_list.append(
+        {
+            "forename": forename,
+            "familyname": familyname,
+            "alternate_name": "",
+            "title": "",
+            "nodegoat_id": "",
+        }
+    )
     print(f"Neue Person hinzugefügt: {forename} {familyname}")
 
 
-def person_exists_in_known_list(forename: str, familyname: str, known_list: List[tuple]) -> bool:
+def person_exists_in_known_list(
+    forename: str, familyname: str, known_list: List[tuple]
+) -> bool:
     """
     Prüft, ob die Person in der bekannten Liste von Personen existiert, entweder exakt oder mit ähnlicher Schreibweise.
     Verwendet jetzt vorzugsweise die person_matcher.py Funktionen für bessere Konsistenz.
-    
+
     Args:
         forename (str): Vorname der Person
         familyname (str): Nachname der Person
         known_list (list): Liste der bekannten Personen (Vorname, Nachname)
-        
+
     Returns:
         bool: True, wenn die Person existiert, ansonsten False
     """
     # Erstelle temporäres Person-Dictionary für das Matching
     temp_person = {"forename": forename, "familyname": familyname}
-    
+
     # Verwende die match_person Funktion aus person_matcher.py
     # und konvertiere known_list-Tupel in das erforderliche Format, falls nötig
     if not isinstance(known_list[0], dict) if known_list else False:
         # Konvertiere Tupel-Liste zu Dictionary-Liste
-        known_persons_dicts = [{"forename": kf, "familyname": kl} for kf, kl in known_list]
-        matched_person, score = match_person(temp_person, candidates=known_persons_dicts)
+        known_persons_dicts = [
+            {"forename": kf, "familyname": kl} for kf, kl in known_list
+        ]
+        matched_person, score = match_person(
+            temp_person, candidates=known_persons_dicts
+        )
     else:
         # Verwende direkt die known_persons_list aus person_matcher
-        matched_person, score = match_person(temp_person, candidates=known_persons_list)
-    
+        matched_person, score = match_person(
+            temp_person, candidates=known_persons_list
+        )
+
     # Person existiert, wenn das Matching einen Score über 70 ergeben hat
     return matched_person is not None and score >= 70
 
 
-
-def fuzzy_match_name(name: str, candidates: List[str], threshold: int) -> Tuple[Optional[str], int]:
+def fuzzy_match_name(
+    name: str, candidates: List[str], threshold: int
+) -> Tuple[Optional[str], int]:
     """
     Vergleicht einen Namen mit einer Liste möglicher Kandidaten und liefert den besten Match über Threshold.
     Verwendet Rapidfuzz mit vorheriger Namensnormalisierung.
     """
     best_match, best_score = None, 0
-    normalized_name = normalize_name_string(name)  # <- String-basierte Normalisierung
+    normalized_name = normalize_name_string(
+        name
+    )  # <- String-basierte Normalisierung
 
     for candidate in candidates:
         score = fuzz.ratio(normalize_name_string(candidate), normalized_name)
@@ -355,7 +377,7 @@ def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
 
     # Titel und Name bereinigen (z. B. "Herr Dr. Emil Hosp")
     # Funktion ist bereits über das Module-Paket importiert
-    
+
     cleaned_name, extracted_title = normalize_name(person_name)
 
     # Extrahiere Vor- und Nachname
@@ -365,7 +387,7 @@ def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
     person_dict = {
         "forename": forename,
         "familyname": familyname,
-        "title": extracted_title
+        "title": extracted_title,
     }
 
     # Match mit bekannter Liste
@@ -380,29 +402,28 @@ def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
     return None
 
 
-
 def extract_name_with_spacy(name_text: str) -> tuple:
     """
     Verwendet spaCy, um einen Namen in Vor- und Nachnamen zu trennen.
     Berücksichtigt auch mittlere Namen.
-    
+
     Args:
         name_text: Der zu analysierende Namenstext
-        
+
     Returns:
         Tuple aus (Vorname, Nachname)
     """
     # Fallback-Werte
     forename = ""
     familyname = name_text
-    
+
     # Leerzeichen am Anfang und Ende entfernen
     name_text = name_text.strip()
-    
+
     # Wenn kein Name oder leerer String übergeben wurde
     if not name_text:
         return forename, familyname
-    
+
     # Standard-Methode zur Namenstrennung ohne spaCy
     def split_name_standard(text):
         name_parts = text.split()
@@ -415,35 +436,35 @@ def extract_name_with_spacy(name_text: str) -> tuple:
             familyname = name_parts[-1]
             return forename, familyname
         return "", text  # Wenn nur ein Wort, behandle es als Nachnamen
-    
+
     # Wenn spaCy nicht geladen werden konnte, verwende die Standardmethode
     if nlp is None:
         return split_name_standard(name_text)
-    
+
     # Analysiere den Text mit spaCy
     doc = nlp(name_text)
-    
+
     # Sammle alle gefundenen Personenentitäten
     person_entities = [ent for ent in doc.ents if ent.label_ == "PER"]
-    
+
     # Wenn keine Personenentitäten gefunden wurden, versuche es mit der herkömmlichen Methode
     if not person_entities:
         return split_name_standard(name_text)
-    
+
     # Versuche, den Namen aus den gefundenen Entitäten zu extrahieren
     person_entity = person_entities[0]  # Nehme die erste gefundene Person
-    
+
     # Prüfe, ob es mehrere Tokens im Namen gibt
     if len(person_entity) > 1:
         # Alle Tokens außer dem letzten sind Teil des Vornamens (einschließlich mittlerer Namen)
         forename = " ".join([token.text for token in person_entity[:-1]])
         # Letzter Token ist der Nachname
         familyname = person_entity[-1].text
-    
+
     # Wenn die Aufteilung nicht funktioniert hat, versuche es mit der Standardmethode
     if not forename:
         return split_name_standard(name_text)
-    
+
     return forename, familyname
 
 
@@ -454,49 +475,58 @@ NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR_UNMATCHED, exist_ok=True)
 
+
 def extract_metadata_from_xml(root: ET.Element) -> Dict[str, str]:
     """
     Extrahiert Metadaten aus einem XML-Element
-    
+
     Args:
         root: XML-Root-Element
-        
+
     Returns:
         Dictionary mit Metadaten
     """
     transkribus_meta = root.find(".//ns:TranskribusMetadata", NS)
     if transkribus_meta is None:
         return {}
-    
+
     return {
         "docId": transkribus_meta.get("docId", ""),
         "pageId": transkribus_meta.get("pageId", ""),
         "tsid": transkribus_meta.get("tsid", ""),
         "imgUrl": transkribus_meta.get("imgUrl", ""),
-        "xmlUrl": transkribus_meta.get("xmlUrl", "")
+        "xmlUrl": transkribus_meta.get("xmlUrl", ""),
     }
+
 
 def extract_text_from_xml(root: ET.Element) -> str:
     """
     Extrahiert den Text aus einem XML-Element
-    
+
     Args:
         root: XML-Root-Element
-        
+
     Returns:
         Extrahierter Text
     """
     transcript_text = ""
     for text_equiv in root.findall(".//ns:TextEquiv/ns:Unicode", NS):
         if text_equiv.text:
-              transcript_text += text_equiv.text + "\n"
-    
+            transcript_text += text_equiv.text + "\n"
+
     return transcript_text.strip()
+
 
 # Diese Funktion wird nicht mehr benötigt, da wir das Dokument direkt in process_transkribus_file erstellen
 # und die BaseDocument-Klasse verwenden
 
-def fuzzy_person_match(forename: str, familyname: str, known_list: List[tuple], threshold: int = 90) -> bool:
+
+def fuzzy_person_match(
+    forename: str,
+    familyname: str,
+    known_list: List[tuple],
+    threshold: int = 90,
+) -> bool:
     """
     Vergleicht einen neuen Namen mit bekannten Personen mithilfe von fuzzy matching.
     Verwendet intern die verbesserte match_person-Funktion aus person_matcher.
@@ -513,16 +543,16 @@ def fuzzy_person_match(forename: str, familyname: str, known_list: List[tuple], 
     # Nutze die bessere Matching-Funktion aus person_matcher
     temp_person = {"forename": forename, "familyname": familyname}
     matched_person, score = match_person(temp_person)
-    
+
     # Wenn ein Match gefunden wurde und der Score über dem Schwellwert liegt
     if matched_person and score >= threshold:
         return True
-    
+
     # Falls wir noch Abwärtskompatibilität benötigen, die alte Methode als Fallback
     for known_forename, known_familyname in known_list:
         score_first = fuzz.ratio(forename.lower(), known_forename.lower())
         score_last = fuzz.ratio(familyname.lower(), known_familyname.lower())
-        
+
         # Beides muss über Schwellwert liegen
         if score_first >= threshold and score_last >= threshold:
             return True
@@ -532,19 +562,20 @@ def fuzzy_person_match(forename: str, familyname: str, known_list: List[tuple], 
             return True
 
     return False
+
+
 def parse_custom_attrs(attr_str: str) -> Dict[str, str]:
     """
     Wandelt z.B. "offset:36; length:13;" in {"offset":"36", "length":"13"} um.
     """
     result: Dict[str, str] = {}
     # Splitte am Semikolon und filtere leere Einträge
-    for part in attr_str.split(';'):
-        if ':' not in part:
+    for part in attr_str.split(";"):
+        if ":" not in part:
             continue
-        key, val = part.split(':', 1)
+        key, val = part.split(":", 1)
         result[key.strip()] = val.strip()
     return result
-
 
 
 import re
@@ -554,6 +585,7 @@ from typing import List, Dict, Any, Optional
 # Assuming parse_custom_attrs, extract_person_from_custom, extract_date_from_custom,
 # extract_place_from_custom are defined/imported elsewhere in your module
 
+
 # ----------------------------------------------------------------------------
 # Helper to pull wikidata IDs from the custom attribute string
 # ----------------------------------------------------------------------------
@@ -561,35 +593,41 @@ def extract_wikidata_id(custom_str: str) -> Optional[str]:
     """
     Finds a wikiData:Q... token in the custom attribute and returns the Q-ID.
     """
-    m = re.search(r'wikiData:([A-Za-z0-9]+)', custom_str)
+    m = re.search(r"wikiData:([A-Za-z0-9]+)", custom_str)
     return m.group(1) if m else None
+
 
 # ----------------------------------------------------------------------------
 # Custom-Tag-Extraction
 # ----------------------------------------------------------------------------
 
-def extract_organization_from_custom(custom_attr: str, text: str) -> List[Dict[str, Any]]:
+
+def extract_organization_from_custom(
+    custom_attr: str, text: str
+) -> List[Dict[str, Any]]:
     orgs: List[Dict[str, Any]] = []
     # finde alle organization-Tags
-    for m in re.finditer(r'organization\s*\{([^}]+)\}', custom_attr):
+    for m in re.finditer(r"organization\s*\{([^}]+)\}", custom_attr):
         data = parse_custom_attrs(m.group(1))
         offset = int(data.get("offset", 0))
         length = int(data.get("length", 0))
-        name = text[offset: offset + length].strip()
+        name = text[offset : offset + length].strip()
         wikidata = extract_wikidata_id(custom_attr)
-        orgs.append({
-            "name": name,
-            "offset": offset,
-            "length": length,
-            "wikidata_id": wikidata
-        })
+        orgs.append(
+            {
+                "name": name,
+                "offset": offset,
+                "length": length,
+                "wikidata_id": wikidata,
+            }
+        )
     return orgs
 
 
 def extract_custom_attributes(
     root: ET.Element,
     known_persons: List[Dict[str, str]] = None,
-    place_matcher_instance = None
+    place_matcher_instance=None,
 ) -> Dict[str, List[Dict[str, Any]]]:
     # Verwende known_persons_list als Standard, wenn kein known_persons übergeben wurde
     if known_persons is None:
@@ -599,7 +637,7 @@ def extract_custom_attributes(
         "roles": [],
         "organizations": [],
         "dates": [],
-        "places": []
+        "places": [],
     }
 
     for text_line in root.findall(".//ns:TextLine", NS):
@@ -612,21 +650,21 @@ def extract_custom_attributes(
         text_content = text_equiv.text or "" if text_equiv is not None else ""
 
         # 1) Personen
-        persons = extract_person_from_custom(custom_attr, text_content, known_persons)
+        persons = extract_person_from_custom(
+            custom_attr, text_content, known_persons
+        )
         if persons:
             result["persons"].extend(persons)
 
         # 2) Rollen
-        for m in re.finditer(r'role\s*\{([^}]+)\}', custom_attr):
+        for m in re.finditer(r"role\s*\{([^}]+)\}", custom_attr):
             data = parse_custom_attrs(m.group(1))
             offset = int(data.get("offset", 0))
             length = int(data.get("length", 0))
-            snippet = text_content[offset: offset + length]
-            result["roles"].append({
-                "raw":    snippet,
-                "offset": offset,
-                "length": length
-            })
+            snippet = text_content[offset : offset + length]
+            result["roles"].append(
+                {"raw": snippet, "offset": offset, "length": length}
+            )
 
         # 3) Organisationen
         orgs = extract_organization_from_custom(custom_attr, text_content)
@@ -639,25 +677,29 @@ def extract_custom_attributes(
             result["dates"].extend(dates)
 
         # 5) Orte
-        places = extract_place_from_custom(custom_attr, text_content, place_matcher_instance)
+        places = extract_place_from_custom(
+            custom_attr, text_content, place_matcher_instance
+        )
         if places:
             result["places"].extend(places)
 
     # Debug-Ausgabe
-    print(f"[DEBUG] Extracted entities: persons={len(result['persons'])}, "
-          f"roles={len(result['roles'])}, "
-          f"places={len(result['places'])}, "
-          f"organizations={len(result['organizations'])}, "
-          f"dates={len(result['dates'])}")
+    print(
+        f"[DEBUG] Extracted entities: persons={len(result['persons'])}, "
+        f"roles={len(result['roles'])}, "
+        f"places={len(result['places'])}, "
+        f"organizations={len(result['organizations'])}, "
+        f"dates={len(result['dates'])}"
+    )
 
     return result
 
 
-def extract_person_data(name: str) -> Dict[str, str]:
+def extract_person_data(name: str) -> dict[str, str]:
     """Zerlegt den erkannten Namen in Vor- und Nachname."""
     name = name.strip()
     parts = name.split(" ", 1)
-    forename = parts[0] if parts else ""
+    forename: str = parts[0] if parts else ""
     familyname = parts[1] if len(parts) > 1 else ""
     return {
         "forename": forename,
@@ -666,14 +708,33 @@ def extract_person_data(name: str) -> Dict[str, str]:
         "title": "",
         "nodegoat_id": "",
     }
-    
+
+
 def extract_person_from_custom(
-    custom_attr: str,
-    text_content: str,
-    known_persons: List[Dict[str, str]]
+    custom_attr: str, text_content: str, known_persons: List[Dict[str, str]]
 ) -> List[Dict[str, str]]:
     """Extract person entities from custom attributes - returns a LIST of dictionaries."""
     persons: List[Dict[str, str]] = []
+
+    # Geschlechts-Titel-Mapping
+    TITLE_GENDER_MAP = {
+        "herr": "male",
+        "herrn": "male",
+        "frau": "female",
+        "fräulein": "female",
+        "witwe": "female",
+        "witwer": "male",
+        "sänger": "male",
+        "sängers": "male",
+        "sängerin": "female",
+        "bruder": "male",
+        "sängerbruder": "male",
+        "sangesbruder": "male",
+        "kameradin": "female",
+        "kamerad": "male",
+        "genosse": "male",
+        "genossin": "female"
+    }
 
     for pattern in [r"(?i)person\s*\{([^}]+)\}"]:
         for person_match in re.finditer(pattern, custom_attr):
@@ -684,30 +745,52 @@ def extract_person_from_custom(
             if "offset" in person_data and "length" in person_data:
                 offset = int(person_data["offset"])
                 length = int(person_data["length"])
-                person_name = text_content[offset : offset + length]
+                person_name = text_content[offset : offset + length].strip()
 
-                person_name = re.sub(
-                    r".*(Herrn?|Frau|Dr\.?|Prof\.?|Fräulein|Witwe)\s+",
-                    "",
-                    person_name,
-                    flags=re.IGNORECASE
-                ).strip()
+                tokens = person_name.split()
+                detected_title = None
+                gender = ""
 
-                # Rolle aus deklinierter Form erkennen
+                # Finde geschlechtsbezogenen Titel
+                for t in tokens:
+                    norm = t.lower().strip(".,")
+                    if norm in TITLE_GENDER_MAP:
+                        detected_title = norm
+                        gender = TITLE_GENDER_MAP[norm]
+                        break
+
+                # Titel aus Namen entfernen
+                name_tokens = [tok for tok in tokens if tok.lower().strip(".,") != detected_title]
+                person_name_clean = " ".join(name_tokens)
+
+                # Haupt-Zerlegung des Namens
+                person_info = extract_person_data(person_name_clean)
+
+                # Ergänze Titel & Gender
+                if detected_title:
+                    person_info["title"] = detected_title.capitalize()
+                    person_info["gender"] = gender
+
+                # Rolle aus deklinierter Form erkennen (z. B. "Führers Adolf")
                 role = ""
-                role_match = re.match(r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+en)\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)", person_name)
+                role_match = re.match(
+                    r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+en)\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)",
+                    person_name
+                )
                 if role_match:
                     role_raw = role_match.group("role").rstrip("en")
                     role = ROLE_MAPPINGS_DE.get(role_raw.lower(), "")
                     person_name = role_match.group("name")
+                    person_info = extract_person_data(person_name)  # Erneut zerlegen nach Rollenerkennung
+                    person_info["role"] = role
 
-                # Haupt-Zerlegung des Namens
-                person_info = extract_person_data(person_name)
-                person_info["role"] = role
-
-                # Fallback für Titel aus known_persons
+                # Fallback: bekannte Titel aus Groundtruth verwenden
                 if not person_info["forename"]:
-                    possible_titles = set(p.get("title", "").strip() for p in known_persons if p.get("title"))
+                    possible_titles = set(
+                        p.get("title", "").strip()
+                        for p in known_persons
+                        if p.get("title")
+                    )
                     for title in sorted(possible_titles, key=lambda x: -len(x)):
                         if re.match(rf"^{re.escape(title)}\b", person_name):
                             rest = person_name[len(title):].strip()
@@ -715,64 +798,77 @@ def extract_person_from_custom(
                             person_info["title"] = title
                             break
 
-                # Fuzzy Matching gegen bekannte Personen
+                # Fuzzy-Matching mit bekannten Personen
                 match, score = match_person(person_info, candidates=known_persons)
                 if match:
-                    person_info["nodegoat_id"]    = match.get("nodegoat_id", "")
+                    person_info["nodegoat_id"] = match.get("nodegoat_id", "")
                     person_info["alternate_name"] = match.get("alternate_name", "")
-                    person_info["title"]          = match.get("title", "")
-                    person_info["match_score"] = score  
-                    print(f"person_info{person_info},score{score}")
+                    person_info["title"] = match.get("title", person_info.get("title", ""))
+                    person_info["gender"] = match.get("gender", person_info.get("gender", ""))
+                    person_info["match_score"] = score
 
-                # Ortserkennung (falls im gleichen Tag vorhanden)
+                    print(f"[Debug] Fuzzy Matching in Transkribus_to_base hat die person_info{person_info},score{score}")
+
+                # Ort zuordnen, falls im selben Tag vorhanden
                 place_dicts = extract_place_from_custom(custom_attr, text_content)
                 person_place = place_dicts[0]["name"] if place_dicts else ""
 
-
-                # Finales Dictionary aufbauen
-                persons.append({
-                    "forename":               person_info["forename"],
-                    "familyname":             person_info["familyname"],
-                    "role":                   person_info.get("role", ""),
-                    "associated_place":       person_place,
-                    "associated_organisation": "",
-                    "alternate_name":         person_info.get("alternate_name", ""),
-                    "title":                  person_info.get("title", ""),
-                    "nodegoat_id":            person_info.get("nodegoat_id", "")
-                })
+                # Finales Dictionary anlegen
+                persons.append(
+                    {
+                        "forename": person_info["forename"],
+                        "familyname": person_info["familyname"],
+                        "role": person_info.get("role", ""),
+                        "associated_place": person_place,
+                        "associated_organisation": "",
+                        "alternate_name": person_info.get("alternate_name", ""),
+                        "title": person_info.get("title", ""),
+                        "gender": person_info.get("gender", ""),
+                        "nodegoat_id": person_info.get("nodegoat_id", ""),
+                        "match_score": person_info.get("match_score", 0),
+                        "confidence": person_info.get("confidence", ""),
+                    }
+                )
 
     return persons
 
 
-def extract_organization_from_custom(custom_attr: str, text_content: str) -> List[Dict[str, str]]:
+def extract_organization_from_custom(
+    custom_attr: str, text_content: str
+) -> List[Dict[str, str]]:
     organizations = []
     # Fix regex pattern - try different variations to match actual data
-    for pattern in [r"organization\s+\{([^}]+)\}", r"organization {([^}]+)}", 
-                    r"org\s+\{([^}]+)\}", r"org {([^}]+)}"]:
+    for pattern in [
+        r"organization\s+\{([^}]+)\}",
+        r"organization {([^}]+)}",
+        r"org\s+\{([^}]+)\}",
+        r"org {([^}]+)}",
+    ]:
         org_matches = re.finditer(pattern, custom_attr)
         for org_match in org_matches:
             if not text_content:
                 continue
-                
+
             org_data = parse_custom_attributes(org_match.group(1))
             if "offset" in org_data and "length" in org_data:
                 offset = int(org_data.get("offset", 0))
                 length = int(org_data.get("length", 0))
 
-                
-                if offset < len(text_content) and offset + length <= len(text_content):
-                    org_name = text_content[offset:offset+length]
+                if offset < len(text_content) and offset + length <= len(
+                    text_content
+                ):
+                    org_name = text_content[offset : offset + length]
 
-                    organizations.append({
-                        "name": org_name,
-                        "location": "",
-                        "type": ""
-                    })
+                    organizations.append(
+                        {"name": org_name, "location": "", "type": ""}
+                    )
 
     return organizations
 
 
-def extract_place_from_custom(custom_attr: str, text_content: str, place_m=None) -> List[Dict[str, Any]]:
+def extract_place_from_custom(
+    custom_attr: str, text_content: str, place_m=None
+) -> List[Dict[str, Any]]:
     places = []
     # Fix regex pattern - try different variations
     for pattern in [r"place\s+\{([^}]+)\}", r"place {([^}]+)}"]:
@@ -780,89 +876,119 @@ def extract_place_from_custom(custom_attr: str, text_content: str, place_m=None)
         for place_match in place_matches:
             if not text_content:
                 continue
-                
+
             place_data = parse_custom_attributes(place_match.group(1))
             if "offset" in place_data and "length" in place_data:
                 offset = int(place_data.get("offset", 0))
                 length = int(place_data.get("length", 0))
-                
+
                 # print(f"[DEBUG] Versuche Extraktion Ort: offset={offset}, length={length}, text='{text_content}'")
-                
-                if offset < len(text_content) and offset + length <= len(text_content):
-                    place_name = text_content[offset:offset+length]
+
+                if offset < len(text_content) and offset + length <= len(
+                    text_content
+                ):
+                    place_name = text_content[offset : offset + length]
                     print(f"[DEBUG] Erkannter Ort: {place_name}")
-                    
+
                     try:
                         # Use the passed place_m if provided, otherwise fall back to global place_matcher
-                        active_matcher = place_m if place_m is not None else place_matcher
+                        active_matcher = (
+                            place_m if place_m is not None else place_matcher
+                        )
                         if active_matcher and place_name:
 
-                            match_result = active_matcher.match_place(place_name)
+                            match_result = active_matcher.match_place(
+                                place_name
+                            )
 
                             if match_result:
                                 # match_result ist eine Liste von Matches, nimm z. B. den besten
-                                best_match = max(match_result, key=lambda x: x.get("score", 0))
+                                best_match = max(
+                                    match_result,
+                                    key=lambda x: x.get("score", 0),
+                                )
                                 matched_data = best_match["data"]
 
-                                places.append({
-                                    "name": matched_data.get("name", place_name),
-                                    "alternate_name": matched_data.get("alternate_place_name", ""),
-                                    "geonames_id": matched_data.get("geonames_id", ""),
-                                    "wikidata_id": matched_data.get("wikidata_id", ""),
-                                    "nodegoat_id": matched_data.get("nodegoat_id", ""),
-                                    "type": "",
-                                    "original_input": place_name,
-                                    "matched_name": best_match["matched_name"],
-                                    "match_score": best_match["score"],
-                                    "confidence": best_match.get("confidence", "unknown")
-                                })
-
-
+                                places.append(
+                                    {
+                                        "name": matched_data.get(
+                                            "name", place_name
+                                        ),
+                                        "alternate_name": matched_data.get(
+                                            "alternate_place_name", ""
+                                        ),
+                                        "geonames_id": matched_data.get(
+                                            "geonames_id", ""
+                                        ),
+                                        "wikidata_id": matched_data.get(
+                                            "wikidata_id", ""
+                                        ),
+                                        "nodegoat_id": matched_data.get(
+                                            "nodegoat_id", ""
+                                        ),
+                                        "type": "",
+                                        "original_input": place_name,
+                                        "matched_name": best_match[
+                                            "matched_name"
+                                        ],
+                                        "match_score": best_match["score"],
+                                        "confidence": best_match.get(
+                                            "confidence", "unknown"
+                                        ),
+                                    }
+                                )
 
                             else:
-                                places.append({
+                                places.append(
+                                    {
+                                        "name": place_name,
+                                        "country": "",
+                                        "type": "",
+                                        "original_input": place_name,
+                                        "matched_name": None,
+                                        "match_score": None,
+                                        "confidence": "none",
+                                    }
+                                )
+                        elif place_name:
+                            places.append(
+                                {
                                     "name": place_name,
                                     "country": "",
                                     "type": "",
                                     "original_input": place_name,
                                     "matched_name": None,
                                     "match_score": None,
-                                    "confidence": "none"
-                                })
-                        elif place_name:
-                            places.append({
+                                    "confidence": "matcher_unavailable",
+                                }
+                            )
+                    except Exception as e:
+                        print(
+                            f"Fehler beim Ortsmatching für '{place_name}': {e}"
+                        )
+                        places.append(
+                            {
                                 "name": place_name,
                                 "country": "",
                                 "type": "",
                                 "original_input": place_name,
                                 "matched_name": None,
                                 "match_score": None,
-                                "confidence": "matcher_unavailable"
-                            })
-                    except Exception as e:
-                        print(f"Fehler beim Ortsmatching für '{place_name}': {e}")
-                        places.append({
-                            "name": place_name,
-                            "country": "",
-                            "type": "",
-                            "original_input": place_name,
-                            "matched_name": None,
-                            "match_score": None,
-                            "confidence": "error",
-                            "error": str(e)
-                        })
-    
-    
+                                "confidence": "error",
+                                "error": str(e),
+                            }
+                        )
+
     return places
 
 
 def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     """
     Parst einen String mit custom-Attributen
-    
+
     Args:
         attr_str: String mit Attributen (z.B. "offset:0; length:5;")
-        
+
     Returns:
         Dictionary mit den geparsten Attributen
     """
@@ -871,17 +997,19 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
         part = part.strip()
         if not part:
             continue
-        
+
         key_value = part.split(":", 1)
         if len(key_value) == 2:
             key, value = key_value
             result[key.strip()] = value.strip()
-    
+
     return result
+
+
 # --- total_json schreiben ---
 def update_total_json(out_path: str, doc: BaseDocument):
     total_path = Path(out_path).parent / "total_json.json"
-    print (f"{total_path}")
+    print(f"{total_path}")
 
     # Bestehende Datei laden oder initialisieren
     if total_path.exists():
@@ -894,16 +1022,15 @@ def update_total_json(out_path: str, doc: BaseDocument):
     filename = Path(out_path).stem
     print(f"[DEBUG] filename = {filename}")
 
-
     match = re.search(
         r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",
-        filename
+        filename,
     )
 
-
-
     if not match:
-        print(f"[WARN] Kann Akte/Seite aus Dateiname nicht extrahieren: {filename}")
+        print(
+            f"[WARN] Kann Akte/Seite aus Dateiname nicht extrahieren: {filename}"
+        )
         return
 
     akte = match.group("akte")  # z. B. 6489797_Akte_136
@@ -922,10 +1049,9 @@ def update_total_json(out_path: str, doc: BaseDocument):
 
     print(f"[DEBUG] total_json.json aktualisiert: {akte} / Seite {page}")
 
+
 def process_transkribus_file(
-    xml_path: str,
-    seven_digit_folder: str,
-    subdir: str
+    xml_path: str, seven_digit_folder: str, subdir: str
 ) -> Union[BaseDocument, None]:
     try:
         # 1) XML parsen
@@ -933,10 +1059,14 @@ def process_transkribus_file(
         root = tree.getroot()
 
         # 2) full_doc_id & document_type ermitteln
-        xml_file      = os.path.basename(xml_path)
-        full_doc_id   = f"{seven_digit_folder}_{subdir}_{xml_file.replace('.xml','')}"
+        xml_file = os.path.basename(xml_path)
+        full_doc_id = (
+            f"{seven_digit_folder}_{subdir}_{xml_file.replace('.xml','')}"
+        )
         document_type = get_document_type(full_doc_id, xml_path)
-        print(f"[DEBUG] Dokumenttyp erkannt für {full_doc_id}: {document_type}")
+        print(
+            f"[DEBUG] Dokumenttyp erkannt für {full_doc_id}: {document_type}"
+        )
 
         # 3) Metadaten extrahieren (sofern vorhanden)
         metadata = extract_metadata_from_xml(root)
@@ -946,19 +1076,23 @@ def process_transkribus_file(
 
         document_type = get_document_type(filename, xml_path, debug=True)
 
-
-
         # 4) Transkript holen und auf Länge prüfen
         transcript_text = "\n".join(
-            te.text for te in root.findall(".//ns:TextEquiv/ns:Unicode", {"ns": root.tag.split("}")[0].strip("{")})
+            te.text
+            for te in root.findall(
+                ".//ns:TextEquiv/ns:Unicode",
+                {"ns": root.tag.split("}")[0].strip("{")},
+            )
             if te.text
         )
         if not transcript_text or len(transcript_text.strip()) < 10:
-            print(f"[INFO] Überspringe {xml_path} – Transkript zu kurz oder leer.")
+            print(
+                f"[INFO] Überspringe {xml_path} – Transkript zu kurz oder leer."
+            )
             return None
 
         # 5) Autor/Empfänger matchen und mit LLM bereinigen
-        raw_authors    = match_authors(transcript_text)
+        raw_authors = match_authors(transcript_text)
         raw_recipients = match_recipients(transcript_text, mentioned_persons)
 
         # Baue temp_authors (Person-Instanzen) auf – raw_authors kann Person, dict oder Liste sein
@@ -977,7 +1111,9 @@ def process_transkribus_file(
         temp_recipients = []
         if isinstance(raw_recipients, Person):
             temp_recipients = [raw_recipients]
-        elif isinstance(raw_recipients, dict) and raw_recipients.get("forename"):
+        elif isinstance(raw_recipients, dict) and raw_recipients.get(
+            "forename"
+        ):
             temp_recipients = [Person.from_dict(raw_recipients)]
         elif isinstance(raw_recipients, list):
             temp_recipients = [
@@ -986,15 +1122,17 @@ def process_transkribus_file(
             ]
 
         # LLM-Finalisierung von Autoren und Empfängern
-                # ——— LLM-Finalisierung ———
+        # ——— LLM-Finalisierung ———
         # 1) Autoren und Empfänger heuristisch bestimmen
-        authors, recipients = infer_authors_recipients(transcript_text, document_type, mentioned_persons)
+        authors, recipients = infer_authors_recipients(
+            transcript_text, document_type, mentioned_persons
+        )
 
         # 2) Temporäres Dokument für Einbindung in mentioned_persons
         temp_doc = BaseDocument(
-            authors=            authors,
-            recipients=         recipients,
-            mentioned_persons=  mentioned_persons
+            authors=authors,
+            recipients=recipients,
+            mentioned_persons=mentioned_persons,
         )
         ensure_author_recipient_in_mentions(temp_doc, transcript_text)
 
@@ -1005,7 +1143,7 @@ def process_transkribus_file(
                 "familyname": a.familyname,
                 "alternate_name": a.alternate_name,
                 "title": a.title,
-                "nodegoat_id": a.nodegoat_id
+                "nodegoat_id": a.nodegoat_id,
             }
             for a in authors
         ]
@@ -1017,7 +1155,7 @@ def process_transkribus_file(
 
         for auth_obj, enrich_obj in zip(authors, enriched_authors):
             if enrich_obj.role:
-                auth_obj.role        = enrich_obj.role
+                auth_obj.role = enrich_obj.role
                 auth_obj.role_schema = enrich_obj.role_schema
                 print(f"[DEBUG] role_schema = {auth_obj.role_schema}")
 
@@ -1029,33 +1167,42 @@ def process_transkribus_file(
         # 5) mentionete Personen übernehmen
         mentioned_persons = temp_doc.mentioned_persons
 
-        
         # 6) Custom-Tags extrahieren
         role_input_persons = load_known_persons_from_csv()
-        role_input_persons = assign_roles_to_known_persons(role_input_persons, transcript_text)
+        role_input_persons = assign_roles_to_known_persons(
+            role_input_persons, transcript_text
+        )
         print("[DEBUG] Rollenmatching aus Fließtext:")
         for p in role_input_persons:
             if p.get("role"):
-                print(f" → {p['forename']} {p['familyname']}: {p['role']} ({p['role_schema']})")
+                print(
+                    f" → {p['forename']} {p['familyname']}: {p['role']} ({p['role_schema']})"
+                )
 
         # 6a) Custom-Tags extrahieren mit angereicherten Personeninfos
-        custom_data = extract_custom_attributes(root, known_persons=role_input_persons, place_matcher_instance=place_matcher)
+        custom_data = extract_custom_attributes(
+            root,
+            known_persons=role_input_persons,
+            place_matcher_instance=place_matcher,
+        )
         print("[DEBUG] Extracted custom roles:", custom_data["roles"])
         standalone = extract_standalone_roles(transcript_text)
         print("[DEBUG] Standalone roles from text:", standalone)
 
-
-
         # 7) Fallback: Organisationen aus Plain-Text
         custom_orgs = custom_data["organizations"]
-        orgs_from_text = match_organization_from_text(transcript_text, org_list)
+        orgs_from_text = match_organization_from_text(
+            transcript_text, org_list
+        )
         for org in orgs_from_text:
             if not any(o["name"] == org["name"] for o in custom_orgs):
-                custom_orgs.append({
-                    "name": org["name"],
-                    "location": org.get("location", ""),
-                    "type":     org.get("type", "")
-                })
+                custom_orgs.append(
+                    {
+                        "name": org["name"],
+                        "location": org.get("location", ""),
+                        "type": org.get("type", ""),
+                    }
+                )
 
         # 8) Personen deduplizieren und anreichern
         all_persons = custom_data["persons"]
@@ -1070,17 +1217,23 @@ def process_transkribus_file(
 
         # 8c) Deduplizieren
         unique_persons = deduplicate_persons(all_persons)
-        
+
         # Mit Stammliste abgleichen (Nodegoat-ID, Titel, etc.)
         for person in unique_persons:
             match = get_best_match_info(person, KNOWN_PERSONS)
             if match["match_id"]:
-                person["forename"]     = match["matched_forename"]   or person["forename"]
-                person["familyname"]   = match["matched_familyname"] or person["familyname"]
-                person["title"]        = match["matched_title"]      or person.get("title", "")
-                person["nodegoat_id"]  = match["match_id"]
-                person["match_score"]  = match["score"]
-                person["confidence"]   = "fuzzy"
+                person["forename"] = (
+                    match["matched_forename"] or person["forename"]
+                )
+                person["familyname"] = (
+                    match["matched_familyname"] or person["familyname"]
+                )
+                person["title"] = match["matched_title"] or person.get(
+                    "title", ""
+                )
+                person["nodegoat_id"] = match["match_id"]
+                person["match_score"] = match["score"]
+                person["confidence"] = "fuzzy"
 
         # Rollenmodul anwenden
         role_input_persons = [
@@ -1091,78 +1244,111 @@ def process_transkribus_file(
                 "title": p.get("title", ""),
                 "role": p.get("role", ""),
                 "associated_place": p.get("associated_place", ""),
-                "associated_organisation": p.get("associated_organisation", ""),
-                "nodegoat_id": p.get("nodegoat_id", "")
+                "associated_organisation": p.get(
+                    "associated_organisation", ""
+                ),
+                "nodegoat_id": p.get("nodegoat_id", ""),
             }
             for p in unique_persons
         ]
-        enriched_persons = assign_roles_to_known_persons(role_input_persons, transcript_text)
+        enriched_persons = assign_roles_to_known_persons(
+            role_input_persons, transcript_text
+        )
         for author in authors:
             # 1) Suche passenden enriched-Eintrag via Nodegoat-ID oder Vor-/Nachname
             match = next(
                 (
-                    p for p in enriched_persons
-                    if (author.nodegoat_id and author.nodegoat_id == p.get("nodegoat_id"))
-                    or (author.forename == p.get("forename") and author.familyname == p.get("familyname"))
+                    p
+                    for p in enriched_persons
+                    if (
+                        author.nodegoat_id
+                        and author.nodegoat_id == p.get("nodegoat_id")
+                    )
+                    or (
+                        author.forename == p.get("forename")
+                        and author.familyname == p.get("familyname")
+                    )
                 ),
-                None
+                None,
             )
             if not match:
-                print(f"[DEBUG] Kein Match für Autor {author.forename} {author.familyname}")
+                print(
+                    f"[DEBUG] Kein Match für Autor {author.forename} {author.familyname}"
+                )
                 continue
 
             # 2) Fülle nur leere Felder in author aus match auf
             for attr in [
-                "forename", "familyname", "title", "role",
-                "associated_place", "associated_organisation", "nodegoat_id"
+                "forename",
+                "familyname",
+                "title",
+                "role",
+                "associated_place",
+                "associated_organisation",
+                "nodegoat_id",
             ]:
                 val_author = getattr(author, attr) or ""
-                val_match  = match.get(attr) or ""
+                val_match = match.get(attr) or ""
                 if not val_author.strip() and val_match.strip():
                     setattr(author, attr, val_match)
-                    print(f"[DEBUG] Ergänze {attr!r} bei {author.forename} {author.familyname}: {val_match!r}")
+                    print(
+                        f"[DEBUG] Ergänze {attr!r} bei {author.forename} {author.familyname}: {val_match!r}"
+                    )
         # 9) Neue Personen loggen
         for person in unique_persons:
             if not person_exists_in_known_list(
-                person.get("forename", ""), 
-                person.get("familyname", ""), 
-                known_persons_list
+                person.get("forename", ""),
+                person.get("familyname", ""),
+                known_persons_list,
             ):
                 with open(LOG_PATH, "a", encoding="utf-8") as log_file:
-                    log_file.write(f"{person.get('forename', '')} {person.get('familyname', '')}\n")
+                    log_file.write(
+                        f"{person.get('forename', '')} {person.get('familyname', '')}\n"
+                    )
 
         # 10) Person-Objekte erstellen
         mentioned_persons = []
         for d in enriched_persons:
-            if not d.get("forename") and not d.get("familyname") and not d.get("role"):
+            if (
+                not d.get("forename")
+                and not d.get("familyname")
+                and not d.get("role")
+            ):
                 continue  # Nur komplett leere Personen überspringen
 
-            mentioned_persons.append(Person(
-                forename=d.get("forename", ""),
-                familyname=d.get("familyname", ""),
-                alternate_name=str(d.get("alternate_name", "") or ""),
-                title=str(d.get("title", "") or ""),
-                role=d.get("role", ""),
-                associated_place=d.get("associated_place", ""),
-                associated_organisation=d.get("associated_organisation", ""),
-                nodegoat_id=str(d.get("nodegoat_id", "") or ""),
-                match_score=d.get("match_score"),
-                confidence=d.get("confidence", "")
-            ))
+            mentioned_persons.append(
+                Person(
+                    forename=d.get("forename", ""),
+                    familyname=d.get("familyname", ""),
+                    alternate_name=str(d.get("alternate_name", "") or ""),
+                    title=str(d.get("title", "") or ""),
+                    role=d.get("role", ""),
+                    gender=d.get("gender", ""),
+                    associated_place=d.get("associated_place", ""),
+                    associated_organisation=d.get(
+                        "associated_organisation", ""
+                    ),
+                    nodegoat_id=str(d.get("nodegoat_id", "") or ""),
+                    match_score=d.get("match_score"),
+                    confidence=d.get("confidence", ""),
+                )
+            )
 
         # 11) Orte verarbeiten - erfolgt in einem einzigen Block weiter unten
         # 12) Organization-Objekte erstellen
         mentioned_organizations = [
             Organization.from_dict(o) for o in custom_orgs
         ]
-        
+
         # --- 13) Orte deduplizieren & transformieren ---
         place_input = custom_data["places"]
 
         dedup_input = [
             {
                 "matched_name": pl.get("matched_name", pl.get("name", "")),
-                "matched_raw_input": pl.get("original_input", pl.get("name", "")),
+                "matched_raw_input": pl.get(
+                    "original_input", pl.get("name", "")
+                ),
                 "score": pl.get("match_score", 0),
                 "confidence": pl.get("confidence", "unknown"),
                 "data": {
@@ -1170,33 +1356,40 @@ def process_transkribus_file(
                     "alternate_place_name": pl.get("alternate_name", ""),
                     "geonames_id": pl.get("geonames_id", ""),
                     "wikidata_id": pl.get("wikidata_id", ""),
-                    "nodegoat_id": pl.get("nodegoat_id", "")
-                }
+                    "nodegoat_id": pl.get("nodegoat_id", ""),
+                },
             }
             for pl in place_input
         ]
 
-        matched_places, _ = place_m.deduplicate_places(dedup_input, document_id=full_doc_id)
-
+        matched_places, _ = place_m.deduplicate_places(
+            dedup_input, document_id=full_doc_id
+        )
 
         mentioned_places = [
             Place(
                 name=mp["data"].get("name", ""),
                 type="",
-                alternate_place_name=mp["data"].get("alternate_place_name", ""),
+                alternate_place_name=mp["data"].get(
+                    "alternate_place_name", ""
+                ),
                 geonames_id=mp["data"].get("geonames_id", ""),
                 wikidata_id=mp["data"].get("wikidata_id", ""),
-                nodegoat_id=mp["data"].get("nodegoat_id", "")
+                nodegoat_id=mp["data"].get("nodegoat_id", ""),
             )
             for mp in matched_places
         ]
 
         print(f"[DEBUG] Finale Orte im JSON:")
         for p in mentioned_places:
-            print(f" - {p.name} | Geo: {p.geonames_id} | WD: {p.wikidata_id} | NG: {p.nodegoat_id}")
+            print(
+                f" - {p.name} | Geo: {p.geonames_id} | WD: {p.wikidata_id} | NG: {p.nodegoat_id}"
+            )
 
         if not enriched_persons:
-            print("[WARN] Keine enriched_persons – Rollen-Mapping übersprungen.")
+            print(
+                "[WARN] Keine enriched_persons – Rollen-Mapping übersprungen."
+            )
         else:
             for author in final_authors:
                 mapped = False
@@ -1211,35 +1404,35 @@ def process_transkribus_file(
                     )
                     if same_name or same_id:
                         author.role = p.get("role", "")
-                        print(f"[DEBUG] Autor {author.forename} {author.familyname} → Rolle: {author.role!r}")
+                        print(
+                            f"[DEBUG] Autor {author.forename} {author.familyname} → Rolle: {author.role!r}"
+                        )
                         mapped = True
                         break
                 if not mapped:
-                    print(f"[DEBUG] Autor {author.forename} {author.familyname} – keine Rolle gefunden.")
+                    print(
+                        f"[DEBUG] Autor {author.forename} {author.familyname} – keine Rolle gefunden."
+                    )
 
-
-                #Events erstellen
+                # Events erstellen
                 events = extract_events_from_xml(xml_path)
-
-    
 
         # 14) BaseDocument zusammenbauen
         doc = BaseDocument(
-        attributes              = metadata,
-        content_transcription   = transcript_text,
-        authors                 = authors,
-        recipients              = recipients,
-        mentioned_persons       = mentioned_persons,
-        mentioned_organizations = mentioned_organizations,
-        mentioned_places        = mentioned_places,
-        mentioned_dates         = custom_data["dates"],
-        mentioned_events        = events,
-        content_tags_in_german  = [],
-        creation_date           = "",
-        creation_place          = "",
-        document_format         = ""
+            attributes=metadata,
+            content_transcription=transcript_text,
+            authors=authors,
+            recipients=recipients,
+            mentioned_persons=mentioned_persons,
+            mentioned_organizations=mentioned_organizations,
+            mentioned_places=mentioned_places,
+            mentioned_dates=custom_data["dates"],
+            mentioned_events=events,
+            content_tags_in_german=[],
+            creation_date="",
+            creation_place="",
+            document_format="",
         )
- 
 
         # ——— Hier die neue Rollenanreicherung einfügen ———
         # (1) Hole die Autoren-Dicts
@@ -1249,67 +1442,95 @@ def process_transkribus_file(
                 "familyname": a.familyname,
                 "alternate_name": a.alternate_name,
                 "title": a.title,
-                "nodegoat_id": a.nodegoat_id
+                "nodegoat_id": a.nodegoat_id,
             }
             for a in doc.authors
         ]
         # (1b) Hole die Empfänger-Dicts
-        recipient_dicts = [{
-            "forename": r.forename,
-            "familyname": r.familyname,
-            "alternate_name": r.alternate_name,
-            "title": r.title,
-            "nodegoat_id": r.nodegoat_id
-        } 
-        for r in doc.recipients
+        recipient_dicts = [
+            {
+                "forename": r.forename,
+                "familyname": r.familyname,
+                "alternate_name": r.alternate_name,
+                "title": r.title,
+                "nodegoat_id": r.nodegoat_id,
+            }
+            for r in doc.recipients
         ]
-        enriched_recipients = assign_roles_to_known_persons(recipient_dicts, transcript_text)
+        enriched_recipients = assign_roles_to_known_persons(
+            recipient_dicts, transcript_text
+        )
 
         for rec, info in zip(doc.recipients, enriched_recipients):
             role = info.get("role") if isinstance(info, dict) else info.role
-            schema = info.get("role_schema") if isinstance(info, dict) else getattr(info, "role_schema", "")
+            schema = (
+                info.get("role_schema")
+                if isinstance(info, dict)
+                else getattr(info, "role_schema", "")
+            )
 
             if role:
                 rec.role = role
 
                 role_only_source = (
-                    isinstance(info, dict) and info.get("confidence") == "role_only"
+                    isinstance(info, dict)
+                    and info.get("confidence") == "role_only"
                 ) or (
-                    hasattr(info, "confidence") and info.confidence == "role_only"
+                    hasattr(info, "confidence")
+                    and info.confidence == "role_only"
                 )
 
                 if not getattr(rec, "role_schema", "") or role_only_source:
                     rec.role_schema = schema
-                    print(f"[DEBUG] Updated role_schema for recipient {rec.forename} {rec.familyname}: '{schema}'")
+                    print(
+                        f"[DEBUG] Updated role_schema for recipient {rec.forename} {rec.familyname}: '{schema}'"
+                    )
                 else:
-                    print(f"[DEBUG] Kept existing role_schema for recipient {rec.forename} {rec.familyname}: '{rec.role_schema}'")
+                    print(
+                        f"[DEBUG] Kept existing role_schema for recipient {rec.forename} {rec.familyname}: '{rec.role_schema}'"
+                    )
 
             # ✅ NEU: associated_organisation übernehmen & flatten
             if isinstance(info, dict) and "associated_organisation" in info:
-                rec.associated_organisation = flatten_organisation_entry(info["associated_organisation"])
+                rec.associated_organisation = flatten_organisation_entry(
+                    info["associated_organisation"]
+                )
             elif hasattr(info, "associated_organisation"):
-                rec.associated_organisation = flatten_organisation_entry(getattr(info, "associated_organisation"))
+                rec.associated_organisation = flatten_organisation_entry(
+                    getattr(info, "associated_organisation")
+                )
 
         # (2) Mappe Rollen und Schemas
         enriched = assign_roles_to_known_persons(author_dicts, transcript_text)
         # (3) Übertrage role & role_schema zurück auf die Person-Objekte
         for author, info in zip(doc.authors, enriched):
             role = info.get("role") if isinstance(info, dict) else info.role
-            schema = info.get("role_schema") if isinstance(info, dict) else getattr(info, "role_schema", "")
+            schema = (
+                info.get("role_schema")
+                if isinstance(info, dict)
+                else getattr(info, "role_schema", "")
+            )
             if role:
                 author.role = role
 
                 # Only update role_schema if it's empty or the source is role_only
-                role_only_source = (isinstance(info, dict) and info.get("confidence") == "role_only") or \
-                                   (hasattr(info, "confidence") and info.confidence == "role_only")
+                role_only_source = (
+                    isinstance(info, dict)
+                    and info.get("confidence") == "role_only"
+                ) or (
+                    hasattr(info, "confidence")
+                    and info.confidence == "role_only"
+                )
 
                 if not getattr(author, "role_schema", "") or role_only_source:
                     author.role_schema = schema
-                    print(f"[DEBUG] Updated role_schema for {author.forename} {author.familyname}: '{schema}'")
+                    print(
+                        f"[DEBUG] Updated role_schema for {author.forename} {author.familyname}: '{schema}'"
+                    )
                 else:
-                    print(f"[DEBUG] Kept existing role_schema for {author.forename} {author.familyname}: '{author.role_schema}'")
-
-
+                    print(
+                        f"[DEBUG] Kept existing role_schema for {author.forename} {author.familyname}: '{author.role_schema}'"
+                    )
 
         # 🔁 Finaler Deduplikationsschritt – ersetzt alle vorherigen Autoren/Empfänger-Listen durch bereinigte Fassung
         # Alle Personen aus authors, recipients und mentioned_persons zusammenführen
@@ -1317,44 +1538,63 @@ def process_transkribus_file(
 
         # Finale Deduplikation (inkl. Merging von Scores, Rollen etc.)
         deduplicated_final = deduplicate_and_group_persons(combined_persons)
-#        deduplicated_final = count_mentions_in_transcript_contextual(deduplicated_final, transcript_text)
-        
+        #        deduplicated_final = count_mentions_in_transcript_contextual(deduplicated_final, transcript_text)
 
         # Repliziere deduplizierte Personen in die Zielgruppen
         doc.mentioned_persons = deduplicated_final
 
+        for p in doc.mentioned_persons:
+            if not getattr(p, "gender", ""):
+                gender = infer_gender_for_person(p)
+                if gender:
+                    p.gender = gender
+                    print(f"[GENDER] Setze Gender für {p.forename} {p.familyname} → {gender}")
+                else:
+                    print("⚠ Fehler, kein Gender aus dem Text extrahiert oder der Groundtruth. ⚠")
 
         # Autoren identifizieren
         doc.authors = [
-            p for p in deduplicated_final
-            if any(p.nodegoat_id == a.nodegoat_id and a.nodegoat_id
+            p
+            for p in deduplicated_final
+            if any(
+                p.nodegoat_id == a.nodegoat_id
+                and a.nodegoat_id
                 or (p.forename == a.forename and p.familyname == a.familyname)
-                for a in authors)
+                for a in authors
+            )
         ]
 
         # Empfänger identifizieren – basierend auf recipient_score
         doc.recipients = sorted(
-            [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+            [
+                p
+                for p in deduplicated_final
+                if getattr(p, "recipient_score", 0) > 0
+            ],
             key=lambda p: getattr(p, "recipient_score", 0),
-            reverse=True
+            reverse=True,
         )
-
 
         # Debug: Kontrolle, ob es geklappt hat
         print("[DEBUG] Final authors with roles:")
         for a in doc.authors:
-            print(f" → {a.forename} {a.familyname}: role={a.role!r}, schema={a.role_schema!r}")
+            print(
+                f" → {a.forename} {a.familyname}: role={a.role!r}, schema={a.role_schema!r}"
+            )
 
         # Konflikt-Log Pfad definieren (einmalig pro Seite)
-        conflict_log_path = Path(OUTPUT_DIR_UNMATCHED) / f"conflict_log_{seven_digit_folder}_{subdir}.json"
-                
+        conflict_log_path = (
+            Path(OUTPUT_DIR_UNMATCHED)
+            / f"conflict_log_{seven_digit_folder}_{subdir}.json"
+        )
+
         # Validiere das Dokument vor dem Speichern
         validation_result = validate_extended(doc)
         if validation_result.get("errors"):
             print(f"[WARN] Validierungsfehler im Dokument {full_doc_id}:")
             for err_type, errors in validation_result["errors"].items():
                 print(f"  - {err_type}: {', '.join(errors)}")
-        
+
         # 15) Dokument speichern mit Fehlerbehandlung
         output_path = os.path.join(OUTPUT_DIR, f"{full_doc_id}.json")
         try:
@@ -1371,14 +1611,18 @@ def process_transkribus_file(
         print(f"Fehler bei der Verarbeitung von {xml_path}: {e}")
         traceback.print_exc()
         return None
-NAME_RE = re.compile(
-    r"\b[A-ZÄÖÜ][a-zäöüß]+(?:\s[A-ZÄÖÜ][a-zäöüß]+)*\b"
-)
 
+
+NAME_RE = re.compile(r"\b[A-ZÄÖÜ][a-zäöüß]+(?:\s[A-ZÄÖÜ][a-zäöüß]+)*\b")
 
 
 def get_place_name(pl: Dict[str, Any]) -> str:
-    return pl.get("name") or pl.get("matched_name") or pl.get("matched_raw_input", "")
+    return (
+        pl.get("name")
+        or pl.get("matched_name")
+        or pl.get("matched_raw_input", "")
+    )
+
 
 def process_transkribus_directory(transkribus_dir: str):
     place_m = PlaceMatcher(PLACE_CSV_PATH)
@@ -1390,20 +1634,37 @@ def process_transkribus_directory(transkribus_dir: str):
             continue
         process_subdirectories(folder, transkribus_dir, place_m, org_list)
 
+
 def extract_page_number_from_filename(filename: str) -> str:
     match = re.search(r"p(\d+)", filename, re.IGNORECASE)
     return match.group(1) if match else "001"
 
-def debug_print_standalone_roles(transcript_text: str, roles: List[Dict[str, Any]]):
+
+def debug_print_standalone_roles(
+    transcript_text: str, roles: List[Dict[str, Any]]
+):
     print("\n[DEBUG] Gefundene Einzelrollen im Transkript:")
     for r in roles:
-        print(" →", r.get("role"), "—", r.get("forename", ""), r.get("familyname", ""))
-        context_lines = [line for line in transcript_text.splitlines() if r["role"] in line]
+        print(
+            " →",
+            r.get("role"),
+            "—",
+            r.get("forename", ""),
+            r.get("familyname", ""),
+        )
+        context_lines = [
+            line for line in transcript_text.splitlines() if r["role"] in line
+        ]
         for cl in context_lines:
             print("     Kontext:", cl)
 
 
-def process_subdirectories(folder: str, base_path: str, place_m: PlaceMatcher, org_list: List[Dict[str, Any]]):
+def process_subdirectories(
+    folder: str,
+    base_path: str,
+    place_m: PlaceMatcher,
+    org_list: List[Dict[str, Any]],
+):
     for subdir in os.listdir(os.path.join(base_path, folder)):
         if not subdir.startswith("Akte_"):
             continue
@@ -1412,38 +1673,50 @@ def process_subdirectories(folder: str, base_path: str, place_m: PlaceMatcher, o
             continue
         for xml_file in sorted(os.listdir(page_dir)):
             if xml_file.endswith("_preprocessed.xml"):
-                process_single_xml(os.path.join(page_dir, xml_file), folder, subdir, xml_file, place_m, org_list)
+                process_single_xml(
+                    os.path.join(page_dir, xml_file),
+                    folder,
+                    subdir,
+                    xml_file,
+                    place_m,
+                    org_list,
+                )
+
 
 def prepare_persons_and_infer(
     raw_persons: List[Dict[str, Any]],
     transcript: str,
     folder: str,
-    document_type: str
+    document_type: str,
 ) -> Tuple[List[Person], List[Person], List[Person]]:
     """
-    1) split & enrich via split_and_enrich_persons  
-    2) extract inline roles  
-    3) merge tokens + roles  
-    4) dedupe & group into Person-objects  
-    5) infer authors & recipients  
+    1) split & enrich via split_and_enrich_persons
+    2) extract inline roles
+    3) merge tokens + roles
+    4) dedupe & group into Person-objects
+    5) infer authors & recipients
 
     Returns: (grouped_persons, authors, recipients)
     """
     # 1) split & fuzzy-match
-    matched, unmatched = split_and_enrich_persons(raw_persons, transcript, folder, KNOWN_PERSONS)
-    custom_data["persons"] = unmatched  
-
+    matched, unmatched = split_and_enrich_persons(
+        raw_persons, transcript, folder, KNOWN_PERSONS
+    )
+    custom_data["persons"] = unmatched
 
     # 2) inline-role-match on the matched persons
     # prepare dicts for assign_roles
-    matched_dicts = [p.__dict__ if isinstance(p, Person) else p for p in matched]
+    matched_dicts = [
+        p.__dict__ if isinstance(p, Person) else p for p in matched
+    ]
     roles = assign_roles_to_known_persons(matched_dicts, transcript)
 
     # 3) merge matched tokens with roles
     combined = matched_dicts[:]
     for r in roles:
         if not any(
-            r.forename == p.get("forename") and r.familyname == p.get("familyname")
+            r.forename == p.get("forename")
+            and r.familyname == p.get("familyname")
             for p in combined
         ):
             combined.append(r.__dict__ if isinstance(r, Person) else r)
@@ -1452,7 +1725,9 @@ def prepare_persons_and_infer(
     grouped = deduplicate_and_group_persons(combined)
 
     # 5) infer authors/recipients using the fully enriched persons
-    authors, recipients = infer_authors_recipients(transcript, document_type, grouped)
+    authors, recipients = infer_authors_recipients(
+        transcript, document_type, grouped
+    )
     return grouped, authors, recipients
 
 
@@ -1460,7 +1735,7 @@ def extract_and_prepare_persons(
     raw_persons: List[Dict[str, Any]],
     transcript: str,
     folder: str,
-    document_type: str
+    document_type: str,
 ) -> Tuple[List[Person], List[Person], List[Person]]:
     """
     1) split & enrich → fuzzy‐match tokens
@@ -1471,8 +1746,12 @@ def extract_and_prepare_persons(
     Returns: (mentioned_persons, authors, recipients)
     """
     # 1) split & fuzzy-match raw custom persons
-    matched, _ = split_and_enrich_persons(raw_persons, transcript, folder, KNOWN_PERSONS)
-    matched_dicts = [p.__dict__ if isinstance(p, Person) else p for p in matched]
+    matched, _ = split_and_enrich_persons(
+        raw_persons, transcript, folder, KNOWN_PERSONS
+    )
+    matched_dicts = [
+        p.__dict__ if isinstance(p, Person) else p for p in matched
+    ]
 
     # 2) inline roles from text using matched as context
     roles = assign_roles_to_known_persons(matched_dicts, transcript)
@@ -1481,7 +1760,8 @@ def extract_and_prepare_persons(
     combined = matched_dicts[:]
     for r in roles:
         if not any(
-            r.forename == p.get("forename") and r.familyname == p.get("familyname")
+            r.forename == p.get("forename")
+            and r.familyname == p.get("familyname")
             for p in combined
         ):
             combined.append(r.__dict__ if isinstance(r, Person) else r)
@@ -1499,27 +1779,35 @@ def extract_and_prepare_persons(
             print(f"[DEBUG] role_schema = {person.role_schema}")
         elif isinstance(info, Person) and info.role:
             person.role = info.role
-            person.role_schema = info.role_schema if hasattr(info, "role_schema") else ""
+            person.role_schema = (
+                info.role_schema if hasattr(info, "role_schema") else ""
+            )
         print(f"[DEBUG] person.role_schema from Person = {person.role_schema}")
 
     # 5) infer authors + recipients
-    authors, recipients = infer_authors_recipients(transcript, document_type, grouped)
+    authors, recipients = infer_authors_recipients(
+        transcript, document_type, grouped
+    )
     recipients = sorted(
         recipients,
         key=lambda r: getattr(r, "recipient_score", 0),
-        reverse=True
+        reverse=True,
     )
-    inline_recipients = [p for p in grouped if p.role_schema.lower() == "recipient"]
+    inline_recipients = [
+        p for p in grouped if p.role_schema.lower() == "recipient"
+    ]
     recipients = merge_person_lists(recipients, inline_recipients)
     recipients = [
-        r for r in recipients
-        if r.forename.strip() or r.familyname.strip()
+        r for r in recipients if r.forename.strip() or r.familyname.strip()
     ]
     return grouped, authors, recipients
 
-def merge_person_lists(base: List[Person], extras: List[Person]) -> List[Person]:
+
+def merge_person_lists(
+    base: List[Person], extras: List[Person]
+) -> List[Person]:
     """
-    Fügt alle Personen aus `extras` zu `base` hinzu, 
+    Fügt alle Personen aus `extras` zu `base` hinzu,
     sofern sie nicht schon in `base` (gleiches nodegoat_id oder Name) vorkommen.
     """
     merged = list(base)
@@ -1545,13 +1833,12 @@ def process_single_xml(
     subdir: str,
     xml_file: str,
     place_m: PlaceMatcher,
-    org_list: List[Dict[str, Any]]
+    org_list: List[Dict[str, Any]],
 ):
-    print("\n" + "-"*50)
+    print("\n" + "-" * 50)
     print(f"[NEUE SEITE] Verarbeite Datei: {xml_file}")
-    print("-"*50 + "\n")
+    print("-" * 50 + "\n")
     document_id = f"{folder}_{subdir}"
-
 
     # 1) XML parsen
     root = ET.parse(xml_path).getroot()
@@ -1559,71 +1846,92 @@ def process_single_xml(
     lines = extract_place_lines_from_xml(root)
     place_m.surrounding_place_lines = lines
 
-
-    
     # 2) Basis-Metadaten + document_type
     metadata = extract_metadata_from_xml(root)
     filename = f"{folder}_{subdir}_{xml_file.replace('.xml','')}"
+
+    # Dokumenttyp aus <Page custom="..."> auslesen
+    page_elem = root.find(".//{http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15}Page")
+    custom = page_elem.attrib.get("custom", "") if page_elem is not None else ""
+    document_type = "Brief"  # Default-Wert
+
+    for entry in custom.split():
+        if entry.startswith("document_type:"):
+            document_type = entry.split(":", 1)[1].strip()
+            break
+
+    metadata["document_type"] = document_type
+
     metadata["document_type"] = get_document_type(filename, xml_path)
-    metadata["object_type"]   = "Dokument"
+    metadata["object_type"] = "Dokument"
 
     # 3) Alle Custom-Tags auslesen (inkl. places, persons, dates, …)
-    custom_data = extract_custom_attributes(root, place_matcher_instance=place_m)
+    custom_data = extract_custom_attributes(
+        root, place_matcher_instance=place_m
+    )
 
     # 4) Alle rohen Orte matchen & deduplizieren
     raw_places = custom_data.get("places", [])
     mentioned_places = mentioned_places_from_custom_data(
-        {"places": raw_places},              # erwartet dict mit key "places"
-        f"{folder}_{subdir}_{xml_file}",     # eindeutige Doc-ID
-        place_m                              # PlaceMatcher-Instanz
+        {"places": raw_places},  # erwartet dict mit key "places"
+        f"{folder}_{subdir}_{xml_file}",  # eindeutige Doc-ID
+        place_m,  # PlaceMatcher-Instanz
     )
 
     # 5) Sender- und Empfänger-Ort + Datum aus custom-Tags extrahieren
-    creation_place, recipient_candidates, creation_date = assign_sender_and_recipient_place(
-        root,         # das geparste XML-Element
-        place_m,      # Dein PlaceMatcher-Objekt
-        mentioned_places
+    creation_place, recipient_candidates, creation_date = (
+        assign_sender_and_recipient_place(
+            root,  # das geparste XML-Element
+            place_m,  # Dein PlaceMatcher-Objekt
+            mentioned_places,
+        )
     )
 
     # 5b) Empfänger-Ort finalisieren aus Kandidaten
-    recipient_place, recipient_alternatives = finalize_recipient_places(recipient_candidates)
+    recipient_place, recipient_alternatives = finalize_recipient_places(
+        recipient_candidates
+    )
 
     # 6) Alles ins metadata-Dict packen
-    metadata.update({
+    metadata.update(
+    {
         "mentioned_places": [pl.to_dict() for pl in mentioned_places],
-        "creation_place":   creation_place or {},
-        "recipient_place":  recipient_place or {},
-        "creation_date":    creation_date or ""
-    })
+        "creation_place": creation_place or {},
+        "recipient_place": recipient_place or {},
+        "creation_date": creation_date or "",
+    }
+    )
     # 6) Transkript
     transcript = extract_text_from_xml(root)
     if not transcript or len(transcript.strip()) < 10:
         print(f"[WARN] Leeres oder zu kurzes Transkript: {xml_file}")
         return
-    print(f"[DEBUG] Transkript extrahiert: {transcript}")
-    
-    
+    print("\n")
+    print(f"[DEBUG] extrahiertes Transkript:\n********************************\n{transcript}\n********************************")
+    print("\n")
+
     # 7) Datumsangaben aus Fließtext extrahieren (Module/date_matcher.py)
-    custom_data = extract_custom_attributes(root, place_matcher_instance=place_m)
+    custom_data = extract_custom_attributes(
+        root, place_matcher_instance=place_m
+    )
     custom_attrs = extract_custom_date(root, NS)
     counted_dates = combine_dates(custom_attrs)
     custom_data["dates"] = counted_dates
-    print(f"[DEBUG] Gefundene kombinierte Datumsangaben (counted): {counted_dates}")
+    print(
+        f"[DEBUG] Gefundene kombinierte Datumsangaben (counted): {counted_dates}"
+    )
     # sicher stellen, dass die Datumsangaben im richtigen Format sind
     custom_data["dates"] = counted_dates
-    
+
     # 8) Personen extrahieren, zusammenführen und Autoren/Empfänger ermitteln
     mentioned_persons = custom_data.get("persons", [])
     mentioned_persons, authors, recipients = extract_and_prepare_persons(
-        custom_data["persons"],
-        transcript,
-        folder,
-        metadata["document_type"]
+        custom_data["persons"], transcript, folder, metadata["document_type"]
     )
     recipients = sorted(
         recipients,
         key=lambda r: getattr(r, "recipient_score", 0),
-        reverse=True
+        reverse=True,
     )
 
     print(f"Recipients in Process–Single_XML {recipients}")
@@ -1634,17 +1942,23 @@ def process_single_xml(
     for role_entry in custom_data.get("roles", []):
         role_raw = role_entry.get("raw", "").strip()
         for person in authors + recipients:
-            if role_raw.lower() in f"{person.forename} {person.familyname}".lower():
+            if (
+                role_raw.lower()
+                in f"{person.forename} {person.familyname}".lower()
+            ):
                 person.role = person.role or role_raw
-                person.role_schema = person.role_schema or map_role_to_schema_entry(role_raw)
-                print(f"[DEBUG] Assigned custom role '{role_raw}' to {person.forename} {person.familyname}")
-
+                person.role_schema = (
+                    person.role_schema or map_role_to_schema_entry(role_raw)
+                )
+                print(
+                    f"[DEBUG] Assigned custom role '{role_raw}' to {person.forename} {person.familyname}"
+                )
 
     # 10) Sicherstellen, dass alle Authors/Recipients in mentioned_persons sind
     temp_doc = BaseDocument(
         authors=authors,
         recipients=recipients,
-        mentioned_persons=mentioned_persons
+        mentioned_persons=mentioned_persons,
     )
     ensure_author_recipient_in_mentions(temp_doc, transcript)
     authors, recipients = temp_doc.authors, temp_doc.recipients
@@ -1652,14 +1966,16 @@ def process_single_xml(
     # 11) Rollen aus mentioned_persons final übernehmen
     for person in authors + recipients:
         for mp in temp_doc.mentioned_persons:
-            if person.forename == mp.forename and person.familyname == mp.familyname:
-                person.role        = mp.role
+            if (
+                person.forename == mp.forename
+                and person.familyname == mp.familyname
+            ):
+                person.role = mp.role
                 person.role_schema = mp.role_schema
                 break
 
     authors, recipients = temp_doc.authors, temp_doc.recipients
     mentioned_persons = temp_doc.mentioned_persons
-
 
     # 12) Organisationen matchen (und duplikatfrei halten)
     raw_orgs = custom_data.get("organizations", [])
@@ -1678,57 +1994,92 @@ def process_single_xml(
     )
     # --- Ergänze fehlende Orte mit API-Match nachträglich ---
     for p in custom_data.get("places", []):
-        has_id = p.get("nodegoat_id") or p.get("geonames_id") or p.get("wikidata_id")
+        has_id = (
+            p.get("nodegoat_id")
+            or p.get("geonames_id")
+            or p.get("wikidata_id")
+        )
         if not has_id:
-            print(f"[RETRY] Ort '{p.get('name')}' hatte keinen ID-Treffer – versuche API-Match")
+            print(
+                f"[RETRY] Ort '{p.get('name')}' hatte keinen ID-Treffer – versuche API-Match"
+            )
             try:
-                print(f"[DEBUG] place_m.surrounding_place_lines BEFORE match_place: {place_m.surrounding_place_lines}")
+                print(
+                    f"[DEBUG] place_m.surrounding_place_lines BEFORE match_place: {place_m.surrounding_place_lines}"
+                )
                 retry_matches = place_m.match_place(p.get("name"))
                 if retry_matches:
-                    best = max(retry_matches, key=lambda x: x.get("score", 0))  # bestes Match auswählen
+                    best = max(
+                        retry_matches, key=lambda x: x.get("score", 0)
+                    )  # bestes Match auswählen
                     data = best.get("data", {})
-                    print(f"[MATCHED-API] '{p['name']}' → {data.get('name')} (Nodegoat-ID: {data.get('nodegoat_id')})")
+                    print(
+                        f"[MATCHED-API] '{p['name']}' → {data.get('name')} (Nodegoat-ID: {data.get('nodegoat_id')})"
+                    )
 
                     # Ort konstruieren und ergänzen (aber mit needs_review=True)
                     new_place = Place(
                         name=data.get("name", p["name"]),
                         type="",
-                        alternate_place_name=data.get("alternate_place_name", ""),
+                        alternate_place_name=data.get(
+                            "alternate_place_name", ""
+                        ),
                         geonames_id=data.get("geonames_id", ""),
                         wikidata_id=data.get("wikidata_id", ""),
                         nodegoat_id=data.get("nodegoat_id", ""),
-                        needs_review=True
+                        needs_review=True,
                     )
-                    if not any(pl.name == new_place.name and pl.nodegoat_id == new_place.nodegoat_id for pl in mentioned_places):
+                    if not any(
+                        pl.name == new_place.name
+                        and pl.nodegoat_id == new_place.nodegoat_id
+                        for pl in mentioned_places
+                    ):
                         mentioned_places.append(new_place)
 
             except Exception as e:
-                print(f"[WARN] API-Fallback für Ort '{p['name']}' fehlgeschlagen: {e}")
+                print(
+                    f"[WARN] API-Fallback für Ort '{p['name']}' fehlgeschlagen: {e}"
+                )
 
-    with open(os.path.join(OUTPUT_DIR, "unmatched", "unmatched_places.json"), "w", encoding="utf-8") as f:
+    with open(
+        os.path.join(OUTPUT_DIR, "unmatched", "unmatched_places.json"),
+        "w",
+        encoding="utf-8",
+    ) as f:
         json.dump(place_m.unmatched_places, f, ensure_ascii=False, indent=2)
     mentioned_dates = custom_data.get("dates", [])
-
 
     # 14) Event
     events = extract_events_from_xml(xml_path, place_m)
 
-
-
-
-    #15) Document Type
+    # 15) Document Type
+    
     if "document_type" not in metadata or not metadata["document_type"]:
         metadata["document_type"] = document_type
+
+    # Gender-Feld für alle finalen Personen ergänzen (nach Deduplikation)
+    for person in mentioned_persons:
+        if not person.gender:
+            person.gender = infer_gender_for_person(person.to_dict(), known_persons_list)
+
+
+    for person in authors + recipients:
+        if not person.gender:
+            person.gender = infer_gender_for_person(person.to_dict(), known_persons_list)
+
 
     # 16) BaseDocument zusammenbauen
     doc = BaseDocument(
         object_type="Dokument",
-        document_type=metadata.get("document_type", ""),  
+        document_type=metadata.get("document_type", ""),
         attributes=metadata,
         content_transcription=transcript,
         authors=authors,
         recipients=recipients,
-        mentioned_persons=mentioned_persons,
+        mentioned_persons =[
+        p for p in mentioned_persons
+        if p.nodegoat_id or p.forename or p.familyname or p.role
+        ],
         mentioned_organizations=[
             Organization(
                 name=o["name"],
@@ -1737,18 +2088,17 @@ def process_single_xml(
                 alternate_names=o.get("alternate_names", []),
                 feldpostnummer=o.get("feldpostnummer", ""),
                 match_score=o.get("match_score"),
-                confidence=o.get("confidence", "")
+                confidence=o.get("confidence", ""),
             )
             for o in unique_orgs
         ],
         mentioned_places=mentioned_places,
         mentioned_dates=mentioned_dates,
-        mentioned_events=events,  
+        mentioned_events=events,
         content_tags_in_german=[],
         creation_date="",
-        creation_place=""
+        creation_place="",
     )
-    
 
     def mark_unmatched_persons(doc: BaseDocument):
         """
@@ -1771,21 +2121,36 @@ def process_single_xml(
                     needs_review = True
                     reasons.append("missing_familyname")
 
-                if getattr(person, "confidence", "") == "String_direct_from_text":
+                if (
+                    getattr(person, "confidence", "")
+                    == "String_direct_from_text"
+                ):
                     needs_review = True
                     reasons.append("extracted_from_text_only")
 
                 if needs_review:
                     person.needs_review = True
                     person.review_reason = "; ".join(reasons)
-                    print(f"[NEEDS_REVIEW] {group_name}: {person.forename} {person.familyname} → {person.review_reason}")
+                    print(
+                        f"[NEEDS_REVIEW] {group_name}: {person.forename} {person.familyname} → {person.review_reason}"
+                    )
 
     mark_unmatched_persons(doc)
-
 
     # Die erweiterte postprocess_roles-Funktion wird hier angewendet.
     # Dies stellt sicher, dass das familyname-Feld konsistent verarbeitet wird.
     # Die Funktion verifiziert und korrigiert alle Rollen-Personen-Zuordnungen im Dokument.
+    print("[DEBUG-VOR-POSTPROCESS] Personen vor Rollenverarbeitung:")
+    for p in doc.mentioned_persons:
+        print(p.to_dict())
+
+    # Failsafe: Personen mit NG-ID dürfen niemals rausfliegen, auch wenn sie keinen Namen oder Rolle haben
+    doc.mentioned_persons = [
+        p for p in doc.mentioned_persons
+        if p.nodegoat_id or (p.forename.strip() or p.familyname.strip() or p.role.strip())
+    ]
+
+    # Rollen verarbeiten
     postprocess_roles(doc)
     enrich_final_recipients(doc)
 
@@ -1796,64 +2161,86 @@ def process_single_xml(
     deduplicated_final = deduplicate_and_group_persons(combined_persons)
 
     # 18) Zählen im Transkript
-    deduplicated_final = count_mentions_in_transcript_contextual(deduplicated_final, transcript)
+    deduplicated_final = count_mentions_in_transcript_contextual(
+        deduplicated_final, transcript
+    )
 
     # 19) Übernehmen in mentioned_persons
     doc.mentioned_persons = deduplicated_final
 
     for p in deduplicated_final:
-        print(f"[CHECK] {p.forename} {p.familyname} → recipient_score={getattr(p, 'recipient_score', 'MISSING')}")
+        print(
+            f"[CHECK] {p.forename} {p.familyname} → recipient_score={getattr(p, 'recipient_score', 'MISSING')}"
+        )
 
     # 20) FINAL: recipients extrahieren
     doc.recipients = sorted(
-        [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+        [
+            p
+            for p in deduplicated_final
+            if getattr(p, "recipient_score", 0) > 0
+        ],
         key=lambda p: getattr(p, "recipient_score", 0),
-        reverse=True
+        reverse=True,
     )
 
     # 21) Debug-Ausgabe
     debug_recipients = [p.to_dict() for p in doc.recipients]
 
-    print("[DEBUG] JSON-ready recipients:", [f"{p['forename']} {p['familyname']}" for p in debug_recipients])
+    print(
+        "[DEBUG] JSON-ready recipients:",
+        [f"{p['forename']} {p['familyname']}" for p in debug_recipients],
+    )
 
     doc.recipients = sorted(
-    [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
-    key=lambda p: getattr(p, "recipient_score", 0),
-    reverse=True
-)
-
+        [
+            p
+            for p in deduplicated_final
+            if getattr(p, "recipient_score", 0) > 0
+        ],
+        key=lambda p: getattr(p, "recipient_score", 0),
+        reverse=True,
+    )
 
     # Autoren aus der deduplizierten Liste wiederherstellen
     doc.authors = [
-        p for p in deduplicated_final
-        if any(p.nodegoat_id == a.nodegoat_id and a.nodegoat_id
+        p
+        for p in deduplicated_final
+        if any(
+            p.nodegoat_id == a.nodegoat_id
+            and a.nodegoat_id
             or (p.forename == a.forename and p.familyname == a.familyname)
-            for a in authors)
+            for a in authors
+        )
     ]
 
     # Empfänger aus der deduplizierten Liste wiederherstellen (mit recipient_score)
     doc.recipients = sorted(
-        [p for p in deduplicated_final if getattr(p, "recipient_score", 0) > 0],
+        [
+            p
+            for p in deduplicated_final
+            if getattr(p, "recipient_score", 0) > 0
+        ],
         key=lambda p: getattr(p, "recipient_score", 0),
-        reverse=True
+        reverse=True,
     )
 
     # II) JSON speichern
     out_name = xml_file.replace("_preprocessed.xml", ".json")
     out_path = os.path.join(OUTPUT_DIR, f"{folder}_{subdir}_{out_name}")
     with open(out_path, "w", encoding="utf-8") as f:
-        
+
         f.write(doc.to_json(indent=2))
     print(f"[OK] Gespeichert: {out_path}")
     update_total_json(out_path, doc)
-    
+
     log_unmatched_entities(
         document_id=document_id,
         custom_data=custom_data,
         final_persons=[p.to_dict() for p in doc.mentioned_persons],
         final_places=mentioned_places,
         final_roles=custom_data.get("roles", []),
-        unmatched_dir=Path(OUTPUT_DIR) / "unmatched"
+        unmatched_dir=Path(OUTPUT_DIR) / "unmatched",
     )
 
     needs_review_persons = [
@@ -1865,9 +2252,10 @@ def process_single_xml(
     if needs_review_persons:
         unmatched_dir = Path(OUTPUT_DIR) / "unmatched"
         if unmatched_dir.exists() and unmatched_dir.is_file():
-            raise RuntimeError(f"[Fehler] {unmatched_dir} ist eine Datei, aber ein Verzeichnis wurde erwartet.")
+            raise RuntimeError(
+                f"[Fehler] {unmatched_dir} ist eine Datei, aber ein Verzeichnis wurde erwartet."
+            )
         unmatched_dir.mkdir(parents=True, exist_ok=True)
-
 
         unmatched_file = unmatched_dir / "unmatched.json"
 
@@ -1880,31 +2268,40 @@ def process_single_xml(
 
         # Kombinieren und Duplikate vermeiden (nach Vorname+Nachname)
         combined = {
-            (p.get("forename", ""), p.get("familyname", ""), p.get("role", "")): p
+            (
+                p.get("forename", ""),
+                p.get("familyname", ""),
+                p.get("role", ""),
+            ): p
             for p in existing + needs_review_persons
             if isinstance(p, dict)
         }
 
         with open(unmatched_file, "w", encoding="utf-8") as f:
             json.dump(list(combined.values()), f, ensure_ascii=False, indent=2)
-        
-        print(f"[UNMATCHED] {len(needs_review_persons)} neue Personen in unmatched_persons.json ergänzt")
+
+        print(
+            f"[UNMATCHED] {len(needs_review_persons)} neue Personen in unmatched_persons.json ergänzt"
+        )
+
 
 def infer_authors_recipients(
-    text: str,
-    doc_type: Optional[str],
-    persons: List[Person]
+    text: str, doc_type: Optional[str], persons: List[Person]
 ) -> Tuple[List[Person], List[Person]]:
     """
-    Ermittelt Autoren und Empfänger aus dem Text, sorgt dafür, 
+    Ermittelt Autoren und Empfänger aus dem Text, sorgt dafür,
     dass sie Person-Instanzen sind, und gibt Debug-Infos aus.
     """
     # 1) Roh-Extraktion
-    raw_author    = match_authors(text, document_type=doc_type, mentioned_persons=persons)
+    raw_author = match_authors(
+        text, document_type=doc_type, mentioned_persons=persons
+    )
     raw_recipient = match_recipients(text, mentioned_persons=persons)
 
     # 1b) Leeren dict-Placeholder für recipient entfernen
-    if isinstance(raw_recipient, dict) and not (raw_recipient.get("forename") or raw_recipient.get("familyname")):
+    if isinstance(raw_recipient, dict) and not (
+        raw_recipient.get("forename") or raw_recipient.get("familyname")
+    ):
         raw_recipient = []
 
     # 2) In Listen umwandeln und Dictionaires zu Person konvertieren
@@ -1920,34 +2317,41 @@ def infer_authors_recipients(
             for p in raw:
                 if isinstance(p, Person):
                     result.append(p)
-                elif isinstance(p, dict) and (p.get("forename") or p.get("familyname")):
+                elif isinstance(p, dict) and (
+                    p.get("forename") or p.get("familyname")
+                ):
                     result.append(Person.from_dict(p))
         return result
 
-    authors_list    = to_person_list(raw_author)
+    authors_list = to_person_list(raw_author)
     recipients_list = to_person_list(raw_recipient)
 
     # 4) Temporäres Dokument für das In-Mentions Einpflegen
     temp_doc = BaseDocument(
-        authors=            authors_list,
-        recipients=         recipients_list,
-        mentioned_persons=  persons
+        authors=authors_list,
+        recipients=recipients_list,
+        mentioned_persons=persons,
     )
 
     # 5) Autoren und Empfänger in mentioned_persons aufnehmen
-    print("[DEBUG] recipients vor ensure_author_recipient_in_mentions:", 
-      [f"{r.forename} {r.familyname}" for r in temp_doc.recipients])
+    print(
+        "[DEBUG] recipients vor ensure_author_recipient_in_mentions:",
+        [f"{r.forename} {r.familyname}" for r in temp_doc.recipients],
+    )
 
     ensure_author_recipient_in_mentions(temp_doc, text)
 
-    print("[DEBUG] recipients nach ensure_author_recipient_in_mentions:", 
-        [f"{r.forename} {r.familyname}" for r in temp_doc.recipients])
+    print(
+        "[DEBUG] recipients nach ensure_author_recipient_in_mentions:",
+        [f"{r.forename} {r.familyname}" for r in temp_doc.recipients],
+    )
 
     return temp_doc.authors, temp_doc.recipients
 
 
 def main():
     process_transkribus_directory(TRANSKRIBUS_DIR)
+
 
 if __name__ == "__main__":
     main()

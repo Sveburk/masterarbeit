@@ -477,6 +477,30 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
         if len(final) >= 4:
             break
 
+        # ---: Kontextbasierte recipient-Erkennung (Triggerwort + Fenster) ---
+        recipient_trigger_re = re.compile(r"\b(" + "|".join(RECIPIENT_PATTERNS) + r")\b", re.IGNORECASE)
+        window_size = 3
+        tokens = text.split()
+
+        for i, tok in enumerate(tokens):
+            if recipient_trigger_re.match(tok.strip(".,:;!?")):
+                window = tokens[i+1:i+1+window_size]
+                window_str = " ".join(window).lower()
+                for p in mentioned_persons:
+                    full_name = f"{p.forename} {p.familyname}".strip().lower()
+                    if not full_name:
+                        continue
+                    if getattr(p, "recipient_score", 0) > 0:
+                        continue  # schon gesetzt
+
+                    if full_name.split()[0] in window_str or full_name in window_str:
+                        print(f"[CONTEXT-MATCH] Kontextfenster erkannt für '{p.forename} {p.familyname}' → recipient_score=100")
+                        p.recipient_score = 100
+                        p.confidence = "context_window"
+                        final.append(p.to_dict())
+                        break
+
+
     return final
 
 
@@ -783,8 +807,8 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                     )
 
             # Skip persons with empty names
-            if not (person.forename or person.familyname):
-                print(f"[DEBUG] Skipping nameless person in match_and_resolve: role='{person.role}'")
+            if not (person.forename or person.familyname or person.nodegoat_id):
+                print(f"[DEBUG] Skipping nameless and ID-less person in match_and_resolve: role='{person.role}'")
                 continue
 
             # Eintrag übernehmen oder Konflikt melden
@@ -854,6 +878,21 @@ def ensure_author_recipient_in_mentions(
     und enrich­t die Rollen in-place auf genau diesen Instanzen.
     Verhindert auch das Hinzufügen von Personen ohne Namen.
     """
+    # Blacklist prüfen: keine Dummy-Empfänger wie "Grüße"
+    from Module.person_matcher import UNMATCHABLE_SINGLE_NAMES, NON_PERSON_TOKENS
+
+    blacklisted = lambda p: (
+        p.forename.strip().lower() in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS)
+        and not p.familyname.strip()
+        and not p.nodegoat_id
+    )
+
+    recipients_before = base_doc.recipients.copy()
+    base_doc.recipients = [p for p in base_doc.recipients if not blacklisted(p)]
+
+    if len(recipients_before) != len(base_doc.recipients):
+        print("[DEBUG] Blacklist-Empfänger aus recipients entfernt.")
+
     def is_same_person(a: Person, b: Person) -> bool:
         # Präziser Abgleich: entweder gleiche ID oder Vor- und Nachname, aber NICHT nur Vorname
         if a.nodegoat_id and b.nodegoat_id:
@@ -907,7 +946,7 @@ def ensure_author_recipient_in_mentions(
 
     # --- 2) Rollen auf alle mentioned_persons nachziehen ---
     # Filter out any persons without valid names before role enrichment
-    base_doc.mentioned_persons = [p for p in base_doc.mentioned_persons if has_valid_name(p)]
+    base_doc.mentioned_persons = [p for p in base_doc.mentioned_persons if has_valid_name(p) or p.nodegoat_id]
 
     # Continue with role enrichment
     person_dicts = [p.to_dict() for p in base_doc.mentioned_persons]
@@ -938,121 +977,79 @@ def ensure_author_recipient_in_mentions(
                 print(f"[DEBUG] Kept existing role_schema for {obj.forename} {obj.familyname}: '{getattr(obj, 'role_schema', '')}'")
 
     # Final check - ensure we haven't accidentally added any nameless persons
-    base_doc.mentioned_persons = [p for p in base_doc.mentioned_persons if has_valid_name(p)]
+    base_doc.mentioned_persons = [
+        p for p in base_doc.mentioned_persons
+        if p.nodegoat_id or (p.forename and p.familyname) or p.role
+    ]
     print(f"[DEBUG] Final mentioned_persons count after filtering nameless persons: {len(base_doc.mentioned_persons)}")
+
 
 def postprocess_roles(base_doc: BaseDocument):
     """
-    – Verschiebt reine Rollen-Tokens aus forename/familyname in role (mit Normalisierung).
-    – Tauscht Name↔Rolle, wenn role eigentlich ein Personenname und
-      forename/familyname eine Rolle enthält.
-    – Setzt role_schema für alle Rollen und leert Name-Felder, wenn nur Rolle bekannt.
-    – Filtert erwähnte Personen nach Blacklist.
+    – Verschiebt Rollen aus Name-Feldern in `role` (mit Normalisierung), aber nur bei unsicheren Fällen.
+    – Setzt `role_schema` für bekannte Rollen.
+    – Entfernt nur Dummy-Personen ohne Name, Rolle und nodegoat_id.
+    – Setzt `needs_review = True`, wenn keine `role_schema` erkannt wird.
     """
-    # Import blacklist tokens from person_matcher
-    from .person_matcher import NON_PERSON_TOKENS, UNMATCHABLE_SINGLE_NAMES
+    from .person_matcher import NON_PERSON_TOKENS, UNMATCHABLE_SINGLE_NAMES, normalize_name_string
+    from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
 
-    # Debug: Start
     print(f"[DEBUG postprocess_roles] Start: {len(base_doc.mentioned_persons)} mentioned_persons")
 
-    filtered: List[Person] = []
-
-    # 1–4: Regeln mit normalize_and_match_role
-    for idx, p in enumerate(base_doc.mentioned_persons):
+    filtered = []
+    for p in base_doc.mentioned_persons:
         fn = p.forename.strip()
         ln = p.familyname.strip()
-        rl = p.role.strip()
-        print(f"[DEBUG] Person[{idx}]: forename='{fn}', familyname='{ln}', role='{rl}'")
+        role = p.role.strip()
 
-        # Blacklist check - skip persons with only blacklisted terms and low match score
-        if ((fn.lower() in NON_PERSON_TOKENS and not ln) or
-            (ln.lower() in NON_PERSON_TOKENS and not fn)):
-            if not (p.match_score >= 50 or p.recipient_score > 0 or p.nodegoat_id):
-                print(f"[DEBUG] Person[{idx}] skipped due to blacklist: '{fn}'/'{ln}' with match_score={p.match_score}, recipient_score={p.recipient_score}")
+        fn_lower = fn.lower()
+        ln_lower = ln.lower()
+
+        # Nur bei unsicheren Fällen ohne ID: versuche Rolle aus Vor-/Nachname zu extrahieren
+        if not role and not p.nodegoat_id:
+            norm_fn = normalize_and_match_role(fn_lower) if fn else ""
+            norm_ln = normalize_and_match_role(ln_lower) if ln else ""
+
+            if norm_fn and fn_lower in NON_PERSON_TOKENS:
+                p.role = norm_fn
+                p.forename = ""
+            elif norm_ln and ln_lower in NON_PERSON_TOKENS:
+                p.role = norm_ln
+                p.familyname = ""
+
+        # Rolle normalisieren und Schema setzen
+        if p.role:
+            norm_role = normalize_and_match_role(p.role.lower())
+            if norm_role and not p.role_schema:
+                p.role = norm_role
+                p.role_schema = map_role_to_schema_entry(norm_role)
+
+        # needs_review setzen, wenn keine Rolle zugeordnet werden konnte
+        if not p.role_schema:
+            p.needs_review = True
+            if not getattr(p, "review_reason", ""):
+                p.review_reason = "Keine Rolle erkannt"
+
+        # ✅ Schutz: Personen mit ID und vollständigem Namen niemals löschen
+        if p.nodegoat_id and fn and ln:
+            filtered.append(p)
+            continue
+        # 🧨 Drop unvollständige Einzelnamen, die in UNMATCHABLE_SINGLE_NAMES oder Blacklist stehen
+        if not ln and not p.nodegoat_id and fn_lower in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS):
+            print(f"[DEBUG-DROP] Blacklist-Eintrag erkannt: {fn}")
+            continue
+
+        # ❌ Dummy-Personen ohne Name, Rolle, ID → rausfiltern
+        if not fn and not ln and not p.role and not p.nodegoat_id:
+            key = normalize_name_string(getattr(p, "raw_token", ""))
+            if key in NON_PERSON_TOKENS or fn_lower in NON_PERSON_TOKENS or ln_lower in NON_PERSON_TOKENS:
+                print(f"[DEBUG DROPPED in postprocess_roles] {key} (Grund: Dummy ohne Namen/Rolle/ID)")
                 continue
-
-        # Skip unmatchable single names with low match score
-        if ((fn.lower() in UNMATCHABLE_SINGLE_NAMES and not ln) or
-            (ln.lower() in UNMATCHABLE_SINGLE_NAMES and not fn)) and getattr(p, "match_score", 0) < 40:
-            print(f"[DEBUG] Person[{idx}] skipped due to unmatchable name: '{fn}'/'{ln}' with match_score {getattr(p, 'match_score', 0)}")
-            continue
-
-        # Rohes Lowercase
-        raw_fn_lower = fn.lower()
-        raw_ln_lower = ln.lower()
-
-
-        # Normierungen
-        norm_fn = normalize_and_match_role(raw_fn_lower) if fn else None
-        norm_ln = normalize_and_match_role(raw_ln_lower) if ln else None
-
-
-        # Fallback: Singularform für deutsche Plural "-en"
-        if fn and not norm_fn and raw_fn_lower.endswith('en'):
-            singular = raw_fn_lower[:-2]
-            norm_fn = normalize_and_match_role(singular)
-
-        if ln and not norm_ln and raw_ln_lower.endswith('en'):
-            singular_ln = raw_ln_lower[:-2]
-            norm_ln = normalize_and_match_role(singular_ln)
-
-
-        # 1) reine Rolle im Vornamen
-        if not rl and norm_fn:
-            p.role      = norm_fn
-            p.forename  = ""
-
-
-        # 2) reine Rolle im Nachnamen
-        elif not rl and norm_ln:
-            p.role        = norm_ln
-            p.familyname  = ""
-
-
-        # 3) role enthält Namen, forename enthält Rolle → tauschen
-        elif rl and norm_fn:
-            old_role = p.role
-            p.forename, p.role = rl, norm_fn
-
-
-        # 4) role enthält Namen, familyname enthält Rolle → tauschen
-        elif rl and norm_ln:
-            old_role = p.role
-            p.familyname, p.role = rl, norm_ln
-
-        # Nach Regelanwendung: Dropping nur, wenn keine Rolle übrig und keine ID, kein Score
-        if ((not p.forename or p.forename.lower() in NON_PERSON_TOKENS) and
-            (not p.familyname or p.familyname.lower() in NON_PERSON_TOKENS) and
-            not p.role and not p.role_schema and
-            p.match_score < 40 and p.recipient_score == 0 and not p.nodegoat_id):
-            print(f"[DEBUG] Person skipped after rule application: '{p.forename}'/'{p.familyname}' ohne Rolle, ohne ID")
-            continue
 
         filtered.append(p)
 
-
-
-    # 5) role_schema setzen und reine-Rollen-Einträge final bereinigen
-    for idx, p in enumerate(filtered):
-        has_name = bool(p.forename or p.familyname)
-        has_id   = bool(p.nodegoat_id)
-        
-
-        if p.role and not has_name and not has_id:
-            normalized = normalize_and_match_role(p.role.lower()) or p.role
-            p.role = normalized
-            p.role_schema = map_role_to_schema_entry(normalized)
-            p.forename = ""
-            p.familyname = ""
-            print(f"[DEBUG] Regel 5 angewendet: role_schema='{p.role_schema}', Namen geleert")
-        else:
-            if p.role and not getattr(p, "role_schema", None):
-                p.role_schema = map_role_to_schema_entry(p.role)
-                print(f"[DEBUG] role_schema gesetzt -> role_schema='{p.role_schema}'")
-
     base_doc.mentioned_persons = filtered
-    print("[DEBUG postprocess_roles] Ende")
-
+    print(f"[DEBUG postprocess_roles] Ende → {len(filtered)} übrig")
 
 # =================================================
 # Orte und Daten

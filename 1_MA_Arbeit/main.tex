@@ -696,6 +696,30 @@ Dein\\
 \end{tcolorbox}
 
 
+\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
+\textbf{\colorbox{place}{\texttt{München}}}, \textbf{\colorbox{date}{\texttt{28.V.1941}}} \\
+\\
+Lieber \textbf{\colorbox{person}{\texttt{Otto}}}!\\
+Nur wer die Sehnsucht kennt weiß was ich leide\\
+Ich wandle traurig her in schwarzer Seide.\\
+Die Sehnsucht brennt, du bist so fern.\\
+Ach lieber \textbf{\colorbox{person}{\texttt{Otto}}}, wie hab ich dich gern.\\
+Ich schnitt es gern in alle Rinden.\\
+Ach \textbf{\colorbox{person}{\texttt{Otto}}}, wann u. wo kann ich dich finden?\\
+Deine dich nie vergessende\\
+\textbf{\colorbox{person}{\texttt{Lina Fingerdick}}}\\
+\\
+An\\
+\textbf{\colorbox{person}{\texttt{Herrn Otto Bollinger}}}\\
+z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
+\textbf{\colorbox{organization}{\texttt{Vereinsführer des Männerchor}}}\\
+\textbf{\colorbox{place}{\texttt{Murg}}}\\
+\textbf{\colorbox{place}{\texttt{Laufenburg (Baden)}}}\\
+\textbf{\colorbox{place}{\texttt{Rhina}}}
+\end{tcolorbox}
+
+
+
 
 \subsection{Aufbau XML to JSON Pipeline}
 \subsubsection{Übersichtsgrafik der Pipeline}
@@ -767,6 +791,7 @@ Dein\\
 
 
 \section{ Pipeline grafik refined}
+\vspace{6\baselineskip}
 
 
 \begin{center}
@@ -882,6 +907,7 @@ Dein\\
 \end{tikzpicture}
 }
 \end{center}
+\vspace{6\baselineskip}
 
 
 \subsection{Person-Matcher}
@@ -1000,6 +1026,253 @@ Dein\\
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
 \end{tikzpicture}
 \end{center}
+
+
+
+
+\subsection{Diagram english}
+
+\vspace{6\baselineskip}
+
+
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
+  source/.style={rectangle, draw=black, fill=green!30!gray!20, thick, minimum width=4.2cm, minimum height=0.7cm, align=center},
+  group/.style={draw=gray, dashed, rounded corners, inner sep=0.5cm},
+  arrow/.style={-Latex, thick}, arrowboth/.style={<Latex>-<Latex>, thick},
+  node distance=0.8cm and 1.6cm
+]
+
+
+% --- Hauptquellen oben ---
+\node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transcription};
+\node[process] (dir) at (0, -3.2) {\textbf{File Directory} \\ with XML-Files};
+\node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
+\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Main Processing};
+
+% ------------------- MODULE (FLOWCHART) ------------------------
+\node[module, below=2cm of main] (init) {Initialization \\ (CSV import, matcher)};
+\node[module, below=of init]    (xml)  {XML \& Custom Tags \\ Parse, extract\_metadata};
+
+
+% Referenzpunkt zentriert unter xml
+\coordinate (modcenter) at ($(xml.south) + (0,-1.8)$);
+\node[module] (roles)   at ($(modcenter) + (-8cm, -0.5)$) {Roles \\ assign, enrich};
+\node[module] (persons) at ($(modcenter) + (-2.7cm, -0.5)$) {Persons \\ match, split, enrich};
+\node[module] (orgs)    at ($(modcenter) + (2.7cm, -0.5)$)  {Organizations \\ extract, deduplicate};
+\node[module] (places)  at ($(modcenter) + (8cm, -0.5)$)  {Places \\ context + combination};
+\node[module] (dates)   at ($(modcenter) + (13cm, -0.5)$) {Dates \\ combine\_dates(), count};
+\node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
+\node[module, below=1.2cm of persons] (authors) {Authors \& Recipients \\ infer, deduplicate, score};
+\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Role Postprocessing};
+\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
+\node[module, below=of json] (save) {Saving \\ JSON per page + total\_json};
+
+% CSV-Quellen
+\node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
+\node[source, below=0.6cm of csv1] (csv2) {\textbf{export-place.csv}};
+\node[source, below=0.6cm of csv2] (csv3) {\textbf{export-roles.csv}};
+\node[source, below=0.6cm of csv3] (csv4) {\textbf{export-organisationen.csv}};
+
+\node[group, fit=(csv1)(csv2)(csv3)(csv4), name=nodegoatbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{preprocessing: Nodegoat-export}}] {};
+
+\node[group, fit=(transkribus), name=pretranskribusbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{preprocessing: Transkribus}}] {};
+
+  % --- Gruppenrahmen für Modulblock ---
+\node[group, fit=
+  (persons)(authors)(roles)
+  (orgs)(dates)(events)
+  (places)(joinpoint), name=flowchartbox] {};
+
+% --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
+\node[group, fit=(main)(flowchartbox)(save),
+  label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{ Main Processing of the Pipeline}}] {};
+
+
+% Verbindungen
+\draw[arrow] (transkribus.east) -- ++(1.2,0)-- ++(0,-3.2)-- node[pos=0.6, left, font=\small, xshift=-2cm, yshift=1.3cm]{\textit{Export as XML}} (dir.west);  
+\draw[arrow] (dir.east) -- (llmpre.west);
+\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{Custom-Tags}} (dir.north);
+\draw[arrow] (dir.south) -- (main.north);
+\draw[arrow] (main.south) -- (init.north);
+\draw[arrow] (init.south) -- (xml.north);
+
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (persons.west) -- (roles.east);
+\draw[arrow] (roles.east) -- (persons.west);   
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west) -- (persons.east); 
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west)-- (persons.east)  ;      
+\draw[arrow] (orgs.east) -- (places.west);  
+\draw[arrow] (places.west) -- (orgs.east);   
+             
+% Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] 
+  (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
+  node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{delivers Groundtruth}};
+\end{tikzpicture}
+}
+\end{center}
+\vspace{6\baselineskip}
+
+
+\vspace{6\baselineskip}
+
+
+\begin{center}
+\begin{tikzpicture}
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0)}]
+\node at (0, -3.7) {\textit{Above: Overall schema overview}};
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+\node[module] (json)       at (-0,  -2.8 ) {};
+\node[module] (save)       at (-0, -3.3  ) {};
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% Large process diagram
+\node[large] (personsmod) at (0,0) {\textbf{Persons} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extract raw persons from XML or LLM)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Split names, detect titles \& role expressions)};
+
+\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy/contextual matching with groundtruth)};
+
+\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Assign roles \& organizations from modules)};
+
+\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Provides normalized \\ roles)};
+
+\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Provides normalized \\ organizations)};
+
+\node[process, below=of roles] (score)  {\textbf{def calculate recipient\_score} \\ (Scoring based on transcript context)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Merge persons with same ID/name)};
+
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Count mentions in context, avoid duplicates)};
+
+\node[below=of count, align=center] 
+  {\textit{Top: process in person\_matcher.py}\\\textit{Right: input from role\_matcher.py and organization\_matcher.py}};
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] 
+  (orgmatch.west) 
+  -- ++(-0.5,0) 
+  |- (roles.east);
+
+\draw[arrow] (rolematch.west) -- (roles.east);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{tikzpicture}
+\end{center}
+\vspace{6\baselineskip}
+
+
+
+
 
 
 

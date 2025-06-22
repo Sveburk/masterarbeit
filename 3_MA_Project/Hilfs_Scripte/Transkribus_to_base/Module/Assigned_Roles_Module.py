@@ -211,6 +211,7 @@ def load_known_persons() -> List[Dict[str, Any]]:
     persons = df[["forename", "familyname", "alternate_name", "title"]].to_dict(orient="records")
     for p in persons:
         p.update({"role": "", "role_schema": "", "associated_organisation": {}, "associated_place": "", "nodegoat_id": "", "match_score": 0, "confidence": ""})
+    print(f"[DEBUG] load_known_persons in Assign_ROles_module hat diese bekannte Personen: {persons}")
     return persons
 
 # === Mapping-Funktion ===
@@ -220,35 +221,40 @@ def map_role_to_schema_entry(role_string: str) -> str:
 # === Extraktion Inline-Rollen zu bekannten Personen ===
 
 def assign_roles_to_known_persons(persons: List[Dict[str, Any]], full_text: str) -> List[Person]:
-    # 0) Frühprüfung: Wenn Vor-/Nachname eigentlich eine Rolle ist → umwandeln
+    def is_safely_matched(p: Dict[str, Any]) -> bool:
+        return bool(p.get("nodegoat_id")) or p.get("match_score", 0) >= 90
+
+    # Frühprüfung – aber nur für schwache Matches
     for p in persons:
         fn = p.get("forename", "").strip().lower()
         ln = p.get("familyname", "").strip().lower()
 
-        if fn in ROLE_MAPPINGS_DE and not p.get("role"):
-            print(f"[FIX] '{fn}' ist keine Person, sondern Rolle – wird verschoben.")
-            role = normalize_and_match_role(fn)
-            p["role"] = role
-            p["role_schema"] = map_role_to_schema_entry(role)
-            p["confidence"] = "single-name"
-            p["needs_review"] = True
-            p["review_reason"] = "role_without_person (mixed Role and Name)"
-            p["match_score"] = 30
-            p["mentioned_count"] = 1
-            # NICHT löschen – damit Dummy sichtbar bleibt
+        if not is_safely_matched(p):
+            if fn in ROLE_MAPPINGS_DE and not p.get("role"):
+                print(f"[DEBUG] '{fn}' wird als Rolle interpretiert, aber Person war kein sicherer Match.")
+                role = normalize_and_match_role(fn)
+                p["role"] = role
+                p["role_schema"] = map_role_to_schema_entry(role)
+                p["confidence"] = "single-name"
+                p["needs_review"] = True
+                p["review_reason"] = "role_without_person (mixed Role and Name)"
+                p["match_score"] = 30
+                p["mentioned_count"] = 1
+                continue
 
-        elif ln in ROLE_MAPPINGS_DE and not p.get("role"):
-            print(f"[FIX] '{ln}' ist keine Person, sondern Rolle – wird verschoben.")
-            role = normalize_and_match_role(ln)
-            p["role"] = role
-            p["role_schema"] = map_role_to_schema_entry(role)
-            p["confidence"] = "single-name"
-            p["needs_review"] = True
-            p["review_reason"] = "role_without_person (mixed Role and Name)"
-            p["match_score"] = 30
-            p["mentioned_count"] = 1
-
-
+            if ln in ROLE_MAPPINGS_DE and not p.get("role"):
+                print(f"[FIX] '{ln}' ist keine Person, sondern Rolle – wird verschoben.")
+                role = normalize_and_match_role(ln)
+                p["role"] = role
+                p["role_schema"] = map_role_to_schema_entry(role)
+                p["confidence"] = "single-name"
+                p["needs_review"] = True
+                p["review_reason"] = "role_without_person (mixed Role and Name)"
+                p["match_score"] = 30
+                p["mentioned_count"] = 1
+                continue
+            else:
+                print(f"[DEBUG-SAFE] Person '{p.get('forename', '')} {p.get('familyname', '')}' wird geschützt (ID oder Score ≥90).")
 
     # 1) Inline-Matches nach ROLE_AFTER_NAME_RE und ROLE_BEFORE_NAME_RE
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
