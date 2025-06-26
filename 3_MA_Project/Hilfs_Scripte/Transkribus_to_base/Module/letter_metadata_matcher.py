@@ -3,11 +3,20 @@ import xml.etree.ElementTree as ET
 from typing import Dict, Any, Optional, List, Tuple
 from collections import defaultdict
 from .document_schemas import BaseDocument, Person
-from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry, ROLE_MAPPINGS_DE, KNOWN_ROLE_LIST
+from .Assigned_Roles_Module import (
+    normalize_and_match_role,
+    map_role_to_schema_entry,
+    ROLE_MAPPINGS_DE,
+    KNOWN_ROLE_LIST,
+)
 
 import json
 from pathlib import Path
-from .Assigned_Roles_Module import(assign_roles_to_known_persons, map_role_to_schema_entry, normalize_and_match_role)
+from .Assigned_Roles_Module import (
+    assign_roles_to_known_persons,
+    map_role_to_schema_entry,
+    normalize_and_match_role,
+)
 from Module.place_matcher import PlaceMatcher, consolidate_places
 from .date_matcher import extract_custom_date
 
@@ -17,7 +26,6 @@ ALLOWED_ADDRESSING_TYPES = ["Brief", "Postkarte"]
 
 # --- Grußformeln / Closing Patterns ---
 GREETING_PATTERNS = [
-    r"der\s+Vereinsführer\b",
     r"Mit\s+freundlichen\s+Grüßen\b",
     r"Heil\s*Hitler\b!?,",
     r"mit\s+treudeutschen\s+Grüßen",
@@ -32,22 +40,22 @@ GREETING_PATTERNS = [
     r"Herzliche\s+Grüße",
     r"(?:Hochachtungsvoll|Hochachtend)",
     r"Ihr\s+ergebener",
-    r"Deine\s+.*?vergessende\b"          # “Deine Dich nie vergessende”
+    r"Deine\s+.*?vergessende\b",  # “Deine Dich nie vergessende”
 ]
 _CLOSING_RE = re.compile("|".join(GREETING_PATTERNS), re.IGNORECASE)
 
 
 # --- Recipient Patterns (jetzt jeweils bis zum Zeilenende) ---
 RECIPIENT_PATTERNS = [
-    r"An\b",                                    # “An” allein
-    r"An\s+Herrn\b",                            # “An Herrn Fritz Jung”
-    r"An\s+Frau\b",                             # “An Frau Maria Müller”
-    r"Herrn\b",                                 # “Herrn Fritz Jung”
-    r"Frau\b",                                  # “Frau Maria Müller”
-    r"Lieber\b",                                # “Lieber Otto!”
-    r"Liebe[n]?\b",                             # “Liebe Maria!”
-    r"mein\s+lieber\b",                         # “mein lieber Otto”
-    r"meine\s+lieben\b",                        # “meine Lieben”
+    r"An\b",  # “An” allein
+    r"An\s+Herrn\b",  # “An Herrn Fritz Jung”
+    r"An\s+Frau\b",  # “An Frau Maria Müller”
+    r"Herrn\b",  # “Herrn Fritz Jung”
+    r"Frau\b",  # “Frau Maria Müller”
+    r"Lieber\b",  # “Lieber Otto!”
+    r"Liebe[n]?\b",  # “Liebe Maria!”
+    r"mein\s+lieber\b",  # “mein lieber Otto”
+    r"meine\s+lieben\b",  # “meine Lieben”
     # → Dynamisch extrahierbare Rollenansprache
     r"An\s+den\s+[A-ZÄÖÜa-zäöüß ]+",
     r"An\s+die\s+[A-ZÄÖÜa-zäöüß ]+",
@@ -57,12 +65,8 @@ INDIRECT_RECIPIENT_PATTERNS = [
     r"zu\s+Händen\s+(?:des\s+)?Herrn\s+([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)",
     r"z\.H\.d\s+Herrn\s+([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)",
     r"zu\s+Händen\s+Frau\s+([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)",
-    r"z\.H\.d\s+Frau\s+([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)"
+    r"z\.H\.d\s+Frau\s+([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)",
 ]
-
-
-
-
 
 
 # --- Compile mit MULTILINE und IGNORECASE ---
@@ -73,71 +77,103 @@ _RECIPIENT_RE = re.compile(
 
 # --- Rollen/Funktions-Patterns für authors-Erkennung ---
 ROLE_PATTERNS = re.compile(
-    rf"\b(?:{'|'.join(map(re.escape, KNOWN_ROLE_LIST))})\b",
-    re.IGNORECASE
+    rf"\b(?:{'|'.join(map(re.escape, KNOWN_ROLE_LIST))})\b", re.IGNORECASE
 )
+# --- Signatur-Patterns für reine Rollen-Zeilen wie "Der Vereinsführer:" ---
+SIGNATURE_PATTERNS = [
+    re.compile(
+        rf"^(?:Der|Die)\s+(?P<role>{ROLE_PATTERNS.pattern}):?\s*$",
+        re.IGNORECASE,
+    ),
+]
 
 
 def extract_authors_raw(text: str) -> Dict[str, str]:
     """
     Extrahiert den (Roh-)Autor anhand der letzten Grußformel und Name-Zeile danach.
     """
+    # 0) Direkt nach reinen Rollen-Signaturen am Dokument-Fuß suchen
+    for line in text.splitlines()[::-1]:
+        stripped = line.strip().rstrip(".,;:")
+        for pat in SIGNATURE_PATTERNS:
+            m = pat.match(stripped)
+            if m:
+                return {
+                    "forename": "",
+                    "familyname": "",
+                    "role": m.group("role").capitalize(),
+                    "closing": "",
+                }
+
     matches = list(_CLOSING_RE.finditer(text))
     if not matches:
         return {"forename": "", "familyname": "", "role": "", "closing": ""}
     closing_m = matches[-1]
     closing = closing_m.group().strip()
 
-    rest_lines = text[closing_m.end():].splitlines()
-    name_pattern = re.compile(r"^[A-ZÄÖÜ](\.?\s+[A-ZÄÖÜ][a-zß]+)$|^[A-ZÄÖÜ][a-zß]+\s+[A-ZÄÖÜ][a-zß]+$")
+    rest_lines = text[closing_m.end() :].splitlines()
+    name_pattern = re.compile(
+        r"^[A-ZÄÖÜ](\.?\s+[A-ZÄÖÜ][a-zß]+)$|^[A-ZÄÖÜ][a-zß]+\s+[A-ZÄÖÜ][a-zß]+$"
+    )
     name_line = None
 
-
     for line in rest_lines:
-        stripped = line.strip().rstrip('.,;:')
+        stripped = line.strip().rstrip(".,;:")
         if not stripped or _CLOSING_RE.fullmatch(stripped):
             continue
         # wenn Rolle UND Name (ohne Komma) → direkt als Autor mit Rolle nehmen
         m_role_name = re.match(
             rf"^(?:der|die)\s*(?P<role>{ROLE_PATTERNS.pattern})\s+(?P<lastname>[A-ZÄÖÜ][a-zäöüß]+)$",
             stripped,
-            re.IGNORECASE
+            re.IGNORECASE,
         )
         if m_role_name:
             fn = ""  # keine Vornameninformation
             ln = m_role_name.group("lastname")
             role = m_role_name.group("role").capitalize()
-            return {"forename": fn, "familyname": ln, "role": role, "closing": closing}
+            return {
+                "forename": fn,
+                "familyname": ln,
+                "role": role,
+                "closing": closing,
+            }
 
         if not name_pattern.match(stripped):
             continue
         # Wenn vorherige Zeile Rolle enthält → verknüpfe Rolle mit Name
         if len(rest_lines) >= 2:
-            role_line = rest_lines[0].strip().rstrip('.,;:')
-            name_line = rest_lines[1].strip().rstrip('.,;:')
+            role_line = rest_lines[0].strip().rstrip(".,;:")
+            name_line = rest_lines[1].strip().rstrip(".,;:")
             role_match = re.match(
                 rf"^(?:der|die)\s*(?P<role>{ROLE_PATTERNS.pattern})\s*:?$",
                 role_line,
-                re.IGNORECASE
+                re.IGNORECASE,
             )
-            name_match = re.match(r"^([A-ZÄÖÜ])\.?\s*([A-ZÄÖÜ][a-zß]+)$", name_line)
+            name_match = re.match(
+                r"^([A-ZÄÖÜ])\.?\s*([A-ZÄÖÜ][a-zß]+)$", name_line
+            )
             if role_match and name_match:
                 return {
                     "forename": name_match.group(1),
                     "familyname": name_match.group(2),
                     "role": role_match.group("role").capitalize(),
-                    "closing": closing
+                    "closing": closing,
                 }
         name_line = stripped
         break
 
     if not name_line:
-        return {"forename": "", "familyname": "", "role": "", "closing": closing}
+        return {
+            "forename": "",
+            "familyname": "",
+            "role": "",
+            "closing": closing,
+        }
 
     # a) Name + Rolle
     m = re.match(
         r"^([A-ZÄÖÜ]\.\s*[A-ZÄÖÜ][a-zß]+|[A-ZÄÖÜ][a-zß]+(?:\s+[A-ZÄÖÜ][a-zß]+)*)\s*,\s*([A-Za-zäöüÄÖÜß ]+)$",
-        name_line
+        name_line,
     )
     if m:
         name_part, role_part = m.group(1), m.group(2).strip().capitalize()
@@ -147,107 +183,152 @@ def extract_authors_raw(text: str) -> Dict[str, str]:
         else:
             parts = name_part.split()
             fn, ln = parts[0], " ".join(parts[1:]) if len(parts) > 1 else ""
-        return {"forename": fn, "familyname": ln, "role": role_part, "closing": closing}
+        return {
+            "forename": fn,
+            "familyname": ln,
+            "role": role_part,
+            "closing": closing,
+        }
 
     # b) Initiale + Nachname
     m = re.match(r"^([A-ZÄÖÜ])\.\s*([A-ZÄÖÜ][a-zß]+)$", name_line)
     if m:
-        return {"forename": m.group(1), "familyname": m.group(2), "role": "", "closing": closing}
+        return {
+            "forename": m.group(1),
+            "familyname": m.group(2),
+            "role": "",
+            "closing": closing,
+        }
     # b2) Initiale ohne Punkt + Nachname
     m = re.match(r"^([A-ZÄÖÜ])\s+([A-ZÄÖÜ][a-zß]+)$", name_line)
     if m:
-        return {"forename": m.group(1), "familyname": m.group(2), "role": "", "closing": closing}
-
+        return {
+            "forename": m.group(1),
+            "familyname": m.group(2),
+            "role": "",
+            "closing": closing,
+        }
 
     # c) Vor- + Nachname
     m = re.match(r"^([A-ZÄÖÜ][a-zß]+)\s+([A-ZÄÖÜ][a-zß]+)$", name_line)
     if m:
-        return {"forename": m.group(1), "familyname": m.group(2), "role": "", "closing": closing}
+        return {
+            "forename": m.group(1),
+            "familyname": m.group(2),
+            "role": "",
+            "closing": closing,
+        }
 
     # d) Einzelner Name
     if name_line.lower() in (r.lower() for r in KNOWN_ROLE_LIST):
-        return {"forename": "", "familyname": "", "role": name_line.capitalize(), "closing": closing}
+        return {
+            "forename": "",
+            "familyname": "",
+            "role": name_line.capitalize(),
+            "closing": closing,
+        }
     m = re.match(r"^([A-ZÄÖÜ][a-zß]{2,})$", name_line)
     if m:
-        return {"forename": m.group(1), "familyname": "", "role": "", "closing": closing}
+        return {
+            "forename": m.group(1),
+            "familyname": "",
+            "role": "",
+            "closing": closing,
+        }
 
     return {"forename": "", "familyname": "", "role": "", "closing": closing}
 
 
 def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
-        """
-        Sammelt alle potenziellen Empfänger aus dem Briefkopf (mehrere Zeilen analysieren),
-        vergibt recipient_score (z. B. 90 für vollständig, 70 für Zweizeiler usw.),
-        und gibt eine Liste zurück.
-        """
-        parts = re.split(r"\n\s*\n", text, maxsplit=1)
-        header_block = parts[0]
-        lines = header_block.splitlines()
+    """
+    Sammelt alle potenziellen Empfänger aus dem Briefkopf (mehrere Zeilen analysieren),
+    vergibt recipient_score (z. B. 90 für vollständig, 70 für Zweizeiler usw.),
+    und gibt eine Liste zurück.
+    """
+    parts = re.split(r"\n\s*\n", text, maxsplit=1)
+    header_block = parts[0]
+    lines = header_block.splitlines()
 
-        recipients = []
+    recipients = []
 
-        # 1) Einzeiler: z. B. "An Herrn Otto Bollinger"
-        inline_re = re.compile(
-            r"""^(?:An\s+)?(Herrn?|Frau)\s+([A-ZÄÖÜ][\wäöüß]+)(?:\s+([A-ZÄÖÜ][\wäöüß]+(?:\s+[A-ZÄÖÜ][\wäöüß]+)*))?""",
-            re.IGNORECASE | re.VERBOSE,
-        )
-        for line in lines[:5]:
-            m = inline_re.search(line.strip())
-            if m:
-                recipients.append({
+    # 1) Einzeiler: z. B. "An Herrn Otto Bollinger"
+    inline_re = re.compile(
+        r"""^(?:An\s+)?(Herrn?|Frau)\s+([A-ZÄÖÜ][\wäöüß]+)(?:\s+([A-ZÄÖÜ][\wäöüß]+(?:\s+[A-ZÄÖÜ][\wäöüß]+)*))?""",
+        re.IGNORECASE | re.VERBOSE,
+    )
+    for line in lines[:5]:
+        m = inline_re.search(line.strip())
+        if m:
+            recipients.append(
+                {
                     "anrede": m.group(1),
                     "forename": m.group(2),
                     "familyname": m.group(3) or "",
                     "role": "",
                     "recipient_score": 90,
-                    "confidence": "header-inline"
-                })
+                    "confidence": "header-inline",
+                }
+            )
 
-        # 2) Dreizeiler: An\nHerrn\nOtto Bollinger
-        for i, line in enumerate(lines[:5]):
-            if line.strip().lower() == "an" and i + 2 < len(lines):
-                honorific = lines[i + 1].strip()
-                name_line = lines[i + 2].strip()
-                if re.match(r"^(Herrn?|Frau)$", honorific, re.IGNORECASE):
-                    parts = name_line.split()
-                    if parts:
-                        recipients.append({
+    # 2) Dreizeiler: An\nHerrn\nOtto Bollinger
+    for i, line in enumerate(lines[:5]):
+        if line.strip().lower() == "an" and i + 2 < len(lines):
+            honorific = lines[i + 1].strip()
+            name_line = lines[i + 2].strip()
+            if re.match(r"^(Herrn?|Frau)$", honorific, re.IGNORECASE):
+                parts = name_line.split()
+                if parts:
+                    recipients.append(
+                        {
                             "anrede": honorific,
                             "forename": parts[0],
                             "familyname": parts[1] if len(parts) > 1 else "",
                             "role": "",
                             "recipient_score": 80,
-                            "confidence": "header-3line"
-                        })
+                            "confidence": "header-3line",
+                        }
+                    )
 
-        # 3) Zweizeiler: "Herrn" in einer Zeile, Name darunter
-        honorific_re = re.compile(r"^(Herrn?|Frau)\s*$", re.IGNORECASE)
-        for i, line in enumerate(lines[:5]):
-            if honorific_re.match(line.strip()) and i + 1 < len(lines):
-                name_line = lines[i + 1].strip().rstrip(".,;:")
-                parts = name_line.split()
-                if parts:
-                    recipients.append({
+    # 3) Zweizeiler: "Herrn" in einer Zeile, Name darunter
+    honorific_re = re.compile(r"^(Herrn?|Frau)\s*$", re.IGNORECASE)
+    for i, line in enumerate(lines[:5]):
+        if honorific_re.match(line.strip()) and i + 1 < len(lines):
+            name_line = lines[i + 1].strip().rstrip(".,;:")
+            parts = name_line.split()
+            if parts:
+                recipients.append(
+                    {
                         "anrede": line.strip(),
                         "forename": parts[0],
                         "familyname": parts[1] if len(parts) > 1 else "",
                         "role": "",
                         "recipient_score": 70,
-                        "confidence": "header-2line"
-                    })
+                        "confidence": "header-2line",
+                    }
+                )
 
-        return recipients
+    return recipients
 
-def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None) -> Optional[Dict[str, Any]]:
-    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
-    
+
+def letter_match_and_enrich(
+    raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None
+) -> Optional[Dict[str, Any]]:
+    from .person_matcher import (
+        match_person,
+        KNOWN_PERSONS,
+        get_matching_thresholds,
+        assess_llm_entry_score,
+    )
+
     if raw.get("forename") and not raw.get("familyname"):
         for p in mentioned_persons:
             if (
                 p.forename == raw["forename"]
                 and p.familyname  # Nur wenn Nachname vorhanden
             ):
-                print(f"[DEBUG] Verwende vollständigere Person statt unvollständigem Recipient: {p.forename} {p.familyname}")
+                print(
+                    f"[DEBUG] Verwende vollständigere Person statt unvollständigem Recipient: {p.forename} {p.familyname}"
+                )
                 enriched = p.to_dict()
                 for k, v in raw.items():
                     if not enriched.get(k) and v:
@@ -266,12 +347,18 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
             role_schema = map_role_to_schema_entry(normalized_role)
             raw["role"] = normalized_role
             raw["role_schema"] = role_schema
-            print(f"[DEBUG] Rolle normalisiert: '{role_raw}' → '{normalized_role}' (Schema: {role_schema})")
+            print(
+                f"[DEBUG] Rolle normalisiert: '{role_raw}' → '{normalized_role}' (Schema: {role_schema})"
+            )
 
     # --- 1) Schon in mentioned_persons vorhanden? ---
     for p in mentioned_persons:
-        if p.forename == raw.get("forename") and p.familyname == raw.get("familyname"):
-            print(f"[DEBUG-RECIPIENT] matched in mentioned_persons: {p.forename} {p.familyname}")
+        if p.forename == raw.get("forename") and p.familyname == raw.get(
+            "familyname"
+        ):
+            print(
+                f"[DEBUG-RECIPIENT] matched in mentioned_persons: {p.forename} {p.familyname}"
+            )
             enriched = p.to_dict()
             enriched["confidence"] = "LLM_Tag_match_in_mentioned_persons"
             enriched["match_score"] = 100
@@ -281,17 +368,29 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
                     enriched[k] = v
 
             if enriched.get("role") and not enriched.get("role_schema"):
-                enriched["role_schema"] = map_role_to_schema_entry(enriched["role"])
-                print(f"[DEBUG-RECIPIENT] role_schema ergänzt aus Rolle: {enriched['role']} → {enriched['role_schema']}")
+                enriched["role_schema"] = map_role_to_schema_entry(
+                    enriched["role"]
+                )
+                print(
+                    f"[DEBUG-RECIPIENT] role_schema ergänzt aus Rolle: {enriched['role']} → {enriched['role_schema']}"
+                )
             return enriched
 
     # --- 2) Fuzzy-Match gegen known_persons ---
-    person_query = {"forename": raw.get("forename", ""), "familyname": raw.get("familyname", "")}
+    person_query = {
+        "forename": raw.get("forename", ""),
+        "familyname": raw.get("familyname", ""),
+    }
     match, score = match_person(person_query, KNOWN_PERSONS)
     thresholds = get_matching_thresholds()
 
     if match and score >= thresholds.get("familyname", 0):
-        enriched = {**raw, **match, "match_score": score, "confidence": "fuzzy"}
+        enriched = {
+            **raw,
+            **match,
+            "match_score": score,
+            "confidence": "fuzzy",
+        }
         if role_raw:
             enriched["role"] = raw["role"]
             enriched["role_schema"] = raw.get("role_schema", "")
@@ -304,16 +403,24 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
         for k, v in raw.items():
             if v and not enriched.get(k):
                 enriched[k] = v
-        for key in ["anrede", "forename", "familyname", "role", "closing", "nodegoat_id",
-                    "associated_place", "associated_organisation", "match_score", "confidence"]:
+        for key in [
+            "anrede",
+            "forename",
+            "familyname",
+            "role",
+            "closing",
+            "nodegoat_id",
+            "associated_place",
+            "associated_organisation",
+            "match_score",
+            "confidence",
+        ]:
             enriched.setdefault(key, "")
         return enriched
 
     # --- 3) Kein Match: Fallback mit Scoring ---
     score, confidence, needs_review, review_reason = assess_llm_entry_score(
-        raw.get("forename", ""),
-        raw.get("familyname", ""),
-        raw.get("role", "")
+        raw.get("forename", ""), raw.get("familyname", ""), raw.get("role", "")
     )
 
     result = {
@@ -325,7 +432,7 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
         "confidence": confidence,
         "needs_review": needs_review,
         "review_reason": review_reason,
-        "role_schema": role_schema
+        "role_schema": role_schema,
     }
 
     # Ergänze leere Schlüssel zur Sicherheit
@@ -343,7 +450,9 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
     if enriched_role.get("role"):
         result["role"] = enriched_role["role"]
         result["role_schema"] = enriched_role.get("role_schema", "")
-        print(f"[DEBUG] Rolle (nachträglich) erkannt im Fallback: {result['role']} ({result['role_schema']})")
+        print(
+            f"[DEBUG] Rolle (nachträglich) erkannt im Fallback: {result['role']} ({result['role_schema']})"
+        )
 
     # Nur zurückgeben, wenn wenigstens ein Namensbestandteil vorhanden ist
     if result.get("forename") or result.get("familyname"):
@@ -352,16 +461,24 @@ def letter_match_and_enrich(raw: Dict[str, str], text: str, mentioned_persons: L
     return None
 
 
-
-
-
-def match_authors(text: str, document_type: Optional[str] = None, mentioned_persons: List[Person] = []) -> Dict[str, Any]:
+def match_authors(
+    text: str,
+    document_type: Optional[str] = None,
+    mentioned_persons: List[Person] = [],
+) -> Dict[str, Any]:
     raw = extract_authors_raw(text)
     enriched = letter_match_and_enrich(raw, text, mentioned_persons)
 
     # Sonderfall: nur Rolle, kein Name → trotzdem übernehmen
-    if not enriched and raw.get("role") and not raw.get("forename") and not raw.get("familyname"):
-        print(f"[DEBUG-AUTHOR] Solitäre Rolle erkannt als Autor: {raw['role']}")
+    if (
+        not enriched
+        and raw.get("role")
+        and not raw.get("forename")
+        and not raw.get("familyname")
+    ):
+        print(
+            f"[DEBUG-AUTHOR] Solitäre Rolle erkannt als Autor: {raw['role']}"
+        )
         normalized_role = normalize_and_match_role(raw["role"])
         role_schema = map_role_to_schema_entry(normalized_role)
         return {
@@ -378,12 +495,15 @@ def match_authors(text: str, document_type: Optional[str] = None, mentioned_pers
 
     return enriched
 
+
 # --- Direkte Anredeformen (recipient_score: 100) ---
 direct_patterns = [
     r"\bLieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
     r"\bLiebe[rn]?\s+([A-ZÄÖÜ][a-zäöüß]+)",
     r"\bmein\s+lieber\s+([A-ZÄÖÜ][a-zäöüß]+)",
 ]
+
+
 def extract_multiple_recipients_raw(text: str) -> List[Dict[str, Any]]:
     """
     Extrahiert mehrere mögliche Empfänger:
@@ -394,18 +514,19 @@ def extract_multiple_recipients_raw(text: str) -> List[Dict[str, Any]]:
     lines = text.splitlines()
     recipients = []
 
-    
     for pat in direct_patterns:
         for line in lines:
             m = re.search(pat, line)
             if m:
-                recipients.append({
-                    "forename": m.group(1),
-                    "familyname": "",
-                    "role": "",
-                    "recipient_score": 100,
-                    "confidence": "String_direct_from_text"
-                })
+                recipients.append(
+                    {
+                        "forename": m.group(1),
+                        "familyname": "",
+                        "role": "",
+                        "recipient_score": 100,
+                        "confidence": "String_direct_from_text",
+                    }
+                )
 
     # --- Indirekte Anredeformen (recipient_score: 70) ---
     for pat in INDIRECT_RECIPIENT_PATTERNS:
@@ -414,19 +535,22 @@ def extract_multiple_recipients_raw(text: str) -> List[Dict[str, Any]]:
             if m:
                 fn = m.group(1)
                 ln = m.group(2) if m.lastindex and m.lastindex >= 2 else ""
-                recipients.append({
-                    "forename": fn,
-                    "familyname": ln,
-                    "role": "",
-                    "recipient_score": 70,
-                    "confidence": "indirect_2line"
-                })
+                recipients.append(
+                    {
+                        "forename": fn,
+                        "familyname": ln,
+                        "role": "",
+                        "recipient_score": 70,
+                        "confidence": "indirect_2line",
+                    }
+                )
 
     return recipients
 
 
-
-def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None) -> List[Dict[str, Any]]:
+def match_recipients(
+    text: str, mentioned_persons: Optional[List[Person]] = None
+) -> List[Dict[str, Any]]:
     """
     Vereinheitlichte Empfängererkennung:
     – kombiniert klassische Briefkopferkennung und Anredeformen
@@ -448,7 +572,9 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
 
     # ⬇️ Wähle den vollständigsten mit Vor- und Nachname
     def score_completeness(p: Dict[str, Any]) -> int:
-        return (1 if p.get("forename") else 0) + (2 if p.get("familyname") else 0)
+        return (1 if p.get("forename") else 0) + (
+            2 if p.get("familyname") else 0
+        )
 
     enriched_head.sort(key=score_completeness, reverse=True)
     all_recipients = [enriched_head[0]] if enriched_head else []
@@ -467,8 +593,15 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
     for raw in additional_raw:
         enriched = letter_match_and_enrich(raw, text, mentioned_persons)
         # Sonderfall: recipient mit Rolle, aber ohne Name
-        if not enriched and raw.get("role") and not raw.get("forename") and not raw.get("familyname"):
-            print(f"[DEBUG-RECIPIENT] Solitäre Rolle erkannt als Empfänger: {raw['role']}")
+        if (
+            not enriched
+            and raw.get("role")
+            and not raw.get("forename")
+            and not raw.get("familyname")
+        ):
+            print(
+                f"[DEBUG-RECIPIENT] Solitäre Rolle erkannt als Empfänger: {raw['role']}"
+            )
             normalized_role = normalize_and_match_role(raw["role"])
             role_schema = map_role_to_schema_entry(normalized_role)
             enriched = {
@@ -481,7 +614,7 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
                 "confidence": "role_only",
                 "needs_review": True,
                 "review_reason": "Nur Rolle ohne Name",
-                "recipient_score": raw.get("recipient_score", 50)
+                "recipient_score": raw.get("recipient_score", 50),
             }
         if enriched:
             enriched["recipient_score"] = raw.get("recipient_score", 50)
@@ -503,25 +636,33 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
     for forename, candidates in grouped.items():
         # Wähle den mit den meisten Namensbestandteilen
         # Sort by name completeness first, then by recipient_score
-        candidates.sort(key=lambda x: (
-            (1 if x.get("forename") else 0) + (2 if x.get("familyname") else 0),
-            x.get("recipient_score", 0) or 0
-        ), reverse=True)
-        
+        candidates.sort(
+            key=lambda x: (
+                (1 if x.get("forename") else 0)
+                + (2 if x.get("familyname") else 0),
+                x.get("recipient_score", 0) or 0,
+            ),
+            reverse=True,
+        )
+
         best = candidates[0]
-        print(f"[DEBUG-FINAL] Selected best recipient: {best.get('forename')} {best.get('familyname')} with score={best.get('recipient_score', 0)}")
+        print(
+            f"[DEBUG-FINAL] Selected best recipient: {best.get('forename')} {best.get('familyname')} with score={best.get('recipient_score', 0)}"
+        )
         final.append(best)
         if len(final) >= 4:
             break
 
         # ---: Kontextbasierte recipient-Erkennung (Triggerwort + Fenster) ---
-        recipient_trigger_re = re.compile(r"\b(" + "|".join(RECIPIENT_PATTERNS) + r")\b", re.IGNORECASE)
+        recipient_trigger_re = re.compile(
+            r"\b(" + "|".join(RECIPIENT_PATTERNS) + r")\b", re.IGNORECASE
+        )
         window_size = 3
         tokens = text.split()
 
         for i, tok in enumerate(tokens):
             if recipient_trigger_re.match(tok.strip(".,:;!?")):
-                window = tokens[i+1:i+1+window_size]
+                window = tokens[i + 1 : i + 1 + window_size]
                 window_str = " ".join(window).lower()
                 for p in mentioned_persons:
                     full_name = f"{p.forename} {p.familyname}".strip().lower()
@@ -530,13 +671,17 @@ def match_recipients(text: str, mentioned_persons: Optional[List[Person]] = None
                     if getattr(p, "recipient_score", 0) > 0:
                         continue  # schon gesetzt
 
-                    if full_name.split()[0] in window_str or full_name in window_str:
-                        print(f"[CONTEXT-MATCH] Kontextfenster erkannt für '{p.forename} {p.familyname}' → recipient_score=100")
+                    if (
+                        full_name.split()[0] in window_str
+                        or full_name in window_str
+                    ):
+                        print(
+                            f"[CONTEXT-MATCH] Kontextfenster erkannt für '{p.forename} {p.familyname}' → recipient_score=100"
+                        )
                         p.recipient_score = 100
                         p.confidence = "context_window"
                         final.append(p.to_dict())
                         break
-
 
     return final
 
@@ -557,12 +702,14 @@ def enrich_final_recipients(base_doc: BaseDocument):
         if is_incomplete:
             match, score = match_person(rec.to_dict(), KNOWN_PERSONS)
             if match:
-                print(f"[DEBUG-FINAL-MATCH] Recipient {rec.forename} {rec.familyname} → Match mit {match.get('forename')} {match.get('familyname')} (Score: {score})")
+                print(
+                    f"[DEBUG-FINAL-MATCH] Recipient {rec.forename} {rec.familyname} → Match mit {match.get('forename')} {match.get('familyname')} (Score: {score})"
+                )
                 rec.nodegoat_id = match.get("nodegoat_id", "")
                 rec.role = rec.role or match.get("role", "")
                 rec.match_score = score
                 rec.confidence = "late-match"
-        
+
         # Übertrage recipient_score in mentioned_persons
         for mp in base_doc.mentioned_persons:
             if (
@@ -573,10 +720,14 @@ def enrich_final_recipients(base_doc: BaseDocument):
                 mp.recipient_score = getattr(rec, "recipient_score", 0)
 
     # Zusätzlicher Debug-Output
-    print("[DEBUG] recipient_scores in mentioned_persons:", [
-        f"{p.forename} {p.familyname}: {getattr(p, 'recipient_score', '-')}"
-        for p in base_doc.mentioned_persons
-    ])
+    print(
+        "[DEBUG] recipient_scores in mentioned_persons:",
+        [
+            f"{p.forename} {p.familyname}: {getattr(p, 'recipient_score', '-')}"
+            for p in base_doc.mentioned_persons
+        ],
+    )
+
 
 def deduplicate_recipients(recipients: List[Person]) -> List[Person]:
     deduped = []
@@ -591,23 +742,26 @@ def deduplicate_recipients(recipients: List[Person]) -> List[Person]:
             # Kombiniere recipient_score
             existing_score = getattr(existing, "recipient_score", 0) or 0
             new_score = getattr(rec, "recipient_score", 0) or 0
-            
-            print(f"[DEBUG-DEDUP] Combining recipient_scores: existing={existing_score}, new={new_score}")
-            
+
+            print(
+                f"[DEBUG-DEDUP] Combining recipient_scores: existing={existing_score}, new={new_score}"
+            )
+
             if new_score > existing_score:
                 existing.recipient_score = new_score
                 existing.confidence = rec.confidence or existing.confidence
-                print(f"[DEBUG-DEDUP] Updated recipient_score to {existing.recipient_score}")
+                print(
+                    f"[DEBUG-DEDUP] Updated recipient_score to {existing.recipient_score}"
+                )
             continue
         else:
             seen[key] = rec
             deduped.append(rec)
-            print(f"[DEBUG-DEDUP] Added new recipient with score={getattr(rec, 'recipient_score', 0)}: {rec.forename} {rec.familyname}")
+            print(
+                f"[DEBUG-DEDUP] Added new recipient with score={getattr(rec, 'recipient_score', 0)}: {rec.forename} {rec.familyname}"
+            )
 
     return deduped
-
-
-
 
 
 def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):
@@ -618,21 +772,22 @@ def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):
     """
 
     # Import known role list from Assigned_Roles_Module
-    from .Assigned_Roles_Module import KNOWN_ROLE_LIST, normalize_and_match_role
+    from .Assigned_Roles_Module import (
+        KNOWN_ROLE_LIST,
+        normalize_and_match_role,
+    )
 
     # Verbesserte Patterns mit ground-truth Rollenliste statt permissive Regex
     ROLES_PATTERN = "|".join(map(re.escape, KNOWN_ROLE_LIST))
 
     INLINE_PATTERN = re.compile(
         rf"(?:Der|Die)?\s*({ROLES_PATTERN})[,:]?\s+([A-ZÄÖÜ]\.?\s+[A-ZÄÖÜ][a-zäöüß]+|[A-ZÄÖÜ][a-zäöüß]+\s+[A-ZÄÖÜ][a-zäöüß]+)",
-        re.IGNORECASE
+        re.IGNORECASE,
     )
     ROLE_ONLY_PATTERN = re.compile(
         rf"(?:Der|Die)?\s*({ROLES_PATTERN})[,:]?\s*$", re.IGNORECASE
     )
-    NAME_PATTERN = re.compile(
-        r"([A-ZÄÖÜ]\.?)?\s*([A-ZÄÖÜ][a-zäöüß]+)"
-    )
+    NAME_PATTERN = re.compile(r"([A-ZÄÖÜ]\.?)?\s*([A-ZÄÖÜ][a-zäöüß]+)")
 
     for idx, line in enumerate(text_lines):
         line = line.strip()
@@ -644,7 +799,9 @@ def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):
             name_raw = inline_match.group(2).strip()
             # Rolle normalisieren mit ground-truth Liste
             normalized_role = normalize_and_match_role(role_raw)
-            role = normalized_role if normalized_role else role_raw.capitalize()
+            role = (
+                normalized_role if normalized_role else role_raw.capitalize()
+            )
 
             name_parts = name_raw.split()
             if len(name_parts) == 2:
@@ -662,19 +819,34 @@ def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):
             name_match = NAME_PATTERN.match(next_line)
             if role_match and name_match:
                 role_raw = role_match.group(1).strip()
-                forename = name_match.group(1).replace(".", "") if name_match.group(1) else ""
+                forename = (
+                    name_match.group(1).replace(".", "")
+                    if name_match.group(1)
+                    else ""
+                )
                 familyname = name_match.group(2)
                 # Rolle normalisieren mit ground-truth Liste
                 normalized_role = normalize_and_match_role(role_raw)
-                role = normalized_role if normalized_role else role_raw.capitalize()
+                role = (
+                    normalized_role
+                    if normalized_role
+                    else role_raw.capitalize()
+                )
 
                 _assign_role(base_doc, forename, familyname, role)
 
-def _assign_role(base_doc: BaseDocument, forename: str, familyname: str, role: str):
+
+def _assign_role(
+    base_doc: BaseDocument, forename: str, familyname: str, role: str
+):
     for person in base_doc.mentioned_persons:
         match_found = False
         if forename and is_initial(forename):
-            if person.forename and person.forename.startswith(forename) and person.familyname == familyname:
+            if (
+                person.forename
+                and person.forename.startswith(forename)
+                and person.familyname == familyname
+            ):
                 match_found = True
         elif person.forename == forename and person.familyname == familyname:
             match_found = True
@@ -685,17 +857,20 @@ def _assign_role(base_doc: BaseDocument, forename: str, familyname: str, role: s
             if not person.role:
                 person.role = role
                 # Set role_schema when setting role
-                from Module.Assigned_Roles_Module import map_role_to_schema_entry
+                from Module.Assigned_Roles_Module import (
+                    map_role_to_schema_entry,
+                )
+
                 person.role_schema = map_role_to_schema_entry(role)
-                print(f"[DEBUG] Rolle erkannt: {person.forename} {person.familyname} → {role} (Schema: {person.role_schema})")
+                print(
+                    f"[DEBUG] Rolle erkannt: {person.forename} {person.familyname} → {role} (Schema: {person.role_schema})"
+                )
             break
 
 
-
-def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
-                                        xml_text: str,
-                                        log_path: Optional[Path] = None
-                                        ) -> Tuple[List[Person], List[Person]]:
+def resolve_llm_custom_authors_recipients(
+    base_doc: BaseDocument, xml_text: str, log_path: Optional[Path] = None
+) -> Tuple[List[Person], List[Person]]:
     """
     Analysiert custom-Tags im XML nach authors/recipients-Einträgen und vergleicht sie mit vorher erkannten Personen.
     Wenn dort authors/recipients leer ist, übernimmt es den LLM-Vorschlag mit match_score="llm-matched".
@@ -705,16 +880,20 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
         Tuple[List[Person], List[Person]]: Listen der erkannten Autoren und Empfänger
     """
 
-    import xml.etree.ElementTree as ET
-    import re
-    import json
-    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
+    from .person_matcher import (
+        match_person,
+        KNOWN_PERSONS,
+        get_matching_thresholds,
+        assess_llm_entry_score,
+    )
 
     log = []
 
     # Helper: Durchsuche alle TextLines mit passenden custom-Tags
     # Diese Funktion hat praktischen Nutzen und kann für zukünftige Erweiterungen behalten werden
-    def extract_tagged_persons(xml_root: ET.Element, tag: str) -> List[Dict[str, str]]:
+    def extract_tagged_persons(
+        xml_root: ET.Element, tag: str
+    ) -> List[Dict[str, str]]:
         """
         Extrahiert Personeneinträge aus XML-Custom-Tags.
 
@@ -728,7 +907,9 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
         Returns:
             Liste von Personen-Dictionaries
         """
-        ns = {'ns': 'http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15'}
+        ns = {
+            "ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+        }
         persons = []
         for textline in xml_root.findall(".//ns:TextLine", ns):
             custom_attr = textline.attrib.get("custom", "")
@@ -744,28 +925,36 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                     )
                     for match in re.finditer(pattern, custom_attr):
                         offset, length, role = match.groups()
-                        span = text[int(offset):int(offset)+int(length)].strip()
+                        span = text[
+                            int(offset) : int(offset) + int(length)
+                        ].strip()
                         if span:
-                            print(f"[DEBUG] LLM-{tag} erkannt: '{span}' aus Zeile '{text}'")
+                            print(
+                                f"[DEBUG] LLM-{tag} erkannt: '{span}' aus Zeile '{text}'"
+                            )
                             name_parts = span.split()
                             if len(name_parts) == 1:
-                                persons.append({
-                                    "forename": name_parts[0],
-                                    "familyname": "",
-                                    "title": "",
-                                    "role": (role or "").strip(),
-                                    "match_score": "llm-matched",
-                                    "confidence": "low"
-                                })
+                                persons.append(
+                                    {
+                                        "forename": name_parts[0],
+                                        "familyname": "",
+                                        "title": "",
+                                        "role": (role or "").strip(),
+                                        "match_score": "llm-matched",
+                                        "confidence": "low",
+                                    }
+                                )
                             else:
-                                persons.append({
-                                    "forename": name_parts[0],
-                                    "familyname": name_parts[-1],
-                                    "title": "",
-                                    "role": (role or "").strip(),
-                                    "match_score": "llm-matched",
-                                    "confidence": "llm"
-                                })
+                                persons.append(
+                                    {
+                                        "forename": name_parts[0],
+                                        "familyname": name_parts[-1],
+                                        "title": "",
+                                        "role": (role or "").strip(),
+                                        "match_score": "llm-matched",
+                                        "confidence": "llm",
+                                    }
+                                )
         return persons
 
     # Helper: Matching gegen bekannte Personen oder aus mentioned_persons
@@ -790,7 +979,9 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
             # Zuerst prüfen wir gegen mentioned_persons
             matched = None
             for p in base_doc.mentioned_persons:
-                if p.forename == entry.get("forename") and p.familyname == entry.get("familyname"):
+                if p.forename == entry.get(
+                    "forename"
+                ) and p.familyname == entry.get("familyname"):
                     matched = p
                     break
 
@@ -799,34 +990,50 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                 person.role = entry.get("role", "")
                 # Set role_schema when setting role
                 if person.role:
-                    from Module.Assigned_Roles_Module import map_role_to_schema_entry
+                    from Module.Assigned_Roles_Module import (
+                        map_role_to_schema_entry,
+                    )
+
                     # Nur überschreiben, wenn role_schema leer oder von role_only
-                    if not person.role_schema or person.confidence == "role_only":
-                        person.role_schema = map_role_to_schema_entry(person.role)
+                    if (
+                        not person.role_schema
+                        or person.confidence == "role_only"
+                    ):
+                        person.role_schema = map_role_to_schema_entry(
+                            person.role
+                        )
                 person.match_score = 100 if matched.nodegoat_id else 20
                 person.confidence = "llm"
             else:
                 from Module.person_matcher import match_person, KNOWN_PERSONS
+
                 match_result, _ = match_person(entry, KNOWN_PERSONS)
                 if match_result:
-                    person = Person(**{
-                        **match_result,
-                        "role": entry.get("role", ""),
-                        "match_score": 100,
-                        "confidence": "llm"
-                    })
+                    person = Person(
+                        **{
+                            **match_result,
+                            "role": entry.get("role", ""),
+                            "match_score": 100,
+                            "confidence": "llm",
+                        }
+                    )
                 else:
                     role = entry.get("role", "")
                     # Get the role_schema for the role
                     role_schema = ""
                     if role:
-                        from Module.Assigned_Roles_Module import map_role_to_schema_entry
+                        from Module.Assigned_Roles_Module import (
+                            map_role_to_schema_entry,
+                        )
+
                         role_schema = map_role_to_schema_entry(role)
 
-                    score, confidence, needs_review, review_reason = assess_llm_entry_score(
-                        entry.get("forename", ""),
-                        entry.get("familyname", ""),
-                        entry.get("role", "")
+                    score, confidence, needs_review, review_reason = (
+                        assess_llm_entry_score(
+                            entry.get("forename", ""),
+                            entry.get("familyname", ""),
+                            entry.get("role", ""),
+                        )
                     )
 
                     person = Person(
@@ -841,34 +1048,48 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
                         match_score=score,
                         confidence=confidence,
                         needs_review=needs_review,
-                        review_reason=review_reason
+                        review_reason=review_reason,
                     )
 
             # Skip persons with empty names
-            if not (person.forename or person.familyname or person.nodegoat_id):
-                print(f"[DEBUG] Skipping nameless and ID-less person in match_and_resolve: role='{person.role}'")
+            if not (
+                person.forename or person.familyname or person.nodegoat_id
+            ):
+                print(
+                    f"[DEBUG] Skipping nameless and ID-less person in match_and_resolve: role='{person.role}'"
+                )
                 continue
 
             # Eintrag übernehmen oder Konflikt melden
             current = getattr(base_doc, field)
-            if current and (current.forename != person.forename or current.familyname != person.familyname):
+            if current and (
+                current.forename != person.forename
+                or current.familyname != person.familyname
+            ):
                 warn = f"⚠️ Widerspruch bei {field}: '{current.forename} {current.familyname}' ↔ '{person.forename} {person.familyname}'"
                 print(warn)
-                log.append({
-                    "type": field,
-                    "existing": current.to_dict(),
-                    "llm_suggestion": person.to_dict(),
-                    "warning": warn
-                })
+                log.append(
+                    {
+                        "type": field,
+                        "existing": current.to_dict(),
+                        "llm_suggestion": person.to_dict(),
+                        "warning": warn,
+                    }
+                )
             else:
                 existing = getattr(base_doc, field)
-                if not any(p.nodegoat_id == person.nodegoat_id for p in existing):
+                if not any(
+                    p.nodegoat_id == person.nodegoat_id for p in existing
+                ):
                     existing.append(person)
                     setattr(base_doc, field, existing)
 
-                    print(f"[DEBUG] Autor/Empfänger zu Liste {field} hinzugefügt: {person.forename} {person.familyname}")
-                print(f"[DEBUG] Autor aus custom-Tag gesetzt: {person.forename} {person.familyname}")
-
+                    print(
+                        f"[DEBUG] Autor/Empfänger zu Liste {field} hinzugefügt: {person.forename} {person.familyname}"
+                    )
+                print(
+                    f"[DEBUG] Autor aus custom-Tag gesetzt: {person.forename} {person.familyname}"
+                )
 
     # Starte XML-Verarbeitung
     root = ET.fromstring(xml_text)
@@ -881,7 +1102,7 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
     if log_path and log:
         with open(log_path, "w", encoding="utf-8") as f:
             json.dump(log, f, ensure_ascii=False, indent=2)
-     
+
     # Kontextbasierte Rollenprüfung
     assign_roles_from_context(xml_text.splitlines(), base_doc)
     # Ensure authors and recipients are in mentioned_persons
@@ -893,10 +1114,9 @@ def resolve_llm_custom_authors_recipients(base_doc: BaseDocument,
 
     return author_list, recipient_list
 
+
 def extract_authors_recipients_from_mentions(
-    mentioned: List[Person],
-    author_ids: List[str],
-    recipient_ids: List[str]
+    mentioned: List[Person], author_ids: List[str], recipient_ids: List[str]
 ) -> Tuple[List[Person], List[Person]]:
     """
     Gibt vollständige Kopien der Autoren- und Empfängerpersonen basierend auf den nodegoat_ids zurück.
@@ -904,12 +1124,17 @@ def extract_authors_recipients_from_mentions(
     """
     import copy
 
-    authors = [copy.deepcopy(p) for p in mentioned if p.nodegoat_id in author_ids]
-    recipients = [copy.deepcopy(p) for p in mentioned if p.nodegoat_id in recipient_ids]
+    authors = [
+        copy.deepcopy(p) for p in mentioned if p.nodegoat_id in author_ids
+    ]
+    recipients = [
+        copy.deepcopy(p) for p in mentioned if p.nodegoat_id in recipient_ids
+    ]
     return authors, recipients
+
+
 def ensure_author_recipient_in_mentions(
-    base_doc: BaseDocument,
-    transcript_text: str
+    base_doc: BaseDocument, transcript_text: str
 ) -> None:
     """
     Stellt sicher, dass alle Autoren und Empfänger in mentioned_persons sind,
@@ -917,16 +1142,22 @@ def ensure_author_recipient_in_mentions(
     Verhindert auch das Hinzufügen von Personen ohne Namen.
     """
     # Blacklist prüfen: keine Dummy-Empfänger wie "Grüße"
-    from Module.person_matcher import UNMATCHABLE_SINGLE_NAMES, NON_PERSON_TOKENS
+    from Module.person_matcher import (
+        UNMATCHABLE_SINGLE_NAMES,
+        NON_PERSON_TOKENS,
+    )
 
     blacklisted = lambda p: (
-        p.forename.strip().lower() in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS)
+        p.forename.strip().lower()
+        in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS)
         and not p.familyname.strip()
         and not p.nodegoat_id
     )
 
     recipients_before = base_doc.recipients.copy()
-    base_doc.recipients = [p for p in base_doc.recipients if not blacklisted(p)]
+    base_doc.recipients = [
+        p for p in base_doc.recipients if not blacklisted(p)
+    ]
 
     if len(recipients_before) != len(base_doc.recipients):
         print("[DEBUG] Blacklist-Empfänger aus recipients entfernt.")
@@ -936,9 +1167,11 @@ def ensure_author_recipient_in_mentions(
         if a.nodegoat_id and b.nodegoat_id:
             return a.nodegoat_id == b.nodegoat_id
         return (
-            a.forename == b.forename and
-            a.familyname == b.familyname and
-            (a.familyname or b.familyname)  # mind. ein Nachname muss vorhanden sein
+            a.forename == b.forename
+            and a.familyname == b.familyname
+            and (
+                a.familyname or b.familyname
+            )  # mind. ein Nachname muss vorhanden sein
         )
 
     def has_valid_name(p: Person) -> bool:
@@ -948,7 +1181,9 @@ def ensure_author_recipient_in_mentions(
     def append_if_missing(p: Person):
         # Skip persons without any name
         if not has_valid_name(p):
-            print(f"[DEBUG] Skipping nameless person in append_if_missing: role='{p.role}', match_score={p.match_score}")
+            print(
+                f"[DEBUG] Skipping nameless person in append_if_missing: role='{p.role}', match_score={p.match_score}"
+            )
             return
 
         # Check if this person already exists in mentioned_persons
@@ -966,25 +1201,35 @@ def ensure_author_recipient_in_mentions(
         copy.confidence = copy.confidence or "author/recipient_only"
         copy.match_score = copy.match_score or 100
         base_doc.mentioned_persons.append(copy)
-        print(f"[DEBUG] Added person to mentioned_persons: '{copy.forename} {copy.familyname}', role='{copy.role}'")
+        print(
+            f"[DEBUG] Added person to mentioned_persons: '{copy.forename} {copy.familyname}', role='{copy.role}'"
+        )
 
     # Process authors
     for a in base_doc.authors:
         if has_valid_name(a):
             append_if_missing(a)
         else:
-            print(f"[DEBUG] Skipping nameless author: role='{a.role}', match_score={a.match_score}")
+            print(
+                f"[DEBUG] Skipping nameless author: role='{a.role}', match_score={a.match_score}"
+            )
 
     # Process recipients
     for r in base_doc.recipients:
         if has_valid_name(r):
             append_if_missing(r)
         else:
-            print(f"[DEBUG] Skipping nameless recipient: role='{r.role}', match_score={r.match_score}")
+            print(
+                f"[DEBUG] Skipping nameless recipient: role='{r.role}', match_score={r.match_score}"
+            )
 
     # --- 2) Rollen auf alle mentioned_persons nachziehen ---
     # Filter out any persons without valid names before role enrichment
-    base_doc.mentioned_persons = [p for p in base_doc.mentioned_persons if has_valid_name(p) or p.nodegoat_id]
+    base_doc.mentioned_persons = [
+        p
+        for p in base_doc.mentioned_persons
+        if has_valid_name(p) or p.nodegoat_id
+    ]
 
     # Continue with role enrichment
     person_dicts = [p.to_dict() for p in base_doc.mentioned_persons]
@@ -992,7 +1237,11 @@ def ensure_author_recipient_in_mentions(
 
     for obj, data in zip(base_doc.mentioned_persons, enriched):
         role = data.get("role") if isinstance(data, dict) else data.role
-        schema = data.get("role_schema") if isinstance(data, dict) else getattr(data, "role_schema", "")
+        schema = (
+            data.get("role_schema")
+            if isinstance(data, dict)
+            else getattr(data, "role_schema", "")
+        )
 
         # Check if we should update the role_schema
         role_only_source = False
@@ -1010,13 +1259,18 @@ def ensure_author_recipient_in_mentions(
             # 2. Data comes from a role-only context (more authoritative)
             if not getattr(obj, "role_schema", "") or role_only_source:
                 obj.role_schema = schema
-                print(f"[DEBUG] Updated role_schema for {obj.forename} {obj.familyname}: '{obj.role_schema}'")
+                print(
+                    f"[DEBUG] Updated role_schema for {obj.forename} {obj.familyname}: '{obj.role_schema}'"
+                )
             else:
-                print(f"[DEBUG] Kept existing role_schema for {obj.forename} {obj.familyname}: '{getattr(obj, 'role_schema', '')}'")
+                print(
+                    f"[DEBUG] Kept existing role_schema for {obj.forename} {obj.familyname}: '{getattr(obj, 'role_schema', '')}'"
+                )
 
     # Final check - ensure we haven't accidentally added any nameless persons
     base_doc.mentioned_persons = [
-        p for p in base_doc.mentioned_persons
+        p
+        for p in base_doc.mentioned_persons
         if p.nodegoat_id or (p.forename and p.familyname) or p.role
     ]
 
@@ -1028,10 +1282,19 @@ def postprocess_roles(base_doc: BaseDocument):
     – Entfernt nur Dummy-Personen ohne Name, Rolle und nodegoat_id.
     – Setzt `needs_review = True`, wenn keine `role_schema` erkannt wird.
     """
-    from .person_matcher import NON_PERSON_TOKENS, UNMATCHABLE_SINGLE_NAMES, normalize_name_string
-    from .Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+    from .person_matcher import (
+        NON_PERSON_TOKENS,
+        UNMATCHABLE_SINGLE_NAMES,
+        normalize_name_string,
+    )
+    from .Assigned_Roles_Module import (
+        normalize_and_match_role,
+        map_role_to_schema_entry,
+    )
 
-    print(f"[DEBUG postprocess_roles] Start: {len(base_doc.mentioned_persons)} mentioned_persons")
+    print(
+        f"[DEBUG postprocess_roles] Start: {len(base_doc.mentioned_persons)} mentioned_persons"
+    )
 
     filtered = []
     for p in base_doc.mentioned_persons:
@@ -1072,15 +1335,25 @@ def postprocess_roles(base_doc: BaseDocument):
             filtered.append(p)
             continue
         # 🧨 Drop unvollständige Einzelnamen, die in UNMATCHABLE_SINGLE_NAMES oder Blacklist stehen
-        if not ln and not p.nodegoat_id and fn_lower in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS):
+        if (
+            not ln
+            and not p.nodegoat_id
+            and fn_lower in UNMATCHABLE_SINGLE_NAMES.union(NON_PERSON_TOKENS)
+        ):
             print(f"[DEBUG-DROP] Blacklist-Eintrag erkannt: {fn}")
             continue
 
         # ❌ Dummy-Personen ohne Name, Rolle, ID → rausfiltern
         if not fn and not ln and not p.role and not p.nodegoat_id:
             key = normalize_name_string(getattr(p, "raw_token", ""))
-            if key in NON_PERSON_TOKENS or fn_lower in NON_PERSON_TOKENS or ln_lower in NON_PERSON_TOKENS:
-                print(f"[DEBUG DROPPED in postprocess_roles] {key} (Grund: Dummy ohne Namen/Rolle/ID)")
+            if (
+                key in NON_PERSON_TOKENS
+                or fn_lower in NON_PERSON_TOKENS
+                or ln_lower in NON_PERSON_TOKENS
+            ):
+                print(
+                    f"[DEBUG DROPPED in postprocess_roles] {key} (Grund: Dummy ohne Namen/Rolle/ID)"
+                )
                 continue
 
         filtered.append(p)
@@ -1088,10 +1361,11 @@ def postprocess_roles(base_doc: BaseDocument):
     base_doc.mentioned_persons = filtered
     print(f"[DEBUG postprocess_roles] Ende → {len(filtered)} übrig")
 
+
 # =================================================
 # Orte und Daten
 # =================================================
-#Liste ändern nach Org_matcher:
+# Liste ändern nach Org_matcher:
 ORG_KEYWORDS = {"Männerchor", "Verein", "Schule", "Chor", "Club"}
 
 
@@ -1099,8 +1373,9 @@ ORG_KEYWORDS = {"Männerchor", "Verein", "Schule", "Chor", "Club"}
 # Orte und Daten
 # =================================================
 
+
 def extract_places_and_date(
-    xml_root: ET.Element
+    xml_root: ET.Element,
 ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
     Liest aus dem PAGE-XML alle custom-Tags
@@ -1108,7 +1383,9 @@ def extract_places_and_date(
     und gibt zurück: (raw_creation_place, raw_recipient_place, creation_date).
     Falls keine Custom-Tags gefunden werden, gibt es Fallback via Header-Regex.
     """
-    ns = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+    ns = {
+        "pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+    }
     raw_creation = raw_recipient = creation_date = None
 
     # 1) Custom-Tags
@@ -1117,21 +1394,35 @@ def extract_places_and_date(
         text = (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip()
 
         if "creation_place" in custom:
-            m = re.search(r"creation_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)", custom)
+            m = re.search(
+                r"creation_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)",
+                custom,
+            )
             raw_creation = (
-                text[int(m.group(1)):int(m.group(1))+int(m.group(2))].strip().rstrip(".,")
-                if m else text.split()[0].rstrip(".,")
+                text[int(m.group(1)) : int(m.group(1)) + int(m.group(2))]
+                .strip()
+                .rstrip(".,")
+                if m
+                else text.split()[0].rstrip(".,")
             )
 
         if "recipient_place" in custom:
-            m = re.search(r"recipient_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)", custom)
+            m = re.search(
+                r"recipient_place\s*\{\s*offset\s*:\s*(\d+);\s*length\s*:\s*(\d+)",
+                custom,
+            )
             raw_recipient = (
-                text[int(m.group(1)):int(m.group(1))+int(m.group(2))].strip().rstrip(".,")
-                if m else text.split()[0].rstrip(".,")
+                text[int(m.group(1)) : int(m.group(1)) + int(m.group(2))]
+                .strip()
+                .rstrip(".,")
+                if m
+                else text.split()[0].rstrip(".,")
             )
 
         if "creation_date" in custom or "date" in custom:
-            m = re.search(r"(?:creation_date|date)\s*\{[^}]*when\s*:\s*([^;]+)", custom)
+            m = re.search(
+                r"(?:creation_date|date)\s*\{[^}]*when\s*:\s*([^;]+)", custom
+            )
             if m:
                 creation_date = m.group(1).strip()
 
@@ -1139,6 +1430,25 @@ def extract_places_and_date(
             break
 
     # 2) Fallback über Header (falls nötig)
+    header_lines = []
+    for tl in xml_root.findall(".//pc:TextLine", namespaces=ns):
+        txt = (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip()
+        if txt:
+            header_lines.append(txt)
+        if len(header_lines) >= 5:
+            break
+    # Zusammenfügen der Header-Zeilen für Regex-Auswertung
+    header = "\n".join(header_lines)
+
+    # Erster Treffer für Muster Ort, (den )?Datum => creation_place und creation_date
+    pattern = r"(?P<place>[A-ZÄÖÜ][\w\s\-/]+?),\s*(?:den\s*)?(?P<date>\d{1,2}\.\d{1,2}\.\d{2,4})"
+    for m in re.finditer(pattern, header, flags=re.MULTILINE):
+        if not raw_creation:
+            raw_creation = m.group("place").strip().rstrip(".,")
+        if not creation_date:
+            creation_date = m.group("date").strip()
+        break
+
     if not (raw_creation and creation_date) or not raw_recipient:
         header_lines = []
         for tl in xml_root.findall(".//pc:TextLine", namespaces=ns):
@@ -1152,44 +1462,61 @@ def extract_places_and_date(
         if not (raw_creation and creation_date):
             m = re.search(
                 r"^(?P<place>[A-ZÄÖÜ][\w\s\-/]+?),\s*(?:den\s*)?(?P<date>\d{1,2}\.\d{1,2}\.\d{2,4})",
-                header, flags=re.MULTILINE
+                header,
+                flags=re.MULTILINE,
             )
             if m:
-                raw_creation  = raw_creation  or m.group("place").strip()
+                raw_creation = raw_creation or m.group("place").strip()
                 creation_date = creation_date or m.group("date").strip()
 
         if not raw_recipient:
             m2 = re.search(
                 r"\bAn\s+(?:Herrn?|Frau|Frl\.?)\s+[A-ZÄÖÜ][\w\.\s-]+?\s+in\s+(?P<place>[A-ZÄÖÜ][\w\s\-/]+)",
-                header
+                header,
             )
             if m2:
                 raw_recipient = m2.group("place").strip()
 
+        print(
+            f"[DEBUG] extract_places_and_date: raw_creation='{raw_creation}', raw_recipient='{raw_recipient}', creation_date='{creation_date}'"
+        )
     return raw_creation, raw_recipient, creation_date
 
 
-def assign_sender_and_recipient_place(    xml_root: ET.Element,
-    
+def assign_sender_and_recipient_place(
+    xml_root: ET.Element,
     matcher: PlaceMatcher,
     mentioned_places: List[Any],
     allow_multiple: bool = True,
-    score_threshold: float = 80.0
+    score_threshold: float = 80.0,
 ) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]], Optional[str]]:
-    from .person_matcher import match_person, KNOWN_PERSONS, get_matching_thresholds, assess_llm_entry_score
-    
-    
-    raw_creation, _, creation_date = extract_places_and_date(xml_root)
+    from .person_matcher import (
+        match_person,
+        KNOWN_PERSONS,
+        get_matching_thresholds,
+        assess_llm_entry_score,
+    )
 
-    ns = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
+    raw_creation, raw_recipient, creation_date = extract_places_and_date(
+        xml_root
+    )
+
+    ns = {
+        "pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+    }
     lines = [
-        (tl.attrib.get("id", ""), (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip())
+        (
+            tl.attrib.get("id", ""),
+            (tl.find(".//pc:Unicode", namespaces=ns).text or "").strip(),
+        )
         for tl in xml_root.findall(".//pc:TextLine", namespaces=ns)
     ]
 
     all_line_texts = " ".join(text for _, text in lines)
 
-    def find_combined_place(line_texts: List[str], mentioned_places: List[Any]) -> Optional[Dict[str, Any]]:
+    def find_combined_place(
+        line_texts: List[str], mentioned_places: List[Any]
+    ) -> Optional[Dict[str, Any]]:
         """
         Sucht in benachbarten Zeilen nach Ortsnamen, die in Kombination in den Alt-Namen eines Groundtruth-Ortes vorkommen.
         Gibt den vollständigeren Ortseintrag zurück, falls erkannt, und vergibt einen Bonus.
@@ -1197,16 +1524,20 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
         text_by_line = {i: line for i, line in enumerate(line_texts)}
 
         for i, line in text_by_line.items():
-            for j in [i-1, i+1]:  # Vor- und Nachzeile prüfen
+            for j in [i - 1, i + 1]:  # Vor- und Nachzeile prüfen
                 if j not in text_by_line:
                     continue
 
                 combined_line = f"{line} {text_by_line[j]}"
 
                 for place in mentioned_places:
-                    alt_names = getattr(place, "alt_names", []) or getattr(place, "alternate_place_name", "")
+                    alt_names = getattr(place, "alt_names", []) or getattr(
+                        place, "alternate_place_name", ""
+                    )
                     if isinstance(alt_names, str):
-                        alt_names = [alt.strip() for alt in alt_names.split(";")]
+                        alt_names = [
+                            alt.strip() for alt in alt_names.split(";")
+                        ]
 
                     for alt in alt_names:
                         if "-" not in alt:
@@ -1218,29 +1549,54 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
                             continue
 
                         # Check: Sind alle Bestandteile in der kombinierten Zeile vorhanden (unscharf)
-                        if all(any(re.search(rf"\b{re.escape(part)}\b", combined_line, flags=re.IGNORECASE) for part in alt_parts) for part in alt_parts):
-                            print(f"[DEBUG] Kombinierter Ort erkannt in Kontext: {alt} in Zeilen {i}/{j}")
+                        if all(
+                            any(
+                                re.search(
+                                    rf"\b{re.escape(part)}\b",
+                                    combined_line,
+                                    flags=re.IGNORECASE,
+                                )
+                                for part in alt_parts
+                            )
+                            for part in alt_parts
+                        ):
+                            print(
+                                f"[DEBUG] Kombinierter Ort erkannt in Kontext: {alt} in Zeilen {i}/{j}"
+                            )
                             return {
                                 "name": place.name,
                                 "nodegoat_id": place.nodegoat_id,
-                                "score": 100.0 + 5.0,  # Bonus für kombinierte Erkennung
-                                "alternate_place_name": ";".join(alt_names)
+                                "score": 100.0
+                                + 5.0,  # Bonus für kombinierte Erkennung
+                                "alternate_place_name": ";".join(alt_names),
                             }
 
         return None
 
     def enrich_place_candidate(candidate_raw: str) -> Optional[Dict[str, Any]]:
         for place in mentioned_places:
-            alt = getattr(place, "alt_names", []) or getattr(place, "alternative_names", [])
+            alt = getattr(place, "alt_names", []) or getattr(
+                place, "alternative_names", []
+            )
             if candidate_raw == place.name or candidate_raw in alt:
-                return {"name": place.name, "nodegoat_id": place.nodegoat_id, "score": 100.0}
+                return {
+                    "name": place.name,
+                    "nodegoat_id": place.nodegoat_id,
+                    "score": 100.0,
+                }
 
         fuzzy = matcher.match_place(candidate_raw)
         if not fuzzy:
             return None
-        fuzzy_valid = [m for m in fuzzy if isinstance(m, dict) and m.get("match_score") is not None]
+        fuzzy_valid = [
+            m
+            for m in fuzzy
+            if isinstance(m, dict) and m.get("match_score") is not None
+        ]
         if fuzzy_valid:
-            best = max(fuzzy_valid, key=lambda m: float(m.get("match_score", 0)))
+            best = max(
+                fuzzy_valid, key=lambda m: float(m.get("match_score", 0))
+            )
         else:
             best = None
         if best is None:
@@ -1258,7 +1614,7 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
         return {
             "name": data["name"],
             "nodegoat_id": data.get("nodegoat_id", ""),
-            "score": final_score
+            "score": final_score,
         }
 
     # Alle Ortskandidaten aus dem gesamten XML
@@ -1267,16 +1623,24 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
     # 1) Normaler Kandidatenscan
     for _, line in lines:
         for place in mentioned_places:
-            if place.name in line or any(alt in line for alt in getattr(place, "alt_names", [])):
+            if place.name in line or any(
+                alt in line for alt in getattr(place, "alt_names", [])
+            ):
                 result = enrich_place_candidate(place.name)
                 if result and result["score"] >= score_threshold:
                     candidates.append(result)
 
     # 2) Ergänze kombinierte Orte (z. B. "Laufenburg-Rhina")
-    combined = find_combined_place([text for _, text in lines], mentioned_places)
+    combined = find_combined_place(
+        [text for _, text in lines], mentioned_places
+    )
     if combined and combined["score"] >= score_threshold:
         # Überschreibe bestehenden, wenn name bereits als Teil vorhanden ist
-        already = [c for c in candidates if c["name"] in combined["name"] or combined["name"] in c["name"]]
+        already = [
+            c
+            for c in candidates
+            if c["name"] in combined["name"] or combined["name"] in c["name"]
+        ]
         if already:
             # ersetze ggf. einfachsten durch vollständigen
             for old in already:
@@ -1292,15 +1656,21 @@ def assign_sender_and_recipient_place(    xml_root: ET.Element,
             seen.add(c["name"])
 
     # ✏️ Creation_place nur EIN Eintrag
-    creation_match = enrich_place_candidate(raw_creation) if raw_creation else None
+    creation_match = (
+        enrich_place_candidate(raw_creation) if raw_creation else None
+    )
     if creation_match and creation_match["score"] < matcher.threshold:
         creation_match = None
 
-    return creation_match, unique_candidates if allow_multiple else unique_candidates[:1], creation_date
+    return (
+        creation_match,
+        unique_candidates if allow_multiple else unique_candidates[:1],
+        creation_date,
+    )
 
 
 def finalize_recipient_places(
-    recipient_places: List[Dict[str, any]]
+    recipient_places: List[Dict[str, any]],
 ) -> Tuple[Optional[Dict[str, any]], List[Dict[str, any]]]:
     """
     Gibt den besten Ort (nach Score) als primären recipient_place zurück,
@@ -1309,7 +1679,9 @@ def finalize_recipient_places(
     if not recipient_places:
         return None, []
 
-    sorted_places = sorted(recipient_places, key=lambda x: (-x["score"], x["name"]))
+    sorted_places = sorted(
+        recipient_places, key=lambda x: (-x["score"], x["name"])
+    )
     main = sorted_places[0]
     alts = sorted_places[1:]
 

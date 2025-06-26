@@ -33,6 +33,9 @@ for _, row in _df.iterrows():
             base + "n",
             base + "en",
             base + "ern",
+            base + "ers",
+            base + "s",
+            base + "es"
         }
 
     alt = row.get("Alternativer Rollenname", "").strip()
@@ -727,6 +730,18 @@ def extract_role_from_raw_name(raw_name: str) -> Tuple[str, List[str]]:
             cleaned = lower.title()
             print(f"[DEBUG] extract_role_from_raw_name: fallback prefix → role='{key}', name='{cleaned}'")
             return cleaned, roles_found
+        
+    # 4) Wenn innerhalb von 2 Wörtern eine bekannte Person, Rolle dieser Person zuweisen
+    if roles_found:
+            tokens = name.split()
+            for idx, tok in enumerate(tokens):
+                if tok in person_names:
+                    # prüfe Abstand im Token-List
+                    # wir wissen: Rolle und Name stammen aus demselben raw_name
+                    if abs(idx - tokens.index(tok)) <= 2:
+                        cleaned_name = tok
+                        print(f"[DEBUG] extract_role_from_raw_name: nearby person match → assign role '{roles_found[0]}' to '{tok}'")
+                        break
 
     # 4) Keine Rolle erkannt
     return name, roles_found
