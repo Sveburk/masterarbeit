@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=03_02_2025_17:49</Creator>
+        <Created>2025-01-22T16:50:40.415+01:00</Created>
+        <LastChange>2025-02-10T17:38:51.961+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0013_p019.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120163463" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_43"/>
+                <RegionRefIndexed index="3" regionRef="r_1368"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="67,208 1551,208 1551,842 67,842"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;} place {offset:17; length:15;}">
+                <Coords points="88,395 1493,414 1489,267 979,278 891,244 746,282 86,237"/>
+                <Baseline points="98,364 167,366 237,364 307,368 377,370 447,372 517,373 586,373 656,370 726,373 796,375 866,379 936,382 1006,381 1075,381 1145,381 1215,379 1285,383 1355,385 1425,385 1495,383"/>
+                <TextEquiv>
+                    <Unicode>Bezirkssparkasse Murg-Laufenburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:1;} place {offset:0; length:4;}">
+                <Coords points="466,479 652,470 718,502 788,461 833,491 1109,493 1107,393 1015,415 983,389 919,408 820,376 778,410 677,389 637,410 573,376 464,387"/>
+                <Baseline points="477,456 508,456 540,457 572,459 604,459 636,459 668,459 699,459 731,459 763,459 795,459 827,457 859,459 891,462 922,462 954,462 986,463 1018,465 1050,467 1082,468 1114,465"/>
+                <TextEquiv>
+                    <Unicode>Murg (Baden)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:2;}">
+                <Coords points="470,536 758,564 929,543 1070,572 1145,549 1128,487 833,493 793,472 718,502 470,483"/>
+                <Baseline points="480,528 513,528 546,529 580,531 613,531 647,531 680,532 714,534 747,534 781,534 814,534 847,534 881,534 914,534 948,533 981,533 1015,539 1048,538 1082,537 1115,538 1149,540"/>
+                <TextEquiv>
+                    <Unicode>Fernsprecher Nr. 3.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_9" custom="readingOrder {index:3;} place {offset:21; length:9;}">
+                <Coords points="321,611 1203,639 1293,632 1293,553 758,568 320,502"/>
+                <Baseline points="331,591 379,600 427,606 476,606 524,606 573,607 621,610 669,612 718,612 766,612 815,612 863,612 911,612 960,615 1008,612 1057,613 1105,615 1153,615 1202,615 1250,615 1299,618"/>
+                <TextEquiv>
+                    <Unicode>Postscheckkonto 9692 Karlsruhe</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_10" custom="readingOrder {index:4;} place {offset:20; length:9;}">
+                <Coords points="323,684 1205,711 1293,694 1292,637 321,611"/>
+                <Baseline points="331,666 379,666 427,666 476,670 524,672 573,672 621,672 669,672 718,674 766,675 815,675 863,675 911,675 960,677 1008,677 1057,677 1105,677 1153,677 1202,677 1250,677 1299,680"/>
+                <TextEquiv>
+                    <Unicode>Reichsbankgirokonto Säckingen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_11" custom="readingOrder {index:5;}">
+                <Coords points="464,737 607,761 690,739 902,763 1158,748 1158,701 1113,686 996,682 970,703 464,679"/>
+                <Baseline points="474,734 508,732 542,733 577,734 611,734 645,734 680,736 714,737 748,737 783,737 817,737 851,737 886,737 920,737 954,737 989,737 1023,737 1057,737 1092,737 1126,737 1161,737"/>
+                <TextEquiv>
+                    <Unicode>Zweigniederlassung in</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_13" custom="readingOrder {index:6;} abbrev {offset:0; length:14;expansion:Kleinlaufenburg;} place {offset:4; length:10;wikiData:Q539801;}">
+                <Coords points="464,805 592,833 697,805 1164,838 1162,758 1134,744 1023,767 957,741 607,761 464,737"/>
+                <Baseline points="474,794 508,794 543,796 577,797 612,797 647,797 681,797 716,797 751,798 785,803 820,803 855,803 889,803 924,803 959,803 993,803 1028,803 1063,803 1097,803 1132,805 1167,809"/>
+                <TextEquiv>
+                    <Unicode>Kl.-Laufenburg (Baden)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_43" custom="readingOrder {index:1;}">
+            <Coords points="1611,247 3416,247 3416,834 1611,834"/>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:0;} place {offset:0; length:4;wikiData:Q550673;} date {offset:11; length:10;when:01.07.1931;} creation_place {offset:0; length:4;} creation_date {offset:11; length:10;when:01.07.1931;}">
+                <Coords points="2034,406 2339,395 2606,444 2822,389 3162,446 3373,387 3354,331 3153,293 3012,325 2743,271 2252,340 2034,282"/>
+                <Baseline points="2045,382 2111,380 2178,385 2244,385 2311,385 2378,385 2444,385 2511,384 2578,382 2644,382 2711,385 2778,382 2844,382 2911,383 2978,385 3044,385 3111,385 3178,385 3244,385 3311,384 3378,385"/>
+                <TextEquiv>
+                    <Unicode>Murg, den -1.JUL.1931</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:1;} organization {offset:0; length:10;}">
+                <Coords points="2111,620 2237,615 2273,634 2346,615 2474,660 2510,626 2683,611 2679,513 2547,502 2523,525 2467,509 2405,528 2367,504 2322,525 2106,491"/>
+                <Baseline points="2120,585 2148,585 2176,585 2205,585 2233,583 2262,582 2290,582 2318,583 2347,585 2375,587 2404,588 2432,588 2460,588 2489,588 2517,588 2546,593 2574,597 2602,599 2631,601 2659,603 2688,600"/>
+                <TextEquiv>
+                    <Unicode>Männerchor,</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:2;}">
+                <Coords points="1730,647 1780,649 1844,615 1908,630 1980,624 1997,639 2060,624 2062,525 2021,513 1993,528 1916,493 1886,464 1852,483 1735,466"/>
+                <Baseline points="1742,587 1768,591 1795,594 1822,594 1849,594 1876,594 1903,594 1930,594 1957,592 1984,585 2011,585 2038,585 2065,586"/>
+                <TextEquiv>
+                    <Unicode>An den</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_12" custom="readingOrder {index:3;} place {offset:0; length:4;}">
+                <Coords points="2395,790 2523,827 2876,791 2957,827 3215,786 3299,807 3361,780 3361,735 3042,641 2993,671 2715,649 2562,686 2393,652"/>
+                <Baseline points="2404,728 2452,740 2500,744 2548,753 2596,755 2644,755 2692,752 2740,747 2788,748 2836,751 2885,752 2933,754 2981,755 3029,758 3077,758 3125,758 3173,759 3221,760 3269,758 3317,759 3366,758"/>
+                <TextEquiv>
+                    <Unicode>Murg (Baden)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_1368" custom="readingOrder {index:3;}">
+            <Coords points="1755,1928 3443,1928 3443,2357 1755,2357"/>
+            <TextLine id="l_1404" custom="readingOrder {index:0;}">
+                <Coords points="2298,2042 2837,2046 2837,2016 2298,2012"/>
+                <Baseline points="2298,2042 2837,2046"/>
+                <TextEquiv>
+                    <Unicode>Hochachtungsvoll</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1440" custom="readingOrder {index:1;} organization {offset:0; length:29;}">
+                <Coords points="1810,2137 3357,2160 3357,2130 1811,2107"/>
+                <Baseline points="1810,2137 3357,2160"/>
+                <TextEquiv>
+                    <Unicode>Bezirksparkasse Murg-Laufenburg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1476" custom="readingOrder {index:2;} person {offset:0; length:13;} author {offset:0; length:13;}">
+                <Coords points="1960,2255 3404,2259 3404,2229 1960,2225"/>
+                <Baseline points="1960,2255 3404,2259"/>
+                <TextEquiv>
+                    <Unicode>Jung Gerensen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

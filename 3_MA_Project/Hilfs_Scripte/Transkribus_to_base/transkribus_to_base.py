@@ -116,7 +116,7 @@ from Module import (
 
 
 # --------------- Pfadkonfiguration ---------------
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")

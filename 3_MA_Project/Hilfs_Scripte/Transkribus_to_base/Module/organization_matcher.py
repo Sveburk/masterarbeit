@@ -7,12 +7,12 @@ from typing import List, Dict, Optional, Any
 # ----------------------------------------------------------------------------
 # Organization Extraction Helper
 # ----------------------------------------------------------------------------
-_WIKIDATA_RE = re.compile(r'wikiData:(Q\d+)', re.IGNORECASE)
+_WIKIDATA_RE = re.compile(r"wikiData:(Q\d+)", re.IGNORECASE)
 
 # matches and strips enclosing parentheses/brackets
-_ENCLOSING_BRACKETS = re.compile(r'^[\(\[\{]\s*(.*?)\s*[\)\]\}]$')
+_ENCLOSING_BRACKETS = re.compile(r"^[\(\[\{]\s*(.*?)\s*[\)\]\}]$")
 # removes any stray parentheses, brackets, or colons inside
-_CLEAN_INSIDE = re.compile(r'[()\[\]\{\}\.:]')
+_CLEAN_INSIDE = re.compile(r"[()\[\]\{\}\.:]")
 # blacklist of tokens to drop
 NON_ORG_TOKENS = {"verein", "partei", "amt", "lokal", "hotel", "süd", "krone"}
 
@@ -43,35 +43,43 @@ def extract_organization(org_raw: str) -> Optional[str]:
 # Load & Normalize
 # ----------------------------------------------------------------------------
 
+
 def load_organizations_from_csv(csv_path: str) -> List[Dict[str, str]]:
     df = pd.read_csv(csv_path, sep=";", encoding="utf-8", dtype=str).fillna("")
     organizations: List[Dict[str, str]] = []
     for _, row in df.iterrows():
         name = row.get("Name", "").strip()
         alt_raw = row.get("Alternativer Organisationsname", "").strip()
-        alt_names = [n.strip() for n in re.split(r"[;,]", alt_raw) if n.strip()]
+        alt_names = [
+            n.strip() for n in re.split(r"[;,]", alt_raw) if n.strip()
+        ]
         all_names = [name] + alt_names
-        organizations.append({
-            "name": name,
-            "alternate_names": alt_names,
-            "nodegoat_id": row.get("nodegoat ID", "").strip(),
-            "type": row.get("Typus", "").strip(),
-            "feldpostnummer": row.get("[hat Feldpostnummer] Feldpostnummer", "").strip(),
-            "all_names": all_names
-        })
+        organizations.append(
+            {
+                "name": name,
+                "alternate_names": alt_names,
+                "nodegoat_id": row.get("nodegoat ID", "").strip(),
+                "type": row.get("Typus", "").strip(),
+                "feldpostnummer": row.get(
+                    "[hat Feldpostnummer] Feldpostnummer", ""
+                ).strip(),
+                "all_names": all_names,
+            }
+        )
     return organizations
 
 
 def normalize_org_name(name: str) -> str:
     return re.sub(r"[^a-zA-Z0-9äöüÄÖÜß ]", "", name).lower().strip()
 
+
 def extract_wikidata_id(custom_str: str) -> Optional[str]:
     m = _WIKIDATA_RE.search(custom_str)
     return m.group(1) if m else None
 
+
 def match_acronym(
-    norm_input: str,
-    candidates: List[Dict[str, str]]
+    norm_input: str, candidates: List[Dict[str, str]]
 ) -> (Optional[Dict[str, str]], int):
     """
     Sonderfall für kurze Akronyme (alles Großbuchstaben, Länge ≤ 5).
@@ -88,24 +96,23 @@ def match_acronym(
     return None, 0
 
 
-
 # ----------------------------------------------------------------------------
 # Fuzzy-Matching
 # ----------------------------------------------------------------------------
 
+
 def match_organization(
     input_org: Dict[str, str],
     candidates: List[Dict[str, str]],
-    threshold: int = 85
+    threshold: int = 85,
 ) -> (Optional[Dict[str, str]], int):
-    
+
     norm_input = normalize_org_name(input_org.get("name", ""))
-    
+
     # 1) Special-case: kurze Akronyme
     special_match, special_score = match_acronym(norm_input, candidates)
     if special_match:
         return special_match, special_score
-
 
     best_match, best_score = None, 0
     for org in candidates:
@@ -117,9 +124,7 @@ def match_organization(
 
 
 def match_organization_from_text(
-    transcript_text: str,
-    org_list: List[Dict[str, str]],
-    threshold: int = 85
+    transcript_text: str, org_list: List[Dict[str, str]], threshold: int = 85
 ) -> List[Dict[str, str]]:
     """
     Durchsucht den gesamten Text auf bekannte Organisationsnamen (oder fuzzy Varianten)
@@ -145,10 +150,11 @@ def match_organization_from_text(
     unique = {o["nodegoat_id"]: o for o in found}
     return list(unique.values())
 
+
 def match_organization_entities(
     raw_orgs: List[Dict[str, str]],
     org_list: List[Dict[str, str]],
-    threshold: int = 85
+    threshold: int = 85,
 ) -> List[Dict[str, Any]]:
     # apply cleaning and extract non-null
     cleaned_names = []
@@ -162,7 +168,7 @@ def match_organization_entities(
     collapsed, i = [], 0
     while i < len(cleaned_names):
         curr = cleaned_names[i]
-        nxt = cleaned_names[i+1] if i+1 < len(cleaned_names) else None
+        nxt = cleaned_names[i + 1] if i + 1 < len(cleaned_names) else None
         if curr == "Männerchor" and nxt == "Murg":
             collapsed.append("Männerchor Murg")
             i += 2
@@ -172,10 +178,15 @@ def match_organization_entities(
     # fuzzy match
     matched = []
     for name in collapsed:
-        best_match, score = match_organization({"name": name}, org_list, threshold)
+        best_match, score = match_organization(
+            {"name": name}, org_list, threshold
+        )
         if best_match:
-            matched.append({**best_match, "match_score": score, "confidence": "fuzzy"})
+            matched.append(
+                {**best_match, "match_score": score, "confidence": "fuzzy"}
+            )
     return matched
+
 
 # Optional: anpassen oder dynamisch setzen, falls du einen Konfigurationspfad nutzt
 CSV_ORG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-organisationen.csv"
@@ -187,7 +198,10 @@ except Exception as e:
     KNOWN_ORGS = []
     print(f"[WARN] Konnte export-organisationen.csv nicht laden: {e}")
 
-def match_organization_by_name(name: str, threshold: int = 85) -> Optional[Dict[str, str]]:
+
+def match_organization_by_name(
+    name: str, threshold: int = 85
+) -> Optional[Dict[str, str]]:
     """
     Führt ein Fuzzy-Matching gegen alle bekannten Organisationen durch.
     Gibt das beste Match zurück (inkl. Name, nodegoat_id etc.), wenn Score ≥ threshold.
@@ -195,6 +209,5 @@ def match_organization_by_name(name: str, threshold: int = 85) -> Optional[Dict[
     clean = extract_organization(name)
     if not clean:
         return None
-    match, score = match_organization({"name": clean}, KNOWN_ORGS, threshold
-    )
+    match, score = match_organization({"name": clean}, KNOWN_ORGS, threshold)
     return match

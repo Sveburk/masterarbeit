@@ -2,11 +2,15 @@ import xml.etree.ElementTree as ET
 from typing import List, Dict, Any, Optional
 from Module.place_matcher import PlaceMatcher
 from Module.date_matcher import extract_custom_date
-from Module.organization_matcher import match_organization_from_text, KNOWN_ORGS
+from Module.organization_matcher import (
+    match_organization_from_text,
+    KNOWN_ORGS,
+)
 from Module.person_matcher import match_person, KNOWN_PERSONS
 from Module.document_schemas import Event, Place, Organization, Person
 from Module.Assigned_Roles_Module import NAME_RE
 import re
+
 
 def extract_name_with_spacy(name: str) -> (str, str):
     parts = name.strip().split()
@@ -14,26 +18,46 @@ def extract_name_with_spacy(name: str) -> (str, str):
         return " ".join(parts[:-1]), parts[-1]
     return parts[0], ""
 
-def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[Event]:
-    def build_event(block: List[str], line_obj, namespaces: Dict[str,str]) -> Optional[Event]:
+
+def extract_events_from_xml(
+    xml_path: str, place_matcher: PlaceMatcher
+) -> List[Event]:
+    def build_event(
+        block: List[str], line_obj, namespaces: Dict[str, str]
+    ) -> Optional[Event]:
         full_text = "\n".join(block).strip()
-        date_token_re = re.compile(r'^\d{1,2}\.\d{1,2}\.?$')        #reges für mögliche Daten
+        date_token_re = re.compile(
+            r"^\d{1,2}\.\d{1,2}\.?$"
+        )  # reges für mögliche Daten
         print(f"[DEBUG] FINAL EVENT TEXT:\n{full_text}\n----")
 
         # Regex für einfache Datumstokens wie "15.3", "15.03" oder "15.03."
-        date_token_re = re.compile(r'^\d{1,2}\.\d{1,2}\.?$')
+        date_token_re = re.compile(r"^\d{1,2}\.\d{1,2}\.?$")
         date_tokens: List[str] = []
 
         # Orte extrahieren
         places = []
         for token in full_text.split():
-            token_clean = token.strip(".,;:-()\"").lower()
+            token_clean = token.strip('.,;:-()"').lower()
             if date_token_re.match(token_clean):
                 date_tokens.append(token_clean)
                 continue
             if len(token_clean) < 3:
                 continue
-            if token_clean in {"an", "am", "mit", "und", "des", "der", "die", "dem", "den", "vom", "zum", "beim"}:
+            if token_clean in {
+                "an",
+                "am",
+                "mit",
+                "und",
+                "des",
+                "der",
+                "die",
+                "dem",
+                "den",
+                "vom",
+                "zum",
+                "beim",
+            }:
                 continue
             if token_clean[0].islower():
                 continue
@@ -56,14 +80,18 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
                 match_list = [match_list]
             # Nimm jetzt den ersten Treffer
             best_match = match_list[0]
-            places.append(Place(
-                name=best_match["data"].get("name", ""),
-                type="",
-                alternate_place_name=best_match["data"].get("alternate_place_name", ""),
-                geonames_id=best_match["data"].get("geonames_id", ""),
-                wikidata_id=best_match["data"].get("wikidata_id", ""),
-                nodegoat_id=best_match["data"].get("nodegoat_id", "")
-            ))
+            places.append(
+                Place(
+                    name=best_match["data"].get("name", ""),
+                    type="",
+                    alternate_place_name=best_match["data"].get(
+                        "alternate_place_name", ""
+                    ),
+                    geonames_id=best_match["data"].get("geonames_id", ""),
+                    wikidata_id=best_match["data"].get("wikidata_id", ""),
+                    nodegoat_id=best_match["data"].get("nodegoat_id", ""),
+                )
+            )
         if not places:
             return None
 
@@ -86,14 +114,18 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
             if forename or familyname:
                 match, score = match_person(
                     {"forename": forename, "familyname": familyname},
-                    KNOWN_PERSONS
+                    KNOWN_PERSONS,
                 )
                 if match:
-                    persons.append(Person.from_dict({
-                        **match,
-                        "match_score": score,
-                        "confidence": "from_event_text"
-                    }))
+                    persons.append(
+                        Person.from_dict(
+                            {
+                                **match,
+                                "match_score": score,
+                                "confidence": "from_event_text",
+                            }
+                        )
+                    )
 
         return Event(
             name=full_text.split("\n")[0].strip(),
@@ -103,10 +135,15 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
             involved_places=places,
             involved_organizations=organizations,
             involved_persons=persons,
-            dates=dates
+            dates=dates,
         )
 
-    def is_continuation(prev_line: str, current_line: str, xml_line: ET.Element, namespaces: Dict[str,str]) -> bool:
+    def is_continuation(
+        prev_line: str,
+        current_line: str,
+        xml_line: ET.Element,
+        namespaces: Dict[str, str],
+    ) -> bool:
         if prev_line.endswith("-"):
             return True
         if current_line and current_line[0].islower():
@@ -119,10 +156,10 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
         return False
 
     namespaces = {}
-    for event, elem in ET.iterparse(xml_path, events=['start-ns']):
+    for event, elem in ET.iterparse(xml_path, events=["start-ns"]):
         prefix, uri = elem
         # lege Standard-Namespace auf 'ns', falls prefix == ''
-        namespaces[prefix or 'ns'] = uri
+        namespaces[prefix or "ns"] = uri
 
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -131,17 +168,23 @@ def extract_events_from_xml(xml_path: str, place_matcher: PlaceMatcher) -> List[
     buffer: List[str] = []
     line_obj = None
 
-    for text_line in root.findall('.//ns:TextLine', namespaces):
-        custom_attr = text_line.attrib.get('custom', '')
-        unicode_el = text_line.find('./ns:TextEquiv/ns:Unicode', namespaces)
-        line_text = unicode_el.text.strip() if unicode_el is not None and unicode_el.text else ""
+    for text_line in root.findall(".//ns:TextLine", namespaces):
+        custom_attr = text_line.attrib.get("custom", "")
+        unicode_el = text_line.find("./ns:TextEquiv/ns:Unicode", namespaces)
+        line_text = (
+            unicode_el.text.strip()
+            if unicode_el is not None and unicode_el.text
+            else ""
+        )
 
         is_event_line = "event" in custom_attr.lower()
 
         if buffer:
             evt = None
             # Prüfe, ob die aktuelle Zeile zur vorherigen passt (z. B. Fortsetzung)
-            if is_event_line or is_continuation(buffer[-1], line_text, text_line, namespaces):
+            if is_event_line or is_continuation(
+                buffer[-1], line_text, text_line, namespaces
+            ):
                 buffer.append(line_text)
             else:
                 # Bisherigen Block abschließen

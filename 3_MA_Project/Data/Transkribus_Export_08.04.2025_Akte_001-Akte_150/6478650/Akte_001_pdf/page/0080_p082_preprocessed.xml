@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:51:33.634+01:00</Created>
+        <LastChange>2025-01-22T16:51:33.634+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0080_p082.jpg" imageWidth="2479" imageHeight="3508">
+        <!-- Assuming TextRegion and TextLine elements are present -->
+        <TextRegion id="r1">
+            <TextLine id="tl1" custom="place {offset:0; length:7;} creation_place {offset:0; length:7;} date {offset:8; length:9; when:28.05.1942;} creation_date {offset:8; length:9; when:28.05.1942;}">
+                <Coords points="0,0 100,0 100,10 0,10"/>
+                <TextEquiv><Unicode>München 28.V.1942</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl2" custom="recipient {offset:7; length:5;} person {offset:7; length:5;} place {offset:15; length:6;} recipient_place {offset:15; length:6;}">
+                <Coords points="0,20 100,20 100,30 0,30"/>
+                <TextEquiv><Unicode>Lieber Otto, Berlin</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl3" custom="event {offset:24; length:38; when:28.05.1942;} place {offset:42; length:7;}">
+                <Coords points="0,40 100,40 100,50 0,50"/>
+                <TextEquiv><Unicode>Heute abend fand ein Konzert im Opernhaus in München statt, und ich</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl4" custom="organization {offset:43; length:28;} place {offset:66; length:16;}">
+                <Coords points="0,60 100,60 100,70 0,70"/>
+                <TextEquiv><Unicode>lauschte den himmlischen Stimmen des Männerchors Hintertuüpfingen eV.</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl5" custom="organization {offset:34; length:3;} organization {offset:40; length:18;}">
+                <Coords points="0,80 100,80 100,90 0,90"/>
+                <TextEquiv><Unicode>Das alles fand im Rahmen des WhW - des Winterhilfswerk statt.</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl6" custom="organization  {offset:50; length:17;} place {offset:72; length:4;} place {offset:83; length:6;}">
+                <Coords points="0,100 100,100 100,110 0,110"/>
+                <TextEquiv><Unicode>Ich hoffe wir sehen uns bald bei einem Auftritt des Männerchors Murg wieder, oder in Hänner?</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl7" custom="role {offset:14; length:14;} person {offset:29; length:4;}">
+                <Coords points="0,120 100,120 100,130 0,130"/>
+                <TextEquiv><Unicode>Grüss mir den Vereinsführer Asal,</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl8">
+                <Coords points="0,140 100,140 100,150 0,150"/>
+                <TextEquiv><Unicode>Alles Liebe,</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl9" custom="author {offset:6; length:17;} person {offset:6; length:17;}">
+                <Coords points="0,160 100,160 100,170 0,170"/>
+                <TextEquiv><Unicode>Deine Lina Fingerdick</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl10" custom="salutation {offset:0; length:2;} recipient {offset:3; length:13;} address {offset:18; length:21;} place {offset:41; length:4;}">
+                <Coords points="0,180 100,180 100,190 0,190"/>
+                <TextEquiv>
+                <Unicode>An Otto Bolliger, Adolf-Hitler Platz 1, Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+        </TextRegion>
+    </Page>
+</PcGts>

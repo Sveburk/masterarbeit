@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_17:36</Creator>
+        <Created>2025-01-23T13:07:41.355+01:00</Created>
+        <LastChange>2025-03-13T13:04:35.689+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0004_p007.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120297701" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1122,146 1431,146 1431,313 1122,313"/>
+            <TextLine id="l" custom="readingOrder {index:0;}">
+                <Coords points="1147,265 1361,258 1360,228 1146,235"/>
+                <Baseline points="1147,265 1361,258"/>
+                <TextEquiv>
+                    <Unicode>-4-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

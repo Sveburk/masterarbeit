@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.23.0:model_id=287793:lm=none:date=20_02_2025_15:08</Creator>
+        <Created>2025-01-23T13:11:23.264+01:00</Created>
+        <LastChange>2025-03-14T14:30:50.870+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120239845" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="302,849 2100,849 2100,1934 302,1934"/>
+            <TextLine id="l" custom="readingOrder {index:0;} organization {offset:7; length:17;} place {offset:25; length:10;}">
+                <Coords points="410,959 698,914 1435,935 1531,938 1568,956 1569,1041 1425,1053 535,1058 410,1043"/>
+                <Baseline points="420,991 465,997 510,997 555,1000 600,1000 644,1000 689,997 734,997 779,1000 824,1000 868,1003 913,997 958,997 1003,1000 1047,1003 1092,1003 1137,1009 1158,1009 1212,1000 1256,1003 1301,1003 1346,1003 1391,1003 1436,1006 1480,1006 1525,1009 1570,1009"/>
+                <TextEquiv>
+                    <Unicode>An den Hochstein-Verlag, Heidelberg.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_3" custom="readingOrder {index:1;} place {offset:0; length:10;} date {offset:16; length:12; when:19.09.1941;} creation_place {offset:0; length:10;} creation_date {offset:16; length:12; when:19.09.1941;}">
+                <Coords points="1085,1139 1930,1123 1950,1048 1794,1069 1615,1043 1552,1072 1303,1029 1083,1041"/>
+                <Baseline points="1095,1095 1140,1095 1185,1098 1230,1098 1274,1098 1319,1101 1364,1101 1409,1101 1453,1098 1498,1101 1543,1101 1588,1101 1633,1101 1677,1101 1722,1101 1767,1101 1812,1101 1857,1101 1901,1101 1946,1101 1955,1098"/>
+                <TextEquiv>
+                    <Unicode>Murg/Baden, den 19.Sept.1941.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_4" custom="readingOrder {index:2;}">
+                <Coords points="567,1222 1963,1236 1963,1177 1698,1154 1444,1187 1397,1149 1257,1194 966,1154 642,1179 567,1142"/>
+                <Baseline points="576,1215 620,1215 665,1215 710,1215 755,1218 800,1218 844,1218 889,1218 934,1215 979,1218 1024,1221 1068,1218 1113,1221 1158,1221 1203,1221 1247,1218 1292,1218 1337,1221 1382,1221 1427,1221 1471,1221 1516,1221 1561,1224 1606,1224 1650,1224 1695,1221 1740,1221 1785,1221 1830,1218 1874,1218 1919,1221 1964,1224 1967,1224"/>
+                <TextEquiv>
+                    <Unicode>Die Partitur des Liedes "Haimet am Hochrhy“ von</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_5" custom="readingOrder {index:3;} person {offset:0; length:11;}">
+                <Coords points="558,1271 1310,1285 1369,1322 1956,1299 1956,1238 1841,1219 1723,1254 558,1229"/>
+                <Baseline points="567,1265 612,1265 656,1268 701,1265 746,1265 791,1265 835,1268 880,1271 925,1271 970,1271 1015,1271 1059,1271 1104,1271 1149,1271 1194,1274 1238,1271 1283,1274 1328,1274 1373,1274 1418,1274 1462,1274 1507,1274 1552,1271 1597,1274 1642,1274 1686,1277 1731,1277 1776,1274 1821,1274 1865,1271 1910,1274 1955,1274 1961,1277"/>
+                <TextEquiv>
+                    <Unicode>Paul Körber, Ausgabe 1 für Männerchöre, ist uns</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_6" custom="readingOrder {index:4;}">
+                <Coords points="572,1339 675,1343 703,1325 783,1339 835,1320 865,1344 929,1330 1102,1344 1100,1287 570,1276"/>
+                <Baseline points="582,1313 626,1313 671,1313 716,1313 761,1313 806,1316 850,1319 895,1316 940,1319 985,1316 1030,1319 1074,1322 1107,1322"/>
+                <TextEquiv>
+                    <Unicode>abhanden gekommen.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_7" custom="readingOrder {index:5;}">
+                <Coords points="563,1397 1902,1416 1901,1344 1840,1313 1512,1364 1123,1318 563,1346"/>
+                <Baseline points="573,1391 618,1388 662,1388 707,1388 752,1388 797,1391 841,1391 886,1394 931,1391 976,1394 1021,1394 1065,1397 1110,1397 1155,1397 1200,1397 1244,1397 1289,1397 1334,1397 1379,1397 1424,1397 1468,1400 1513,1400 1558,1400 1603,1400 1648,1400 1692,1400 1737,1400 1782,1400 1827,1397 1871,1397 1907,1397"/>
+                <TextEquiv>
+                    <Unicode>Ich bestelle deshalb hiermit ein Exemplar bei</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_8" custom="readingOrder {index:6;}">
+                <Coords points="563,1442 1927,1449 1915,1395 563,1395"/>
+                <Baseline points="573,1439 618,1436 662,1439 707,1439 752,1439 797,1439 841,1439 886,1442 931,1442 976,1439 1021,1442 1065,1442 1110,1442 1155,1444 1200,1444 1244,1444 1289,1444 1334,1444 1379,1444 1424,1444 1468,1444 1513,1447 1558,1444 1603,1447 1648,1450 1692,1447 1737,1447 1782,1447 1827,1444 1871,1444 1916,1442 1931,1444"/>
+                <TextEquiv>
+                    <Unicode>Ihnen und bitte um baldige Lieferung, der Ein-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_9" custom="readingOrder {index:7;} sic {offset:33; length:9;correction:Nachname;}">
+                <Coords points="570,1507 1367,1498 1538,1547 1592,1510 1937,1512 1906,1444 570,1447"/>
+                <Baseline points="579,1492 623,1492 668,1492 713,1489 758,1489 803,1489 847,1492 892,1489 937,1492 982,1489 1027,1492 1071,1495 1116,1495 1161,1495 1206,1495 1250,1495 1295,1495 1340,1498 1385,1495 1430,1495 1474,1498 1519,1495 1564,1498 1609,1498 1653,1498 1698,1495 1743,1498 1788,1495 1833,1495 1877,1495 1922,1498 1940,1501"/>
+                <TextEquiv>
+                    <Unicode>fachheit halber vielleicht unter Nachnahme und</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_10" custom="readingOrder {index:8;}">
+                <Coords points="563,1561 715,1538 799,1559 1311,1555 1311,1512 1224,1498 563,1507"/>
+                <Baseline points="573,1540 618,1540 662,1540 707,1537 752,1540 797,1540 841,1540 886,1540 931,1540 976,1537 1021,1540 1065,1540 1110,1540 1155,1543 1200,1540 1244,1540 1289,1543 1316,1540"/>
+                <TextEquiv>
+                    <Unicode>zwar an folgende Adresse:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_11" custom="readingOrder {index:9;} person {offset:0; length:38;} recipient {offset:0; length:38;} role {offset:19; length:18;}">
+                <Coords points="616,1599 1756,1615 1740,1524 1674,1562 616,1548"/>
+                <Baseline points="626,1588 671,1585 716,1588 761,1588 806,1588 850,1591 895,1588 940,1591 985,1588 1030,1591 1074,1591 1119,1591 1164,1591 1209,1591 1253,1591 1298,1591 1343,1591 1388,1591 1433,1591 1477,1591 1522,1591 1567,1594 1612,1594 1656,1594 1701,1594 1746,1594 1761,1594"/>
+                <TextEquiv>
+                    <Unicode>Herrn Alfons Zimmermann, Vereinsführer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_12" custom="readingOrder {index:10;} organization {offset:4; length:22; wikiData:Q133269730;} place {offset:27; length:10;} recipient_place {offset:27; length:10;}">
+                <Coords points="680,1643 1524,1650 1554,1676 1672,1664 1671,1603 678,1615"/>
+                <Baseline points="689,1639 734,1639 779,1639 824,1642 868,1639 913,1639 958,1639 1003,1639 1047,1639 1092,1642 1137,1639 1182,1642 1227,1642 1271,1645 1316,1645 1361,1645 1406,1645 1450,1645 1495,1648 1540,1648 1585,1648 1630,1645 1674,1645"/>
+                <TextEquiv>
+                    <Unicode>des Männerchors Murg/Baden, Post</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_13" custom="readingOrder {index:11;} place {offset:0; length:22;}">
+                <Coords points="706,1718 1402,1719 1402,1650 706,1662"/>
+                <Baseline points="716,1689 761,1689 806,1689 850,1689 895,1689 940,1689 985,1692 1030,1692 1074,1692 1119,1692 1164,1692 1209,1692 1253,1692 1298,1692 1343,1692 1388,1692 1406,1692"/>
+                <TextEquiv>
+                    <Unicode>Laufenburg-Rhina/Baden.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_tl_14" custom="readingOrder {index:12;}">
+                <Coords points="1142,1812 1198,1834 1296,1793 1355,1822 1405,1807 1442,1817 1491,1787 1536,1798 1534,1740 1477,1714 1362,1711 1339,1732 1271,1712 1226,1730 1140,1716"/>
+                <Baseline points="1152,1788 1197,1791 1241,1794 1286,1794 1331,1794 1376,1794 1421,1794 1465,1797 1510,1797 1540,1794"/>
+                <TextEquiv>
+                    <Unicode>Heil Hitler !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=01_03_2025_16:06</Creator>
+        <Created>2025-01-22T17:02:17.051+01:00</Created>
+        <LastChange>2025-03-16T15:59:27.872+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p002.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120315523" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="576,227 1895,227 1895,624 576,624"/>
+            <TextLine id="l" custom="event {offset:12; length:21; when:01.01.1943;} date {offset:29; length:4; when:01.01.1943;}">
+                <Coords points="611,410 738,443 1686,443 1688,368 1571,339 1483,376 757,353 613,381"/>
+                <Baseline points="621,440 1692,432"/>
+                <TextEquiv>
+                    <Unicode>Tagesordnung Neujahrstreffen 1943.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_7" custom="place {offset:3; length:22;}">
+                <Coords points="797,581 1612,583 1583,525 1445,537 1414,506 1376,537 1259,515 797,544"/>
+                <Baseline points="807,579 1616,582"/>
+                <TextEquiv>
+                    <Unicode>im Meyerhof-Nebenzimmer !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="437,786 2127,786 2127,1776 437,1776"/>
+            <TextLine id="l_11" custom="role {offset:27; length:14;}">
+                <Coords points="471,883 1075,916 1136,881 1916,887 1916,828 1644,814 1255,816 1159,857 860,801 793,843 471,830"/>
+                <Baseline points="482,893 1920,886"/>
+                <TextEquiv>
+                    <Unicode>1.) Deutscher Gruss /Lied /Protokollführer</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_15">
+                <Coords points="471,1018 546,1050 686,1018 745,1052 977,1016 1069,1085 1140,1048 1228,1079 1361,1050 1403,1085 1499,1044 1499,975 1443,949 749,970 686,937 471,970"/>
+                <Baseline points="482,1014 1504,1014"/>
+                <TextEquiv>
+                    <Unicode>2.) Begrüssung /Neujahrswünsche</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_19">
+                <Coords points="477,1167 673,1148 745,1194 933,1146 1209,1142 1280,1173 1280,1081 1177,1058 966,1096 676,1058 627,1096 477,1075"/>
+                <Baseline points="487,1148 1284,1142"/>
+                <TextEquiv>
+                    <Unicode>3.) Vaterländisches Lied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_23" custom="date {offset:39; length:5; when:01.01.1942;}">
+                <Coords points="492,1288 621,1274 734,1336 901,1272 1648,1278 1715,1324 1765,1282 1901,1293 1880,1200 1355,1186 1144,1226 837,1188 640,1238 492,1200"/>
+                <Baseline points="503,1271 1905,1279"/>
+                <TextEquiv>
+                    <Unicode>4.) Kurzbericht über Tätigkeit im Jahre 1942.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_27">
+                <Coords points="471,1397 571,1439 640,1393 705,1441 778,1451 897,1445 964,1401 1161,1418 1144,1322 1119,1345 920,1353 885,1332 751,1351 721,1328 646,1361 533,1330 471,1364"/>
+                <Baseline points="482,1396 1166,1391"/>
+                <TextEquiv>
+                    <Unicode>5.) Schneidiges Lied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_31">
+                <Coords points="492,1518 640,1562 682,1535 766,1543 797,1520 931,1560 931,1464 878,1479 835,1451 766,1477 650,1464 627,1441 492,1466"/>
+                <Baseline points="503,1514 935,1514"/>
+                <TextEquiv>
+                    <Unicode>6.) Ehrungen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_35">
+                <Coords points="496,1684 749,1648 1370,1675 1502,1644 1757,1690 2033,1654 2033,1583 1748,1594 1654,1554 1544,1608 496,1566"/>
+                <Baseline points="506,1648 2038,1643"/>
+                <TextEquiv>
+                    <Unicode>7.) Singstunden im neuen Jahr ! Schlusswort !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_39" custom="role {offset:8; length:10;}">
+                <Coords points="851,1738 908,1755 947,1723 1071,1727 1213,1763 1272,1740 1385,1778 1483,1738 1483,1656 1435,1690 1334,1661 1182,1690 1092,1648 1033,1673 851,1658"/>
+                <Baseline points="862,1721 1488,1727"/>
+                <TextEquiv>
+                    <Unicode>Dank an Chorleiter !</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>
