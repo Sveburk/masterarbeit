@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=06_02_2025_18:00</Creator>
+        <Created>2025-01-22T16:58:27.307+01:00</Created>
+        <LastChange>2025-03-17T13:02:34.574+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0002_p002.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120191396" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r_45"/>
+                <RegionRefIndexed index="2" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_45" custom="readingOrder {index:0;}">
+            <Coords points="162,456 1918,456 1918,998 162,998"/>
+            <TextLine id="r_45_tl_1" custom="readingOrder {index:0;} place {offset:12; length:4;}">
+                <Coords points="177,572 206,580 282,550 310,570 334,554 518,558 552,587 589,569 629,596 671,581 663,456 565,481 534,468 492,516 417,468 379,510 348,510 293,470 171,456"/>
+                <Baseline points="185,537 229,543 274,546 319,543 364,546 409,546 453,552 498,555 543,555 588,558 632,564 674,564"/>
+                <TextEquiv>
+                    <Unicode>Volksschule Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_45_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="745,740 1511,756 1491,676 1336,667 1305,698 1258,673 1177,700 1046,669 846,683 807,649 745,678"/>
+                <Baseline points="755,722 800,725 844,728 889,728 934,731 979,731 1024,734 1068,731 1113,734 1158,737 1203,734 1247,731 1292,734 1337,734 1382,734 1427,737 1471,731 1516,731 1519,728"/>
+                <TextEquiv>
+                    <Unicode>Vortragsfolge</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_45_tl_4" custom="readingOrder {index:2;} event {offset:7; length:32; when:27.02.1944;} date {offset:23; length:17; when:27.02.1944;}">
+                <Coords points="348,906 1810,922 1810,833 1708,827 1584,880 1504,833 1411,871 1349,833 964,869 716,824 589,860 523,822 467,855 399,815 348,851"/>
+                <Baseline points="358,877 403,880 447,883 492,880 537,886 582,886 626,889 671,889 716,889 761,892 806,892 850,892 895,895 940,895 985,895 1030,898 1074,895 1119,895 1164,895 1209,898 1253,898 1298,898 1343,901 1388,898 1433,898 1477,898 1522,895 1567,898 1612,898 1656,898 1701,898 1746,898 1791,898 1815,895"/>
+                <TextEquiv>
+                    <Unicode>für den Elternabend am 27. Februar 1944 15 Uhr</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r_45_tl_5" custom="readingOrder {index:3;} place {offset:7; length:14;}">
+                <Coords points="784,950 928,988 982,953 1042,979 1066,960 1227,977 1338,960 1411,1001 1440,986 1440,915 1402,898 1296,919 784,906"/>
+                <Baseline points="794,946 838,946 883,949 928,952 973,952 1018,952 1062,952 1107,952 1152,952 1197,952 1241,952 1286,952 1331,955 1376,955 1421,955 1444,958"/>
+                <TextEquiv>
+                    <Unicode>in der Schulturnhalle.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r" custom="readingOrder {index:2;}">
+            <Coords points="1578,2958 2111,2958 2111,3093 1578,3093"/>
+            <TextLine id="l_7875" custom="readingOrder {index:0;} role {offset:4; length:11;}">
+                <Coords points="1607,3046 2077,3051 2077,3021 1607,3016"/>
+                <Baseline points="1607,3046 2077,3051"/>
+                <TextEquiv>
+                    <Unicode>Der Schulleiter.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

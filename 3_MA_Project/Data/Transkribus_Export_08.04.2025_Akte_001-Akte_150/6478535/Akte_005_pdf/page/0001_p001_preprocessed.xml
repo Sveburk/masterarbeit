@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=26_02_2025_16:05</Creator>
+        <Created>2025-01-22T16:51:10.035+01:00</Created>
+        <LastChange>2025-03-17T15:25:32.852+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0001_p001.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120180404" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+                <RegionRefIndexed index="1" regionRef="r_2200"/>
+                <RegionRefIndexed index="2" regionRef="r_2037"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="223,17 986,17 986,196 223,196"/>
+            <TextLine id="tr_3_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:15;}">
+                <Coords points="274,96 459,98 520,121 566,105 609,128 721,98 778,128 903,128 899,50 817,62 755,36 650,57 623,30 463,46 340,0 269,0"/>
+                <Baseline points="286,77 317,77 348,78 379,80 410,85 441,86 472,86 503,86 534,88 565,90 596,92 627,94 658,95 689,95 720,95 751,96 782,98 813,100 844,101 875,102 907,104"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:1;} organization {offset:1; length:27;}">
+                <Coords points="274,100 315,94 675,107 846,116 917,130 919,180 445,210 274,169"/>
+                <Baseline points="286,140 350,140 382,143 456,146 481,146 507,146 533,148 559,149 585,149 611,149 637,149 663,151 689,153 714,154 740,155 766,155 792,156 818,158 844,160 870,161 896,161 922,164"/>
+                <TextEquiv>
+                    <Unicode>(Alter Schweizer-Männerchor)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2200" custom="readingOrder {index:1;}">
+            <Coords points="386,217 2396,217 2396,336 386,336"/>
+            <TextLine id="tr_3_tl_5" custom="readingOrder {index:0;} date {offset:27; length:8; when:01.01.1944;}">
+                <Coords points="399,267 2233,276 2233,205 2092,198 1195,230 682,221 595,182 399,240"/>
+                <Baseline points="412,265 503,262 594,259 685,261 776,256 868,256 959,256 1050,256 1141,256 1232,256 1324,256 1415,256 1506,260 1597,258 1688,256 1780,256 1871,256 1962,259 2053,259 2144,256 2236,262"/>
+                <TextEquiv>
+                    <Unicode>Ativ-Mitglieder (Stand vom 1.1.1944)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion id="r_2037" custom="readingOrder {index:2;}">
+            <Coords points="1722,25 2316,25 2316,183 1722,183"/>
+            <TextLine id="tr_3_tl_2" custom="readingOrder {index:0;}">
+                <Coords points="1793,153 1866,125 1905,160 1960,116 1973,128 2010,114 2030,128 2128,119 2131,62 2092,34 2069,50 2051,39 2008,50 1955,25 1891,23 1862,46 1798,34"/>
+                <Baseline points="1806,122 1831,115 1856,114 1881,112 1906,110 1932,110 1957,110 1982,108 2007,107 2033,105 2058,104 2083,104 2108,101 2221,100"/>
+                <TextEquiv>
+                    <Unicode>Duplikat</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

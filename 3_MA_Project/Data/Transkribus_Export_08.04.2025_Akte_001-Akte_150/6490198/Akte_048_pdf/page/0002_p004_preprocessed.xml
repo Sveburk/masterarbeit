@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=01_03_2025_16:09</Creator>
+        <Created>2025-01-23T13:13:00.388+01:00</Created>
+        <LastChange>2025-03-14T15:12:20.947+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0002_p004.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120215868" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="373,326 373,3161 2391,3161 2391,326"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;} event {offset:20; length:21; when:1942;} date {offset:36; length:4; when:1942;}">
+                <Coords points="619,352 703,387 1850,369 1850,314 1783,300 619,322"/>
+                <Baseline points="629,364 690,364 751,362 812,362 874,361 935,361 996,358 1057,358 1119,358 1180,361 1241,359 1302,361 1364,358 1425,358 1486,356 1547,358 1609,356 1670,358 1731,357 1792,357 1854,358"/>
+                <TextEquiv>
+                    <Unicode>Kurzbericht für das Neujahrstreffen 1942.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;} organization {offset:23; length:5;}">
+                <Coords points="361,520 426,552 481,524 507,548 1253,546 1233,456 1047,485 856,454 664,483 361,473"/>
+                <Baseline points="373,522 417,525 461,525 505,525 549,525 593,520 637,522 682,519 726,519 770,522 814,519 858,519 902,519 946,519 991,519 1035,519 1079,521 1123,522 1167,520 1211,521 1256,525"/>
+                <TextEquiv>
+                    <Unicode>1.) Zusammentritte des Chors:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="660,613 699,613 721,628 766,597 856,611 886,634 966,628 970,542 919,556 852,544 823,562 758,544 707,568 689,548 662,560"/>
+                <Baseline points="671,603 696,601 721,600 746,600 771,597 796,594 822,594 847,594 872,594 897,593 922,591 947,594 973,597"/>
+                <TextEquiv>
+                    <Unicode>38 Proben</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;} event {offset:19; length:33; when:01.01.1941;} date {offset:38; length:6; when:01.01.1941;} place {offset:45; length:7;}">
+                <Coords points="693,672 2268,677 2268,611 693,632"/>
+                <Baseline points="704,671 782,668 861,668 939,668 1018,668 1096,665 1175,665 1253,665 1332,665 1410,665 1489,664 1567,663 1646,665 1724,662 1803,665 1881,666 1960,665 2038,665 2117,666 2195,666 2274,668"/>
+                <TextEquiv>
+                    <Unicode>2 interne Anlässe (Neujahrstreffen am 1.1.41 Murgtal</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:4;} event {offset:0; length:37;} person {offset:12; length:14;} date {offset:30; length:7; when:24.04.1941;}">
+                <Coords points="1263,760 1540,721 1612,752 1748,721 2376,744 2376,664 2050,699 1263,685"/>
+                <Baseline points="1274,719 1329,716 1384,716 1440,714 1495,713 1551,714 1606,715 1661,713 1717,713 1772,713 1828,713 1883,713 1938,713 1994,716 2049,713 2105,713 2160,715 2215,716 2271,716 2326,717 2382,722"/>
+                <TextEquiv>
+                    <Unicode>Freibier v. Frau Laule Ww. am 24.4.41)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_7" custom="readingOrder {index:5;}">
+                <Coords points="693,787 721,803 764,791 780,805 811,797 839,811 954,799 980,803 1007,831 1058,835 1056,754 1037,746 992,760 917,746 888,756 870,740 831,756 807,736 693,748"/>
+                <Baseline points="704,791 729,791 755,791 780,791 806,791 831,791 857,791 883,791 908,791 934,791 959,791 985,792 1010,793 1036,794 1062,794"/>
+                <TextEquiv>
+                    <Unicode>2 Ständchen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:6;} date {offset:3; length:7; when:28.04.1941;} event {offset:11; length:24;} person {offset:30; length:5;}">
+                <Coords points="1273,799 2266,815 2298,746 1508,772 1483,744 1451,772 1410,732 1353,772 1274,760"/>
+                <Baseline points="1283,788 1333,788 1384,788 1435,789 1486,789 1537,788 1588,786 1639,788 1690,788 1741,788 1792,788 1842,787 1893,785 1944,787 1995,788 2046,785 2097,786 2148,788 2199,788 2250,788 2301,788"/>
+                <TextEquiv>
+                    <Unicode>am 28.4.41 Hochzeit Sangesbr. Lüthy</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_8" custom="readingOrder {index:7;} date {offset:2; length:6; when:08.05.1941;}">
+                <Coords points="1386,870 1447,880 1492,850 1598,840 2023,858 2038,811 1789,801 1712,825 1687,803 1388,807"/>
+                <Baseline points="1302,844 1429,842 1461,844 1493,842 1526,841 1558,841 1590,841 1622,839 1655,838 1687,838 1719,838 1751,836 1784,835 1816,835 1848,837 1880,838 1913,838 1945,838 1977,838 2009,839 2042,841"/>
+                <TextEquiv>
+                    <Unicode>" 8.5.41 dem erkrankten</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_9" custom="readingOrder {index:8;} person {offset:13; length:11;}">
+                <Coords points="1626,903 1791,933 1895,897 1981,921 2009,894 2070,929 2162,903 2376,909 2376,864 2268,831 2211,858 2103,823 2025,862 1626,852"/>
+                <Baseline points="1636,889 1673,886 1710,888 1747,889 1785,889 1822,889 1859,889 1897,889 1934,889 1971,889 2009,888 2046,886 2083,889 2120,887 2158,886 2195,886 2232,887 2270,889 2307,889 2344,889 2382,892"/>
+                <TextEquiv>
+                    <Unicode>Sangesbruder Alfred Brut.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_11" custom="readingOrder {index:9;}">
+                <Coords points="699,962 736,978 760,966 903,988 1151,980 1151,931 825,931 801,913 699,941"/>
+                <Baseline points="710,961 736,963 762,964 788,966 814,967 840,967 867,967 893,967 919,969 945,969 971,968 997,967 1024,967 1050,969 1076,969 1102,968 1128,967 1155,967"/>
+                <TextEquiv>
+                    <Unicode>4 Kundgebungen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_10" custom="readingOrder {index:10;} event {offset:2; length:25;} date {offset:2; length:7; when:16.03.1942;}">
+                <Coords points="1296,952 1467,984 2119,974 2105,923 1296,935"/>
+                <Baseline points="1307,952 1347,960 1388,966 1429,967 1470,967 1510,967 1551,967 1592,967 1633,967 1673,966 1714,964 1755,964 1796,964 1836,964 1877,964 1918,964 1959,964 1999,964 2040,964 2081,964 2122,961"/>
+                <TextEquiv>
+                    <Unicode>" 16.3.41 Heldengedenkfeier</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_12" custom="readingOrder {index:11;} event {offset:0; length:31;} date {offset:0; length:8; when:20.04.1941;} person {offset:8; length:6;}">
+                <Coords points="1357,1017 2300,1023 2300,972 2172,958 2127,986 1357,984"/>
+                <Baseline points="1311,1023 1413,1015 1460,1018 1507,1015 1554,1014 1601,1013 1648,1014 1694,1012 1741,1012 1788,1011 1835,1010 1882,1010 1929,1011 1976,1012 2022,1012 2069,1012 2116,1010 2163,1011 2210,1012 2257,1012 2304,1015"/>
+                <TextEquiv>
+                    <Unicode>20.4.41 Führer-Geburtstag-Feier</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_13" custom="readingOrder {index:12;} event {offset:0; length:34;} date {offset:0; length:7; when:09.11.1941;} place {offset:20; length:14;}">
+                <Coords points="1369,1082 2388,1072 2372,1017 1369,1029"/>
+                <Baseline points="1305,1063 1429,1068 1480,1067 1530,1065 1581,1065 1632,1063 1682,1064 1733,1062 1783,1062 1834,1062 1885,1062 1935,1063 1986,1063 2036,1064 2087,1063 2138,1065 2188,1065 2239,1062 2289,1062 2340,1063 2391,1062"/>
+                <TextEquiv>
+                    <Unicode>9.11.41 Totenehrung Kriegerdenkmal</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_14" custom="readingOrder {index:13;} event {offset:0; length:30;} date {offset:0; length:8; when:25.12.1941;} organization {offset:25; length:5;}">
+                <Coords points="1357,1151 1475,1129 1587,1155 1642,1123 1691,1153 1818,1121 1871,1159 1952,1157 1997,1121 2034,1143 2241,1121 2241,1072 2197,1070 1357,1082"/>
+                <Baseline points="1306,1113 1410,1116 1454,1116 1498,1116 1542,1116 1586,1116 1630,1115 1674,1113 1718,1113 1762,1113 1806,1113 1849,1113 1893,1113 1937,1110 1981,1110 2025,1113 2069,1110 2113,1113 2157,1110 2201,1110 2245,1110"/>
+                <TextEquiv>
+                    <Unicode>25.12.41 Weihnachtsfeier NSDAP</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="711,1188 848,1210 1202,1196 1235,1212 1261,1210 1259,1147 846,1161 811,1135 797,1149 709,1137"/>
+                <Baseline points="722,1188 749,1188 776,1188 803,1188 830,1188 857,1188 884,1188 912,1188 939,1188 966,1188 993,1188 1020,1188 1047,1188 1074,1188 1102,1188 1129,1188 1156,1188 1183,1189 1210,1191 1237,1194 1265,1194"/>
+                <TextEquiv>
+                    <Unicode>1 Vorstandssitzung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_16" custom="readingOrder {index:15;} date {offset:17; length:7; when:23.01.1941;} place {offset:29; length:7;}">
+                <Coords points="715,1265 1805,1269 1775,1218 715,1219"/>
+                <Baseline points="725,1262 779,1259 833,1261 887,1260 941,1262 996,1259 1050,1262 1104,1262 1158,1262 1212,1262 1267,1262 1321,1262 1375,1261 1429,1259 1483,1259 1538,1262 1592,1259 1646,1259 1700,1259 1754,1259 1809,1259"/>
+                <TextEquiv>
+                    <Unicode>1 Kreissitzung am 23.1.41 in Tiengen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_17" custom="readingOrder {index:16;} person {offset:10; length:13;} person {offset:27; length:8;}">
+                <Coords points="1306,1326 2017,1306 2327,1335 2313,1261 1306,1274"/>
+                <Baseline points="1316,1310 1366,1310 1417,1310 1468,1310 1519,1310 1569,1307 1620,1310 1671,1309 1722,1308 1772,1308 1823,1307 1874,1307 1925,1307 1975,1307 2026,1305 2077,1307 2128,1307 2178,1307 2229,1307 2280,1304 2331,1301"/>
+                <TextEquiv>
+                    <Unicode>Teilnahme Vereinsführer u. Dirigent</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_4" custom="readingOrder {index:17;} event {offset:2; length:30;} place {offset:22; length:10;}">
+                <Coords points="715,1343 929,1322 1944,1333 2044,1335 2070,1347 2070,1396 1783,1402 876,1402 715,1384"/>
+                <Baseline points="725,1382 750,1380 775,1379 801,1379 826,1380 851,1381 877,1382 902,1382 928,1382 953,1382 978,1382 1004,1382 1029,1382 1055,1382 1080,1382 1105,1382 1131,1382 1156,1384 1182,1388 1606,1379 1632,1379 1684,1381 1710,1382 1736,1382 1762,1382 1788,1382 1814,1382 1840,1381 1866,1380 1892,1379 1918,1379 1944,1377 1970,1376 1996,1378 2022,1379 2048,1379 2074,1379"/>
+                <TextEquiv>
+                    <Unicode>1 Sängerausflug. nach Rickenbach</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_22" custom="readingOrder {index:18;}">
+                <Coords points="717,1459 1082,1477 1157,1465 1157,1424 1019,1424 1005,1410 919,1400 786,1412 715,1400"/>
+                <Baseline points="728,1450 753,1452 778,1453 804,1453 829,1454 855,1456 880,1456 906,1456 931,1456 957,1456 982,1456 1008,1456 1033,1456 1059,1456 1084,1456 1110,1458 1135,1459 1161,1459"/>
+                <TextEquiv>
+                    <Unicode>4 Beerdigungen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_3" custom="readingOrder {index:19;} person {offset:0; length:16;} date {offset:22; length:7; when:14.06.1941;}">
+                <Coords points="1278,1414 1436,1410 2139,1402 2247,1410 2245,1465 1838,1475 1278,1465"/>
+                <Baseline points="1289,1456 1314,1454 1339,1453 1364,1453 1389,1453 1415,1453 1440,1454 1465,1456 1490,1456 1516,1456 1541,1454 1566,1454 1591,1455 1616,1456 1642,1456 1667,1456 1692,1456 1717,1454 1743,1456 1851,1459 1876,1457 1901,1455 1926,1454 1951,1453 1976,1453 2026,1450 2051,1452 2076,1453 2101,1453 2126,1453 2151,1453 2176,1452 2201,1450 2226,1451 2251,1453"/>
+                <TextEquiv>
+                    <Unicode>Brutsche Alfred gest. 14.6.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_2" custom="readingOrder {index:20;} person {offset:0; length:17;} date {offset:20; length:7; when:15.02.1941;}">
+                <Coords points="1280,1469 1783,1457 2241,1459 2241,1510 2160,1516 2058,1516 1280,1512"/>
+                <Baseline points="1292,1501 1317,1501 1343,1501 1369,1502 1394,1503 1420,1504 1446,1504 1471,1504 1497,1504 1523,1502 1549,1502 1574,1503 1600,1504 1626,1504 1651,1504 1677,1504 1703,1502 1728,1501 1754,1501 1780,1500 1806,1498 1876,1501 2051,1503 2079,1503 2106,1501 2134,1500 2162,1498 2189,1498 2217,1499 2245,1501"/>
+                <TextEquiv>
+                    <Unicode>Schlageter Johann " 15.2.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_1" custom="readingOrder {index:21;} person {offset:0; length:15;} date {offset:18; length:7; when:19.02.1941;}">
+                <Coords points="1278,1512 2013,1504 2188,1506 2243,1512 2243,1561 2060,1565 1278,1565"/>
+                <Baseline points="1289,1549 1315,1551 1341,1552 1367,1550 1393,1550 1419,1552 1445,1552 1471,1552 1497,1552 1523,1551 1549,1550 1575,1549 1601,1549 1627,1551 1653,1552 1679,1552 1705,1552 1731,1552 1758,1552 1881,1547 2052,1549 2080,1550 2108,1552 2136,1550 2164,1549 2192,1547 2220,1547 2248,1549"/>
+                <TextEquiv>
+                    <Unicode>Laule Friedrich " 19.2.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l" custom="readingOrder {index:22;} person {offset:0; length:11;} date {offset:12; length:9; when:16.02.1941;}">
+                <Coords points="1280,1565 1532,1557 2087,1551 2190,1555 2227,1557 2247,1565 2247,1606 2172,1612 1455,1618 1394,1618 1280,1604"/>
+                <Baseline points="1292,1600 1317,1600 1343,1600 1369,1599 1395,1598 1420,1597 1446,1597 1472,1595 1498,1594 1523,1596 1549,1597 1575,1597 1601,1597 1627,1597 1871,1595 2049,1597 2074,1597 2099,1597 2124,1597 2150,1597 2175,1596 2200,1594 2225,1594 2251,1594"/>
+                <TextEquiv>
+                    <Unicode>Wasmer Karl " 16.2.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_29" custom="readingOrder {index:23;} person {offset:1; length:11;}">
+                <Coords points="1326,1691 2243,1683 2243,1626 1972,1640 1946,1618 1691,1653 1665,1628 1326,1616"/>
+                <Baseline points="1337,1671 1382,1668 1428,1668 1473,1668 1519,1670 1564,1671 1610,1671 1655,1671 1701,1671 1746,1671 1792,1671 1838,1668 1883,1668 1929,1668 1974,1668 2020,1668 2065,1668 2111,1671 2156,1668 2202,1668 2248,1668"/>
+                <TextEquiv>
+                    <Unicode>(Wasmer Karl war nicht Mitglied</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_30" custom="readingOrder {index:24;} organization {offset:4; length:7;}">
+                <Coords points="1341,1732 2292,1734 2280,1681 1341,1691"/>
+                <Baseline points="1352,1719 1399,1719 1446,1716 1493,1716 1540,1719 1587,1718 1634,1717 1682,1719 1729,1719 1776,1719 1823,1719 1870,1719 1917,1719 1964,1717 2012,1716 2059,1716 2106,1714 2153,1715 2200,1719 2247,1716 2295,1716"/>
+                <TextEquiv>
+                    <Unicode>des Vereins. Die Teilnahme bezw.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_31" custom="readingOrder {index:25;}">
+                <Coords points="1337,1773 2215,1783 2215,1728 2148,1720 1337,1736"/>
+                <Baseline points="1349,1764 1392,1767 1436,1767 1479,1767 1523,1767 1567,1767 1610,1767 1654,1767 1697,1767 1741,1767 1785,1765 1828,1764 1872,1764 1915,1764 1959,1764 2003,1764 2046,1764 2090,1766 2133,1765 2177,1765 2221,1773"/>
+                <TextEquiv>
+                    <Unicode>Mitwirkung bei der Beerdigung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_32" custom="readingOrder {index:26;} organization {offset:24; length:9;}">
+                <Coords points="1337,1824 2333,1842 2333,1795 2260,1769 1337,1797"/>
+                <Baseline points="1349,1812 1398,1815 1447,1815 1497,1815 1546,1816 1596,1818 1645,1818 1694,1816 1744,1817 1793,1815 1843,1815 1892,1815 1941,1815 1991,1815 2040,1815 2090,1815 2139,1815 2188,1817 2238,1816 2287,1815 2337,1809"/>
+                <TextEquiv>
+                    <Unicode>erfolgte auf Wunsch der Gemeinde-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_33" custom="readingOrder {index:27;} organization {offset:0; length:7;}">
+                <Coords points="1337,1873 1394,1873 1418,1889 1494,1871 1561,1869 1616,1881 1614,1816 1597,1816 1573,1838 1551,1826 1469,1822 1388,1834 1357,1820 1337,1834"/>
+                <Baseline points="1349,1859 1376,1861 1403,1862 1430,1862 1457,1863 1485,1865 1512,1865 1539,1865 1566,1865 1593,1866 1621,1868"/>
+                <TextEquiv>
+                    <Unicode>behörde.)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_34" custom="readingOrder {index:28;}">
+                <Coords points="795,1979 1216,1977 1216,1885 1196,1881 1157,1899 1100,1883 1037,1893 899,1881 866,1911 827,1889 795,1901"/>
+                <Baseline points="806,1937 831,1937 857,1937 883,1937 909,1937 935,1937 961,1937 987,1937 1013,1937 1039,1937 1065,1937 1091,1937 1117,1935 1143,1935 1169,1937 1195,1936 1221,1934"/>
+                <TextEquiv>
+                    <Unicode>Zusammentritte</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_35" custom="readingOrder {index:29;} date {offset:22; length:9; when:31.12.1941;}">
+                <Coords points="399,2127 1359,2115 1359,2023 1302,2015 876,2011 823,2064 552,2046 399,2078"/>
+                <Baseline points="409,2101 456,2107 504,2107 551,2109 599,2107 647,2107 694,2106 742,2103 789,2102 837,2102 885,2101 932,2103 980,2104 1027,2104 1075,2107 1123,2110 1170,2107 1218,2104 1265,2104 1313,2104 1361,2107"/>
+                <TextEquiv>
+                    <Unicode>2.) Mitgliederstand am 31.12.41:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_36" custom="readingOrder {index:30;}">
+                <Coords points="670,2207 703,2227 732,2205 795,2215 846,2199 939,2211 1066,2195 1110,2209 1110,2152 1035,2180 996,2140 966,2166 923,2140 854,2168 825,2142 787,2168 762,2144 670,2133"/>
+                <Baseline points="680,2200 705,2198 730,2198 756,2200 781,2198 807,2197 832,2197 858,2196 883,2194 909,2195 934,2197 960,2195 985,2194 1011,2196 1036,2196 1062,2194 1087,2195 1113,2197"/>
+                <TextEquiv>
+                    <Unicode>Aktive:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_37" custom="readingOrder {index:31;} organization {offset:32; length:9;}">
+                <Coords points="717,2270 1954,2278 1930,2201 717,2231"/>
+                <Baseline points="728,2269 789,2269 851,2269 912,2271 974,2270 1035,2271 1097,2271 1158,2269 1220,2271 1281,2271 1343,2269 1404,2271 1466,2267 1527,2267 1589,2269 1650,2269 1712,2269 1773,2269 1835,2269 1896,2269 1958,2269"/>
+                <TextEquiv>
+                    <Unicode>41 Mann, davon z.Zt. 18 bei der Wehrmacht</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_7" custom="readingOrder {index:32;}">
+                <Coords points="1174,2288 1192,2282 1259,2278 2062,2266 2152,2292 2152,2337 1465,2358 1274,2356 1206,2339 1176,2321"/>
+                <Baseline points="1188,2313 1220,2315 1253,2317 1286,2316 1385,2319 1423,2319 1462,2318 1500,2317 1539,2318 1578,2316 1616,2319 1655,2317 1694,2316 1732,2316 1771,2316 1810,2316 1848,2316 1887,2316 1926,2318 1964,2317 2003,2316 2042,2316 2080,2316 2119,2316 2158,2316"/>
+                <TextEquiv>
+                    <Unicode>und 1 Mann dienstverpflichtet.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_8" custom="readingOrder {index:33;}">
+                <Coords points="711,2358 752,2333 2170,2349 2248,2358 2248,2408 1157,2406 789,2404 736,2402 711,2386"/>
+                <Baseline points="722,2385 747,2387 773,2388 799,2388 825,2388 851,2388 876,2389 902,2391 928,2389 954,2389 980,2390 1006,2391 1031,2391 1057,2391 1083,2391 1109,2391 1135,2392 1161,2394 1191,2388 1244,2390 1297,2388 1350,2388 1403,2388 1456,2388 1509,2388 1563,2389 1616,2391 1669,2389 1722,2385 1775,2385 1828,2389 1881,2390 1935,2388 1988,2388 2041,2388 2094,2391 2147,2391 2200,2393 2254,2397"/>
+                <TextEquiv>
+                    <Unicode>22 Mann Rest, die in den Singstunden zur Verfügung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_42" custom="readingOrder {index:34;}">
+                <Coords points="1176,2441 1343,2451 1384,2474 1424,2449 1628,2451 1628,2421 1602,2406 1536,2398 1326,2408 1284,2392 1263,2408 1206,2398 1176,2410"/>
+                <Baseline points="1188,2439 1214,2439 1240,2438 1266,2437 1292,2437 1318,2439 1345,2437 1371,2436 1397,2436 1423,2436 1449,2436 1475,2436 1502,2436 1528,2436 1554,2436 1580,2436 1606,2436 1633,2436"/>
+                <TextEquiv>
+                    <Unicode>stehen müssten.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_43" custom="readingOrder {index:35;}">
+                <Coords points="672,2533 695,2547 742,2533 770,2561 805,2541 844,2565 919,2529 958,2561 998,2555 1033,2519 1060,2545 1098,2523 1135,2549 1135,2466 923,2457 817,2484 750,2466 727,2490 672,2468"/>
+                <Baseline points="683,2531 708,2533 733,2534 759,2534 784,2534 809,2534 835,2534 860,2534 886,2534 911,2534 936,2534 962,2534 987,2534 1013,2533 1038,2531 1063,2532 1089,2534 1114,2534 1140,2534"/>
+                <TextEquiv>
+                    <Unicode>Passive:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_44" custom="readingOrder {index:36;} organization {offset:32; length:9;}">
+                <Coords points="709,2608 825,2600 943,2657 1983,2620 1940,2563 709,2563"/>
+                <Baseline points="719,2600 782,2600 845,2600 909,2604 972,2604 1036,2606 1099,2606 1163,2606 1226,2606 1290,2606 1353,2606 1416,2604 1480,2603 1543,2606 1607,2606 1670,2604 1734,2606 1797,2606 1861,2606 1924,2606 1988,2606"/>
+                <TextEquiv>
+                    <Unicode>62 Mann, davon z.Zt. 11 bei der Wehrmacht.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_45" custom="readingOrder {index:37;} date {offset:8; length:4;}">
+                <Coords points="683,2712 703,2722 831,2712 866,2724 917,2702 947,2722 1000,2706 1078,2712 1078,2669 1043,2657 952,2655 880,2671 821,2671 807,2657 784,2671 734,2671 713,2657 683,2671"/>
+                <Baseline points="695,2704 720,2704 746,2704 772,2704 798,2704 824,2704 850,2704 876,2703 901,2701 927,2701 953,2701 979,2703 1005,2704 1031,2704 1057,2703 1083,2701"/>
+                <TextEquiv>
+                    <Unicode>Zugänge 1941:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_46" custom="readingOrder {index:38;} person {offset:10; length:12;}">
+                <Coords points="766,2777 2082,2783 2058,2724 1430,2737 1375,2692 1192,2741 766,2730"/>
+                <Baseline points="776,2776 841,2775 907,2773 972,2773 1038,2770 1103,2773 1169,2771 1234,2771 1300,2771 1365,2770 1431,2771 1496,2770 1562,2773 1627,2773 1693,2772 1758,2773 1824,2773 1889,2773 1955,2776 2020,2776 2086,2776"/>
+                <TextEquiv>
+                    <Unicode>1 Akiver (Bossert Otto Übertritt von Passiv)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_5" custom="readingOrder {index:39;} person {offset:12; length:17;} date {offset:35; length:6;}">
+                <Coords points="772,2808 1447,2790 1685,2787 1907,2787 2074,2790 2072,2849 1948,2867 1227,2873 772,2849"/>
+                <Baseline points="782,2848 828,2848 874,2847 921,2845 967,2845 1014,2845 1060,2845 1106,2845 1153,2847 1199,2848 1246,2846 1292,2845 1338,2845 1385,2845 1431,2845 1478,2845 1524,2840 1570,2839 1617,2836 1663,2836 1710,2842 1779,2845 1806,2845 1833,2845 1860,2845 1887,2845 1941,2845 1968,2843 1995,2842 2022,2842 2049,2841 2077,2839"/>
+                <TextEquiv>
+                    <Unicode>1 Passiver (Diriwächter Emil zu ab 1.7.41)</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_6" custom="readingOrder {index:40;} person {offset:0; length:17;} date {offset:19; length:8; when:01.04.1941;}">
+                <Coords points="1123,2859 1204,2853 1322,2849 1652,2842 2080,2849 2078,2906 2062,2910 1950,2914 1206,2924 1123,2918"/>
+                <Baseline points="1134,2895 1164,2895 1194,2895 1225,2895 1255,2895 1286,2896 1316,2898 1347,2898 1377,2897 1408,2896 1438,2898 1469,2896 1499,2895 1530,2895 1560,2893 1591,2892 1621,2892 1652,2892 1682,2892 1713,2892 1874,2904 1899,2904 1951,2903 1977,2900 2002,2898 2028,2898 2054,2897 2080,2895"/>
+                <TextEquiv>
+                    <Unicode>Tröndle Friedrich "  1.4.41</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_51" custom="readingOrder {index:41;} date {offset:8; length:4;}">
+                <Coords points="681,2950 742,2955 762,2975 917,2948 945,2971 1021,2952 1076,2963 1092,2959 1094,2883 988,2869 905,2889 890,2871 817,2875 801,2861 754,2904 681,2918"/>
+                <Baseline points="692,2949 717,2949 742,2949 767,2949 792,2948 817,2947 843,2945 868,2943 893,2944 918,2946 943,2944 969,2942 994,2941 1019,2940 1044,2940 1069,2941 1095,2943"/>
+                <TextEquiv>
+                    <Unicode>Abgänge 1941:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_52" custom="readingOrder {index:42;}">
+                <Coords points="772,3026 1581,3028 1581,2969 1443,2969 1398,3001 1322,2940 1157,2993 974,2971 772,3005"/>
+                <Baseline points="782,3021 822,3024 862,3024 902,3024 942,3024 982,3022 1022,3018 1063,3016 1103,3018 1143,3018 1183,3018 1223,3018 1263,3016 1303,3015 1344,3017 1384,3018 1424,3017 1464,3015 1504,3015 1544,3015 1585,3015"/>
+                <TextEquiv>
+                    <Unicode>a) Austritte Aktive keine</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_53" custom="readingOrder {index:43;} person {offset:22; length:7;}">
+                <Coords points="1186,3091 2353,3083 2353,3024 2309,3007 1186,3030"/>
+                <Baseline points="1197,3069 1255,3069 1313,3069 1371,3066 1429,3067 1487,3069 1545,3069 1603,3069 1661,3066 1719,3064 1777,3063 1835,3063 1893,3063 1951,3060 2009,3060 2067,3058 2125,3057 2183,3057 2241,3057 2299,3057 2358,3057"/>
+                <TextEquiv>
+                    <Unicode>Passive keine, jedoch Bossert Übertritt</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_54" custom="readingOrder {index:44;}">
+                <Coords points="762,3171 1679,3152 1679,3093 1606,3083 1412,3113 978,3113 895,3085 762,3126"/>
+                <Baseline points="773,3143 818,3146 864,3146 909,3146 955,3144 1000,3143 1046,3143 1091,3141 1137,3140 1182,3142 1228,3143 1273,3143 1319,3143 1364,3143 1410,3143 1455,3143 1501,3143 1546,3143 1592,3140 1637,3140 1683,3137"/>
+                <TextEquiv>
+                    <Unicode>b) Für immer von uns gegangen:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

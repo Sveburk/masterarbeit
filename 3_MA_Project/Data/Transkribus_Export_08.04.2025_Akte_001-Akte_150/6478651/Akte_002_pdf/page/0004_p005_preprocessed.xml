@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=29_01_2025_16:07</Creator>
+        <Created>2025-01-22T16:49:47.667+01:00</Created>
+        <LastChange>2025-03-19T15:35:26.427+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0004_p005.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120143854" caption="Regions reading order">
+                <RegionRefIndexed index="1" regionRef="r_2"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r_2" custom="readingOrder {index:1;}">
+            <Coords points="1730,30 3484,30 3484,2330 1730,2330"/>
+            <TextLine id="l_45" custom="readingOrder {index:0;}">
+                <Coords points="1794,411 1881,378 1995,399 2174,374 2259,430 2346,384 2610,372 2616,229 2556,275 2457,281 2395,219 2362,244 2195,122 2125,138 2073,83 1943,200 1801,223"/>
+                <Baseline points="1806,391 2615,358"/>
+                <TextEquiv>
+                    <Unicode>Feldpost</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_119" custom="readingOrder {index:1;} place {offset:0; length:8;wikiData:Q3806;} creation_place {offset:0; length:8;}">
+                <Coords points="2426,824 2447,840 2583,758 2695,725 2769,737 2839,452 2767,432 2738,446 2709,423 2649,438 2612,396 2587,409 2565,374 2540,370"/>
+                <Baseline points="2442,815 2466,721 2509,648 2612,597 2721,570 2806,600 2921,718"/>
+                <TextEquiv>
+                    <Unicode>TÜBINGEN</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_124" custom="readingOrder {index:2;} date {offset:0; length:11; continued:true;when:28.09.1940;} creation_date {offset:0; length:11; when:28.09.1940;}">
+                <Coords points="2499,915 2523,931 2674,873 2724,873 2813,838 2885,836 2905,758 2879,729 2831,733 2823,721 2755,758 2732,737 2552,789 2536,776"/>
+                <Baseline points="2509,918 2894,818"/>
+                <TextEquiv>
+                    <Unicode>28.09.40-19</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_50" custom="readingOrder {index:3;}">
+                <Coords points="1693,973 1790,900 2077,894 2210,1002 2311,973 2315,785 2255,785 2193,727 2139,754 1953,586 1842,669 1699,714"/>
+                <Baseline points="1706,903 2315,888"/>
+                <TextEquiv>
+                    <Unicode>An den </Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_62" custom="readingOrder {index:4;} organization {offset:0; length:15;wikiData:Q133269730;} place {offset:11; length:4;} recipient_place {offset:11; length:4;}">
+                <Coords points="1813,1179 2544,1158 2674,1196 3075,1156 3242,1311 3407,1175 3407,1043 3242,1068 3128,979 2965,983 2674,1099 2592,1035 2422,1084 2197,1043 2042,907 1813,1008"/>
+                <Baseline points="1824,1112 2033,1148 2391,1148 3412,1133"/>
+                <TextEquiv>
+                    <Unicode>Männerchor Murg</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_67" custom="readingOrder {index:5;} abbrev {offset:0; length:8;expansion:zu\u0020Händen\u0020von;} person {offset:9; length:15; continued:true;firstname:Alfons; lastname:Zimmermann;} recipient {offset:9; length:15;}">
+                <Coords points="1794,1402 2187,1404 2232,1450 2307,1400 2571,1404 2620,1448 2678,1406 2736,1452 2823,1402 3455,1377 3455,1305 3321,1264 3240,1315 3131,1264 2718,1307 2598,1185 2346,1229 2255,1187 2174,1268 2067,1270 1927,1187 1794,1270"/>
+                <Baseline points="1697,1361 3457,1376"/>
+                <TextEquiv>
+                    <Unicode>z. H. v. Alf. Zimmermann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_72" custom="readingOrder {index:6;} person {offset:0; length:8; continued:true;firstname:Alfons; lastname:Zimmermann;} role {offset:0; length:8;}">
+                <Coords points="2338,1501 2542,1499 2641,1557 2707,1503 2742,1530 2874,1491 3327,1495 3329,1419 3246,1410 2980,1402 2734,1452 2404,1402 2340,1433"/>
+                <Baseline points="2348,1500 3330,1485"/>
+                <TextEquiv>
+                    <Unicode>Kaufmann</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_84" custom="readingOrder {index:7;} place {offset:0; length:16; continued:true;wikiData:Q109796187;}">
+                <Coords points="1834,1761 2005,1875 2577,1875 2695,1962 2813,1873 3013,1865 3077,1904 3438,1858 3455,1623 3287,1621 3166,1510 3019,1621 2895,1629 2833,1571 2775,1619 2722,1569 2604,1691 2437,1536 2280,1530 2170,1441 2100,1512 1947,1493 1828,1561"/>
+                <Baseline points="1845,1760 2282,1806 2566,1818 3466,1824"/>
+                <TextEquiv>
+                    <Unicode>Laufenburg-Rhina</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="l_89" custom="readingOrder {index:8;}">
+                <Coords points="2732,2131 3145,2125 3174,2154 3209,2127 3304,2139 3370,2123 3368,2013 3250,2013 3190,1956 3139,2011 3025,2020 2893,1947 2730,2071"/>
+                <Baseline points="2742,2109 3375,2118"/>
+                <TextEquiv>
+                    <Unicode>Baden</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

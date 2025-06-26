@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=05_02_2025_12:41</Creator>
+        <Created>2025-01-22T16:51:01.373+01:00</Created>
+        <LastChange>2025-03-19T12:52:36.071+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0004_p006.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120177728" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="74,0 74,1164 2304,1164 2304,0"/>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:0;} date {offset:0; length:4; when:01.01.1944;} creation_date {offset:0; length:4; when:01.01.1944;}">
+                <Coords points="970,224 1037,239 1077,214 1154,226 1229,201 1303,246 1381,224 1393,62 1351,70 1328,42 1296,52 1281,35 1251,57 1206,17 1080,42 1052,67 980,57"/>
+                <Baseline points="988,149 1013,154 1038,155 1064,155 1089,154 1114,153 1140,151 1165,149 1191,145 1216,140 1241,140 1267,139 1292,138 1317,137 1343,137 1368,134 1394,131"/>
+                <TextEquiv>
+                    <Unicode>1944</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:1;} event {offset:0; length:38; when:01.01.1944;} date {offset:0; length:7; when:01.01.1944;}">
+                <Coords points="60,368 231,425 527,361 617,420 756,353 903,356 973,423 1154,343 1644,351 1764,425 1950,351 2060,368 2060,226 1545,226 1478,294 1358,301 1080,219 993,224 920,296 791,256 746,301 622,303 542,261 468,306 226,167 62,164"/>
+                <Baseline points="74,355 173,360 272,358 372,361 471,355 571,352 670,355 770,349 869,345 969,341 1068,342 1167,340 1267,341 1366,343 1466,343 1565,349 1665,349 1764,349 1864,349 1963,344 2063,346"/>
+                <TextEquiv>
+                    <Unicode>1.I.44 Neujahrstreffen u. 50 Jahrfeier</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:2;} place {offset:0; length:12;} event {offset:0; length:12; when:01.01.1944;}">
+                <Coords points="542,478 1047,468 1231,510 1279,465 1391,495 1440,475 1440,430 1383,430 1294,368 1092,366 1002,428 861,368 781,443 542,435"/>
+                <Baseline points="555,477 599,477 644,477 688,477 733,474 778,471 822,471 867,465 911,465 956,471 1001,468 1045,462 1090,462 1134,465 1179,465 1224,468 1268,465 1313,468 1357,471 1402,471 1447,471"/>
+                <TextEquiv>
+                    <Unicode>in der Linde</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:3;} event {offset:0; length:31; when:03.03.1944;} date {offset:0; length:8; when:03.03.1944;} person {offset:20; length:11;}">
+                <Coords points="72,654 328,716 480,627 682,657 731,622 818,694 895,662 953,706 1075,604 1532,597 1667,682 1771,602 1923,590 1925,488 1719,545 1652,475 1565,550 1468,485 1400,550 1294,478 1164,552 918,562 833,493 647,497 547,577 423,488 269,540 226,502 75,512"/>
+                <Baseline points="86,626 178,629 270,629 362,626 454,626 546,626 638,622 730,620 822,619 914,611 1007,603 1099,603 1191,600 1283,603 1375,601 1467,600 1559,598 1651,594 1743,594 1835,591 1928,588"/>
+                <TextEquiv>
+                    <Unicode>3.3.1944 Beerdigung Laule Eugen</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_7" custom="readingOrder {index:4;}">
+                <Coords points="1012,709 1055,729 1099,694 1167,709 1189,696 1289,706 1321,724 1356,701 1448,696 1448,619 1425,612 1067,607 1012,642"/>
+                <Baseline points="1027,692 1052,692 1077,692 1102,692 1127,692 1152,693 1177,694 1202,695 1227,695 1252,696 1277,698 1302,698 1327,697 1352,696 1377,694 1402,692 1427,691 1453,689"/>
+                <TextEquiv>
+                    <Unicode>2 Lieder</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_8" custom="readingOrder {index:5;} person {offset:18; length:5;} person {offset:25; length:10;}">
+                <Coords points="507,813 796,873 861,818 968,871 1107,816 1226,898 1468,803 1619,876 1716,806 1784,848 2005,789 2296,841 2298,696 2122,711 1970,664 1517,696 1415,769 1286,706 1174,764 1099,709 988,711 928,769 816,709 679,771 595,711 510,769"/>
+                <Baseline points="522,812 611,813 700,815 789,815 878,812 967,815 1056,815 1145,815 1234,818 1323,818 1413,811 1502,803 1591,800 1680,803 1769,797 1858,794 1947,791 2036,791 2125,800 2214,800 2304,803"/>
+                <TextEquiv>
+                    <Unicode>60 u 70 Geburstag Habig, Suter Emil</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

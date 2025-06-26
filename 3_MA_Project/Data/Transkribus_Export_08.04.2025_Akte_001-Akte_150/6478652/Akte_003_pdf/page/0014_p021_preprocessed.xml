@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.20.0:model_id=50870:lm=none:date=03_02_2025_17:49</Creator>
+        <Created>2025-01-22T16:50:40.593+01:00</Created>
+        <LastChange>2025-02-10T17:38:59.583+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0014_p021.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120163469" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="316,493 316,2129 2286,2129 2286,493"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;} organization {offset:0; length:15;}">
+                <Coords points="306,562 2170,534 2138,420 1678,422 1615,464 1505,418 1088,443 632,406 586,448 306,450"/>
+                <Baseline points="319,540 411,540 504,543 597,543 689,543 782,543 875,540 967,540 1060,537 1153,539 1246,536 1338,540 1431,539 1524,537 1616,537 1709,534 1802,531 1894,530 1987,528 2080,525 2173,525"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;} organization {offset:0; length:26;}">
+                <Coords points="303,653 2175,632 2145,539 303,583"/>
+                <Baseline points="316,638 409,638 502,639 595,638 689,639 782,638 875,635 969,632 1062,635 1155,635 1249,637 1342,636 1435,637 1528,632 1622,630 1715,631 1808,630 1902,629 1995,624 2088,623 2182,620"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MANNERCHOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;} place {offset:0; length:4;} creation_place {offset:0; length:4;} date {offset:10; length:13;when:27.07.1931;} creation_date {offset:10; length:13;when:27.07.1931;}">
+                <Coords points="1221,1060 1347,1076 1489,1041 1592,1078 1678,1050 1748,1069 1876,1048 1876,948 1713,943 1659,985 1221,980"/>
+                <Baseline points="1233,1038 1265,1038 1298,1038 1330,1040 1363,1041 1395,1041 1428,1041 1460,1041 1493,1041 1525,1041 1558,1039 1590,1038 1623,1038 1655,1038 1688,1038 1720,1038 1753,1038 1785,1036 1818,1035 1850,1034 1883,1030"/>
+                <TextEquiv>
+                    <Unicode>Murg, den 27. Juli 1931.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;} recipient {offset:0; length:4;}">
+                <Coords points="763,1281 777,1279 791,1288 800,1279 817,1288 835,1272 859,1279 891,1260 938,1270 938,1181 910,1181 894,1167 882,1179 854,1186 826,1162 807,1167 777,1151 763,1153"/>
+                <Baseline points="776,1233 803,1233 831,1234 859,1236 887,1235 915,1233 943,1236"/>
+                <TextEquiv>
+                    <Unicode>Herrn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:4;} person {offset:0; length:10;} recipient {offset:0; length:10;}">
+                <Coords points="1176,1349 1246,1337 1300,1349 1349,1342 1370,1358 1391,1344 1463,1342 1503,1358 1498,1253 1421,1293 1330,1272 1274,1300 1176,1265"/>
+                <Baseline points="1188,1334 1214,1332 1241,1331 1267,1331 1294,1332 1320,1334 1347,1334 1374,1334 1400,1336 1427,1337 1453,1337 1480,1337 1507,1337"/>
+                <TextEquiv>
+                    <Unicode>Dr. Metzger</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:5;} role {offset:0; length:30;}">
+                <Coords points="964,1433 1351,1440 1498,1389 1743,1440 1883,1421 1883,1319 1267,1361 1109,1319 964,1330"/>
+                <Baseline points="976,1385 1021,1383 1067,1382 1112,1384 1158,1383 1203,1384 1249,1383 1294,1384 1340,1385 1385,1385 1431,1387 1476,1388 1522,1385 1567,1385 1613,1382 1658,1385 1704,1382 1749,1382 1795,1382 1840,1379 1886,1379"/>
+                <TextEquiv>
+                    <Unicode>Präsident des Bad. Sängerbundes</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_7" custom="readingOrder {index:6;} place {offset:0; length:8;} recipient_place {offset:0; length:8;}">
+                <Coords points="1592,1543 1641,1524 1671,1536 1687,1519 1739,1538 1792,1526 1823,1540 1851,1519 1925,1529 1979,1517 1979,1424 1939,1435 1890,1414 1855,1447 1711,1424 1676,1447 1589,1442"/>
+                <Baseline points="1603,1486 1628,1483 1653,1480 1679,1482 1704,1483 1730,1483 1755,1484 1781,1486 1806,1486 1832,1486 1857,1486 1883,1486 1908,1486 1934,1486 1959,1486 1985,1486"/>
+                <TextEquiv>
+                    <Unicode>Freiburg i.B.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_8" custom="readingOrder {index:7;} recipient {offset:0; length:28;}">
+                <Coords points="1162,1634 1454,1678 1550,1641 1690,1673 1921,1636 2014,1652 2014,1585 1981,1573 1769,1582 1720,1554 1648,1592 1414,1568 1162,1594"/>
+                <Baseline points="1176,1630 1218,1627 1260,1630 1302,1630 1345,1630 1387,1630 1429,1630 1471,1630 1514,1630 1556,1630 1598,1630 1640,1630 1683,1630 1725,1630 1767,1630 1809,1630 1852,1630 1894,1630 1936,1627 1978,1630 2021,1630"/>
+                <TextEquiv>
+                    <Unicode>Sehr geehrter Herr Präsident!</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_9" custom="readingOrder {index:8;} date {offset:42; length:7;when:22.04.1931;}">
+                <Coords points="859,1783 2280,1788 2280,1732 2070,1736 1967,1685 1610,1741 1536,1699 1176,1741 1022,1680 859,1697"/>
+                <Baseline points="871,1773 941,1770 1012,1770 1083,1770 1154,1773 1224,1773 1295,1773 1366,1776 1437,1776 1507,1775 1578,1773 1649,1773 1720,1773 1790,1773 1861,1773 1932,1773 2003,1773 2073,1773 2144,1776 2215,1776 2286,1773"/>
+                <TextEquiv>
+                    <Unicode>Wir kommen zurück auf unser Schreiben vom 22.4.31</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_10" custom="readingOrder {index:9;}">
+                <Coords points="686,1832 2271,1844 2238,1783 910,1795 686,1760"/>
+                <Baseline points="698,1821 776,1818 855,1818 934,1818 1013,1815 1092,1817 1170,1818 1249,1818 1328,1821 1407,1821 1486,1824 1564,1824 1643,1824 1722,1826 1801,1826 1880,1827 1958,1824 2037,1824 2116,1824 2195,1821 2274,1818"/>
+                <TextEquiv>
+                    <Unicode>und ist uns inzwischen die Erbschaft zugegangen mit Ab-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_11" custom="readingOrder {index:10;}">
+                <Coords points="686,1886 2184,1874 2184,1841 2063,1830 686,1830"/>
+                <Baseline points="698,1868 772,1871 847,1865 921,1865 996,1865 1071,1865 1145,1865 1220,1863 1295,1865 1369,1870 1444,1871 1519,1874 1593,1874 1668,1874 1743,1874 1817,1874 1892,1874 1967,1871 2041,1871 2116,1868 2191,1865"/>
+                <TextEquiv>
+                    <Unicode>zug der Erbschaftssteuer. Eine Antwort auf unsere Be-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_12" custom="readingOrder {index:11;}">
+                <Coords points="686,1928 1032,1965 1190,1932 1347,1974 1456,1935 1704,1972 1886,1930 2243,1946 2243,1867 686,1900"/>
+                <Baseline points="698,1916 775,1916 853,1916 930,1916 1008,1916 1085,1916 1163,1916 1240,1916 1318,1916 1395,1919 1473,1922 1550,1922 1628,1922 1705,1923 1783,1922 1860,1922 1938,1922 2015,1925 2093,1922 2170,1919 2248,1919"/>
+                <TextEquiv>
+                    <Unicode>schwerde haben wir nicht erhalten und bitten um Anmah-</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_13" custom="readingOrder {index:12;}">
+                <Coords points="691,2002 721,2005 733,1995 754,2005 768,2000 814,2014 840,2009 835,1928 805,1928 786,1939 775,1932 686,1937"/>
+                <Baseline points="701,1964 729,1966 758,1968 786,1970 815,1972 844,1973"/>
+                <TextEquiv>
+                    <Unicode>nung.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_14" custom="readingOrder {index:13;}">
+                <Coords points="1277,2079 2103,2082 2103,2002 2070,1991 1942,2016 1680,1986 1580,2014 1524,1981 1277,1984"/>
+                <Baseline points="1289,2065 1329,2065 1370,2065 1411,2065 1452,2065 1493,2067 1534,2068 1575,2068 1616,2068 1657,2067 1698,2065 1738,2065 1779,2065 1820,2068 1861,2068 1902,2068 1943,2068 1984,2068 2025,2068 2066,2069 2107,2068"/>
+                <TextEquiv>
+                    <Unicode>mit vorzüglicher Hochachtung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_15" custom="readingOrder {index:14;}">
+                <Coords points="1279,2166 1690,2126 1874,2166 2096,2163 2096,2084 2056,2075 1279,2082"/>
+                <Baseline points="1292,2116 1332,2116 1372,2116 1413,2116 1453,2116 1494,2116 1534,2116 1575,2116 1615,2116 1656,2116 1696,2116 1736,2116 1777,2116 1817,2116 1858,2116 1898,2116 1939,2117 1979,2118 2020,2116 2060,2116 2101,2113"/>
+                <TextEquiv>
+                    <Unicode>und sangesbrüderlichem Gruss</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

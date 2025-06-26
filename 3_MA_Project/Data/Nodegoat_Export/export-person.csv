@@ -1,5 +1,224 @@
 ﻿"nodegoat ID";"Object ID";Name;"Source Object ID";"Source Value";Analysis;Vorname;"Alternativer Vorname";Nachname;"[Geburt] Date Start";"[Wohnort] Location Reference - Object ID";"[Tod] Date Start";"[Mitgliedschaft] Sub-Object ID";"[Mitgliedschaft] Date Start";"[Mitgliedschaft] Date End";"[Mitgliedschaft] Chronology";"[Mitgliedschaft] Location Reference";"[Mitgliedschaft] Location Reference - Object ID";"[Mitgliedschaft] Geometry";"[Mitgliedschaft] hat Rolle";"[Mitgliedschaft] hat Rolle - Object ID";"[Mitgliedschaft] in Organisation";"[Mitgliedschaft] in Organisation - Object ID";"[Rolle] Sub-Object ID";"[Rolle] Date Start";"[Rolle] Date End";"[Rolle] Chronology";"[Rolle] Location Reference";"[Rolle] Location Reference - Object ID";"[Rolle] Geometry";"[Rolle] hat Rolle";"[Rolle] hat Rolle - Object ID";"[Rolle] in Organisation";"[Rolle] in Organisation - Object ID";Gender
-ngCJ1G68nCpOoDpC1D74mrJHzNWY6OJDpCw;12018216;"Ernst Eckard";;;;Ernst;;Eckard;;;1942-05-26;18145582;1929;;"{
+ngLS7X78wNCX8MyD2MU57aSQiMFIbXSYyNZ;12041477;"Anton Fischer";;;;Anton;;Fischer;;;;;;;;;;;;;;;18168836;;;;;;;Hauptlehrer;12018234;;;Männlich
+ngHO7b38sHYT8IuZ8HA16wOMeJBExTOcuHV;12041473;"Helmut Adolf Schmitt";;;;Helmut;Adolf;Schmitt;;;;;;;;;;;;;;;18168835;;;;;;;Hauptlehrer;12018234;;;Männlich
+ngGN7a28rGNS7HtC7Gf0qvNDdHADwSNbtGK;12041472;"Annalise Altmann";;;;Annalise;;Altmann;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngBI6r78mDIN9CoB2Ba5lqICyCbYrNIsoDF;12041467;"Josef Rinderle";;;;Josef;;Rinderle;;12041392;;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngAH6I68lBHM7BnO1CT4kpHFxCUXqMHJnBE;12041466;"Rolf Keller";;;;Rolf;;Keller;;;;;;;;;;;;;;;18168832;;;;;;;Fotograph;12018210;;;Männlich
+ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK;12016846;"Alfons Zimmermann";;;;Alfons;;Zimmermann;30-07-1905;;;18080930;1924;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1924"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1924"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    }
+}";;;;Aktivmitglied;11876532;"Männerchor Murg";11876504;18145484;1939;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1939"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1939"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    }
+}";;;;Vorstand;11876524;"Männerchor Murg";11876504;Männlich
+ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK;12016846;"Alfons Zimmermann";;;;Alfons;;Zimmermann;30-07-1905;;;18168831;23-02-1944;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""23-02-1944"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": ""<||""
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""23-02-1944"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": ""||>""
+        }
+    }
+}";;;;Parteigenosse;12041455;NSDAP;12016964;18145484;1939;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1939"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1939"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    }
+}";;;;Vorstand;11876524;"Männerchor Murg";11876504;Männlich
+ngYF6G48jZlK5ZlU9AR27nFLvYSVoKFHlZi;12041464;"Wilhelm Schauenburg";;;;Wilhelm;;Schauenburg;;;;18168830;;;;;;;Sängerkreisgruppenrechner;12041407;D.S.B.;12016978;18168829;;;;;;;Prokurist;12018164;;;Männlich
+ngWD6E28hWDIhXjS7X303lDrtXQTmIDFjWA;12041462;"Gustav Schwer";;;;Gustav;;Schwer;;12016821;;;;;;;;;;;;;18168827;;;;;;;Kreissängerführer;12016967;D.S.B.;12016978;Männlich
+ngUB6C08fUhGfVho5UD8ejBprUORkGBDhUe;12041460;"Adolf Schmitt";;;;Adolf;;Schmitt;;;;18168826;;;;Kappelrodeck;12041376;"{""type"": ""Point"", ""coordinates"": [8.11667, 48.6]}";Sängergauführer;12041429;D.S.B.;12016978;;;;;;;;;;;;Männlich
+ngVC6D18gVsHgWiR6XE9gkCSsVPSlHCEiVp;12016961;"Josef Dr.Münch";;;;Josef;;Dr.Münch;;;;18145532;;;;;;;Mitglied;12018177;NSDAP;12016964;18145531;;;;Bruchsal;12018204;"{""type"": ""Point"", ""coordinates"": [8.59903, 49.12033]}";Oberstudiendirektor;12018203;;;Männlich
+ngVC6D18gVsHgWiR6XE9gkCSsVPSlHCEiVp;12016961;"Josef Dr.Münch";;;;Josef;;Dr.Münch;;;;18168825;;;;Bruchsal;12018204;"{""type"": ""Point"", ""coordinates"": [8.59903, 49.12033]}";"Stellvertretender Sängergauführer";12041430;D.S.B.;12016978;18145531;;;;Bruchsal;12018204;"{""type"": ""Point"", ""coordinates"": [8.59903, 49.12033]}";Oberstudiendirektor;12018203;;;Männlich
+ngTA5B98eUKFeUgr4TM7eiAYqVNQjFACgUH;12041459;"Otto Horn";;;;Otto;;Horn;;;;18168823;;;;;;;Sängergaukämmerer;12041431;D.S.B.;12016978;18168824;;;;;;;Oberregistrator;12041458;;;Männlich
+ngRY5D78cSID8SeD2Sq50gYKoSrOhDYEeSF;12041457;"Hugo Rahner";;;;Hugo;;Rahner;;;;18168821;;;;;;;Sängergauführer;12041429;"Badischer Sängerbund";12016977;18168822;;;;;;;Oberstudienrat;12041456;;;Männlich
+ngNU5V38yPUZzOaB8N41zcUKkNHKdZUWaPR;12041453;" Dr. Metzger";;;;;;"Dr. Metzger";;;;;;;;;;;;;;;18168820;27-07-1931;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""27-07-1931"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""27-07-1931"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    }
+}";;;;Präsident;12016991;"Badischer Sängerbund";12016977;Männlich
+ngMT5Y28xMDYyNzE7Ml0ybTZjNGJcYTZzMA;12041452;"Emil Landecker";;;;Emil;;Landecker;;12016826;;;;;;;;;;;;;18168817;;;;München;12016826;"{""type"": ""Point"", ""coordinates"": [11.57549, 48.13743]}";Justizrat;12041425;;;Männlich
+ngMT5Y28xMDYyNzE7Ml0ybTZjNGJcYTZzMA;12041452;"Emil Landecker";;;;Emil;;Landecker;;12016826;;;;;;;;;;;;;18168818;;;;München;12016826;"{""type"": ""Point"", ""coordinates"": [11.57549, 48.13743]}";Rechtsanwalt;12041424;;;Männlich
+ngKR5W08vKhWwLxY5KD8wzRPhKEHaWRXxKe;12041450;"Gustav Will";;;;Gustav;;Will;;;1931;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngLS5X18wLSXwMyj6LU9waSQiLFIbXSYyLP;12041451;"August Will";;;;August;;Will;;;;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngJQ4J98uLAVtKwN4KS70yQCgKjGzVQKwLX;12041449;"Emilie Link";;;;Emilie;;Link;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngHO4L78sHYTrIuf2Ig52wOceJBExTOMuHV;12041447;" Kern";;;;;;Kern;;;;18168812;;;;;;;Mitglied;12018177;"Männer-Gesangverein Laufenburg";12041444;;;;;;;;;;;;Männlich
+ngGN4K68rGNSrHtU1IZ4qvNTdHADwSNLtGK;12041446;" Eichern";;;;;;Eichern;;;;18168811;;;;;;;Mitglied;12018177;"Männer-Gesangverein Laufenburg";12041444;;;;;;;;;;;;Männlich
+ngFM4F58qFsR7Gsd0GO38uMecGfCvRMGsFp;12041445;" Keser";;;;;;Keser;;;;18168810;;;;;;;Mitglied;12018177;"Männer-Gesangverein Laufenburg";12041444;;;;;;;;;;;;Männlich
+ngCJ4C28nDzO5DpO7CV02rJRzCWZsOJDpDw;12041442;"Hermina Küpfer";;;;Hermina;;Küpfer;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngAH4E08lCRMlBnu5A180pHNxBUXqMHFnCO;12041440;" Zurny";;;;;;Zurny;;;;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngEL1A88pFrQ8FrI3F963tLBbEYBuQLBrFo;12041418;" Probst";;;;;;Probst;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngDK1Z78oFUP7EqZ2EW59sKMaDdAtPKAqFR;12041417;" Kaiser";;;;;;Kaiser;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngIP2I28tIPU5JvU7Ih05xPRfIiFyUPJvIM;12041422;"Reinhard Waßmer";;;;Reinhard;;Waßmer;;;;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngHO2H18sHeT4Iux6H296wOWeJBExTOIuHb;12041421;"Josef Waßmer";;;;Josef;;Waßmer;;;;;;;;;;;;;;;;;;;;;;;;;;Männlich
+ngGN2C08rHNS0HtC5H182vNbdIADwSNDtHK;12041420;" Strittmatter";;;;;;Strittmatter;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngFM1B98qGcR9GsF4Ge72uMwcFfCvRMCsGz;12041419;" Holzapfel";;;;;;Holzapfel;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngCJ1G68nCzO8Dpa1EL49rJPzNWY6OJZpDw;12041416;" Hausin";;;;;;Hausin;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngBI1J58mByN8Coz0BU37qIwyMVX6NIYoCl;12041415;" Völkle";;;;;;Völkle;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngAH1M48lAnMmBnW9CJ27pHNxLUW6MHBnAu;12041414;" Porzelt";;;;;;Porzelt;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngZG1t38kZmL7AmR8ZI16oGWwKTV7LGAmBN;12041413;"Veronika Enderle";;;;Veronika;;Enderle;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngYF1Q28jYPKiZlQ7Zx03nFLvJSUjKFNlYM;12041412;"Gertrud Laule";;;;Gertrud;;Laule;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngXE1P18iZEJ4Ykv6ZG9hmEsuIRTiJEwkYh;12041411;"Elisabeth Zimmermann";;;;Elisabeth;;Zimmermann;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngWD1S08hYDI4Xju5XF8ilDLtHQSiIDvjYK;12041410;"Lotte Gerteiser";;;;Lotte;;Gerteiser;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngTA5B98eUKFeUgT4Ts73iAYqUNQjFACgUH;12016859;"Hans Johann Schlageter";;;;Hans;Johann;Schlageter;16-01-1908;;15-02-1941;18080958;1925;;"{
+    ""type"": ""period"",
+    ""span"": {
+        ""period_amount"": 0,
+        ""period_unit"": null,
+        ""cycle_object_id"": 0
+    },
+    ""start"": {
+        ""start"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1925"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    },
+    ""end"": {
+        ""end"": {
+            ""offset_amount"": 0,
+            ""offset_unit"": null,
+            ""cycle_object_id"": 0,
+            ""cycle_direction"": null,
+            ""date_value"": ""1925"",
+            ""date_object_sub_id"": null,
+            ""date_direction"": null
+        }
+    }
+}";;;;Aktivmitglied;11876532;"Männerchor Murg";11876504;;;;;;;;;;;;Männlich
+ngTA5B98eUKFeUgT4Ts73iAYqUNQjFACgUH;12016859;"Hans Johann Schlageter";;;;Hans;Johann;Schlageter;16-01-1908;;15-02-1941;18145572;;;;;;;Mitglied;12018177;"2. Kompanie Infanterie-Ersatz-Bataillon 358";11876634;;;;;;;;;;;;Männlich
+ngVC0Z98gVMHfWiJ4Wu71kCqsGPR9HCKiVJ;12041409;" Schlageter";;;;;;Schlageter;;;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngUB0M88fUhG8VhU3UD6fjBZrVORkGBNhUe;12041408;" Haiss";;;;;;Haiss;;11876503;;;;;;;;;;;;;;;;;;;;;;;;Weiblich
+ngQX0o48bQHC5RdE9R52cfXlnBKM9CXFdRU;12041404;"Wilhelm Schauenburg";;;;Wilhelm;;Schauenburg;;;;;;;;;;;;;;;18168799;;;;;;;Prokurist;12018164;;;Männlich
+ngQX0o48bQHC5RdE9R52cfXlnBKM9CXFdRU;12041404;"Wilhelm Schauenburg";;;;Wilhelm;;Schauenburg;;;;;;;;;;;;;;;18168800;;;;;;;Sängerkreisgruppenrechner;12041407;D.S.B.;12016978;Männlich
+ngRY0J58cSoD5SeN0TK3bgYmoSLOhDYKeSl;12041405;"August Flaig";;;;August;;Flaig;;;;;;;;;;;;;;;18168798;;;;;;;Kreischorleiter;12041406;D.S.B.;12016978;Männlich
+ngCJ1G68nCpOoDpC1D74mrJHzNWY6OJDpCw;12018216;"Ernst Eckard";;;;Ernst;;Eckard;;;26-05-1942;18145582;1929;;"{
     ""type"": ""period"",
     ""span"": {
         ""period_amount"": 0,
@@ -182,7 +401,6 @@ ngZG6H58kAwL6AmV0A638oGywZzWpLGImAt;12016965;"Adolf Hitler";;;;Adolf;;Hitler;20-
         }
     }
 }";;;;Führer;12016963;NSDAP;12016964;;;;;;;;;;;;Männlich
-ngVC6D18gVsHgWiR6XE9gkCSsVPSlHCEiVp;12016961;"Josef Dr.Münch";;;;Josef;;Dr.Münch;;;;18145532;;;;;;;Mitglied;12018177;NSDAP;12016964;18145531;;;;Bruchsal;12018204;"{""type"": ""Point"", ""coordinates"": [8.59903, 49.12033]}";Oberstudiendirektor;12018203;;;Männlich
 ngUB6C08fUhGfVho5WD80jBRrUORkGBDhUe;12016960;"Karl Wasmer";;;;Karl;;Wasmer;;;16-02-1941;18145611;;;;;;;Hauptlehrer;12018234;"Schule Murg";12018209;;;;;;;;;;;;Männlich
 ngTA5B98eUKFeUgT4T07eiAQqVNQjFACgUH;12016959;"Alfred Brutsche";;;;Alfred;;Brutsche;;;14-06-1941;18145558;;;;;;;Mitglied;12018177;"Männerchor Murg";11876504;18145556;09-01-1940;;"{
     ""type"": ""period"",
@@ -3300,37 +3518,6 @@ ngUB6C08fUhGfVho5WD8gjBtrVuRkGBDhUe;12016860;"Helmut Völkle";;;;Helmut;;Völkle
         }
     }
 }";;;;Aktivmitglied;11876532;"Männerchor Murg";11876504;;;;;;;;;;;;Männlich
-ngTA5B98eUKFeUgT4Ts73iAYqUNQjFACgUH;12016859;"Hans Johann Schlageter";;;;Hans;Johann;Schlageter;16-01-1908;;15-02-1941;18080958;1925;;"{
-    ""type"": ""period"",
-    ""span"": {
-        ""period_amount"": 0,
-        ""period_unit"": null,
-        ""cycle_object_id"": 0
-    },
-    ""start"": {
-        ""start"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1925"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    },
-    ""end"": {
-        ""end"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1925"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    }
-}";;;;Aktivmitglied;11876532;"Männerchor Murg";11876504;;;;;;;;;;;;Männlich
-ngTA5B98eUKFeUgT4Ts73iAYqUNQjFACgUH;12016859;"Hans Johann Schlageter";;;;Hans;Johann;Schlageter;16-01-1908;;15-02-1941;18145572;;;;;;;Mitglied;12018177;"2. Kompanie Infanterie-Ersatz-Bataillon 358";11876634;;;;;;;;;;;;Männlich
 ngSZ5E88dSfE0TfK3TL63hZTpTsPiEZFfSc;12016858;"Otto Lüthy";;;;Otto;;Lüthy;29-03-1904;;;18080955;1922;;"{
     ""type"": ""period"",
     ""span"": {
@@ -3956,65 +4143,6 @@ ngHO4L78sHYTrIuP2Ig5rwOQeHhExTOMuHV;12016847;"Max Ganter";;;;Max;;Ganter;04-01-1
     }
 }";;;;Schriftführer;11876525;"Männerchor Murg";11876504;Männlich
 ngHO4L78sHYTrIuP2Ig5rwOQeHhExTOMuHV;12016847;"Max Ganter";;;;Max;;Ganter;04-01-1909;;;18145560;;;;;;;Gefreiter;11876590;"1. Kompanie Panzer-Pionier-Bataillon 675";11876614;18145540;;;;;;;Gefreiter;11876590;"1. Kompanie Panzer-Pionier-Bataillon 675";11876614;Männlich
-ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK;12016846;"Alfons Zimmermann";;;;Alfons;;Zimmermann;30-07-1905;;;18080930;1924;;"{
-    ""type"": ""period"",
-    ""span"": {
-        ""period_amount"": 0,
-        ""period_unit"": null,
-        ""cycle_object_id"": 0
-    },
-    ""start"": {
-        ""start"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1924"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    },
-    ""end"": {
-        ""end"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1924"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    }
-}";;;;Aktivmitglied;11876532;"Männerchor Murg";11876504;18145484;1939;;"{
-    ""type"": ""period"",
-    ""span"": {
-        ""period_amount"": 0,
-        ""period_unit"": null,
-        ""cycle_object_id"": 0
-    },
-    ""start"": {
-        ""start"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1939"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    },
-    ""end"": {
-        ""end"": {
-            ""offset_amount"": 0,
-            ""offset_unit"": null,
-            ""cycle_object_id"": 0,
-            ""cycle_direction"": null,
-            ""date_value"": ""1939"",
-            ""date_object_sub_id"": null,
-            ""date_direction"": null
-        }
-    }
-}";;;;Vorstand;11876524;"Männerchor Murg";11876504;Männlich
 ngFM4F58qFsR8GsF0Ge38uMGcFfCvRMGsFp;12016845;"Otto Bolliger";;;;Otto;;Bolliger;24-05-1877;;;18080928;1894;;"{
     ""type"": ""period"",
     ""span"": {

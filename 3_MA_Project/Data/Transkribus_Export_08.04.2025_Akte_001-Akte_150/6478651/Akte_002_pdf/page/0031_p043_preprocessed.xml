@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:49:51.175+01:00</Created>
+        <LastChange>2025-02-03T17:06:10.506+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0031_p043.jpg" imageWidth="3508" imageHeight="2479">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1744120144173" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion id="r" custom="readingOrder {index:0;}">
+            <Coords points="1003,2158 2690,2158 2690,2306 1003,2306"/>
+            <TextLine id="l" custom="readingOrder {index:0;} unclear {offset:28; length:12;}">
+                <Coords points="1025,2263 1521,2261 1960,2257 2548,2255 2548,2225 1960,2227 1521,2231 1025,2233"/>
+                <Baseline points="1025,2263 1521,2261 1960,2257 2548,2255"/>
+                <TextEquiv>
+                    <Unicode>Panzerwagen aufgefahren zur Besichtigung</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

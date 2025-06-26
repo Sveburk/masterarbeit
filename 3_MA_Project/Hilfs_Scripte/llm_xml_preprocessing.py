@@ -12,7 +12,7 @@ INPUT_COST_PER_1K = 0.0011   # USD per 1K input tokens (non-cached)
 OUTPUT_COST_PER_1K = 0.0044  # USD per 1K output tokens
 
 # --- Konfiguration: Pfade anpassen falls nötig ---
-TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Desktop/Transkribus_test_In")
+TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150")
 
 # --- Hilfsfunktionen ---
 def get_api_client() -> openai.OpenAI:
@@ -187,9 +187,19 @@ def annotate_with_llm(xml_content: str,
 def process_file(xml_path: Path, client: openai.OpenAI):
     """Annotiert eine einzelne XML und speichert sie direkt im gleichen Ordner."""
     try:
+        # Ordnername und Pfad ermitteln
+        folder_name = xml_path.parent.name
+        folder_path = xml_path.parent.resolve()
+
+        # Neue Ausgabe
+        print(f"\nVerarbeite Datei: {xml_path.name}")
+        print(f"  • Verzeichnis: {folder_path}")
+        print(f"  • Ordnername : {folder_name}")
+        print("  → Starte Annotation via OpenAI…", end="", flush=True)
+
         xml_text = xml_path.read_text(encoding="utf-8")
         print(f"\nVerarbeite Datei: {xml_path.name}")
-        print("  → Starte Annotation via OpenAI…", end="", flush=True)
+
 
         result    = annotate_with_llm(xml_text, client)
         annotated = clean_llm_output(result["annotated_xml"])
@@ -261,17 +271,22 @@ def main():
             if not page_dir.is_dir():
                 continue
 
+
             # --- Neuer Check: Ordner überspringen, wenn ≥50 % schon vorverarbeitet ---
             all_xmls = list(page_dir.glob("*.xml"))
             if all_xmls:
                 preproc = [p for p in all_xmls if p.stem.endswith("_preprocessed")]
                 ratio = len(preproc) / len(all_xmls)
                 if ratio >= 0.5:
-                    print(f"Überspringe Ordner {page_dir}, "
-                          f"{len(preproc)}/{len(all_xmls)} Dateien sind bereits vorverarbeitet ({ratio:.0%}).")
+                    print(f"Überspringe Ordner {page_dir.name}: "
+                        f"{len(preproc)}/{len(all_xmls)} Dateien vorverarbeitet ({ratio:.0%}).")
                     continue
 
-            xml_files.extend(sorted(page_dir.glob("*.xml")))
+            # nur die noch nicht vorverarbeiteten Dateien zur Liste hinzufügen
+            to_process = [p for p in sorted(all_xmls)
+                        if not p.stem.endswith("_preprocessed")]
+            xml_files.extend(to_process)
+
 
     print(f"Starte LLM-Annotation für {len(xml_files)} Dateien…")
     for xml_path in tqdm(xml_files, unit="file"):

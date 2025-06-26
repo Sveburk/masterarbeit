@@ -1495,120 +1495,70 @@ def deduplicate_and_group_persons(
         combined_roles = "; ".join(
             sorted(set(p.get("role", "") for p in group if p.get("role")))
         )
-
         best["role"] = combined_roles
-        best["mentioned_count"] = sum(
-            int(p.get("mentioned_count", 1)) for p in group
-        )
-        best["recipient_score"] = max(
-            int(p.get("recipient_score", 0) or 0) for p in group
-        )
+        best["mentioned_count"] = sum(int(p.get("mentioned_count", 1)) for p in group)
+        best["recipient_score"] = max(int(p.get("recipient_score", 0) or 0) for p in group)
         final.append(Person.from_dict(best))
 
-    # 2) Manuelle Gruppierung nach Namen (nur wenn keine ID)
+    # 2) Manuelle Gruppierung nach Namensähnlichkeit
     for entry in unmatched:
         entry = ensure_dict(entry)
         fn = normalize(entry.get("forename", ""))
         ln = normalize(entry.get("familyname", ""))
-        role = normalize(entry.get("role", ""))
-        key = f"{fn}|{ln}|{role}"
-
         matched = False
+
         for target in final:
             tfn = normalize(getattr(target, "forename", ""))
             tln = normalize(getattr(target, "familyname", ""))
-            tr = normalize(getattr(target, "role", ""))
 
-            conditions = []
+            # Wenn entweder Vorname oder Nachname übereinstimmt
+            if (fn and fn == tfn) or (ln and ln == tln):
+                print(f"[MERGE] {fn or ln} → {tfn} {tln}")
 
-            # Nur wenn vollständiger Name identisch
-            if fn and ln and fn == tfn and ln == tln:
-                conditions.append(True)
-
-            # Nur wenn beide Personen *keine ID* haben UND identischer Nachname ODER identische Kombination aus fn/ln
-            if not target.nodegoat_id and (
-                (ln and ln == tln) or (fn and ln and fn == tln and ln == tfn)
-            ):
-                conditions.append(True)
-
-            # Rollenvergleich nur bei identischem Namen
-            if (
-                fn
-                and ln
-                and f"{fn} {ln}".strip() == tr
-                and not entry.get("nodegoat_id")
-            ):
-                conditions.append(True)
-
-            # Erweiterung: Erlaube Kombination, wenn nur der entry keinen nodegoat_id hat, aber der Name übereinstimmt (z. B. "Otto" → "Otto Bolliger")
-            if any(conditions):
-                print(
-                    f"[DEBUG] Fuzzy-Deduplikation: '{fn} {ln}' → '{tfn} {tln}' mit ID={target.nodegoat_id or '∅'}"
-                )
-
-                # Merge mention count (default to 1 if missing)
+                # Mention count mergen
                 entry_count = int(entry.get("mentioned_count", 1))
-                target.mentioned_count = (
-                    int(getattr(target, "mentioned_count", 1)) + entry_count
-                )
+                target.mentioned_count += entry_count
 
-                # Merge recipient score
+                # recipient_score mergen
                 target.recipient_score = max(
                     getattr(target, "recipient_score", 0),
                     entry.get("recipient_score", 0),
                 )
 
-                # Merge role if present
+                # Rollen mergen
                 if entry.get("role"):
-                    combined = set(
-                        filter(None, (target.role or "").split("; "))
-                    )
-                    combined.add(entry["role"])
-                    target.role = "; ".join(sorted(combined))
-                # Merge role_schema falls vorhanden
-                if entry.get("role_schema") and not getattr(
-                    target, "role_schema", ""
-                ):
+                    existing_roles = set(filter(None, (target.role or "").split("; ")))
+                    existing_roles.add(entry["role"])
+                    target.role = "; ".join(sorted(existing_roles))
+
+                # role_schema ergänzen, falls Ziel leer
+                if entry.get("role_schema") and not getattr(target, "role_schema", ""):
                     target.role_schema = entry.get("role_schema")
-                    print(
-                        f"[DEBUG] → role_schema von '{entry.get('role')}' übernommen als '{entry.get('role_schema')}'"
-                    )
 
                 matched = True
                 break
 
         if not matched:
             entry["mentioned_count"] = int(entry.get("mentioned_count", 1))
-            # Ensure recipient_score is preserved in new entries
-            entry["recipient_score"] = int(
-                entry.get("recipient_score", 0) or 0
-            )
-            # Print recipient_score for debugging
-            print(
-                f"[DEBUG] Neuer Eintrag mit recipient_score={entry['recipient_score']} übernommen: {entry.get('forename')} {entry.get('familyname')} {entry.get('role')}"
-            )
+            entry["recipient_score"] = int(entry.get("recipient_score", 0) or 0)
+            print(f"[NEU] Person ohne Merge: {entry.get('forename')} {entry.get('familyname')}")
             final.append(Person.from_dict(entry))
 
+    # 3) recipient_score über nodegoat_id sichern
     recipient_score_lookup = {
         ensure_dict(p)["nodegoat_id"]: ensure_dict(p).get("recipient_score", 0)
         for p in persons
-        if ensure_dict(p).get("recipient_score", 0) > 0
-        and ensure_dict(p).get("nodegoat_id")
+        if ensure_dict(p).get("recipient_score", 0) > 0 and ensure_dict(p).get("nodegoat_id")
     }
 
-    # Weise recipient_score zurück an deduplizierte finale Personen
     for person in final:
         nid = person.nodegoat_id
         if nid in recipient_score_lookup:
-            person.recipient_score = max(
-                person.recipient_score or 0, recipient_score_lookup[nid]
-            )
+            person.recipient_score = max(person.recipient_score or 0, recipient_score_lookup[nid])
 
     print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
     for p in final:
-        print(
-            f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}"
-        )
+        print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
 
     return final
 

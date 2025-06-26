@@ -109,8 +109,18 @@ def log_unmatched_entities(
     # Rollen
     for role in final_roles:
         raw = role.get("raw", "").strip()
-        if raw and not any(raw.lower() in (p.get("role", "").lower()) for p in final_persons):
-            log_entry(role, name, "role", "nicht in Personenrolle übernommen", "unmatched_roles.json")
+        # definiere 'name' hier als Fallback auf raw
+        name = raw
+        # wenn es eine Rolle gibt und sie nicht in final_persons landet
+        if raw and not any(raw.lower() == p.get("role", "").lower() for p in final_persons):
+            log_entry(
+                role,
+                name,
+                "role",
+                "nicht in Personenrolle übernommen",
+                "unmatched_role.json"   # <— passt zum target_file_map
+            )
+
 
     # Organisationen
     for org in custom_data.get("organisations", []):

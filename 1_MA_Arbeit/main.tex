@@ -4,6 +4,7 @@
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 
+\sloppy
 
 
 % Options for packages loaded elsewhere
@@ -23,7 +24,6 @@
 \usepackage{amsmath,amssymb}
 \usepackage{tcolorbox}
 \usepackage{afterpage}
-\usepackage{hyperref} 
 \usepackage{graphicx}
 \usepackage{subcaption}  % Für die Verwendung von subfigure
 \usepackage{setspace}  % Für den Befehl \setstretch
@@ -33,8 +33,12 @@
 \usepackage{eso-pic} % Für Hintergrundbilder
 \usepackage{fvextra}     % Muss vor csquotes geladen werden
 \usepackage{csquotes}    % Nach fvextra laden
+% \usepackage{csvsimple} % Für CSV-Dateien
+% \usepackage{booktabs}    % für \toprule, \midrule, \bottomrule
+% \usepackage{longtable}   % falls nicht schon geladen
+% \usepackage{placeins} % Für \FloatBarrier
 \usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
-\addbibresource{assets/Literature_Bib/literatur.bib}
+\addbibresource{assets/Literature_Bib/Masterarbeit.bib}
 \renewcommand{\cite}{\footcite}
 \renewbibmacro*{date}{% 
     \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
@@ -186,7 +190,7 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth-\csllabelwidth}{\strut#1\strut}} %chktex 8
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\ifpdf%
+\ifpdf
   \usepackage{authblk} % Paket für Affiliations
   \usepackage{orcidlink} % Paket für ORCID-Link
   \usepackage{pdfpages} % Paket zum Einbinden von PDFs
@@ -231,13 +235,21 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+\fi
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands%
 \def\languageshorthands#1{}
 \usepackage{bookmark}
 
+\usepackage{placeins}                   % für \FloatBarrier
+\usepackage[toc,page]{appendix}         % für eigene Anhangs-Umgebung
+% optional:
+% \usepackage{pdfcrypt}                   % für PDF-Passwortschutz
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
+
+\usepackage[unicode=true, hyperfootnotes=true]{hyperref}
 \hypersetup{
   pdftitle={Konzeption für AG Masterarbeit am
 17.01.2025},
@@ -269,8 +281,8 @@
 \makeatother
 \subtitle{}
 \author{Sven Burkhardt}
-\date{2025-08-15} % chktex 8
-
+\date{2025-08-14} % chktex 8
+\usepackage{hyperref} 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %----------------------------- T I T E L B L A T T   ----------------------------------%
@@ -379,7 +391,9 @@
 \color{black}  % Textfarbe zurücksetzen
 \section*{Abstract}
 
-Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der Weimarer Republik bis zum Ende des Zweiten Weltkrieges. Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
+Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren des Zweiten Weltkrieges. 
+Hierfür wird eine automatisierte Pipline auf Basis von LLMs und Patternmatching vorgestellt, mit deren Hilfe Named Entities extrahiert und weiterverarbeitet werden. 
+Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
 
 \newpage
 
@@ -434,31 +448,30 @@ Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren der 
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------% 
 \section{Quellenbeschreibung und Korpusaufbau}
+\subsection{Fundsituation der Quellen}
 In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
-wurden im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
-Für diese Arbeit wurde ein Ordner mit der Aufschrift \textit{``Männerchor Akten 1925-1944''} gewählt, da er neben dem Ordner 
-\textit{``Männerchor Akten 1946-1950‘‘} den größten Zeitraum abdeckt. Zudem verspricht er interessante Einblicke 
-in die Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
+wird im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
+Für diese Arbeit wird ein Ordner mit der Aufschrift \textit{``Männerchor Akten 1925-1944''} gewählt, da er neben dem Ordner 
+\textit{``Männerchor Akten 1946-1950‘‘} den größten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, aufschlussreiche Einblicke in das Vereinsleben
+in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
 Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als ``Protokoll'', ``Brief'', ``Postkarte'', ``Rechnung'', ``Regierungsdokument'', ``Noten'', ``Zeitungsartikel'', ``Liste'', ``Notizzettel'' oder ``Offerte'' kategorisiert werden.
 
-
-
-
-
-
-
+\subsection{Vorarbeiten und Korpusaufbau}
 In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{``Männerchor Akten 1925-1944''} bereits 2018 und 2022 ein 
-erster Korpus von 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Als Akte werden hier Schriftstücke betitel, die entweder durch ihren Inhalt, oder die Fundsituation eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasste 96 Seiten, 
-während andere Akten nur aus einer einzelnen Seite bestehen können. Mit diesem Prinzip entsteht 2018 eine erste Liste, die die Seiten mit deren Lage im Ordner, 
-einem Kurztitel und einem Entstehungsdatum versieht. 2022 wird im Rahmen eines zweiten Seminars die Feldpost untersucht.
-Zu diesem Zeitpunkt erfolgt die Transkiption mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
+erster Korpus aus 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
+Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
+oder  ihren Inhalt eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasst 96 Seiten, 
+während andere Akten nur aus einer einzelnen Seite bestehen können.  
+Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen "Carl Burger" und "Fritz Jung" liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
+Zu diesem Zeitpunkt erfolgt die Transkription mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
 ist.
-Zur Vorbereitung der vorliegenden Arbeit sollten die Feldpostbriefe mit weiteren Daten versehen werden.\\ \textit{Welche Einheiten 
-verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben wurde?}\\
+\subsection{Forschungsstand zu den Quellen}
+Die vorliegenden Arbeit stützt sich auf diese Vorarbeit, und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Daten ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten 
+verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben werden?}\\
 Hierzu werden Nachschlagetabellen in Fachliteratur \footnote{vgl.:\cite{tessin_verbande_1977},\cite{hartmann_wehrmacht_2010}, \cite{rass_deutsche_2009}},
 die Bestände des \textit{Bundesarchives -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025}, 
 des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}, sowie Citizen Scientist Projekte\footnote{vgl. 
-Wikidata (Beispiel:\cite{burkhardt_78th_2024}),\\\indent{\cite{altenburger_lexikon_nodate-1}},\\\indent{\cite{hermans_forum_nodate}}} konsultiert und ebenfalls erweitert. 
+Wikidata (Beispiel:\cite{burkhardt_78th_2024}),\\\indent{\cite{altenburger_lexikon_nodate-1}},\\\indent{\cite{hermans_forum_nodate}}} herangezogen und letztere teils druch eigene Recherche ergänzt. 
 
 Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\footnote{Akten\_Gesamtübersicht.csv im Anhang} 
 
@@ -613,11 +626,11 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
     die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden 
     (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. 
-    Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. In insgesammt  mit insgesammt  4 Iterationen wurde eine Groundtruth 
+    Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. Mit insgesammt 4 Iterationen wurde eine Groundtruth 
     für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die 
     Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,
     und eine Korrektur beigefügt.\\
-    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell 
+    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell \cite{burkhardt_transkribus_nodate}
     (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch 
     mit diesem Modell transkribiert. \\
   

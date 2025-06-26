@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>Transkribus</Creator>
+        <Created>2025-01-22T16:51:33.972+01:00</Created>
+        <LastChange>2025-01-22T16:51:33.972+01:00</LastChange>
+    </Metadata>
+    <Page imageFilename="0083_p085.jpg" imageWidth="2479" imageHeight="3508">
+        <TextRegion id="r1">
+            <TextLine id="tl1" custom="place {offset:0; length:7;} creation_place {offset:0; length:7;} date {offset:8; length:10; when:22.01.2025;} creation_date {offset:8; length:10; when:22.01.2025;}">
+                <Coords points="0,0 100,0 100,10 0,10"/>
+                <TextEquiv><Unicode>Berlin 22.01.2025</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl2" custom="recipient {offset:0; length:11;} person {offset:0; length:11;} place {offset:13; length:6;} recipient_place {offset:13; length:6;}">
+                <Coords points="0,20 100,20 100,30 0,30"/>
+                <TextEquiv><Unicode>Sehr geehrter Herr Müller, Hamburg</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl3">
+                <Coords points="0,40 100,40 100,50 0,50"/>
+                <TextEquiv><Unicode>Ich hoffe, diese Nachricht erreicht Sie wohl.</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl4">
+                <Coords points="0,60 100,60 100,70 0,70"/>
+                <TextEquiv><Unicode>Mit freundlichen Grüßen,</Unicode></TextEquiv>
+            </TextLine>
+            <TextLine id="tl5" custom="author {offset:0; length:12;} person {offset:0; length:12;}">
+                <Coords points="0,80 100,80 100,90 0,90"/>
+                <TextEquiv><Unicode>Max Mustermann</Unicode></TextEquiv>
+            </TextLine>
+        </TextRegion>
+    </Page>
+</PcGts>
