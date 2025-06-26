@@ -3,6 +3,7 @@ import os
 import re
 import unicodedata
 import uuid
+import string
 from typing import List, Dict, Tuple, Optional, Any, Union
 import pandas as pd
 from collections import defaultdict
@@ -56,9 +57,24 @@ BLACKLIST_TOKENS = {
     "dank",
     "danke",
 }
+PRONOUN_TOKENS = {
+    "mein", "dein", "sein", "ihr", "unser", "euer","mein", 
+    "meine", "meinen", "meinem", "meiner", "meines",
+    "dein", "deine", "deinen", "deinem", "deiner", "deines",
+    "sein", "seine", "seinen", "seinem", "seiner", "seines",
+    "ihr", "ihre", "ihren", "ihrem", "ihrer", "ihres",
+    "unser", "unsere", "unseren", "unserem", "unserer", "unseres",
+    "euer", "eure", "euren", "eurem", "eurer", "eures",
+    "ihr",
+
+}
 
 # ----- Gesamt‑Blacklist -------
-NON_PERSON_TOKENS = ROLE_TOKENS.union(TITLE_TOKENS).union(BLACKLIST_TOKENS)
+NON_PERSON_TOKENS= ROLE_TOKENS.union(
+    TITLE_TOKENS,
+    BLACKLIST_TOKENS,
+    PRONOUN_TOKENS
+)
 
 # Einzelne Tokens, die nie als eigenständige Personenbezeichnung zählen sollen
 UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
@@ -311,6 +327,8 @@ def normalize_name_string(name: str) -> str:
     s = name.lower().strip()
     # Titel entfernen
     s = re.sub(r"\b(dr|prof|herrn?|frau|fräulein|witwe)\.?\s*", "", s)
+    # Klammern löschen, Inhalt behalten
+    s = re.sub(r"[()]", "", s)
     # Unicode-NFKD und Diakritika entfernen
     s = unicodedata.normalize("NFKD", s)
     s = "".join(ch for ch in s if not unicodedata.combining(ch))
@@ -364,10 +382,6 @@ def ocr_error_match(
     name_lower = name.lower().strip()
     best_match = None
     best_dist = 999999  # erstellt eine sehr hohe distanz zu Werten
-
-    if "adolf" in name_lower:
-        print("GAGAGAGAGAGAGGA")
-        exit()
 
     for cand in candidates:
         cand_lower = cand.lower().strip()
@@ -425,13 +439,28 @@ def match_person(
             "review_reason": f"Nur Rolle ohne vollständigen Namen erkannt: {person.get('role', '')}",
         }, 30
 
+    # 1) Roh-Strings holen und trimmen
     fn_raw = str(person.get("forename") or "").strip()
     ln_raw = str(person.get("familyname") or "").strip()
+    fn = fn_raw.strip(string.punctuation)
+    ln = ln_raw.strip(string.punctuation)
     role_raw = str(person.get("role") or "").strip()
 
-    fn_stripped, roles = extract_role_from_raw_name(fn_raw)
-    fn = re.sub(r"[():]", "", fn_stripped).strip()
-    ln = ln_raw.split(",", 1)[0].strip() if ln_raw else ""
+    # ────────────────────────────────────────
+    # 2) Inhalts-Filter (Pronomen, Rollen, Blacklist)
+    # ────────────────────────────────────────
+    # Pronomen
+    if fn.lower() in PRONOUN_TOKENS:
+        return None, 0
+
+    # Rollen-Token ohne Nachname
+    if fn.lower() in ROLE_TOKENS and not ln:
+        return None, 0
+
+    # Generischer Non-Person-Filter über alle Tokens
+    tokens = [t.lower() for t in fn.split()]
+    if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
+        return None, 0
     # -------------------------
     #  UNIQUE-NAME HEURISTIK
     # -------------------------

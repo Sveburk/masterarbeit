@@ -12,7 +12,7 @@ _WIKIDATA_RE = re.compile(r'wikiData:(Q\d+)', re.IGNORECASE)
 # matches and strips enclosing parentheses/brackets
 _ENCLOSING_BRACKETS = re.compile(r'^[\(\[\{]\s*(.*?)\s*[\)\]\}]$')
 # removes any stray parentheses, brackets, or colons inside
-_CLEAN_INSIDE = re.compile(r'[()\[\]\{\}:]')
+_CLEAN_INSIDE = re.compile(r'[()\[\]\{\}\.:]')
 # blacklist of tokens to drop
 NON_ORG_TOKENS = {"verein", "partei", "amt", "lokal", "hotel", "süd", "krone"}
 
@@ -69,6 +69,26 @@ def extract_wikidata_id(custom_str: str) -> Optional[str]:
     m = _WIKIDATA_RE.search(custom_str)
     return m.group(1) if m else None
 
+def match_acronym(
+    norm_input: str,
+    candidates: List[Dict[str, str]]
+) -> (Optional[Dict[str, str]], int):
+    """
+    Sonderfall für kurze Akronyme (alles Großbuchstaben, Länge ≤ 5).
+    Prüft, ob norm_input in den alternate_names eines Kandidaten vorkommt.
+    Gibt Match und Score=100 zurück, oder (None, 0).
+    """
+    if not norm_input.isupper() or len(norm_input) > 5:
+        return None, 0
+
+    for org in candidates:
+        for alt in org.get("alternate_names", []):
+            if normalize_org_name(alt) == norm_input.lower():
+                return org, 100
+    return None, 0
+
+
+
 # ----------------------------------------------------------------------------
 # Fuzzy-Matching
 # ----------------------------------------------------------------------------
@@ -78,7 +98,15 @@ def match_organization(
     candidates: List[Dict[str, str]],
     threshold: int = 85
 ) -> (Optional[Dict[str, str]], int):
+    
     norm_input = normalize_org_name(input_org.get("name", ""))
+    
+    # 1) Special-case: kurze Akronyme
+    special_match, special_score = match_acronym(norm_input, candidates)
+    if special_match:
+        return special_match, special_score
+
+
     best_match, best_score = None, 0
     for org in candidates:
         for cand in org.get("all_names", []):
@@ -95,6 +123,7 @@ def match_organization_from_text(
 ) -> List[Dict[str, str]]:
     """
     Durchsucht den gesamten Text auf bekannte Organisationsnamen (oder fuzzy Varianten)
+
     und gibt eine Liste von org_list-Einträgen zurück, die mindestens threshold erreichen.
     """
     found = []
@@ -123,6 +152,7 @@ def match_organization_entities(
 ) -> List[Dict[str, Any]]:
     # apply cleaning and extract non-null
     cleaned_names = []
+
     for ent in raw_orgs:
         orig = ent.get("original_input", ent.get("name", ""))
         clean = extract_organization(orig)
@@ -165,5 +195,6 @@ def match_organization_by_name(name: str, threshold: int = 85) -> Optional[Dict[
     clean = extract_organization(name)
     if not clean:
         return None
-    match, score = match_organization({"name": clean}, KNOWN_ORGS, threshold)
+    match, score = match_organization({"name": clean}, KNOWN_ORGS, threshold
+    )
     return match

@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{csvsimple}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=2cm}
+
+\begin{document}
+
+\section*{Aktenübersicht (CSV-importiert)}
+
+\csvreader[
+    separator=semicolon,
+    tabular=|l|l|l|l|l|l|l|l|l|l|,
+    table head=\hline Transkribus-ID & AkteNummer & Akte\_Scan & Finder-Tags & Datum & Tags & Dokumententyp & Titel & Seiten & Status \\ \hline,
+    late after line=\\\hline,
+    filter test={\ifnumgreater{\thecsvinputline}{1}}
+]{/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Akten_Gesamtübersicht.csv}{}%
+{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi & \csvcolvii & \csvcolviii & \csvcolix & \csvcolx}
+
+\end{document}
