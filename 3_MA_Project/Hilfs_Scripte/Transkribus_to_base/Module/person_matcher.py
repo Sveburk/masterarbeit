@@ -32,17 +32,12 @@ from Module.letter_metadata_matcher import (
 ROLE_TOKENS = {r.lower() for r in POSSIBLE_ROLES}
 
 # Anrede‑Titel
-TITLE_TOKENS = {
-    "herr",
-    "herrn",
-    "frau",
-    "fräulein",
-    "dr",
-    "prof",
-    "der",
-    "pg",
-    "pg.",
-}
+MALE_TITLE_TOKENS = {"herr", "herrn"}
+FEMALE_TITLE_TOKENS = {"frau", "fräulein", "frauchen", "ww.", "witwe"}
+NEUTRAL_TITLE_TOKENS = {"dr", "prof", "pg", "pg."}
+
+TITLE_TOKENS = MALE_TITLE_TOKENS | FEMALE_TITLE_TOKENS | NEUTRAL_TITLE_TOKENS
+
 
 # Begriffe wie "Grüße", "Gruss", "Gruß" – typisch in Briefabschlüssen
 BLACKLIST_TOKENS = {
@@ -58,7 +53,7 @@ BLACKLIST_TOKENS = {
     "danke",
 }
 PRONOUN_TOKENS = {
-    "mein", "dein", "sein", "ihr", "unser", "euer","mein", 
+    "der", "die", "das", "des", "dem", "den", "ein", "eine", "einer", "eines", "einem","mein", "dein", "sein", "ihr", "unser", "euer","mein", 
     "meine", "meinen", "meinem", "meiner", "meines",
     "dein", "deine", "deinen", "deinem", "deiner", "deines",
     "sein", "seine", "seinen", "seinem", "seiner", "seines",
@@ -78,6 +73,8 @@ NON_PERSON_TOKENS= ROLE_TOKENS.union(
 
 # Einzelne Tokens, die nie als eigenständige Personenbezeichnung zählen sollen
 UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
+
+
 
 
 # ============================================================================
@@ -319,23 +316,40 @@ OCR_ERRORS: Dict[str, List[str]] = {
 # ============================================================================
 #   NORMALISIERUNG
 # ============================================================================
-def normalize_name_string(name: str) -> str:
+
+def normalize_name_string(name: str) -> (str, str):
     """
-    Lowercase, strip titles, remove diacritics, remove punctuation,
-    then map nicknames.
+    Trennt Titel-Token am Anfang, normalisiert den Rest.
+    Rückgabe: (bereinigter Name, erkannter Titel)
     """
-    s = name.lower().strip()
-    # Titel entfernen
-    s = re.sub(r"\b(dr|prof|herrn?|frau|fräulein|witwe)\.?\s*", "", s)
+    s = name.strip()
+
+    # Regex dynamisch aus TITLE_TOKENS bauen
+    title_pattern = re.compile(
+        r"^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s*",
+        re.I
+    )
+
+    title = ""
+    m = title_pattern.match(s)
+    if m:
+        title = m.group(1).capitalize()
+        s = s[m.end():].strip()
+
     # Klammern löschen, Inhalt behalten
     s = re.sub(r"[()]", "", s)
+
     # Unicode-NFKD und Diakritika entfernen
     s = unicodedata.normalize("NFKD", s)
     s = "".join(ch for ch in s if not unicodedata.combining(ch))
+
     # alles außer Wort- und Leerzeichen löschen
     s = re.sub(r"[^\w\s]", "", s)
+
     # Nickname-Mapping
-    return EXPANDED_NICKNAME_MAP.get(s, s)
+    s = EXPANDED_NICKNAME_MAP.get(s.lower(), s.lower())
+
+    return s, title
 
 
 def is_initial(s: str) -> bool:
@@ -344,31 +358,47 @@ def is_initial(s: str) -> bool:
 
 def normalize_name(name: str) -> Dict[str, str]:
     """
-    Zerlegt einen voll­ständigen Namen in title, forename und familyname.
+    Zerlegt einen vollständigen Namen in title, forename und familyname.
+    Erkennt Titel aus TITLE_TOKENS am Anfang und entfernt sie.
     """
     if not name:
         return {"title": "", "forename": "", "familyname": ""}
+
     s = name.strip()
-    # Titel extrahieren
-    m = re.match(r"(?i)\\b(dr|prof|herr|frau|fräulein|witwe)\\.?\\s+", s)
+
+    # Regex dynamisch aus TITLE_TOKENS bauen
+    pattern = r"(?i)^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s+"
+
+    m = re.match(pattern, s)
     title = m.group(1).capitalize() if m else ""
-    s = re.sub(r"(?i)\\b(dr|prof|herr|frau|fräulein|witwe)\\.?\\s+", "", s)
+    if m:
+        s = s[m.end():].strip()
+
+    # Klammern löschen, Inhalt behalten
+    s = re.sub(r"[()]", "", s)
+
+    # Unicode-NFKD und Diakritika entfernen
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+
+    # alles außer Wort- und Leerzeichen löschen
     parts = re.sub(r"[^\w\s]", "", s).split()
+
     if not parts:
-        # komplett nichts übrig, gib leere Namen zurück
         return {"title": title, "forename": "", "familyname": ""}
+
     if len(parts) == 1:
         return {
             "title": title,
             "forename": parts[0].capitalize(),
             "familyname": "",
         }
+
     return {
         "title": title,
         "forename": parts[0].capitalize(),
         "familyname": " ".join(parts[1:]).capitalize(),
     }
-
 
 # ============================================================================
 #   Levenshtein-Fallback
@@ -896,6 +926,27 @@ def extract_metadata_names(text: str) -> list[str]:
 
     return names
 
+def merge_title_tokens(raw_persons: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    merged = []
+    skip_next = False
+    for i, p in enumerate(raw_persons):
+        if skip_next:
+            skip_next = False
+            continue
+        if p.get("name", "").strip().lower() in TITLE_TOKENS:
+            if i + 1 < len(raw_persons):
+                next_p = raw_persons[i + 1]
+                # immer Titel setzen, egal ob next_p bereits forename/familyname hat
+                next_p["title"] = p["name"].strip().capitalize()
+                merged.append(next_p)
+                skip_next = True
+            # sonst droppen
+        else:
+            merged.append(p)
+    return merged
+
+
+
 # ----------------------------------------------------------------------------
 # Split und Enrichment
 # ----------------------------------------------------------------------------
@@ -971,28 +1022,90 @@ def split_and_enrich_persons(
     print("[DEBUG] Merged raw_persons vor Filter:", merged_raw_persons)
 
     processed_raw_persons = []
+    skip_next = False
 
-    for p in merged_raw_persons:
+    for idx, p in enumerate(merged_raw_persons):
+        if skip_next:
+            skip_next = False
+            continue
+
         if isinstance(p, dict):
-            if (
-                p.get("forename")
-                and p.get("familyname")
-                and p.get("nodegoat_id")
-            ):
-                # ✅ Bereits gematcht, nicht verändern
+            if p.get("forename") and p.get("familyname") and p.get("nodegoat_id"):
                 processed_raw_persons.append(p)
                 continue
+
             elif "name" in p:
                 name_str = p["name"].strip()
+                tokens = [t.strip(",.;:").lower() for t in name_str.split()]
+
+                title_token = ""
+                gender = ""
+
+                if tokens:
+                    first = tokens[0]
+                    if first in FEMALE_TITLE_TOKENS:
+                        title_token = first
+                        gender = "female"
+                    elif first in MALE_TITLE_TOKENS:
+                        title_token = first
+                        gender = "male"
+
+                    rest_tokens = tokens[1:] if title_token else tokens
+                    rest_name = " ".join(rest_tokens).strip().title()
+
+                    if rest_name:
+                        new_person = {"name": rest_name}
+                        if title_token:
+                            new_person["title"] = title_token.capitalize()
+                            new_person["gender"] = gender
+                        processed_raw_persons.append(new_person)
+
+                    elif title_token:
+                        # Kein Rest → versuche nächsten zu mergen:
+                        if idx + 1 < len(merged_raw_persons):
+                            next_p = merged_raw_persons[idx + 1]
+                            next_name = next_p.get("name", "").strip()
+                            if next_name:
+                                tokens_next = [t.strip(",.;:").lower() for t in next_name.split()]
+                                merged_name = " ".join(tokens_next).title()
+                                new_person = {
+                                    "name": merged_name,
+                                    "title": title_token.capitalize(),
+                                    "gender": gender,
+                                }
+                                print(f"[DEBUG MERGE NEXT] Titel '{title_token}' + '{merged_name}'")
+                                processed_raw_persons.append(new_person)
+                                skip_next = True  # nächsten überspringen
+                            else:
+                                new_person = {"name": "", "title": title_token.capitalize(), "gender": gender}
+                                processed_raw_persons.append(new_person)
+                        else:
+                            new_person = {"name": "", "title": title_token.capitalize(), "gender": gender}
+                            processed_raw_persons.append(new_person)
+
+            else:
+                name_str = str(p).strip()
+                tokens = [t.lower() for t in name_str.split()]
+                if all(t in NON_PERSON_TOKENS for t in tokens):
+                    print(f"[FILTER] Droppe NON_PERSON-Pseudo-Name: '{name_str}'")
+                    continue
                 if name_str:
                     processed_raw_persons.append({"name": name_str})
+
+                else:
+                    continue
+
         else:
             name_str = str(p).strip()
+            tokens = [t.lower() for t in name_str.split()]
+            if all(t in NON_PERSON_TOKENS for t in tokens):
+                print(f"[FILTER] Droppe NON_PERSON-Pseudo-Name: '{name_str}'")
+                continue
             if name_str:
                 processed_raw_persons.append({"name": name_str})
 
     raw_persons = processed_raw_persons
-    print(f"[DEBUG] raw persons nach Zeile 717: {raw_persons}")
+    print(f"[DEBUG] raw persons nach Zeile 1116: {raw_persons}")
 
     print("[DEBUG] processed_raw_persons:", processed_raw_persons)
 

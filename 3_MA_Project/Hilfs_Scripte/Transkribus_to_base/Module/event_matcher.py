@@ -59,39 +59,41 @@ def extract_events_from_xml(
                 "beim",
             }:
                 continue
+            
             if token_clean[0].islower():
                 continue
 
+            # EINMAL match_place aufrufen
             match_list = place_matcher.match_place(token)
-            # ───── Schutz gegen leere Trefferliste ─────
             if not match_list:
-                # kein Treffer für dieses Token → nächstes Token
+                # Kein Treffer → nächstes Token
                 continue
-            # ───────────────────────────────────────────
 
-            # Nimm besten Treffer
-            # Ortstreffer holen und in Liste zwingen
-            match_list = place_matcher.match_place(token)
-            # kein Treffer → überspringen
-            if not match_list:
-                continue
-            # Falls kein Listentyp (z.B. einzelnes Dict), in Liste packen
+            # Falls kein Listentyp (z. B. einzelnes Dict), in Liste packen
             if not isinstance(match_list, (list, tuple)):
                 match_list = [match_list]
-            # Nimm jetzt den ersten Treffer
+
+            # Besten Treffer nehmen (du könntest auch max() nach Score machen)
             best_match = match_list[0]
+
+            # FINALER Plausi-Check: nur valide Orte zulassen
+            place_name = best_match["data"].get("name", "").strip()
+            if not place_matcher.is_valid_place_name(place_name):
+                print(f"[DEBUG] Droppe ungültigen Ort im Event: '{place_name}'")
+                continue  # Skip dieses Token
+
+            # Jetzt wirklich übernehmen → garantiert PlaceMatcher-geprüft
             places.append(
                 Place(
-                    name=best_match["data"].get("name", ""),
+                    name=place_name,
                     type="",
-                    alternate_place_name=best_match["data"].get(
-                        "alternate_place_name", ""
-                    ),
+                    alternate_place_name=best_match["data"].get("alternate_place_name", ""),
                     geonames_id=best_match["data"].get("geonames_id", ""),
                     wikidata_id=best_match["data"].get("wikidata_id", ""),
                     nodegoat_id=best_match["data"].get("nodegoat_id", ""),
                 )
             )
+
         if not places:
             return None
 

@@ -53,7 +53,7 @@ class Person:
         self.alternate_name = alternate_name
         self.familyname = familyname
         self.title = title
-        self.role = role_schema
+        self.role = role
         self.role_schema = role_schema
         self.gender = gender                 
         self.associated_place = associated_place
@@ -70,43 +70,48 @@ class Person:
 
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert ein Person-Objekt in ein Dictionary."""
+
+        # Normiere nur für das Schema, wenn nötig
+        if self.role and not self.role_schema:
+            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+            norm_role = normalize_and_match_role(self.role)
+            if norm_role:
+                self.role_schema = map_role_to_schema_entry(norm_role)
+
+        # Normiere Rolle nur für die Ausgabe
+        role_out = self.role or ""
+        if self.role:
+            from Module.Assigned_Roles_Module import normalize_and_match_role
+            normalized_role = normalize_and_match_role(self.role)
+            if normalized_role:
+                role_out = normalized_role
+
+        # Jetzt result bauen
         result = {
             "forename": self.forename or "",
             "alternate_name": self.alternate_name or "",
             "familyname": self.familyname or "",
             "title": self.title or "",
-            "role": self.role_schema or "",
+            "role": role_out,
+            "role_schema": self.role_schema or "",
             "gender": self.gender or "",
             "associated_place": self.associated_place or "",
             "nodegoat_id": self.nodegoat_id or "",
             "confidence": self.confidence or "",
             "needs_review": self.needs_review,
             "review_reason": self.review_reason,
+            "match_score": self.match_score if self.match_score is not None else 0,
+            "recipient_score": self.recipient_score if self.recipient_score is not None else 0,
+            "mentioned_count": int(self.mentioned_count) if self.mentioned_count else 1,
         }
 
-        # Optional: Organisation nur dann ergänzen, wenn Name oder ID vorhanden
+        #Organisation nur wenn vorhanden
         if self.associated_organisation or self.associated_organisation_id:
             result["associated_organisation"] = {
                 "name": self.associated_organisation or "",
                 "nodegoat_id": self.associated_organisation_id or ""
             }
-
-        # match_score
-        result["match_score"] = self.match_score if self.match_score is not None else 0
-
-        # recipient_score
-        result["recipient_score"] = self.recipient_score if self.recipient_score is not None else 0
-
-        # mentioned_count
-        result["mentioned_count"] = int(self.mentioned_count) if self.mentioned_count else 1
-
-        # Normierung der Rolle (optional)
-        if self.role:
-            from Module.Assigned_Roles_Module import normalize_and_match_role
-            normalized_role = normalize_and_match_role(self.role)
-            if normalized_role:
-                result["role"] = normalized_role
-
+            
         return result
 
 
@@ -233,6 +238,8 @@ class Place:
     @classmethod
     def from_dict(cls, data: Dict[str, str]) -> 'Place':
         """Erstellt ein Ortsobjekt aus einem Dictionary."""
+        if isinstance(data, str):
+            raise ValueError(f"Place.from_dict() erwartet Dict, bekam String: {data}")
         return cls(
             name=data.get("name", ""),
             type=data.get("type", ""),
