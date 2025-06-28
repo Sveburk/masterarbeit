@@ -156,13 +156,8 @@ class PlaceMatcher:
             logging.error(f"Fehler beim Laden der Ortsdaten aus {csv_path}: {e}")
             self.places_df = pd.DataFrame()
             self.known_name_map = {}
-        
-        except Exception as e:
-            logging.error(f"Fehler beim Laden der Ortsdaten aus {csv_path}: {e}")
-            self.places_df = pd.DataFrame()
-            self.known_name_map = {}
-
-        self.surrounding_place_lines: List[str] = []
+    
+        self.surrounding_place_lines: List[Dict[str, Any]] = []
     
     def log_unmatched_place(self, name: str, reason: str, geonames_id=None, wikidata_id=None, nodegoat_id=None):
         """
@@ -364,7 +359,7 @@ class PlaceMatcher:
         logging.info(f"Insgesamt {len(name_map)} Ortsnamen-Varianten im Index geladen")
         return name_map
 
-    def _match_combined_place_from_context(self, input_place: str) -> Optional[Dict[str, Any]]:
+    def _match_combined_place_from_context(self, input_place: str) -> Optional[List[Dict[str, Any]]]:
         combined_names = self._generate_combined_place_names()
 
         normalized_input = self._normalize_place_name(input_place)
@@ -379,7 +374,7 @@ class PlaceMatcher:
                     entry = self.known_name_map.get(norm_main)
                     if entry:
                         # Baue den Match Result zurück
-                        return self._build_match_result(entry, combined_name, 105, "combined_context_match")
+                        return [self._build_match_result(entry, combined_name, 105, "combined_context_match")]
         return None
 
     def _find_main_place_for_alternative(self, alt_name: str) -> Optional[str]:
@@ -388,25 +383,30 @@ class PlaceMatcher:
 
 
     def match_place(self, input_place: str) -> Optional[List[Dict[str, Any]]]:
+        if not self.is_valid_place_name(input_place):
+            print(f"[DEBUG] Dropping invalid place input: '{input_place}'")
+            self.log_unmatched_place(input_place, "invalid_name_heuristic")
+            return None
         for line in self.surrounding_place_lines:
-            for tag in line.get("places", []):
-                # wir vergleichen jetzt mit raw_extractedName, nicht mit placeName!
-                if tag.get("raw_extractedName") == input_place and tag.get("placeName"):
-                    real_name = tag["placeName"]
-                    # Ground-Truth-Lookup im DataFrame
-                    gt_df = self.places_df[self.places_df["name"] == real_name]
-                    if not gt_df.empty:
-                        row = gt_df.iloc[0].to_dict()
-                        return [ self._build_match_result(
-                            entry={
-                                "matched_name": row["name"],
-                                "all_variants": [row["name"]],
-                                "data": row
-                            },
-                            raw_input=input_place,
-                            score=120,
-                            method="custom_tag_placeName"
-                        ) ]
+            if isinstance(line, dict):
+                for tag in line.get("places", []):
+                    # wir vergleichen jetzt mit raw_extractedName, nicht mit placeName!
+                    if tag.get("raw_extractedName") == input_place and tag.get("placeName"):
+                        real_name = tag["placeName"]
+                        # Ground-Truth-Lookup im DataFrame
+                        gt_df = self.places_df[self.places_df["name"] == real_name]
+                        if not gt_df.empty:
+                            row = gt_df.iloc[0].to_dict()
+                            return [ self._build_match_result(
+                                entry={
+                                    "matched_name": row["name"],
+                                    "all_variants": [row["name"]],
+                                    "data": row
+                                },
+                                raw_input=input_place,
+                                score=120,
+                                method="custom_tag_placeName"
+                            ) ]
             if not input_place or not input_place.strip():
                 print(f"[DEBUG] Empty input_place: '{input_place}'")
                 return None
@@ -501,7 +501,7 @@ class PlaceMatcher:
             )
 
 
-            return unmatched_entry
+            return [unmatched_entry]
 
 
         except Exception as e:
@@ -602,6 +602,37 @@ class PlaceMatcher:
         if isinstance(raw, dict):
             raw = raw.get("name") or raw.get("extracted_placeName") or ""
         return str(raw).split(",", 1)[0]
+    def is_valid_place_name(self, name: str) -> bool:
+        """
+        Verhindert offensichtlichen Datenmüll bei Ortsnamen.
+        """
+        name = name.strip()
+
+        if not name:
+            return False
+
+        # Keine reinen Zahlen oder Jahreszahlen
+        if re.fullmatch(r'\d{2,4}(/\d{2,4})?', name):
+            return False
+
+        # Bindestrich-Fragment ohne Vokal
+        if '-' in name and not re.search(r'[aeiouäöüAEIOUÄÖÜ]', name):
+            return False
+
+        # Muss mindestens 3 Zeichen haben
+        if len(name) < 1:
+            return False
+
+        # Muss Buchstaben enthalten
+        if not re.search(r'[A-Za-zÄÖÜäöü]', name):
+            return False
+
+        # Blacklist
+        blacklist = {"geburtstag", "märz", "jahrgang", "ge-", "geb-", "den."}
+        if name.lower() in blacklist:
+            return False
+
+        return True
 
 def enrich_and_deduplicate(
     self,
@@ -807,25 +838,6 @@ def lookup_geonames(place_name: str, username: str) -> Optional[str]:
     return None
 
 
-def lookup_wikidata(place_name: str) -> Optional[str]:
-    query = f"""
-    SELECT ?place ?placeLabel WHERE {{
-      ?place rdfs:label "{place_name}"@de .
-      ?place wdt:P31/wdt:P279* wd:Q486972 .
-      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "de". }}
-    }}
-    LIMIT 1
-    """
-    url = "https://query.wikidata.org/sparql"
-    headers = {"Accept": "application/sparql-results+json"}
-    try:
-        response = requests.get(url, params={"query": query}, headers=headers)
-        results = response.json().get("results", {}).get("bindings", [])
-        if results:
-            return results[0]["place"]["value"].split("/")[-1]  # Extrahiere Q-ID
-    except Exception as e:
-        print(f"[WARN] Wikidata-Fehler bei '{place_name}': {e}")
-    return None
 
 def enrich_with_wikidata_if_missing(place: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -844,28 +856,37 @@ def enrich_with_wikidata_if_missing(place: Dict[str, Any]) -> Dict[str, Any]:
     return place
 
 def lookup_wikidata(place_name: str) -> Optional[str]:
+    """
+    Fragt Wikidata via SPARQL ab, ob es einen Ortseintrag mit diesem Label gibt.
+    Gibt die Q-ID zurück, falls gefunden.
+    """
     query = f"""
     SELECT ?place WHERE {{
       ?place rdfs:label "{place_name}"@de .
-      ?place wdt:P31/wdt:P279* wd:Q486972 .
+      ?place wdt:P31/wdt:P279* wd:Q486972 .  # wd:Q486972 = 'human settlement'
     }}
     LIMIT 1
     """
     url = "https://query.wikidata.org/sparql"
     headers = {
         "Accept": "application/sparql-results+json",
-        "User-Agent": "Transkribus2Base/1.0 (mailto:sven@example.com)"  # <– ersetzen mit gültiger E-Mail
+        "User-Agent": "Transkribus2Base/1.0 (mailto:YOUR_MAIL@example.com)"
     }
+
     try:
-        response = requests.get(url, params={"query": query}, headers=headers)
-        response.raise_for_status()  # wirft bei HTTP-Fehlern sofort Exception
+        response = requests.get(url, params={"query": query}, headers=headers, timeout=10)
+        response.raise_for_status()  # Wirft Exception bei HTTP-Fehlern
         results = response.json().get("results", {}).get("bindings", [])
         if results:
-            return results[0]["place"]["value"].split("/")[-1]  # Extrahiere Q-ID
+            qid = results[0]["place"]["value"].split("/")[-1]
+            print(f"[WIKIDATA] Treffer für '{place_name}': {qid}")
+            return qid
+        else:
+            print(f"[WIKIDATA] Kein Wikidata-Treffer für '{place_name}'")
     except Exception as e:
         print(f"[WARN] Wikidata-Fehler bei '{place_name}': {e}")
-    return None
 
+    return None
 
 def consolidate_places(custom_data: Dict[str, Any],
                        place_matcher: PlaceMatcher

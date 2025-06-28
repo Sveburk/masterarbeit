@@ -44,10 +44,51 @@
 
 
 %___________________________________________________________________________
-\noindent\hrulefill
-\section{Feststellungen und aufsetzunf von VM, MongoDB,Cantaloupe und Website \small 21.06.2025}
 
-\textbf{Feststellung:} place_macther und alle anderen nutzen noch keine Infos, die durch eigenes Tagging aus Transkribus kommt (bspw. Ort "H" wird anotiert als "Herrischried").
+
+\noindent\hrulefill
+
+\section{Offene Probleme mit der Pipeline \small 27.06.2025}
+
+
+Nr.	Problem	Was passiert?
+\textbf{1} Rollen werden nicht normiert	role leer, obwohl Kontext sie liefert
+\textbf{2} Titel („Herr“, „Fräulein“) fehlt	Gender und Anrede-Infos bleiben ungenutzt
+\textbf{3} Doppelte Personen	Gleiche Personen (Teilname, Vollname) werden nicht gemerged
+\textbf{4} Pseudo-Events	Beliebiger Fließtext wird als Event gespeichert
+\textbf{5} Orte doppelt / keine Typisierung	alternate_place_name hat Duplikate, type fehlt
+\textbf{6} Autoren & Empfänger leer	Signaturen & Empfängerzeilen werden nicht als authors/recipients gesetzt
+\textbf{7} Falsche Zuordnungen	Satzfetzen werden als Organisation gespeichert (associated\_organisation)
+\textbf{8} Format- & Validierungslücken	Inkonsistente IDs, recipient_score = 0, leeres Gender
+
+\textbf{Problem A} \\ 
+Dein Context-Window gibt \texttt{recipient\_score=100} an Stellen, wo es nicht sollte, weil es nicht prüft, ob der „Name“ ein valider Name ist. \\
+\textit{Beispiel: "der doch" darf nie ein Empfänger sein.} \\
+
+\vspace{0.5em}
+
+\textbf{Problem B} \\ 
+Dein Tokenizer zerschneidet Grußformeln oder Fließtext in Pseudo-Namen. \\
+\textit{Beispiel: Alfons! So geht es im Leben. wird zu Alfons! Vielleicht.} \\
+
+Du brauchst hier:
+\begin{itemize}
+  \item stärkere Stoppwörter
+  \item eine strictere Regex: Nur isolierte Namen/Zeilen + Custom-Tags, keine halben Sätze.
+\end{itemize}
+
+\vspace{0.5em}
+
+\textbf{Problem C} \\ 
+Die Rolle „Herrn“ wird fälschlich als Person mit eigenem Slot gehalten, statt als \texttt{title}. \\
+Das muss unbedingt in \texttt{postprocess\_roles} in den \texttt{title} wandern.
+
+\noindent\hrulefill
+
+\section{Feststellungen und Aufsetzung von VM, MongoDB, Cantaloupe und Website \small 21.06.2025}
+
+\textbf{Feststellung:} \\
+Der \texttt{place\_matcher} und alle anderen nutzen noch keine Infos, die durch eigenes Tagging aus Transkribus kommen (z.\,B. Ort ``H'' wird annotiert als ``Herrischried'').
 
 
 

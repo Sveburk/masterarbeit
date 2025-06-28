@@ -12,7 +12,8 @@ in document_schemas.py definierten Klassen für Objektorientierung und Datenvali
 # --------------- Modulpfade vorbereiten ---------------
 import os
 import sys
-#from tkinter import N
+
+# from tkinter import N
 import traceback
 from collections import defaultdict, Counter
 from pathlib import Path
@@ -67,6 +68,8 @@ from Module import (
     deduplicate_and_group_persons,
     count_mentions_in_transcript_contextual,
     infer_gender_for_person,
+    normalize_name_string,
+    merge_title_tokens,
     # letter-metadata-matcher
     match_authors,
     match_recipients,
@@ -116,7 +119,8 @@ from Module import (
 
 
 # --------------- Pfadkonfiguration ---------------
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
+# TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
@@ -349,6 +353,7 @@ def fuzzy_match_name(
     Vergleicht einen Namen mit einer Liste möglicher Kandidaten und liefert den besten Match über Threshold.
     Verwendet Rapidfuzz mit vorheriger Namensnormalisierung.
     """
+    
     best_match, best_score = None, 0
     normalized_name = normalize_name_string(
         name
@@ -570,7 +575,9 @@ def parse_custom_attrs(attr_str: str) -> Dict[str, str]:
     Wandelt z.B. "offset:36; length:13;" in {"offset":"36", "length":"13"} um.
     """
     if not isinstance(attr_str, str):
-        print(f"[WARN] parse_custom_attrs aufgerufen mit {type(attr_str)}: {attr_str}")
+        print(
+            f"[WARN] parse_custom_attrs aufgerufen mit {type(attr_str)}: {attr_str}"
+        )
         return dict(attr_str) if isinstance(attr_str, dict) else {}
     result: Dict[str, str] = {}
     for part in attr_str.split(";"):
@@ -579,7 +586,6 @@ def parse_custom_attrs(attr_str: str) -> Dict[str, str]:
         key, val = part.split(":", 1)
         result[key.strip()] = val.strip()
     return result
-
 
 
 # Assuming parse_custom_attrs, extract_person_from_custom, extract_date_from_custom,
@@ -626,7 +632,7 @@ def extract_organization_from_custom(
 
 def extract_custom_attributes(
     root: ET.Element,
-    known_persons: List[Dict[str, str]] = None,
+    known_persons: Optional[List[Dict[str, str]]] = None,
     place_matcher_instance=None,
 ) -> Dict[str, List[Dict[str, Any]]]:
     # Verwende known_persons_list als Standard, wenn kein known_persons übergeben wurde
@@ -644,8 +650,18 @@ def extract_custom_attributes(
         custom_attr = text_line.get("custom", "")
         if not custom_attr:
             continue
-        
-        print(f"[DEBUG] CUSTOM-TAG in Zeile: '{text_line.find('.//ns:TextEquiv/ns:Unicode', NS).text if text_line.find('.//ns:TextEquiv/ns:Unicode', NS) is not None else ''}'"f" / custom: '{custom_attr}'")
+        reading_order = text_line.get("readingOrder", "")
+        line_index = 0
+        if "{index:" in reading_order:
+            try:
+                line_index = int(re.search(r"index:(\d+)", reading_order).group(1))
+            except Exception:
+                pass
+
+        print(
+            f"[DEBUG] CUSTOM-TAG in Zeile: '{text_line.find('.//ns:TextEquiv/ns:Unicode', NS).text if text_line.find('.//ns:TextEquiv/ns:Unicode', NS) is not None else ''}'"
+            f" / custom: '{custom_attr}'"
+        )
 
         # Extract the line text
         text_equiv = text_line.find(".//ns:TextEquiv/ns:Unicode", NS)
@@ -656,6 +672,8 @@ def extract_custom_attributes(
             custom_attr, text_content, known_persons
         )
         if persons:
+            for p in persons:
+                p["line_index"] = line_index
             result["persons"].extend(persons)
 
         # 2) Rollen
@@ -664,8 +682,11 @@ def extract_custom_attributes(
             offset = int(data.get("offset", 0))
             length = int(data.get("length", 0))
             snippet = text_content[offset : offset + length]
-            result["roles"].append(
-                {"raw": snippet, "offset": offset, "length": length}
+            result["roles"].append({
+                "raw": snippet,
+                "offset": offset,
+                "length": length,
+                "line_index": line_index}
             )
 
         # 3) Organisationen
@@ -683,12 +704,16 @@ def extract_custom_attributes(
             custom_attr, text_content, place_matcher_instance
         )
         if places:
-            print(f"[DEBUG] extract_custom_attributes: Erkannte Orte in Zeile: {places} (Typ: {type(places)})")
+            print(
+                f"[DEBUG] extract_custom_attributes: Erkannte Orte in Zeile: {places} (Typ: {type(places)})"
+            )
             for idx, p in enumerate(places):
                 print(f"  [DEBUG]   Place[{idx}]: {p} (Typ: {type(p)})")
             result["places"].extend(places)
         else:
-            print(f"[DEBUG] extract_custom_attributes: Keine Orte erkannt in Zeile: '{text_content}' / custom: '{custom_attr}'")
+            print(
+                f"[DEBUG] extract_custom_attributes: Keine Orte erkannt in Zeile: '{text_content}' / custom: '{custom_attr}'"
+            )
 
 
     # Debug-Ausgabe
@@ -703,11 +728,16 @@ def extract_custom_attributes(
     return result
 
 
-def extract_person_data(name: str) -> dict[str, str]:
-    """Zerlegt den erkannten Namen in Vor- und Nachname."""
+
+def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
+    name = row.get("name", "").strip()
+    return split_name_string(name)
+
+# 2) Für reinen Namen:
+def split_name_string(name: str) -> Dict[str, str]:
     name = name.strip()
     parts = name.split(" ", 1)
-    forename: str = parts[0] if parts else ""
+    forename = parts[0] if parts else ""
     familyname = parts[1] if len(parts) > 1 else ""
     return {
         "forename": forename,
@@ -741,7 +771,7 @@ def extract_person_from_custom(
         "kameradin": "female",
         "kamerad": "male",
         "genosse": "male",
-        "genossin": "female"
+        "genossin": "female",
     }
 
     for pattern in [r"(?i)person\s*\{([^}]+)\}"]:
@@ -758,36 +788,40 @@ def extract_person_from_custom(
                 base = {"forename": fn, "familyname": ln}
                 match, score = match_person(base, candidates=known_persons)
                 if match and score > 0:
-                    persons.append({
-                        "forename":         match["forename"],
-                        "familyname":       match["familyname"],
-                        "role":             "",  
-                        "associated_place": "",
-                        "associated_organisation": "",
-                        "alternate_name":   match.get("alternate_name", ""),
-                        "title":            match.get("title", ""),
-                        "gender":           match.get("gender", ""),
-                        "nodegoat_id":      match.get("nodegoat_id", ""),
-                        "match_score":      score,
-                        "confidence":       "custom_tag_name",
-                    })
+                    persons.append(
+                        {
+                            "forename": match["forename"],
+                            "familyname": match["familyname"],
+                            "role": "",
+                            "associated_place": "",
+                            "associated_organisation": "",
+                            "alternate_name": match.get("alternate_name", ""),
+                            "title": match.get("title", ""),
+                            "gender": match.get("gender", ""),
+                            "nodegoat_id": match.get("nodegoat_id", ""),
+                            "match_score": score,
+                            "confidence": "custom_tag_name",
+                        }
+                    )
                 else:
                     # keine Ground-Truth gefunden → trotzdem vermerken und review flag setzen
-                    persons.append({
-                        "forename":         fn,
-                        "familyname":       ln,
-                        "role":             "",
-                        "associated_place": "",
-                        "associated_organisation": "",
-                        "alternate_name":   "",
-                        "title":            "",
-                        "gender":           "",
-                        "nodegoat_id":      "",
-                        "match_score":      0,
-                        "confidence":       "custom_tag_name",
-                        "needs_review":     True,
-                    })
-                continue   # ganz wichtig: verlasse hier die weitere Offset-Logik
+                    persons.append(
+                        {
+                            "forename": fn,
+                            "familyname": ln,
+                            "role": "",
+                            "associated_place": "",
+                            "associated_organisation": "",
+                            "alternate_name": "",
+                            "title": "",
+                            "gender": "",
+                            "nodegoat_id": "",
+                            "match_score": 0,
+                            "confidence": "custom_tag_name",
+                            "needs_review": True,
+                        }
+                    )
+                continue  # ganz wichtig: verlasse hier die weitere Offset-Logik
             if "offset" in person_data and "length" in person_data:
                 offset = int(person_data["offset"])
                 length = int(person_data["length"])
@@ -806,11 +840,18 @@ def extract_person_from_custom(
                         break
 
                 # Titel aus Namen entfernen
-                name_tokens = [tok for tok in tokens if tok.lower().strip(".,") != detected_title]
+                name_tokens = [
+                    tok
+                    for tok in tokens
+                    if tok.lower().strip(".,") != detected_title
+                ]
                 person_name_clean = " ".join(name_tokens)
 
                 # Haupt-Zerlegung des Namens
-                person_info = extract_person_data(person_name_clean)
+                person_info = split_name_string(person_name_clean)
+                
+
+
 
                 # Ergänze Titel & Gender
                 if detected_title:
@@ -821,13 +862,13 @@ def extract_person_from_custom(
                 role = ""
                 role_match = re.match(
                     r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+en)\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)",
-                    person_name
+                    person_name,
                 )
                 if role_match:
                     role_raw = role_match.group("role").rstrip("en")
                     role = ROLE_MAPPINGS_DE.get(role_raw.lower(), "")
                     person_name = role_match.group("name")
-                    person_info = extract_person_data(person_name)  # Erneut zerlegen nach Rollenerkennung
+                    split_name_string(person_name)# Erneut zerlegen nach Rollenerkennung
                     person_info["role"] = role
 
                 # Fallback: bekannte Titel aus Groundtruth verwenden
@@ -837,26 +878,40 @@ def extract_person_from_custom(
                         for p in known_persons
                         if p.get("title")
                     )
-                    for title in sorted(possible_titles, key=lambda x: -len(x)):
+                    for title in sorted(
+                        possible_titles, key=lambda x: -len(x)
+                    ):
                         if re.match(rf"^{re.escape(title)}\b", person_name):
-                            rest = person_name[len(title):].strip()
-                            person_info = extract_person_data(rest)
+                            rest = person_name[len(title) :].strip()
+                            person_info = split_name_string(rest)
                             person_info["title"] = title
                             break
 
                 # Fuzzy-Matching mit bekannten Personen
-                match, score = match_person(person_info, candidates=known_persons)
+                match, score = match_person(
+                    person_info, candidates=known_persons
+                )
                 if match:
                     person_info["nodegoat_id"] = match.get("nodegoat_id", "")
-                    person_info["alternate_name"] = match.get("alternate_name", "")
-                    person_info["title"] = match.get("title", person_info.get("title", ""))
-                    person_info["gender"] = match.get("gender", person_info.get("gender", ""))
+                    person_info["alternate_name"] = match.get(
+                        "alternate_name", ""
+                    )
+                    person_info["title"] = match.get(
+                        "title", person_info.get("title", "")
+                    )
+                    person_info["gender"] = match.get(
+                        "gender", person_info.get("gender", "")
+                    )
                     person_info["match_score"] = score
 
-                    print(f"[Debug] Fuzzy Matching in Transkribus_to_base hat die person_info{person_info},score{score}")
+                    print(
+                        f"[Debug] Fuzzy Matching in Transkribus_to_base hat die person_info{person_info},score{score}"
+                    )
 
                 # Ort zuordnen, falls im selben Tag vorhanden
-                place_dicts = extract_place_from_custom(custom_attr, text_content)
+                place_dicts = extract_place_from_custom(
+                    custom_attr, text_content
+                )
                 person_place = place_dicts[0]["name"] if place_dicts else ""
 
                 # Finales Dictionary anlegen
@@ -867,7 +922,9 @@ def extract_person_from_custom(
                         "role": person_info.get("role", ""),
                         "associated_place": person_place,
                         "associated_organisation": "",
-                        "alternate_name": person_info.get("alternate_name", ""),
+                        "alternate_name": person_info.get(
+                            "alternate_name", ""
+                        ),
                         "title": person_info.get("title", ""),
                         "gender": person_info.get("gender", ""),
                         "nodegoat_id": person_info.get("nodegoat_id", ""),
@@ -1009,6 +1066,10 @@ def extract_place_from_custom(
                                 }
                             )
                     except Exception as e:
+                        if isinstance(place_name, dict):
+                            Place(**place_name)
+                        else:
+                            print(f"[ERROR] Kein Dict: {place_name}")
                         print(
                             f"Fehler beim Ortsmatching für '{place_name}': {e}"
                         )
@@ -1034,7 +1095,9 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     """
     # Defensive: Nur String akzeptieren
     if not isinstance(attr_str, str):
-        print(f"[WARN] parse_custom_attributes aufgerufen mit {type(attr_str)}: {attr_str}")
+        print(
+            f"[WARN] parse_custom_attributes aufgerufen mit {type(attr_str)}: {attr_str}"
+        )
         return dict(attr_str) if isinstance(attr_str, dict) else {}
     result = {}
     for part in attr_str.split(";"):
@@ -1111,8 +1174,8 @@ def process_transkribus_file(
         )
 
         # 3) Metadaten extrahieren (sofern vorhanden)
-        metadata = extract_metadata_from_xml(root)
-        filename = f"{folder}_{subdir}_{xml_file.replace('.xml', '')}"
+        metadata: Dict[str, str] = extract_metadata_from_xml(root)
+        filename = f"{seven_digit_folder}_{subdir}_{xml_file.replace('.xml', '')}"
         document_type = get_document_type(filename, xml_path)
         metadata["object_type"] = "Dokument"
 
@@ -1134,6 +1197,7 @@ def process_transkribus_file(
             return None
 
         # 5) Autor/Empfänger matchen und mit LLM bereinigen
+        mentioned_persons = []
         raw_authors = match_authors(transcript_text)
         raw_recipients = match_recipients(transcript_text, mentioned_persons)
 
@@ -1349,32 +1413,32 @@ def process_transkribus_file(
                     )
 
         # 10) Person-Objekte erstellen
-        mentioned_persons = []
         for d in enriched_persons:
-            if (
-                not d.get("forename")
-                and not d.get("familyname")
-                and not d.get("role")
-            ):
-                continue  # Nur komplett leere Personen überspringen
+            # Hole Werte robust
+            forename = (d.get("forename") if isinstance(d, dict) else getattr(d, "forename", "")) or ""
+            familyname = (d.get("familyname") if isinstance(d, dict) else getattr(d, "familyname", "")) or ""
+            role = (d.get("role") if isinstance(d, dict) else getattr(d, "role", "")) or ""
+
+
+            if not forename and not familyname and not role:
+                continue  # Skip nur komplett leere
 
             mentioned_persons.append(
                 Person(
-                    forename=d.get("forename", ""),
-                    familyname=d.get("familyname", ""),
-                    alternate_name=str(d.get("alternate_name", "") or ""),
-                    title=str(d.get("title", "") or ""),
-                    role=d.get("role", ""),
-                    gender=d.get("gender", ""),
-                    associated_place=d.get("associated_place", ""),
-                    associated_organisation=d.get(
-                        "associated_organisation", ""
-                    ),
-                    nodegoat_id=str(d.get("nodegoat_id", "") or ""),
-                    match_score=d.get("match_score"),
-                    confidence=d.get("confidence", ""),
+                    forename=forename,
+                    familyname=familyname,
+                    alternate_name=str(d.get("alternate_name", "") if isinstance(d, dict) else getattr(d, "alternate_name", "") or ""),
+                    title=str(d.get("title", "") if isinstance(d, dict) else getattr(d, "title", "") or ""),
+                    role=role,
+                    gender=d.get("gender", "") if isinstance(d, dict) else getattr(d, "gender", ""),
+                    associated_place=d.get("associated_place", "") if isinstance(d, dict) else getattr(d, "associated_place", ""),
+                    associated_organisation=d.get("associated_organisation", "") if isinstance(d, dict) else getattr(d, "associated_organisation", ""),
+                    nodegoat_id=str(d.get("nodegoat_id", "") if isinstance(d, dict) else getattr(d, "nodegoat_id", "") or ""),
+                    match_score=d.get("match_score") if isinstance(d, dict) else getattr(d, "match_score", None),
+                    confidence=d.get("confidence", "") if isinstance(d, dict) else getattr(d, "confidence", ""),
                 )
             )
+
 
         # 11) Orte verarbeiten - erfolgt in einem einzigen Block weiter unten
         # 12) Organization-Objekte erstellen
@@ -1590,9 +1654,13 @@ def process_transkribus_file(
                 gender = infer_gender_for_person(p)
                 if gender:
                     p.gender = gender
-                    print(f"[GENDER] Setze Gender für {p.forename} {p.familyname} → {gender}")
+                    print(
+                        f"[GENDER] Setze Gender für {p.forename} {p.familyname} → {gender}"
+                    )
                 else:
-                    print("⚠ Fehler, kein Gender aus dem Text extrahiert oder der Groundtruth. ⚠")
+                    print(
+                        "⚠ Fehler, kein Gender aus dem Text extrahiert oder der Groundtruth. ⚠"
+                    )
 
         # Autoren identifizieren
         doc.authors = [
@@ -1724,22 +1792,27 @@ def process_subdirectories(
                     org_list,
                 )
 
-
 def prepare_persons_and_infer(
-    raw_persons: List[Dict[str, Any]],
+    raw_persons: List[Union[str, Dict[str, str]]],
     transcript: str,
     folder: str,
     document_type: str,
 ) -> Tuple[List[Person], List[Person], List[Person]]:
     """
-    1) split & enrich via split_and_enrich_persons
-    2) extract inline roles
-    3) merge tokens + roles
-    4) dedupe & group into Person-objects
-    5) infer authors & recipients
+    1) merge title tokens
+    2) split & enrich via split_and_enrich_persons
+    3) extract inline roles
+    4) merge tokens + roles
+    5) dedupe & group into Person-objects
+    6) infer authors & recipients
 
     Returns: (grouped_persons, authors, recipients)
     """
+
+    # 🔗 NEU: Titel-Token mit Personen zusammenführen
+    raw_persons = merge_title_tokens(raw_persons)
+    print(f"[DEBUG] Neue prepare_persons_and_infer merge_title_tokens: {raw_persons}")
+
     # 1) split & fuzzy-match
     matched, unmatched = split_and_enrich_persons(
         raw_persons, transcript, folder, KNOWN_PERSONS
@@ -1747,7 +1820,6 @@ def prepare_persons_and_infer(
     custom_data["persons"] = unmatched
 
     # 2) inline-role-match on the matched persons
-    # prepare dicts for assign_roles
     matched_dicts = [
         p.__dict__ if isinstance(p, Person) else p for p in matched
     ]
@@ -1766,10 +1838,11 @@ def prepare_persons_and_infer(
     # 4) dedupe & group
     grouped = deduplicate_and_group_persons(combined)
 
-    # 5) infer authors/recipients using the fully enriched persons
+    # 5) infer authors/recipients
     authors, recipients = infer_authors_recipients(
         transcript, document_type, grouped
     )
+
     return grouped, authors, recipients
 
 
@@ -1887,14 +1960,18 @@ def process_single_xml(
 
     lines = extract_place_lines_from_xml(root)
     place_m.surrounding_place_lines = lines
-    
+
     # 2) Basis-Metadaten + document_type
     metadata = extract_metadata_from_xml(root)
     filename = f"{folder}_{subdir}_{xml_file.replace('.xml','')}"
 
     # Dokumenttyp aus <Page custom="..."> auslesen
-    page_elem = root.find(".//{http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15}Page")
-    custom = page_elem.attrib.get("custom", "") if page_elem is not None else ""
+    page_elem = root.find(
+        ".//{http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15}Page"
+    )
+    custom = (
+        page_elem.attrib.get("custom", "") if page_elem is not None else ""
+    )
     document_type = "Brief"  # Default-Wert
 
     for entry in custom.split():
@@ -1936,12 +2013,12 @@ def process_single_xml(
 
     # 6) Alles ins metadata-Dict packen
     metadata.update(
-    {
-        "mentioned_places": [pl.to_dict() for pl in mentioned_places],
-        "creation_place": creation_place or {},
-        "recipient_place": recipient_place or {},
-        "creation_date": creation_date or "",
-    }
+        {
+            "mentioned_places": [pl.to_dict() for pl in mentioned_places],
+            "creation_place": creation_place or {},
+            "recipient_place": recipient_place or {},
+            "creation_date": creation_date or "",
+        }
     )
     # 6) Transkript
     transcript = extract_text_from_xml(root)
@@ -1949,7 +2026,9 @@ def process_single_xml(
         print(f"[WARN] Leeres oder zu kurzes Transkript: {xml_file}")
         return
     print("\n")
-    print(f"[DEBUG] extrahiertes Transkript:\n********************************\n{transcript}\n********************************")
+    print(
+        f"[DEBUG] extrahiertes Transkript:\n********************************\n{transcript}\n********************************"
+    )
     print("\n")
 
     # 7) Datumsangaben aus Fließtext extrahieren (Module/date_matcher.py)
@@ -2075,7 +2154,6 @@ def process_single_xml(
                     ):
                         mentioned_places.append(new_place)
 
-
             except Exception as e:
                 print(
                     f"[WARN] API-Fallback für Ort '{p['name']}' fehlgeschlagen: {e}"
@@ -2093,20 +2171,22 @@ def process_single_xml(
     events = extract_events_from_xml(xml_path, place_m)
 
     # 15) Document Type
-    
+
     if "document_type" not in metadata or not metadata["document_type"]:
         metadata["document_type"] = document_type
 
     # Gender-Feld für alle finalen Personen ergänzen (nach Deduplikation)
     for person in mentioned_persons:
         if not person.gender:
-            person.gender = infer_gender_for_person(person.to_dict(), known_persons_list)
-
+            person.gender = infer_gender_for_person(
+                person.to_dict(), known_persons_list
+            )
 
     for person in authors + recipients:
         if not person.gender:
-            person.gender = infer_gender_for_person(person.to_dict(), known_persons_list)
-
+            person.gender = infer_gender_for_person(
+                person.to_dict(), known_persons_list
+            )
 
     # 16) BaseDocument zusammenbauen
     doc = BaseDocument(
@@ -2116,9 +2196,10 @@ def process_single_xml(
         content_transcription=transcript,
         authors=authors,
         recipients=recipients,
-        mentioned_persons =[
-        p for p in mentioned_persons
-        if p.nodegoat_id or p.forename or p.familyname or p.role
+        mentioned_persons=[
+            p
+            for p in mentioned_persons
+            if p.nodegoat_id or p.forename or p.familyname or p.role
         ],
         mentioned_organizations=[
             Organization(
@@ -2186,8 +2267,10 @@ def process_single_xml(
 
     # Failsafe: Personen mit NG-ID dürfen niemals rausfliegen, auch wenn sie keinen Namen oder Rolle haben
     doc.mentioned_persons = [
-        p for p in doc.mentioned_persons
-        if p.nodegoat_id or (p.forename.strip() or p.familyname.strip() or p.role.strip())
+        p
+        for p in doc.mentioned_persons
+        if p.nodegoat_id
+        or (p.forename.strip() or p.familyname.strip() or p.role.strip())
     ]
 
     # Rollen verarbeiten
@@ -2380,8 +2463,6 @@ def infer_authors_recipients(
     )
 
     ensure_author_recipient_in_mentions(temp_doc, text)
-
-
 
     return temp_doc.authors, temp_doc.recipients
 

@@ -1,39 +1,40 @@
 \babel@toc {ngerman}{}\relax 
-\contentsline {section}{\numberline {1}Feststellungen und aufsetzunf von VM, MongoDB,Cantaloupe und Website \small 21.06.2025}{3}{section.1}%
-\contentsline {section}{\numberline {2}Genderspezifischer Bias \small 02.06.2025}{3}{section.2}%
-\contentsline {section}{\numberline {3}Prozessablauf Grafiken erstellen\small 29.05.2025}{5}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Diagram english}{8}{subsection.3.1}%
-\contentsline {section}{\numberline {4}Debugging place\_names mit Malus und Bonus - GND-ID Überlegungen \small 23.05.2025}{9}{section.4}%
-\contentsline {section}{\numberline {5}Debugging \small 22.05.2025}{11}{section.5}%
-\contentsline {section}{\numberline {6}Event- und Orts-Matching Debugging \small 18.05.2025}{12}{section.6}%
-\contentsline {section}{\numberline {7}Änderungen in Transkribus\_II\_Test.py und infer\_authors\_recipients \small 08.05.2025}{13}{section.7}%
-\contentsline {section}{\numberline {8}Systemübersicht Virtuelle Maschine \small 07.05.2025}{13}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Fehleranalyse und Verbesserungsvorschläge der JSON-Extraktion}{14}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Vorgeschlagene Verbesserungen}{14}{subsection.8.2}%
-\contentsline {section}{\numberline {9}Änderungen im assigned\_roles\_module und person\_matcher\small 06.05.2025}{14}{section.9}%
-\contentsline {section}{\numberline {10}Verbesserte Deduplizierung in Person- und Orts-Matchern \small 30.04.2025}{15}{section.10}%
-\contentsline {section}{\numberline {11}Vereinheitlichung der Schnittstellen und Dataframes \small 14.04.2025}{16}{section.11}%
-\contentsline {section}{\numberline {12}Validierung und Orts-Matching \small 13.04.2025}{17}{section.12}%
-\contentsline {section}{\numberline {13}LLM-Anreicherung und Metadaten-Extraktion \small 12.04.2025}{17}{section.13}%
-\contentsline {section}{\numberline {14}Integration mit Transkribus XML Export \small 11.04.2025}{18}{section.14}%
-\contentsline {section}{\numberline {15}Integration von person\_matcher.py mit transkribus\_to\_base\_schema.py \small 09.04.2025}{19}{section.15}%
-\contentsline {section}{\numberline {16}Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \small 08.04.2025}{20}{section.16}%
-\contentsline {section}{\numberline {17}Implementierung der Datenextraktions-Pipeline \small 03.04.2025}{21}{section.17}%
-\contentsline {section}{\numberline {18}Festlegung Tagging Regeln \small 11.03.2025 }{22}{section.18}%
-\contentsline {section}{\numberline {19}Überblick Hilfscript\\ChatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}{24}{section.19}%
-\contentsline {section}{\numberline {20}Voraussetzungen \& Einrichtung}{24}{section.20}%
-\contentsline {subsection}{\numberline {20.1}API Key setzen}{24}{subsection.20.1}%
-\contentsline {subsection}{\numberline {20.2}Python-Bibliotheken installieren}{24}{subsection.20.2}%
-\contentsline {section}{\numberline {21}Funktionsweise}{24}{section.21}%
-\contentsline {subsection}{\numberline {21.1}Basis-Einstellungen}{24}{subsection.21.1}%
-\contentsline {subsection}{\numberline {21.2}Verzeichnisstruktur durchlaufen}{24}{subsection.21.2}%
-\contentsline {subsection}{\numberline {21.3}Verarbeitung der XML-Dateien}{24}{subsection.21.3}%
-\contentsline {subsection}{\numberline {21.4}Strukturierung der Daten in JSON}{25}{subsection.21.4}%
-\contentsline {subsection}{\numberline {21.5}API-Anfrage an OpenAI}{25}{subsection.21.5}%
-\contentsline {section}{\numberline {22}Fehlerbehandlung}{25}{section.22}%
-\contentsline {section}{\numberline {23}Fazit}{25}{section.23}%
-\contentsline {section}{\numberline {24}Tagging der JPGEGs im AppleFinder \small 26.10.24 }{25}{section.24}%
-\contentsline {subsection}{\numberline {24.1}AppleFinder Tags}{25}{subsection.24.1}%
-\contentsline {section}{\numberline {25}JPG Datenbereinigung - leere Seiten löschen \small 25.10.2024 }{26}{section.25}%
-\contentsline {subsection}{\numberline {25.1}Anmerkung}{26}{subsection.25.1}%
-\contentsline {section}{\numberline {26}Datennormalisierung PDF zu JPEG \small 24.10.2024}{26}{section.26}%
+\contentsline {section}{\numberline {1}Offene Probleme mit der Pipeline \small 27.06.2025}{2}{section.1}%
+\contentsline {section}{\numberline {2}Feststellungen und Aufsetzung von VM, MongoDB, Cantaloupe und Website \small 21.06.2025}{2}{section.2}%
+\contentsline {section}{\numberline {3}Genderspezifischer Bias \small 02.06.2025}{2}{section.3}%
+\contentsline {section}{\numberline {4}Prozessablauf Grafiken erstellen\small 29.05.2025}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Diagram english}{8}{subsection.4.1}%
+\contentsline {section}{\numberline {5}Debugging place\_names mit Malus und Bonus - GND-ID Überlegungen \small 23.05.2025}{9}{section.5}%
+\contentsline {section}{\numberline {6}Debugging \small 22.05.2025}{11}{section.6}%
+\contentsline {section}{\numberline {7}Event- und Orts-Matching Debugging \small 18.05.2025}{12}{section.7}%
+\contentsline {section}{\numberline {8}Änderungen in Transkribus\_II\_Test.py und infer\_authors\_recipients \small 08.05.2025}{13}{section.8}%
+\contentsline {section}{\numberline {9}Systemübersicht Virtuelle Maschine \small 07.05.2025}{13}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Fehleranalyse und Verbesserungsvorschläge der JSON-Extraktion}{14}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Vorgeschlagene Verbesserungen}{14}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Änderungen im assigned\_roles\_module und person\_matcher\small 06.05.2025}{14}{section.10}%
+\contentsline {section}{\numberline {11}Verbesserte Deduplizierung in Person- und Orts-Matchern \small 30.04.2025}{15}{section.11}%
+\contentsline {section}{\numberline {12}Vereinheitlichung der Schnittstellen und Dataframes \small 14.04.2025}{16}{section.12}%
+\contentsline {section}{\numberline {13}Validierung und Orts-Matching \small 13.04.2025}{17}{section.13}%
+\contentsline {section}{\numberline {14}LLM-Anreicherung und Metadaten-Extraktion \small 12.04.2025}{17}{section.14}%
+\contentsline {section}{\numberline {15}Integration mit Transkribus XML Export \small 11.04.2025}{18}{section.15}%
+\contentsline {section}{\numberline {16}Integration von person\_matcher.py mit transkribus\_to\_base\_schema.py \small 09.04.2025}{19}{section.16}%
+\contentsline {section}{\numberline {17}Objektorientierte Umstrukturierung der Datenextraktions-Pipeline \small 08.04.2025}{20}{section.17}%
+\contentsline {section}{\numberline {18}Implementierung der Datenextraktions-Pipeline \small 03.04.2025}{21}{section.18}%
+\contentsline {section}{\numberline {19}Festlegung Tagging Regeln \small 11.03.2025 }{22}{section.19}%
+\contentsline {section}{\numberline {20}Überblick Hilfscript\\ChatGPT\_Api\_TranskribusXML\_to\_JSONv3.py \\\small 06.03.2025}{24}{section.20}%
+\contentsline {section}{\numberline {21}Voraussetzungen \& Einrichtung}{24}{section.21}%
+\contentsline {subsection}{\numberline {21.1}API Key setzen}{24}{subsection.21.1}%
+\contentsline {subsection}{\numberline {21.2}Python-Bibliotheken installieren}{24}{subsection.21.2}%
+\contentsline {section}{\numberline {22}Funktionsweise}{24}{section.22}%
+\contentsline {subsection}{\numberline {22.1}Basis-Einstellungen}{24}{subsection.22.1}%
+\contentsline {subsection}{\numberline {22.2}Verzeichnisstruktur durchlaufen}{24}{subsection.22.2}%
+\contentsline {subsection}{\numberline {22.3}Verarbeitung der XML-Dateien}{24}{subsection.22.3}%
+\contentsline {subsection}{\numberline {22.4}Strukturierung der Daten in JSON}{25}{subsection.22.4}%
+\contentsline {subsection}{\numberline {22.5}API-Anfrage an OpenAI}{25}{subsection.22.5}%
+\contentsline {section}{\numberline {23}Fehlerbehandlung}{25}{section.23}%
+\contentsline {section}{\numberline {24}Fazit}{25}{section.24}%
+\contentsline {section}{\numberline {25}Tagging der JPGEGs im AppleFinder \small 26.10.24 }{25}{section.25}%
+\contentsline {subsection}{\numberline {25.1}AppleFinder Tags}{25}{subsection.25.1}%
+\contentsline {section}{\numberline {26}JPG Datenbereinigung - leere Seiten löschen \small 25.10.2024 }{26}{section.26}%
+\contentsline {subsection}{\numberline {26.1}Anmerkung}{26}{subsection.26.1}%
+\contentsline {section}{\numberline {27}Datennormalisierung PDF zu JPEG \small 24.10.2024}{26}{section.27}%

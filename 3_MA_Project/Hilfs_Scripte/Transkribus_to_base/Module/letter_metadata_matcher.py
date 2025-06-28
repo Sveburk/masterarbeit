@@ -34,6 +34,9 @@ GREETING_PATTERNS = [
     r"mit\s+deutschen\s+Sängergrüßen",
     r"mit\s+badischem\s+Sängergruß(?:en)?",
     r"mit\s+badischen\s+Sängergrüßen",
+    r"mit\s+deutschem\s+Sängergruss(?:en)?",   
+    r"mit\s+deutschen\s+Sängergrüssen",
+    r"Mit\s+Deutschem\s+Sängergruss", 
     r"mit\s+kameradschaftlichen\s+Grüßen",
     r"mit\s+besten\s+Grüßen",
     r"(?:ich\s+)?verbleibe\s+mit",
@@ -1283,6 +1286,7 @@ def postprocess_roles(base_doc: BaseDocument):
     – Setzt `needs_review = True`, wenn keine `role_schema` erkannt wird.
     """
     from .person_matcher import (
+        KNOWN_PERSONS, TITLE_TOKENS, MALE_TITLE_TOKENS, FEMALE_TITLE_TOKENS, NEUTRAL_TITLE_TOKENS,
         NON_PERSON_TOKENS,
         UNMATCHABLE_SINGLE_NAMES,
         normalize_name_string,
@@ -1301,6 +1305,90 @@ def postprocess_roles(base_doc: BaseDocument):
         fn = p.forename.strip()
         ln = p.familyname.strip()
         role = p.role.strip()
+
+        forename_tokens = fn.split()
+        if forename_tokens and forename_tokens[0] in TITLE_TOKENS:
+            p.title = forename_tokens[0].capitalize()
+            p.forename = " ".join(forename_tokens[1:]).strip()
+            print(f"[DEBUG FIX] Titel aus zusammengesetztem Forename → {p.title}, Rest: {p.forename}")
+
+        familyname_tokens = ln.split()
+        if familyname_tokens and familyname_tokens[0].lower() in TITLE_TOKENS:
+            p.title = familyname_tokens[0].capitalize()
+            p.familyname = " ".join(familyname_tokens[1:]).strip()
+            print(f"[DEBUG FIX] Titel aus zusammengesetztem Familyname → {p.title}, Rest: {p.familyname}")
+
+            # ✅ Neu: Gender aus den Sets ableiten!
+            title_token = p.title.lower()
+            title_token = p.title.lower().strip() if p.title else ""
+
+            if title_token in FEMALE_TITLE_TOKENS:
+                p.gender = "female"
+                print(f"[DEBUG-GENDER] Titel '{title_token}' → gender = female")
+                if (
+                    p.familyname
+                    and p.familyname.lower() in KNOWN_PERSONS
+                ):
+                    possible = [
+                        entry for entry in KNOWN_PERSONS[p.familyname.lower()]
+                        if entry.get("gender", "").lower() == "female"
+                    ]
+                    if possible:
+                        p.gender = "female"  # Zwingend überschreiben!
+                        print(
+                            f"[DEBUG-GENDER-OVERRIDE] Familyname '{p.familyname}' hat weiblichen Eintrag "
+                            f"→ gender auf female gesetzt (auch wenn Vorname männlich ist)."
+                        )
+
+            elif title_token in MALE_TITLE_TOKENS:
+                p.gender = "male"
+            #Zusätzlicher Gender-Fallback: feminine Rollenendung
+            role_token = p.role.lower() if p.role else ""
+
+            # Base-Form extrahieren, z.B. bei "Schneiderin" → "Schneider"
+            # (Kann später noch durch ein Lemma-Mapper ersetzt werden)
+            if (
+                role_token.endswith("in")
+                and len(role_token) > 4  # Verhindert false positives bei "bin", "hin"
+                and not p.gender  # Nur wenn Gender noch nicht gesetzt
+            ):
+                p.gender = "female"
+                print(f"[DEBUG-FEMININE-ROLE] Rolle '{p.role}' deutet auf female → gender gesetzt.")
+        # Wenn Forename oder Familyname ein Muster "Titel Rolle Rest" enthält → splitten
+        
+        combined_name = f"{fn} {ln}".strip()
+        combined_tokens = combined_name.split()
+
+        if combined_tokens:
+            # Prüfe auf Muster: [Titel] [Rolle] [Rest]
+            first_token = combined_tokens[0].lower()
+            second_token = combined_tokens[1].lower() if len(combined_tokens) > 1 else ""
+
+            if first_token in TITLE_TOKENS:
+                p.title = first_token.capitalize()
+                print(f"[DEBUG SPLIT] Titel erkannt: {p.title}")
+
+                if second_token:
+                    # Zweites Token als Rolle interpretieren
+                    norm_role = normalize_and_match_role(second_token)
+                    if norm_role:
+                        p.role = norm_role
+                        p.role_schema = map_role_to_schema_entry(norm_role)
+                        print(f"[DEBUG SPLIT] Rolle erkannt: {p.role} ({p.role_schema})")
+
+                        # Restliche Tokens als Namen setzen
+                        rest_tokens = combined_tokens[2:]
+                        # Wenn Rest nur 1 Token: als Familyname → bei 2: aufteilen
+                        if rest_tokens:
+                            if len(rest_tokens) == 1:
+                                p.familyname = rest_tokens[0].capitalize()
+                                p.forename = ""
+                            else:
+                                p.forename = rest_tokens[0].capitalize()
+                                p.familyname = " ".join(rest_tokens[1:]).capitalize()
+
+                            print(f"[DEBUG SPLIT] Rest-Name gesetzt: forename='{p.forename}', familyname='{p.familyname}'")
+
 
         fn_lower = fn.lower()
         ln_lower = ln.lower()
@@ -1324,6 +1412,12 @@ def postprocess_roles(base_doc: BaseDocument):
                 p.role = norm_role
                 p.role_schema = map_role_to_schema_entry(norm_role)
 
+        # Wenn noch keine Rolle im Schema, aber p.role existiert → jetzt mappen
+        if not p.role_schema and p.role:
+            p.role_schema = map_role_to_schema_entry(p.role)
+            print(f"[FIX POSTPROCESS] Restored role_schema from role: {p.role} → {p.role_schema}")
+
+
         # needs_review setzen, wenn keine Rolle zugeordnet werden konnte
         if not p.role_schema:
             p.needs_review = True
@@ -1342,6 +1436,25 @@ def postprocess_roles(base_doc: BaseDocument):
         ):
             print(f"[DEBUG-DROP] Blacklist-Eintrag erkannt: {fn}")
             continue
+        #Dummy-Titel-Personen droppen, Titel an letzte echte Person hängen
+        if (
+            p.role_schema in TITLE_TOKENS
+            and not (fn or ln)
+            and not p.nodegoat_id
+        ):
+            print(f"[DEBUG-TITLE] Dummy-Titel-Person erkannt: {p.role_schema}")
+
+            if filtered:
+                last_p = filtered[-1]
+                if not last_p.title:
+                    last_p.title = p.role_schema
+                    print(f"[DEBUG-TITLE] Titel '{p.role_schema}' an '{last_p.forename} {last_p.familyname}' gehängt.")
+                else:
+                    print(f"[DEBUG-TITLE] Achtung: {last_p.forename} hat schon Titel '{last_p.title}' – kein Override.")
+            else:
+                print(f"[DEBUG-TITLE] Kein Kandidat gefunden für Titel '{p.role_schema}' → droppe.")
+
+            continue  # ⏹️ Titel-Dummy nie speichern
 
         # ❌ Dummy-Personen ohne Name, Rolle, ID → rausfiltern
         if not fn and not ln and not p.role and not p.nodegoat_id:
