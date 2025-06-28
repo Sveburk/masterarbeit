@@ -38,6 +38,7 @@ GREETING_PATTERNS = [
     r"mit\s+deutschen\s+Sängergrüssen",
     r"Mit\s+Deutschem\s+Sängergruss", 
     r"mit\s+kameradschaftlichen\s+Grüßen",
+    r"Mit[-\s]+Kameradschaftlichem\s+Gruß(?:en)?"
     r"mit\s+besten\s+Grüßen",
     r"(?:ich\s+)?verbleibe\s+mit",
     r"Herzliche\s+Grüße",
