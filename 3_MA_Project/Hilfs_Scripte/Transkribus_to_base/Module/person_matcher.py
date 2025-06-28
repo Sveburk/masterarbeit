@@ -593,6 +593,37 @@ def match_person(
                 and normalize_name_string(c["familyname"]) == fam_norm
             ):
                 return dict(c), 95
+    # 3-CHAR-Vorname + exakter Nachname
+    if fn and len(fn) >= 3 and ln:
+        norm_ln = normalize_name_string(ln)
+        fn_lower = fn.lower()
+        for c in candidates:
+            # Normal: Vorname-Teil prüfen, Nachname exakt
+            if (
+                c["forename"]
+                and c["forename"][:len(fn)].lower() == fn_lower[:len(fn)]
+                and normalize_name_string(c["familyname"]) == norm_ln
+            ):
+                return dict(c), 89
+
+            # NEU: Reverse-Prüfung
+            # Prüfe: lieferte dein fn vielleicht den Nachnamen?
+            norm_fn = normalize_name_string(fn)
+            ln_lower = ln.lower()
+            # Neue REVERSE-Prüfung – robust:
+            if (
+                c["forename"] and c["familyname"] and
+                normalize_name_string(c["forename"])[:4] == norm_ln[:4] and  # dein ln gegen c[forename]
+                normalize_name_string(c["familyname"])[:4] == norm_fn[:4] and  # dein fn gegen c[familyname]
+                # NEU: nur tauschen, wenn es nicht eh schon normal ist
+                not (
+                    normalize_name_string(c["forename"]) == norm_fn and
+                    normalize_name_string(c["familyname"]) == norm_ln
+                )
+            ):
+                swapped = dict(c)
+                swapped["forename"], swapped["familyname"] = swapped["familyname"], swapped["forename"]
+                return swapped, 88
 
     best, best_score = None, 0
     for c in candidates:
@@ -1202,12 +1233,40 @@ def split_and_enrich_persons(
                 }
             )
         else:
+            # Standard Markierung
             person["match_score"] = 0
             person["confidence"] = ""
             person["review_reason"] = get_review_reason_for_person(person)
             person["raw_token"] = raw_token
             person["needs_review"] = True
+
+            fn = person.get("forename", "").strip()
+            ln = person.get("familyname", "").strip()
+
+            # NEU: Wenn Vorname nur 3–4 Zeichen → tausche Vor- und Nachname
+            if ((fn and len(fn) <= 4) or (ln and len(ln) <= 4)) and fn and ln:
+                swapped = {
+                    "forename": ln,
+                    "familyname": fn,
+                    "content_transcription": content_transcription,
+                }
+                swapped_match, swapped_score = match_person(swapped, candidates=cand_list)
+
+                if swapped_match and swapped_score > 0:
+                    print(f"[SWAP-MATCH] Tausch erfolgreich: {fn}/{ln} → {swapped_match}")
+                    matched.append({
+                        "raw_token": raw_token,
+                        "forename": swapped_match["forename"],
+                        "familyname": swapped_match["familyname"],
+                        "nodegoat_id": swapped_match["nodegoat_id"],
+                        "match_score": swapped_score,
+                        "confidence": "swapped",
+                    })
+                    continue
+
+            # Wenn kein besserer Match → normal aufnehmen
             unmatched.append(person)
+
 
     # --- 4. Sonderfälle ---
     additional = []
@@ -1623,6 +1682,11 @@ def deduplicate_and_group_persons(
         for target in final:
             tfn = normalize(getattr(target, "forename", ""))
             tln = normalize(getattr(target, "familyname", ""))
+
+            if entry.get("match_score", 0) == 0 and not entry.get("nodegoat_id"):
+                entry["needs_review"] = True
+                entry["review_reason"] = "No nodegoat_id, match_score 0"
+
 
             # Wenn entweder Vorname oder Nachname übereinstimmt
             if (fn and fn == tfn) or (ln and ln == tln):
