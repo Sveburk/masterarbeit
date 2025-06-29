@@ -70,6 +70,7 @@ from Module import (
     infer_gender_for_person,
     normalize_name_string,
     merge_title_tokens,
+    correct_swapped_name,
     # letter-metadata-matcher
     match_authors,
     match_recipients,
@@ -747,12 +748,39 @@ def split_name_string(name: str) -> Dict[str, str]:
         "nodegoat_id": "",
     }
 
+def fallback_match_by_familyname_and_gender(
+    familyname: str,
+    gender: str,
+    known_persons: List[Dict[str, str]]
+) -> Optional[str]:
+    """
+    Wenn nur Familyname vorhanden ist und Gender female,
+    versuche, einen passenden Eintrag in den known_persons zu finden.
+    Gibt die Nodegoat-ID zurück, wenn gefunden.
+    """
+    if not familyname or gender != "female":
+        print(
+            f"[DEBUG] fallback_match_by_familyname_and_gender returns None for if not familyname or gender != female:")
+        return None
+
+    familyname_norm = familyname.strip().lower()
+    for person in known_persons:
+        print(f"[DEBUG] fallback_match_by_familyname_and_gender starts testing for person in known_persons:")
+        csv_familyname = person.get("familyname", "").strip().lower()
+        csv_gender = person.get("gender", "").strip().lower()
+
+        if csv_familyname == familyname_norm and csv_gender == "female":
+            return person.get("nodegoat_id", "").strip()
+
+    return None
+
+
 
 def extract_person_from_custom(
     custom_attr: str, text_content: str, known_persons: List[Dict[str, str]]
 ) -> List[Dict[str, str]]:
     """Extract person entities from custom attributes - returns a LIST of dictionaries."""
-    persons: List[Dict[str, str]] = []
+    persons: List[Dict[str, Any]] = []
 
     # Geschlechts-Titel-Mapping
     TITLE_GENDER_MAP = {
@@ -801,10 +829,10 @@ def extract_person_from_custom(
                             "nodegoat_id": match.get("nodegoat_id", ""),
                             "match_score": score,
                             "confidence": "custom_tag_name",
+                            "name": f"{fn} {ln}".strip(),
                         }
                     )
                 else:
-                    # keine Ground-Truth gefunden → trotzdem vermerken und review flag setzen
                     persons.append(
                         {
                             "forename": fn,
@@ -819,8 +847,10 @@ def extract_person_from_custom(
                             "match_score": 0,
                             "confidence": "custom_tag_name",
                             "needs_review": True,
+                            "name": f"{fn} {ln}".strip(),
                         }
                     )
+
                 continue  # ganz wichtig: verlasse hier die weitere Offset-Logik
             if "offset" in person_data and "length" in person_data:
                 offset = int(person_data["offset"])
@@ -849,6 +879,10 @@ def extract_person_from_custom(
 
                 # Haupt-Zerlegung des Namens
                 person_info = split_name_string(person_name_clean)
+
+                person_info["forename"], person_info["familyname"] = correct_swapped_name(
+                    person_info["forename"], person_info["familyname"]
+                )
                 
 
 
@@ -886,27 +920,34 @@ def extract_person_from_custom(
                             person_info = split_name_string(rest)
                             person_info["title"] = title
                             break
-
                 # Fuzzy-Matching mit bekannten Personen
                 match, score = match_person(
                     person_info, candidates=known_persons
                 )
                 if match:
                     person_info["nodegoat_id"] = match.get("nodegoat_id", "")
-                    person_info["alternate_name"] = match.get(
-                        "alternate_name", ""
-                    )
-                    person_info["title"] = match.get(
-                        "title", person_info.get("title", "")
-                    )
-                    person_info["gender"] = match.get(
-                        "gender", person_info.get("gender", "")
-                    )
-                    person_info["match_score"] = score
+                    person_info["alternate_name"] = match.get("alternate_name", "")
+                    person_info["title"] = match.get("title", person_info.get("title", ""))
+                    
+                    # Nur überschreiben, wenn Match ein gender liefert
+                    matched_gender = match.get("gender", "").strip()
+                    if matched_gender:
+                        person_info["gender"] = matched_gender
 
-                    print(
-                        f"[Debug] Fuzzy Matching in Transkribus_to_base hat die person_info{person_info},score{score}"
+                    person_info["match_score"] = score
+                    print(f"[Debug] Fuzzy Matching: {person_info}")
+
+                # ⏬ Danach dein Fallback:
+                if not person_info.get("nodegoat_id") and person_info.get("familyname") and person_info.get("gender") == "female":
+                    fallback_id = fallback_match_by_familyname_and_gender(
+                        familyname=person_info["familyname"],
+                        gender=person_info["gender"],
+                        known_persons=known_persons
                     )
+                    if fallback_id:
+                        person_info["nodegoat_id"] = fallback_id
+                        person_info["match_score"] = 85
+                        print(f"[Fallback] Nodegoat-ID gesetzt über Familyname+Gender: {fallback_id}")
 
                 # Ort zuordnen, falls im selben Tag vorhanden
                 place_dicts = extract_place_from_custom(

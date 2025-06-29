@@ -1424,6 +1424,13 @@ def postprocess_roles(base_doc: BaseDocument):
             p.needs_review = True
             if not getattr(p, "review_reason", ""):
                 p.review_reason = "Keine Rolle erkannt"
+        # ✅ Schutz: Immer behalten, wenn Titel + Familyname da
+        if p.title and ln:
+            p.needs_review = True
+            p.review_reason = "Titel_Familyname_only"
+            filtered.append(p)
+            print(f"[DEBUG-TITEL-SCHUTZ] Behalte Person wegen Titel + Familyname: {p.title} {ln}")
+            continue
 
         # ✅ Schutz: Personen mit ID und vollständigem Namen niemals löschen
         if p.nodegoat_id and fn and ln:
