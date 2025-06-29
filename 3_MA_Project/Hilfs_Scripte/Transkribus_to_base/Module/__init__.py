@@ -28,7 +28,8 @@ from .person_matcher import (
     count_mentions_in_transcript_contextual,
     infer_gender_for_person,
     normalize_name_string,
-    merge_title_tokens
+    merge_title_tokens,
+    correct_swapped_name
 )
 
 # --- Letter‑Metadata Matcher ---
@@ -121,6 +122,7 @@ __all__ = [
     "infer_gender_for_person",
     "normalize_name_string",
     "merge_title_tokens",
+    "correct_swapped_name",
 
     # Letter‑Metadata Matcher
     "match_authors",

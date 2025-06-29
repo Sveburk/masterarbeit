@@ -423,6 +423,33 @@ def ocr_error_match(
     max_len = max(len(name_lower), len(best_match))
     score = (1 - best_dist / max_len) * 100 if max_len > 0 else 0.0
     return best_match, best_dist, score
+def correct_swapped_name(forename: str, familyname: str) -> Tuple[str, str]:
+    """Korrigiert vertauschte Namensteile heuristisch."""
+    if not forename or not familyname:
+        return forename, familyname
+
+    fn_lower, ln_lower = forename.lower(), familyname.lower()
+
+    fn_is_surname = fn_lower in KNOWN_SURNAMES
+    ln_is_forename = ln_lower in KNOWN_FORENAMES
+
+    if not fn_is_surname:
+        _, dist_fn, _ = ocr_error_match(fn_lower, list(KNOWN_SURNAMES))
+        fn_is_surname = dist_fn <= 1
+
+    if not ln_is_forename:
+        _, dist_ln, _ = ocr_error_match(ln_lower, list(KNOWN_FORENAMES))
+        ln_is_forename = dist_ln <= 2
+
+    fn_is_forename = fn_lower in KNOWN_FORENAMES
+    ln_is_surname = ln_lower in KNOWN_SURNAMES
+
+    if fn_is_surname and ln_is_forename and not (fn_is_forename and ln_is_surname):
+        return familyname, forename
+
+    return forename, familyname
+
+
 
 
 
@@ -711,6 +738,33 @@ def match_person(
         if matched and dist <= 2:
             c = next(x for x in candidates if x["familyname"] == matched)
             return dict(c), 85
+    if not person.get("gender") and person.get("title") in FEMALE_TITLE_TOKENS:
+        person["gender"] = "female"
+    elif not person.get("gender") and person.get("title") in MALE_TITLE_TOKENS:
+        person["gender"] = "male"
+    # SPEZIAL: Wenn Nachname bekannt & mehrere Matches & gender gegeben
+    if ln and person.get("gender"):
+        print (f"[DEBUG] WHUUUU WIR SIND IM SPEZIALFALL NACHNAME + GENDER:")
+        same_ln = [
+            c for c in candidates
+            if normalize_name_string(c["familyname"]) == normalize_name_string(ln)
+        ]
+        # Finde nur die, die gender matchen
+        same_ln_gender = [
+            c for c in same_ln
+            if str(c.get("gender", "")).lower() == str(person["gender"]).lower()
+        ]
+        if len(same_ln_gender) == 1:
+            print(f"[DEBUG] Gender-gestütztes Disambiguieren: {ln} + {person['gender']}")
+            result: Dict[str, Union[str, int, bool, None]] = dict(same_ln_gender[0])
+            result.update({
+                "confidence": "gender_ln_match",
+                "needs_review": False,
+                "match_score": 95
+            })
+            result["title"] = person.get("title") or result.get("title", "")
+            result["gender"] = person.get("gender") or result.get("gender", "")
+            return result, 95
 
     if any([fn, ln, role_raw]):
         review_reason_parts = []
@@ -744,6 +798,7 @@ def match_person(
                 "needs_review": True,
                 "review_reason": review_reason,
             }, 0
+
 
     return None, 0
 
@@ -782,6 +837,7 @@ def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
     parts = clean.split()
     forename = parts[0] if len(parts) >= 1 else ""
     familyname = parts[-1] if len(parts) >= 2 else ""
+    forename, familyname = correct_swapped_name(forename, familyname)
 
     role_raw = row.get("role", "").strip()
     if roles:
@@ -1054,6 +1110,8 @@ def split_and_enrich_persons(
 
     processed_raw_persons = []
     skip_next = False
+    processed_raw_persons = []
+    skip_next = False
 
     for idx, p in enumerate(merged_raw_persons):
         if skip_next:
@@ -1061,6 +1119,7 @@ def split_and_enrich_persons(
             continue
 
         if isinstance(p, dict):
+            # ✅ Wenn schon forename/familyname/nodegoat_id: unverändert übernehmen
             if p.get("forename") and p.get("familyname") and p.get("nodegoat_id"):
                 processed_raw_persons.append(p)
                 continue
@@ -1082,60 +1141,78 @@ def split_and_enrich_persons(
                         gender = "male"
 
                     rest_tokens = tokens[1:] if title_token else tokens
+                    if (
+                        len(rest_tokens) >= 2
+                        and gender == "female"
+                        and any(
+                            c.get("forename", "").lower() == rest_tokens[0]
+                            and c.get("gender") == "male"
+                            for c in (candidates or KNOWN_PERSONS)
+                        )
+                    ):
+                        # Ignoriere männlichen Vornamen
+                        rest_tokens = rest_tokens[1:]
                     rest_name = " ".join(rest_tokens).strip().title()
 
-                    if rest_name:
-                        new_person = {"name": rest_name}
-                        if title_token:
-                            new_person["title"] = title_token.capitalize()
-                            new_person["gender"] = gender
-                        processed_raw_persons.append(new_person)
+                    # ✅ Immer als forename/familyname speichern
+                    new_person = {}
 
-                    elif title_token:
-                        # Kein Rest → versuche nächsten zu mergen:
-                        if idx + 1 < len(merged_raw_persons):
-                            next_p = merged_raw_persons[idx + 1]
-                            next_name = next_p.get("name", "").strip()
-                            if next_name:
-                                tokens_next = [t.strip(",.;:").lower() for t in next_name.split()]
-                                merged_name = " ".join(tokens_next).title()
-                                new_person = {
-                                    "name": merged_name,
-                                    "title": title_token.capitalize(),
-                                    "gender": gender,
-                                }
-                                print(f"[DEBUG MERGE NEXT] Titel '{title_token}' + '{merged_name}'")
-                                processed_raw_persons.append(new_person)
-                                skip_next = True  # nächsten überspringen
-                            else:
-                                new_person = {"name": "", "title": title_token.capitalize(), "gender": gender}
-                                processed_raw_persons.append(new_person)
+                    new_person = {}
+
+                    # Titel immer setzen, wenn vorhanden
+                    if title_token:
+                        new_person["title"] = title_token.capitalize()
+                        new_person["gender"] = gender
+
+                    # Rest-Name setzen (nur wenn sinnvoll)
+                    if rest_name:
+                        new_person["forename"] = ""
+                        new_person["familyname"] = rest_name
+                    else:
+                        # Falls gar nichts übrig: setze den Titel als Vorname, Family leer
+                        if title_token:
+                            new_person["forename"] = ""
+                            new_person["familyname"] = ""
                         else:
-                            new_person = {"name": "", "title": title_token.capitalize(), "gender": gender}
-                            processed_raw_persons.append(new_person)
+                            new_person["forename"] = ""
+                            new_person["familyname"] = name_str
+                    new_person["name"] = name_str
+
+
+
+                    processed_raw_persons.append(new_person)
+
+                else:
+                    continue
 
             else:
                 name_str = str(p).strip()
                 tokens = [t.lower() for t in name_str.split()]
                 if all(t in NON_PERSON_TOKENS for t in tokens):
-                    print(f"[FILTER] Droppe NON_PERSON-Pseudo-Name: '{name_str}'")
                     continue
                 if name_str:
-                    processed_raw_persons.append({"name": name_str})
-
-                else:
-                    continue
-
+                    processed_raw_persons.append({
+                        "forename": "",
+                        "familyname": name_str,
+                        "title": "",
+                        "gender": ""
+                    })
         else:
             name_str = str(p).strip()
             tokens = [t.lower() for t in name_str.split()]
             if all(t in NON_PERSON_TOKENS for t in tokens):
-                print(f"[FILTER] Droppe NON_PERSON-Pseudo-Name: '{name_str}'")
                 continue
             if name_str:
-                processed_raw_persons.append({"name": name_str})
+                processed_raw_persons.append({
+                    "forename": "",
+                    "familyname": name_str,
+                    "title": "",
+                    "gender": ""
+                })
 
+    # ✅ Final
     raw_persons = processed_raw_persons
+
     print(f"[DEBUG] raw persons nach Zeile 1116: {raw_persons}")
 
     print("[DEBUG] processed_raw_persons:", processed_raw_persons)
@@ -1186,7 +1263,12 @@ def split_and_enrich_persons(
         if roles and not p.get("role"):
             p["role"] = roles[0]
 
-        person = extract_person_data({"name": raw_token})
+        person = extract_person_data({
+        "name": raw_token,
+        "title": p.get("title", ""),
+        "gender": p.get("gender", "")
+        })
+        
         if (
             person.get("forename", "").strip()
             and person.get("familyname", "").strip()
