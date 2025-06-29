@@ -1014,22 +1014,36 @@ def extract_metadata_names(text: str) -> list[str]:
     return names
 
 def merge_title_tokens(raw_persons: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Merge title tokens like ``Frau``/``Herr`` with the following name.
+
+    While merging, infer the gender from the title so that downstream
+    matching can directly use this information.
+    """
+
     merged = []
     skip_next = False
+
     for i, p in enumerate(raw_persons):
         if skip_next:
             skip_next = False
             continue
-        if p.get("name", "").strip().lower() in TITLE_TOKENS:
+
+        token = p.get("name", "").strip().lower()
+
+        if token in TITLE_TOKENS:
             if i + 1 < len(raw_persons):
                 next_p = raw_persons[i + 1]
-                # immer Titel setzen, egal ob next_p bereits forename/familyname hat
                 next_p["title"] = p["name"].strip().capitalize()
+                if token in FEMALE_TITLE_TOKENS:
+                    next_p.setdefault("gender", "female")
+                elif token in MALE_TITLE_TOKENS:
+                    next_p.setdefault("gender", "male")
                 merged.append(next_p)
                 skip_next = True
-            # sonst droppen
+            # wenn kein nächstes token vorhanden, wird der Titel ignoriert
         else:
             merged.append(p)
+
     return merged
 
 
@@ -1105,6 +1119,9 @@ def split_and_enrich_persons(
 
         merged_raw_persons.append({"name": current_name})
         i += 1
+
+    # Titel mit folgendem Namens-Token zusammenführen und dabei Gender setzen
+    merged_raw_persons = merge_title_tokens(merged_raw_persons)
 
     print("[DEBUG] Merged raw_persons vor Filter:", merged_raw_persons)
 
