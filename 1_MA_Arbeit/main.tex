@@ -30,6 +30,9 @@
 \usepackage{transparent}
 \usepackage{tikz}
   \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
+\usepackage{pgf-pie} % Für Kreisdiagramme
+\usepackage{pgfplots} % Für Diagramme
+  \pgfplotsset{compat=1.18}
 \usepackage{eso-pic} % Für Hintergrundbilder
 \usepackage{fvextra}     % Muss vor csquotes geladen werden
 \usepackage{csquotes}    % Nach fvextra laden
@@ -59,6 +62,11 @@
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
 \definecolor{LightGray}{gray}{0.9}
 \definecolor{VeryLightGray}{gray}{0.95} % Sehr helles Grau
+
+\definecolor{UniBlue}{HTML}{1F78B4}      % Kräftiges Blau
+\definecolor{UniGold}{HTML}{FFB000}      % Goldgelb
+\definecolor{UniViolet}{HTML}{6A3D9A}    % Violett
+
 \definecolor{abbrev}{RGB}{255,153,153}              % Rot für Tags
 \definecolor{add}{RGB}{204,255,238}                 % Hellgrün/Türkis für Tags
 \definecolor{sic}{RGB}{255,255,153}                 % Hellgelb für Tags
@@ -75,11 +83,20 @@
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{booktabs}
+\usepackage[x11names,table]{xcolor}
+\usepackage[dvipsnames,svgnames,x11names]{xcolor}
+\usepackage[hyphens]{url}
 \usepackage{ragged2e}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=lightblue
-}
+\usepackage[
+  unicode=true,
+  hyperfootnotes=true,
+  colorlinks=true,
+  linkcolor=Blue,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=Blue
+]{hyperref}
+
 \usepackage{iftex}
 \usepackage{csquotes}
 \ifPDFTeX%
@@ -103,7 +120,7 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 
-\usepackage[x11names,table]{xcolor}
+
 \usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
@@ -307,7 +324,6 @@
     \color{white}
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
   mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ % chktex 8 %logo Unibas + Link + Immatrikulationsnummer
-    
     \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}15.08.2025}% chktex 8
   \end{figure}
   \setcounter{figure}{0}
@@ -426,37 +442,463 @@ Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Person
 \subsection{Forschungsstand und Forschungslücke}
 \subsection{Formulierung der Forschungsfrage}
 \subsection{Aufbau der Arbeit}
+\subsection{Geografischer und historischer Kontext}
+Die vorliegende Arbeit beschäftigt sich mit Unterlagen aus dem Archiv des "Männerchor Murg" und dessen Nachfolger, den "New Gospelsingers Murg". Murg ist eine Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt.
+Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg begünstigte 
+früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs. Parallel bot der Rhein mit seiner Drahtseil-Fähre 
+eine wichtige Verkehrs- und Handelsverbindung, und bis zum Ersten Weltkrieg privat betrieben wurde.
 
-\newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Historischer Kontext        ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-\section{Historischer Kontext}
-\subsection{Historische Einordnung des Zeitraums}
-\subsection{Historische Einordnung des Vereins}
-  %\subsubsection{Der Männerchor Murg im Umfeld der Weimarer Republik}
-  %\subsubsection{Auswirkungen der NS-Diktatur auf den Verein}
-  \subsubsection{Der Männerchor während des Zweiten Weltkriegs}
-  \subsubsection{Politische Entwicklungen und ihre Auswirkungen auf das Vereinsleben}
+Mit dem Ausbau der Landstraße, der heutigen Bundesstraße 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz wandelte sich Murg im 19. Jahrhundert 
+von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Während der Industiralisierung mitte des 19. Jahrhunderts wurde die Wasserkraft zu einem entscheidenen Faktor der Region. Die Ansiedlung der Schweizer Textilfirma 
+\textit{Hüssy \& Künzli AG} im Jahr 1853 \cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug trug wesentlich zum Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte — auch aus der benachbarten Schweiz — machten die Gemeinde zu einem wichtigen
+Standort der regionalen Textilindustrie. Es waren eben diese schweizer Textilarbeiter, die 1861 den \textit{Männechor Murg} gründeten, damals unter dem Namen \textit{Schweizer Männerchor Murg}
+
+  
 
   \newpage
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
-%------------------------          Quellenbeschreibung        ----------------------------%
+%------------------------              Quellen             ----------------------------%
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------% 
-\section{Quellenbeschreibung und Korpusaufbau}
-\subsection{Fundsituation der Quellen}
+\section{Quellen}
+\subsection{Quellentradierung}
 In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
 wird im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
 Für diese Arbeit wird ein Ordner mit der Aufschrift \textit{``Männerchor Akten 1925-1944''} gewählt, da er neben dem Ordner 
 \textit{``Männerchor Akten 1946-1950‘‘} den größten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, aufschlussreiche Einblicke in das Vereinsleben
 in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
-Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als ``Protokoll'', ``Brief'', ``Postkarte'', ``Rechnung'', ``Regierungsdokument'', ``Noten'', ``Zeitungsartikel'', ``Liste'', ``Notizzettel'' oder ``Offerte'' kategorisiert werden.
+Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als ``Protokoll'', ``Brief'', ``Postkarte'', ``Rechnung'', 
+``Regierungsdokument'', ``Noten'', ``Zeitungsartikel'', ``Liste'', ``Notizzettel'' oder ``Offerte'' kategorisiert werden.
 
-\subsection{Vorarbeiten und Korpusaufbau}
+
+\subsection{Quellenbeschrieb}
+
+
+\subsubsection{Zeitraum}
+blabla
+\subsubsection{Dokumententyp}
+blabla
+\subsubsection{Inhalt???}
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------              Korpus             ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Korpus}
+Aus dem Bestand des Ordners \textit{``Männerchor Akten 1925-1944''} werden für diese Arbeit ausschlieslich Akten verwendet, 
+die während des Zweiten Weltkriegs verfasst wurden. Der Analysezeitraum erstreckt sich dementsprchend zwischen dem 01. September 1939 
+und dem 8. Mai 1945\footnote{\textcolor{red}{[[vgl.][Finde hier eine Referenz]]}{keylist}}, dem Tag der bedingungslosen Kapitulation Deutschlands.
+
+Diese Begrenzung des zeitlichen Rahmens ist notwendig, um die Funktionaliät der weiter unten beschriebenen Pipeline darstellen zu können. 
+Hieraus ergibt sich in der Folge eine Limitation der Anzahl potetieller Akteurinnen und Akteure, Orte und Organisationen. Notwendig ist das 
+besonders mit hinblick auf die Erstellung einer verlässlichen Groundtruth mit angereicherten
+historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer digital unterstützen Arbeitsweise zu unterstreichen. 
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      bar width=20pt,
+      ymin=0,
+      ylabel={Anzahl Dokumente},
+      symbolic x coords={Brief, Postkarte, Protokoll, Regierungsdokument, Zeitungsartikel, Rechnung, Offerte},
+      xtick=data,
+      nodes near coords,
+      x tick label style={rotate=45, anchor=east},
+      axis lines=left,
+      enlarge x limits=0.15,
+      grid=major,
+      grid style={dashed, gray!30},
+    ]
+    \addplot[fill=gray!60] coordinates {
+      (Brief,282) 
+      (Postkarte,51) 
+      (Protokoll,36) 
+      (Regierungsdokument,5) 
+      (Zeitungsartikel,4) 
+      (Rechnung,1) 
+      (Offerte,1)
+    };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten - 381 Seiten).}
+  \label{fig:dokumententypen-bar}
+\end{figure}
+
+
+\subsection{Digitalisierung}
+blabla
+\subsection{Sichtung \& Kategorisierung in Akten}
+blabla
+\subsection{Transkribtion}
+blabla
+\subsubsection{Test mit Tesseract}
+blabla
+\subsubsection{Test mit LLM}
+blabla
+\subsubsection{Transkribus}
+blabla
+\subsection{Tagging}
+blabla
+\subsubsection{Tagging mit Transkribus}
+blabla
+\subsubsection{Tagging mit LLM}
+blabla
+\subsection{Export}
+blabla
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------           Methodenkritik         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Methodenkritik}
+\subsection{Genutze Tools}
+\subsubsection{Msty}
+\subsubsection{Alphabet -- Gemini}
+\subsubsection{Anthopic -- Claude}
+\subsubsection{OpenAI -- ChatGPT}
+\subsubsection{Transkribus}
+\subsubsection{Nodegoat}
+\subsection{Netzwerkanalyse als Methode}
+  \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
+  \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
+  \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
+
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------           Pipeline         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Pipeline}
+
+\subsection{Aufbau XML to JSON Pipeline}
+\subsubsection{Übersichtsgrafik der Pipeline}
+
+
+\vspace{6\baselineskip}
+
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+    \begin{tikzpicture}[
+  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
+  source/.style={rectangle, draw=black, fill=green!30!gray!20, thick, minimum width=4.2cm, minimum height=0.7cm, align=center},
+  group/.style={draw=gray, dashed, rounded corners, inner sep=0.5cm},
+  arrow/.style={-Latex, thick}, arrowboth/.style={<Latex>-<Latex>, thick},
+  node distance=0.8cm and 1.6cm
+]
+
+
+% --- Hauptquellen oben ---
+\node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transkription};
+\node[process] (dir) at (0, -3.2) {\textbf{Dateiverzeichnis} \\ mit XML-Dateien};
+\node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
+\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Hauptverarbeitung};
+
+% ------------------- MODULE (FLOWCHART) ------------------------
+\node[module, below=2cm of main] (init) {Initialisierung \\ (CSV-Import, Matcher)};
+\node[module, below=of init]    (xml)  {XML \& Custom-Tags \\ Parsen, extract\_metadata};
+
+% Referenzpunkt zentriert unter xml
+\coordinate (modcenter) at ($(xml.south) + (0,-1.8)$);
+
+\node[module] (roles)   at ($(modcenter) + (-8cm, -0.5)$) {Rollen \\ zuweisen, anreichern};
+\node[module] (persons) at ($(modcenter) + (-2.7cm, -0.5)$) {Personen \\ match, split, enrich};
+\node[module] (orgs)    at ($(modcenter) + (2.7cm, -0.5)$)  {Organisationen \\ extrahieren, deduplizieren};
+\node[module] (places)  at ($(modcenter) + (8cm, -0.5)$)  {Orte \\ Kontext + Kombination};
+\node[module] (dates)  at ($(modcenter) + (13cm, -0.5)$) {Daten \\ combine\_dates(), count};
+\node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
+\node[module, below=1.2cm of persons] (authors) {Autoren \& Empfänger \\ infer, dedup, score};
+\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
+\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
+\node[module, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
+
+% CSV-Quellen
+\node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
+\node[source, below=0.6cm of csv1] (csv2) {\textbf{export-place.csv}};
+\node[source, below=0.6cm of csv2] (csv3) {\textbf{export-roles.csv}};
+\node[source, below=0.6cm of csv3] (csv4) {\textbf{export-organisationen.csv}};
+
+\node[group, fit=(csv1)(csv2)(csv3)(csv4), name=nodegoatbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Nodegoat-Exporte}}] {};
+
+\node[group, fit=(transkribus), name=pretranskribusbox,
+  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Transkribus}}] {};
+
+  % --- Gruppenrahmen für Modulblock ---
+\node[group, fit=
+  (persons)(authors)(roles)
+  (orgs)(dates)(events)
+  (places)(joinpoint), name=flowchartbox] {};
+
+% --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
+\node[group, fit=(main)(flowchartbox)(save),
+  label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{Hauptverarbeitung der Transkribus\_II-Pipeline}}] {};
+
+
+% Verbindungen
+\draw[arrow] (transkribus.east) -- ++(1.2,0)-- ++(0,-3.2)-- node[pos=0.6, left, font=\small, xshift=-2cm, yshift=1.3cm]{\textit{Export als XML}} (dir.west);  
+\draw[arrow] (dir.east) -- (llmpre.west);
+\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{Custom-Tags}} (dir.north);
+\draw[arrow] (dir.south) -- (main.north);
+\draw[arrow] (main.south) -- (init.north);
+\draw[arrow] (init.south) -- (xml.north);
+
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (persons.west) -- (roles.east);
+\draw[arrow] (roles.east) -- (persons.west);   
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west) -- (persons.east); 
+\draw[arrow] (persons.east) -- (orgs.west);
+\draw[arrow] (orgs.west)-- (persons.east)  ;      
+\draw[arrow] (orgs.east) -- (places.west);  
+\draw[arrow] (places.west) -- (orgs.east);   
+             
+% Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] 
+  (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
+  node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{liefert Groundtruth}};
+\end{tikzpicture}
+  }
+  \caption{Übersicht der gesamten XML-to-JSON-Pipeline}
+  \label{fig:pipeline-uebersicht}
+\end{figure}
+\vspace{6\baselineskip}
+
+
+\subsection{Module im Detail}
+\subsubsection{document\_schemas.py}
+\subsubsection{\_\_init\_\_.py}
+
+\newpage
+\subsubsection{Person-Matcher}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+    \begin{tikzpicture}
+
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0)}]
+\node at (0, -3.7) {\textit{Oben: Gesamtübersicht-Schema}};
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+\node[module] (json)       at (-0,  -2.8 ) {};
+\node[module] (save)       at (-0, -3.3  ) {};
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% Großes Prozessdiagramm
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
+
+\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
+
+\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
+
+\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
+
+\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
+
+
+\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
+
+\node[below=of count, align=center] 
+  {\textit{Oben: Prozess person\_matcher.py}\\\textit{Rechts: Input aus role\_matcher.py} und organization\_matcher.py};
+
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] 
+  (orgmatch.west) 
+  -- ++(-0.5,0) 
+  |- (roles.east);
+
+\draw[arrow] (rolematch.west) -- (roles.east);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{tikzpicture}
+  }
+  \caption{Detailliertes Prozessdiagramm: Personen-Matching}
+  \label{fig:person-matcher-prozess}
+\end{figure}
+
+
+\subsubsection{place\_matcher.py}
+\subsubsection{organization\_matcher.py}
+
+\subsubsection{letter\_metadata\_matcher.py}
+\subsubsection{type\_matcher.py}
+
+\subsubsection{event\_matcher.py}
+
+
+
+\subsubsection{date\_matcher.py}
+\subsubsection{Assigned\_Roles\_Module.py}
+
+
+
+\subsubsection{unmatched\_logger.py}
+
+\subsection{KEINE AHNUNG WAS DIE HIER MACHEN}
+\subsubsection{validation\_module.py}
+\subsubsection{validation\_module.py}
+\subsubsection{test\_role\_schema.py}
+\subsubsection{llm\_enricher.py}
+\subsubsection{enrich\_pipeline.py}
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%---------------    Analyse & Diskussion der Ergebnisse    ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Analyse \& Diskussion der Ergebnisse}
+\subsection{Visualisierung auf der VM}
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------           Fazit         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+\section{Fazit und Ausblick}
+\subsection{Zusammenfassung der zentralen Erkenntnisse}
+\subsection{Methodische Herausforderungen und Lösungen}
+\subsection{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}
+\newpage
+
+
+
+
+
+
+
+
+
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------                                  ----------------------------% 
+%------------------------           ALTER SCHEISS          ----------------------------%
+%------------------------                                  ----------------------------% 
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+
+ﬁ\section{ALTER SCHEISS}
+
 In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{``Männerchor Akten 1925-1944''} bereits 2018 und 2022 ein 
 erster Korpus aus 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
 Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
@@ -634,10 +1076,15 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch 
     mit diesem Modell transkribiert. \\
   
-    Beispiel für handschriftlicen Text erkannt von Transkribus in Akte\_076: \\
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=\textwidth]{./assets/Images/Akte_076_S001.jpg}
+      \caption{Beispiel für handschriftlichen Text in Akte\_076 erkannt mit Transkribus}
+      \label{fig:transkribus-handschrift}
+    \end{figure}
 
-    \includegraphics[width=\paperwidth]{./assets/Images/Akte_076_S001.jpg}
-
+  \begin{figure}[htbp]
+  \centering
   \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
     Murg. 15. Aug 41 \\
     \\
@@ -663,9 +1110,14 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Dein \\
     Carl \\
   \end{tcolorbox}
+  \caption{Transkription von \autoref{fig:transkribus-handschrift}}
+  \label{fig:transkription-brief}
+\end{figure}
+
     ChatGPT produziert daraus:
 
-
+  \begin{figure}[htbp]
+  \centering
     \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
     Murg, 15. Aug. 41\\
     \\
@@ -683,10 +1135,15 @@ Mit herzlichen Grüßen\\
 Dein\\
 Carl\\
 \end{tcolorbox}
+\caption{Transkription durch ChatGPT von \autoref{fig:transkription-brief}}
+  \label{fig:brief-carl-alfons}
+\end{figure}
 
 Durch CHatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das "Venstadler Liedchen" ist eigendlich eines aus "Neustadt". Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkribtion.
 
 Korrigiert und getagt lautet der Brief nun:
+  \begin{figure}[htbp]
+  \centering
 \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
   \textbf{\colorbox{place}{\texttt{Murg}}}.  \textbf{\colorbox{date}{\texttt{15. Aug 41}}} \\
 \\
@@ -713,6 +1170,9 @@ Mit herzl. Grüßen \\
 Dein\\
 \textbf{\colorbox{person}{\texttt{Carl}}}\\
 \end{tcolorbox}
+\caption{Tagging von \autoref{fig:brief-carl-alfons}}
+  \label{fig:Tagging-brief-carl-alfons}
+\end{figure}
 
 
 \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
@@ -736,315 +1196,6 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 \textbf{\colorbox{place}{\texttt{Laufenburg (Baden)}}}\\
 \textbf{\colorbox{place}{\texttt{Rhina}}}
 \end{tcolorbox}
-
-
-
-
-\subsection{Aufbau XML to JSON Pipeline}
-\subsubsection{Übersichtsgrafik der Pipeline}
-
-\begin{center}
-\resizebox{0.5\textwidth}{!}{ % Skalierung auf halbe Seitenbreite
-\begin{tikzpicture}[
-  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=3.5cm, minimum height=1cm, align=center},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4cm, minimum height=1cm, align=center},
-  group/.style={draw=gray, dashed, rounded corners, inner sep=0.3cm},
-  arrow/.style={-Latex, thick},
-  node distance=1cm and 1.5cm
-]
-  % --- Hauptknoten ---
-  \node[process] (dir) at (0, -4) {\textbf{Dateiverzeichnis} \\ der XML-Dateien};
-  \node[process] (llmpre) at (6, -4) {\textbf{llm\_XML\_preprocessing.py}};
-  \node[process, below=2.2cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ steuert Verarbeitung};
-  \node[process] (transkribus) at (-7, 0) {\textbf{app.transkribus.org} \\ Transkription};
-
-  % --- Neu angeordnete Verarbeitungsmodule ---
-
-% Linke Spalte: über Elemente im Dokument
-\node[module, below left=of main] (org)     {organization\_matcher.py};
-\node[module, below=of org]       (person)  {person\_matcher.py};
-\node[module, below=of person]    (place)   {place\_matcher.py};
-
-% Mittlere Spalte: über das Dokument
-\node[module, below=of main]      (roles)   {Assigned\_Roles\_Module.py};
-\node[module, below=of roles]     (event)   {event\_matcher.py};
-\node[module, below=of event]     (date)    {date\_matcher.py};
-
-% Rechte Spalte: Dokument-bezogene Module
-\node[module, below right=of main] (type)    {type\_matcher.py};
-\node[module, below=of type]       (enrich)  {enrich\_pipeline.py};
-\node[module, below=of enrich]     (schema)  {document\_schemas.py};
-\node[module, below=of schema]     (letter)  {letter\_metadata\_matcher.py};
-
-
-% --- Gruppenrahmen (nur blaue Boxen) ---
-\node[group, fit=(
-  org)(person)(place)        % linke Spalte
-  (roles)(event)(date)       % mittlere Spalte
-  (type)(enrich)(schema)(letter)  % rechte Spalte
-, name=modulebox] {};
-
-% --- Gruppenrahmen (blaue Boxen + Transkribus_II_Test.py) ---
-\node[group, fit=(main)(org)(letter), name=processingbox,
-  label={[anchor=north west, xshift=0cm, yshift=+0.7cm]north west:\textbf{Hauptverarbeitung}}] {};
-
-  % --- Beschriftung für Modulblock ---
-\node at ($(main.south) + (0,-0.5)$) [font=\bfseries] {};
-
-% --- Verbindungen mit eckigen Pfeilen ---
-\draw[arrow] 
-  (transkribus.south) |- ([xshift=-0.4cm]dir.west)
-  node[pos=0.6, left, font=\small, xshift=2.2cm, yshift=2.4cm]{\textit{Export als XML-Datei}};
-
-
-\draw[arrow] (dir.east) -- (llmpre.west);
-\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{XML Custom Tag Erweiterung}} (dir.north);
-\draw[arrow] (dir.south) -- (main.north);
-\draw[arrow] (main.south) -- ($(main.south |- modulebox.north)$);
-\end{tikzpicture}
-}
-\end{center}
-
-
-
-
-
-\section{ Pipeline grafik refined}
-\vspace{6\baselineskip}
-
-
-\begin{center}
-\resizebox{0.9\textwidth}{!}{
-\begin{tikzpicture}[
-  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
-  source/.style={rectangle, draw=black, fill=green!30!gray!20, thick, minimum width=4.2cm, minimum height=0.7cm, align=center},
-  group/.style={draw=gray, dashed, rounded corners, inner sep=0.5cm},
-  arrow/.style={-Latex, thick}, arrowboth/.style={<Latex>-<Latex>, thick},
-  node distance=0.8cm and 1.6cm
-]
-
-
-% --- Hauptquellen oben ---
-\node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transkription};
-\node[process] (dir) at (0, -3.2) {\textbf{Dateiverzeichnis} \\ mit XML-Dateien};
-\node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
-\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Hauptverarbeitung};
-
-% ------------------- MODULE (FLOWCHART) ------------------------
-\node[module, below=2cm of main] (init) {Initialisierung \\ (CSV-Import, Matcher)};
-\node[module, below=of init]    (xml)  {XML \& Custom-Tags \\ Parsen, extract\_metadata};
-
-% Referenzpunkt zentriert unter xml
-\coordinate (modcenter) at ($(xml.south) + (0,-1.8)$);
-
-\node[module] (roles)   at ($(modcenter) + (-8cm, -0.5)$) {Rollen \\ zuweisen, anreichern};
-\node[module] (persons) at ($(modcenter) + (-2.7cm, -0.5)$) {Personen \\ match, split, enrich};
-\node[module] (orgs)    at ($(modcenter) + (2.7cm, -0.5)$)  {Organisationen \\ extrahieren, deduplizieren};
-\node[module] (places)  at ($(modcenter) + (8cm, -0.5)$)  {Orte \\ Kontext + Kombination};
-\node[module] (dates)  at ($(modcenter) + (13cm, -0.5)$) {Daten \\ combine\_dates(), count};
-\node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
-\node[module, below=1.2cm of persons] (authors) {Autoren \& Empfänger \\ infer, dedup, score};
-\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
-\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
-\node[module, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
-
-% CSV-Quellen
-\node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
-\node[source, below=0.6cm of csv1] (csv2) {\textbf{export-place.csv}};
-\node[source, below=0.6cm of csv2] (csv3) {\textbf{export-roles.csv}};
-\node[source, below=0.6cm of csv3] (csv4) {\textbf{export-organisationen.csv}};
-
-\node[group, fit=(csv1)(csv2)(csv3)(csv4), name=nodegoatbox,
-  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Nodegoat-Exporte}}] {};
-
-\node[group, fit=(transkribus), name=pretranskribusbox,
-  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Transkribus}}] {};
-
-  % --- Gruppenrahmen für Modulblock ---
-\node[group, fit=
-  (persons)(authors)(roles)
-  (orgs)(dates)(events)
-  (places)(joinpoint), name=flowchartbox] {};
-
-% --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
-\node[group, fit=(main)(flowchartbox)(save),
-  label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{Hauptverarbeitung der Transkribus\_II-Pipeline}}] {};
-
-
-% Verbindungen
-\draw[arrow] (transkribus.east) -- ++(1.2,0)-- ++(0,-3.2)-- node[pos=0.6, left, font=\small, xshift=-2cm, yshift=1.3cm]{\textit{Export als XML}} (dir.west);  
-\draw[arrow] (dir.east) -- (llmpre.west);
-\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{Custom-Tags}} (dir.north);
-\draw[arrow] (dir.south) -- (main.north);
-\draw[arrow] (main.south) -- (init.north);
-\draw[arrow] (init.south) -- (xml.north);
-
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (persons.west) -- (roles.east);
-\draw[arrow] (roles.east) -- (persons.west);   
-\draw[arrow] (persons.east) -- (orgs.west);
-\draw[arrow] (orgs.west) -- (persons.east); 
-\draw[arrow] (persons.east) -- (orgs.west);
-\draw[arrow] (orgs.west)-- (persons.east)  ;      
-\draw[arrow] (orgs.east) -- (places.west);  
-\draw[arrow] (places.west) -- (orgs.east);   
-             
-% Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] 
-  (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
-  node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{liefert Groundtruth}};
-\end{tikzpicture}
-}
-\end{center}
-\vspace{6\baselineskip}
-
-
-\subsection{Person-Matcher}
-\begin{center}
-\begin{tikzpicture}
-
-% TikZ styles
-\tikzset{
-  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
-  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
-  arrow/.style={-stealth, line width=0.15mm},
-  arrowboth/.style={stealth-stealth, line width=0.15mm},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
-  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-}
-%==========================
-% Mini-Diagramm oben rechts
-%==========================
-
-\begin{scope}[shift={(9,0)}]
-\node at (0, -3.7) {\textit{Oben: Gesamtübersicht-Schema}};
-\node[module] (init) at (0,0) {};
-\node[module] (xml) at (0, -0.5) {};
-\node[module]    (events)  at (-2.0, -1.3) {};
-\node[module]    (roles)   at (-1.2, -1.3) {};
-\node[highlight] (persons) at (-0.4, -1.3) {};
-\node[module]    (orgs)    at ( 0.4, -1.3) {};
-\node[module]    (places)  at ( 1.2, -1.3) {};
-\node[module]    (dates)   at ( 2.0, -1.3) {};
-\node[module] (authors)    at (-0.4, -2  ) {};
-\node[module] (json)       at (-0,  -2.8 ) {};
-\node[module] (save)       at (-0, -3.3  ) {};
-\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
-
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] (init.south) -- (xml.north);
-\draw[arrowboth] (roles.east) -- (persons.west);
-\draw[arrowboth] (persons.east) -- (orgs.west);
-\draw[arrowboth] (orgs.east) -- (places.west);
-%Pfeile oben
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-%Pfeile unten
- Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\end{scope}
-
-% Großes Prozessdiagramm
-\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
-
-\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
-
-\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
-
-\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
-
-\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
-
-\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
-
-\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
-
-
-\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
-
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
-\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
-
-\node[below=of count, align=center] 
-  {\textit{Oben: Prozess person\_matcher.py}\\\textit{Rechts: Input aus role\_matcher.py} und organization\_matcher.py};
-
-
-\draw[arrow] (personsmod.south) -- (split.north);
-\draw[arrow] (split.south) -- (parse.north);
-\draw[arrow] (parse.south) -- (match.north);
-\draw[arrow] (match.south) -- (roles.north);
-\draw[arrow] (roles.south) -- (score.north);
-\draw[arrow] (score.south) -- (dedup.north);
-\draw[arrow] (dedup.south) -- (count.north);
-
-\draw[arrow] 
-  (orgmatch.west) 
-  -- ++(-0.5,0) 
-  |- (roles.east);
-
-\draw[arrow] (rolematch.west) -- (roles.east);
-
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
-\end{tikzpicture}
-\end{center}
 
 
 
@@ -1413,16 +1564,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
   \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
   \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
   \newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Fazit und Ausblick        ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-\section{Fazit und Ausblick}
-\subsection{Zusammenfassung der zentralen Erkenntnisse}
-\subsection{Methodische Herausforderungen und Lösungen}
-\subsection{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}
-\newpage
+
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %------------------------           Bibliographie      --------------------------------%

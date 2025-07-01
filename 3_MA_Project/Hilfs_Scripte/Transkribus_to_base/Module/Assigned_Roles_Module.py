@@ -165,8 +165,6 @@ def flatten_organisation_entry(org: dict) -> dict:
             "name": resolve_nested_value(org["place"], "name"),
             "nodegoat_id": resolve_nested_value(org["place"], "nodegoat_id"),
         }
-
-    print(f"[DEBUG] Flattened associated_organisation: {flat}")
     return flat
 
 
@@ -334,10 +332,7 @@ def assign_roles_to_known_persons(
                 p["match_score"] = 30
                 p["mentioned_count"] = 1
                 continue
-            else:
-                print(
-                    f"[DEBUG-SAFE] Person '{p.get('forename', '')} {p.get('familyname', '')}' wird geschützt (ID oder Score ≥90)."
-                )
+        
 
     # 1) Inline-Matches nach ROLE_AFTER_NAME_RE und ROLE_BEFORE_NAME_RE
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):
@@ -566,7 +561,6 @@ def assign_roles_to_known_persons(
                     )
 
             person = Person.from_dict(p)
-            print(f"[DEBUG] person.role_schema = {person.role_schema!r}")
             result.append(person)
         except Exception as e:
             print(
