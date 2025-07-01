@@ -1333,7 +1333,8 @@ def process_transkribus_file(
             place_matcher_instance=place_matcher,
         )
         print("[DEBUG] Extracted custom roles:", custom_data["roles"])
-        standalone = extract_standalone_roles(transcript_text)
+        standalone = extract_standalone_roles(role_input_persons, transcript_text)
+
         print("[DEBUG] Standalone roles from text:", standalone)
 
         # 7) Fallback: Organisationen aus Plain-Text
@@ -1903,7 +1904,7 @@ def extract_and_prepare_persons(
     """
     # 1) split & fuzzy-match raw custom persons
     matched, _ = split_and_enrich_persons(
-        raw_persons, transcript, folder, KNOWN_PERSONS
+        raw_persons, transcript, folder
     )
     matched_dicts = [
         p.__dict__ if isinstance(p, Person) else p for p in matched

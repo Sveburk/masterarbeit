@@ -1,6 +1,7 @@
 from curses import raw
 import os
 import re
+import ast
 import unicodedata
 import uuid
 import string
@@ -17,13 +18,16 @@ from Module.Assigned_Roles_Module import (
     ROLE_BEFORE_NAME_RE,
     map_role_to_schema_entry,
     ROLE_MAPPINGS_DE,
-    extract_role_from_raw_name,)
+    extract_role_from_raw_name,
+)
 from Module.letter_metadata_matcher import (
     _RECIPIENT_RE,
     INDIRECT_RECIPIENT_PATTERNS,
     GREETING_PATTERNS as CLOSING_PATTERNS,
-    ROLE_PATTERNS, direct_patterns
+    ROLE_PATTERNS,
+    direct_patterns,
 )
+
 # ============================================================================
 #   BLACKLIST & CONFIGURATION
 # ============================================================================
@@ -53,28 +57,69 @@ BLACKLIST_TOKENS = {
     "danke",
 }
 PRONOUN_TOKENS = {
-    "der", "die", "das", "des", "dem", "den", "ein", "eine", "einer", "eines", "einem","mein", "dein", "sein", "ihr", "unser", "euer","mein", 
-    "meine", "meinen", "meinem", "meiner", "meines",
-    "dein", "deine", "deinen", "deinem", "deiner", "deines",
-    "sein", "seine", "seinen", "seinem", "seiner", "seines",
-    "ihr", "ihre", "ihren", "ihrem", "ihrer", "ihres",
-    "unser", "unsere", "unseren", "unserem", "unserer", "unseres",
-    "euer", "eure", "euren", "eurem", "eurer", "eures",
+    "der",
+    "die",
+    "das",
+    "des",
+    "dem",
+    "den",
+    "ein",
+    "eine",
+    "einer",
+    "eines",
+    "einem",
+    "mein",
+    "dein",
+    "sein",
     "ihr",
-
+    "unser",
+    "euer",
+    "mein",
+    "meine",
+    "meinen",
+    "meinem",
+    "meiner",
+    "meines",
+    "dein",
+    "deine",
+    "deinen",
+    "deinem",
+    "deiner",
+    "deines",
+    "sein",
+    "seine",
+    "seinen",
+    "seinem",
+    "seiner",
+    "seines",
+    "ihr",
+    "ihre",
+    "ihren",
+    "ihrem",
+    "ihrer",
+    "ihres",
+    "unser",
+    "unsere",
+    "unseren",
+    "unserem",
+    "unserer",
+    "unseres",
+    "euer",
+    "eure",
+    "euren",
+    "eurem",
+    "eurer",
+    "eures",
+    "ihr",
 }
 
 # ----- Gesamt‑Blacklist -------
-NON_PERSON_TOKENS= ROLE_TOKENS.union(
-    TITLE_TOKENS,
-    BLACKLIST_TOKENS,
-    PRONOUN_TOKENS
+NON_PERSON_TOKENS = ROLE_TOKENS.union(
+    TITLE_TOKENS, BLACKLIST_TOKENS, PRONOUN_TOKENS
 )
 
 # Einzelne Tokens, die nie als eigenständige Personenbezeichnung zählen sollen
 UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
-
-
 
 
 # ============================================================================
@@ -91,6 +136,7 @@ def get_matching_thresholds() -> dict[str, int]:
 CSV_PATH_KNOWN_PERSONS = os.path.expanduser(
     "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
 )
+
 
 def clean_string(val):
     if val is None:
@@ -158,11 +204,13 @@ def load_known_persons_from_csv(
             gender = {
                 "männlich": "male",
                 "weiblich": "female",
-                "divers": "other"
+                "divers": "other",
             }.get(raw_gender, "")
 
             if raw_gender and not gender:
-                print(f"[WARN] Unbekannter Gender-Wert: '{raw_gender}' in Zeile: {r.to_dict()}")
+                print(
+                    f"[WARN] Unbekannter Gender-Wert: '{raw_gender}' in Zeile: {r.to_dict()}"
+                )
 
             persons.append(
                 {
@@ -317,6 +365,7 @@ OCR_ERRORS: Dict[str, List[str]] = {
 #   NORMALISIERUNG
 # ============================================================================
 
+
 def normalize_name_string(name: str) -> (str, str):
     """
     Trennt Titel-Token am Anfang, normalisiert den Rest.
@@ -326,15 +375,14 @@ def normalize_name_string(name: str) -> (str, str):
 
     # Regex dynamisch aus TITLE_TOKENS bauen
     title_pattern = re.compile(
-        r"^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s*",
-        re.I
+        r"^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s*", re.I
     )
 
     title = ""
     m = title_pattern.match(s)
     if m:
         title = m.group(1).capitalize()
-        s = s[m.end():].strip()
+        s = s[m.end() :].strip()
 
     # Klammern löschen, Inhalt behalten
     s = re.sub(r"[()]", "", s)
@@ -367,12 +415,14 @@ def normalize_name(name: str) -> Dict[str, str]:
     s = name.strip()
 
     # Regex dynamisch aus TITLE_TOKENS bauen
-    pattern = r"(?i)^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s+"
+    pattern = (
+        r"(?i)^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\.?\s+"
+    )
 
     m = re.match(pattern, s)
     title = m.group(1).capitalize() if m else ""
     if m:
-        s = s[m.end():].strip()
+        s = s[m.end() :].strip()
 
     # Klammern löschen, Inhalt behalten
     s = re.sub(r"[()]", "", s)
@@ -400,6 +450,7 @@ def normalize_name(name: str) -> Dict[str, str]:
         "familyname": " ".join(parts[1:]).capitalize(),
     }
 
+
 # ============================================================================
 #   Levenshtein-Fallback
 # ============================================================================
@@ -423,6 +474,8 @@ def ocr_error_match(
     max_len = max(len(name_lower), len(best_match))
     score = (1 - best_dist / max_len) * 100 if max_len > 0 else 0.0
     return best_match, best_dist, score
+
+
 def correct_swapped_name(forename: str, familyname: str) -> Tuple[str, str]:
     """Korrigiert vertauschte Namensteile heuristisch."""
     if not forename or not familyname:
@@ -444,18 +497,20 @@ def correct_swapped_name(forename: str, familyname: str) -> Tuple[str, str]:
     fn_is_forename = fn_lower in KNOWN_FORENAMES
     ln_is_surname = ln_lower in KNOWN_SURNAMES
 
-    if fn_is_surname and ln_is_forename and not (fn_is_forename and ln_is_surname):
+    if (
+        fn_is_surname
+        and ln_is_forename
+        and not (fn_is_forename and ln_is_surname)
+    ):
         return familyname, forename
 
     return forename, familyname
 
 
-
-
-
 # ----------------------------------------------------------------------------
 # Fuzzy Matching
 # ----------------------------------------------------------------------------
+
 
 def fuzzy_match_name(
     name: str, candidates: List[str], threshold: int
@@ -492,7 +547,8 @@ def match_person(
             "match_score": 30,
             "confidence": "partial",
             "needs_review": True,
-            "gender": person.get("gender", "") or infer_gender_for_person(person, KNOWN_PERSONS),
+            "gender": person.get("gender", "")
+            or infer_gender_for_person(person, KNOWN_PERSONS),
             "review_reason": f"Nur Rolle ohne vollständigen Namen erkannt: {person.get('role', '')}",
         }, 30
 
@@ -525,32 +581,39 @@ def match_person(
     # dann ist es definitiv diese Person.
     if fn and not ln:
         matches = [
-            c for c in candidates
-            if normalize_name_string(c["forename"]) == normalize_name_string(fn)
+            c
+            for c in candidates
+            if normalize_name_string(c["forename"])
+            == normalize_name_string(fn)
         ]
         if len(matches) == 1:
             result = dict(matches[0])
-            result.update({
-                "confidence": "single_name_in_GT",
-                "needs_review": False,
-                "match_score": 90,           
-            })
+            result.update(
+                {
+                    "confidence": "single_name_in_GT",
+                    "needs_review": False,
+                    "match_score": 90,
+                }
+            )
             return result, result["match_score"]
 
     if ln and not fn:
         matches = [
-            c for c in candidates
-            if normalize_name_string(c["familyname"]) == normalize_name_string(ln)
+            c
+            for c in candidates
+            if normalize_name_string(c["familyname"])
+            == normalize_name_string(ln)
         ]
         if len(matches) == 1:
             result = dict(matches[0])
-            result.update({
-                "confidence": "single_name_in_GT",
-                "needs_review": False,
-                "match_score": 90,
-            })
+            result.update(
+                {
+                    "confidence": "single_name_in_GT",
+                    "needs_review": False,
+                    "match_score": 90,
+                }
+            )
             return result, result["match_score"]
-
 
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
 
@@ -576,7 +639,8 @@ def match_person(
             "forename": fn,
             "familyname": ln,
             "role": role_raw,
-            "gender": person.get("gender", "") or infer_gender_for_person(person, KNOWN_PERSONS),
+            "gender": person.get("gender", "")
+            or infer_gender_for_person(person, KNOWN_PERSONS),
             "title": str(person.get("title", "")),
             "alternate_name": "",
             "nodegoat_id": "",
@@ -596,7 +660,8 @@ def match_person(
             "forename": fn,
             "familyname": ln,
             "role": role_raw,
-            "gender": person.get("gender", "") or infer_gender_for_person(person, KNOWN_PERSONS),
+            "gender": person.get("gender", "")
+            or infer_gender_for_person(person, KNOWN_PERSONS),
             "title": str(person.get("title", "")),
             "alternate_name": "",
             "nodegoat_id": "",
@@ -628,7 +693,7 @@ def match_person(
             # Normal: Vorname-Teil prüfen, Nachname exakt
             if (
                 c["forename"]
-                and c["forename"][:len(fn)].lower() == fn_lower[:len(fn)]
+                and c["forename"][: len(fn)].lower() == fn_lower[: len(fn)]
                 and normalize_name_string(c["familyname"]) == norm_ln
             ):
                 return dict(c), 89
@@ -639,17 +704,24 @@ def match_person(
             ln_lower = ln.lower()
             # Neue REVERSE-Prüfung – robust:
             if (
-                c["forename"] and c["familyname"] and
-                normalize_name_string(c["forename"])[:4] == norm_ln[:4] and  # dein ln gegen c[forename]
-                normalize_name_string(c["familyname"])[:4] == norm_fn[:4] and  # dein fn gegen c[familyname]
+                c["forename"]
+                and c["familyname"]
+                and normalize_name_string(c["forename"])[:4]
+                == norm_ln[:4]  # dein ln gegen c[forename]
+                and normalize_name_string(c["familyname"])[:4]
+                == norm_fn[:4]  # dein fn gegen c[familyname]
+                and
                 # NEU: nur tauschen, wenn es nicht eh schon normal ist
                 not (
-                    normalize_name_string(c["forename"]) == norm_fn and
-                    normalize_name_string(c["familyname"]) == norm_ln
+                    normalize_name_string(c["forename"]) == norm_fn
+                    and normalize_name_string(c["familyname"]) == norm_ln
                 )
             ):
                 swapped = dict(c)
-                swapped["forename"], swapped["familyname"] = swapped["familyname"], swapped["forename"]
+                swapped["forename"], swapped["familyname"] = (
+                    swapped["familyname"],
+                    swapped["forename"],
+                )
                 return swapped, 88
 
     best, best_score = None, 0
@@ -684,14 +756,20 @@ def match_person(
         result = dict(best)
 
         result["gender"] = (
-            result.get("gender", "")  # bevorzugt, falls im dict schon gesetzt (oft identisch mit best.get("gender", ""))
-            or best.get("gender", "")  # falls aus irgendeinem Grund im dict leer
-            or person.get("gender", "")  # falls es im Input schon gesetzt war (z. B. durch vorherige Extraktion)
-            or infer_gender_for_person(result, KNOWN_PERSONS)  # Notlösung: heuristisch ableiten
+            result.get(
+                "gender", ""
+            )  # bevorzugt, falls im dict schon gesetzt (oft identisch mit best.get("gender", ""))
+            or best.get(
+                "gender", ""
+            )  # falls aus irgendeinem Grund im dict leer
+            or person.get(
+                "gender", ""
+            )  # falls es im Input schon gesetzt war (z. B. durch vorherige Extraktion)
+            or infer_gender_for_person(
+                result, KNOWN_PERSONS
+            )  # Notlösung: heuristisch ableiten
         )
         return result, int(best_score)
-
-
 
     for c in candidates:
         if normalize_name_string(fn) == normalize_name_string(c["forename"]):
@@ -744,24 +822,34 @@ def match_person(
         person["gender"] = "male"
     # SPEZIAL: Wenn Nachname bekannt & mehrere Matches & gender gegeben
     if ln and person.get("gender"):
-        print (f"[DEBUG] WHUUUU WIR SIND IM SPEZIALFALL NACHNAME + GENDER:")
+        print(f"[DEBUG] WHUUUU WIR SIND IM SPEZIALFALL NACHNAME + GENDER:")
         same_ln = [
-            c for c in candidates
-            if normalize_name_string(c["familyname"]) == normalize_name_string(ln)
+            c
+            for c in candidates
+            if normalize_name_string(c["familyname"])
+            == normalize_name_string(ln)
         ]
         # Finde nur die, die gender matchen
         same_ln_gender = [
-            c for c in same_ln
-            if str(c.get("gender", "")).lower() == str(person["gender"]).lower()
+            c
+            for c in same_ln
+            if str(c.get("gender", "")).lower()
+            == str(person["gender"]).lower()
         ]
         if len(same_ln_gender) == 1:
-            print(f"[DEBUG] Gender-gestütztes Disambiguieren: {ln} + {person['gender']}")
-            result: Dict[str, Union[str, int, bool, None]] = dict(same_ln_gender[0])
-            result.update({
-                "confidence": "gender_ln_match",
-                "needs_review": False,
-                "match_score": 95
-            })
+            print(
+                f"[DEBUG] Gender-gestütztes Disambiguieren: {ln} + {person['gender']}"
+            )
+            result: Dict[str, Union[str, int, bool, None]] = dict(
+                same_ln_gender[0]
+            )
+            result.update(
+                {
+                    "confidence": "gender_ln_match",
+                    "needs_review": False,
+                    "match_score": 95,
+                }
+            )
             result["title"] = person.get("title") or result.get("title", "")
             result["gender"] = person.get("gender") or result.get("gender", "")
             return result, 95
@@ -788,7 +876,8 @@ def match_person(
                 "forename": fn,
                 "familyname": ln,
                 "title": str(person.get("title", "")),
-                "gender": person.get("gender", "") or infer_gender_for_person(person, KNOWN_PERSONS),
+                "gender": person.get("gender", "")
+                or infer_gender_for_person(person, KNOWN_PERSONS),
                 "alternate_name": "",
                 "nodegoat_id": "",
                 "role": role_raw,
@@ -798,7 +887,6 @@ def match_person(
                 "needs_review": True,
                 "review_reason": review_reason,
             }, 0
-
 
     return None, 0
 
@@ -849,11 +937,9 @@ def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
     )
 
     raw_gender = clean_string(row.get("gender", "")).lower()
-    gender = {
-        "männlich": "male",
-        "weiblich": "female",
-        "divers": "other"
-    }.get(raw_gender, "")
+    gender = {"männlich": "male", "weiblich": "female", "divers": "other"}.get(
+        raw_gender, ""
+    )
 
     return {
         "forename": forename,
@@ -869,7 +955,9 @@ def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
         "role": normalized_role,
         "role_schema": role_schema,
         "gender": gender,
-        "associated_organisation": clean_string(row.get("associated_organisation", "")),
+        "associated_organisation": clean_string(
+            row.get("associated_organisation", "")
+        ),
         "confidence": "",
         "match_score": 0,
         "needs_review": True if not row.get("nodegoat_id") else False,
@@ -888,9 +976,10 @@ def get_review_reason_for_person(p: Dict[str, str]) -> str:
 
     return "; ".join(reasons)
 
+
 def infer_gender_for_person(
     person: Union[Person, Dict[str, Any]],
-    known_persons: List[Dict[str, str]] = KNOWN_PERSONS
+    known_persons: List[Dict[str, str]] = KNOWN_PERSONS,
 ) -> str:
     """
     Ermittelt das Geschlecht einer Person auf Basis von Titel (aus Transkribus)
@@ -904,17 +993,26 @@ def infer_gender_for_person(
     fn = person.get("forename", "").strip().lower()
     ln = person.get("familyname", "").strip().rstrip(".").lower()
 
-
     # 2. Titelbasiertes Matching (aus Transkribus)
     title = (person.get("title") or "").strip().lower()
     title_map = {
-        #männliche Titel
-        "herr": "male", "herrn": "male", "witwer": "male",
-        "sänger": "male", "sangesbruder": "male", "sängerbruder": "male", 
-        "bruder": "male", "kamerad": "male", "genosse": "male",
-        #weibliche Titel
-        "frau": "female", "fräulein": "female", "witwe": "female",
-        "sängerin": "female", "kameradin": "female", "genossin": "female",
+        # männliche Titel
+        "herr": "male",
+        "herrn": "male",
+        "witwer": "male",
+        "sänger": "male",
+        "sangesbruder": "male",
+        "sängerbruder": "male",
+        "bruder": "male",
+        "kamerad": "male",
+        "genosse": "male",
+        # weibliche Titel
+        "frau": "female",
+        "fräulein": "female",
+        "witwe": "female",
+        "sängerin": "female",
+        "kameradin": "female",
+        "genossin": "female",
     }
     if title in title_map:
         gender = title_map[title]
@@ -928,10 +1026,10 @@ def infer_gender_for_person(
         if fn_known == fn and ln_known == ln:
             gender_raw = known.get("gender", "").strip().lower()
             if gender_raw in {"männlich", "male"}:
-                
+
                 return "male"
             elif gender_raw in {"weiblich", "female"}:
-                
+
                 return "female"
 
             else:
@@ -960,6 +1058,7 @@ def detect_and_convert_role_only_entries(
 
     return person
 
+
 import re
 
 # benutze deine bereits definierten Patterns
@@ -970,8 +1069,14 @@ from Module.letter_metadata_matcher import (
     ROLE_PATTERNS,
 )
 
+
 def extract_metadata_names(text: str) -> list[str]:
-    from Module.letter_metadata_matcher import _CLOSING_RE, INDIRECT_RECIPIENT_PATTERNS, direct_patterns
+    from Module.letter_metadata_matcher import (
+        _CLOSING_RE,
+        INDIRECT_RECIPIENT_PATTERNS,
+        direct_patterns,
+    )
+
     names = []
     lines = text.splitlines()
     for i, line in enumerate(lines):
@@ -979,8 +1084,12 @@ def extract_metadata_names(text: str) -> list[str]:
         m = _RECIPIENT_RE.match(line)
         if m:
             # „An Frau Maria Müller“ → „Maria Müller“
-            cleaned = re.sub(r'^(?:An\s+|Herrn?\s+|Frau\s+|Liebe[rn]?\s+)', '',
-                             line, flags=re.IGNORECASE).strip()
+            cleaned = re.sub(
+                r"^(?:An\s+|Herrn?\s+|Frau\s+|Liebe[rn]?\s+)",
+                "",
+                line,
+                flags=re.IGNORECASE,
+            ).strip()
             names.append(cleaned)
             continue
 
@@ -1004,34 +1113,58 @@ def extract_metadata_names(text: str) -> list[str]:
         if _CLOSING_RE.search(line):
             # suche nach „…,\n<Name>“ oder zeilenvorher nach Großwortfolge
             if i > 0:
-                prev = lines[i-1].strip()
+                prev = lines[i - 1].strip()
                 # z.B. „Otto Müller,“
-                m2 = re.match(r"^([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)[,\.]?$", prev)
+                m2 = re.match(
+                    r"^([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)[,\.]?$",
+                    prev,
+                )
                 if m2:
                     names.append(m2.group(1))
             continue
 
     return names
 
-def merge_title_tokens(raw_persons: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+
+def merge_title_tokens(
+    raw_persons: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Merge title tokens like ``Frau``/``Herr`` with the following name.
+
+    While merging, infer the gender from the title so that downstream
+    matching can directly use this information.
+    """
+
     merged = []
     skip_next = False
+
     for i, p in enumerate(raw_persons):
         if skip_next:
             skip_next = False
             continue
-        if p.get("name", "").strip().lower() in TITLE_TOKENS:
+
+        token = p.get("name", "").strip().lower()
+
+        if token in TITLE_TOKENS:
+
+            token = p.get("name", "").strip().lower()
+
+        if token in TITLE_TOKENS:
             if i + 1 < len(raw_persons):
                 next_p = raw_persons[i + 1]
                 # immer Titel setzen, egal ob next_p bereits forename/familyname hat
                 next_p["title"] = p["name"].strip().capitalize()
+                if token in FEMALE_TITLE_TOKENS:
+                    next_p.setdefault("gender", "female")
+                elif token in MALE_TITLE_TOKENS:
+                    next_p.setdefault("gender", "male")
                 merged.append(next_p)
                 skip_next = True
-            # sonst droppen
+            # wenn kein nächstes token vorhanden, wird der Titel ignoriert
         else:
             merged.append(p)
-    return merged
 
+    return merged
 
 
 # ----------------------------------------------------------------------------
@@ -1045,7 +1178,6 @@ def split_and_enrich_persons(
 ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
     from Module.Assigned_Roles_Module import POSSIBLE_ROLES
 
-
     # print(
     #     f"[DEBUG] Split_and_enrich in Person_matcher.py erhält folgende raw_persons: {raw_persons}"
     # )
@@ -1056,11 +1188,15 @@ def split_and_enrich_persons(
     #         if (isinstance(key, str) and "Adolf" in key) or (isinstance(value, str) and "Adolf" in value):
     #             print("**********************>", key, value)
 
-    # --- 1. Zeilen zusammenführen ---
+
+def split_and_enrich_persons(
+    raw_persons: List[Dict[str, Any]],
+    transcript: str,
+    folder: str,
+    candidates: Optional[List[Dict[str, str]]] = None,
+) -> List[Dict[str, Any]]:
+    global KNOWN_PERSONS
     merged_raw_persons = []
-    meta_names = extract_metadata_names(content_transcription)
-    for nm in meta_names:
-        merged_raw_persons.append({"name": nm})
     i = 0
     while i < len(raw_persons):
         current = raw_persons[i]
@@ -1074,18 +1210,27 @@ def split_and_enrich_persons(
             # CLEANUP!
             current["forename"] = clean_string(current.get("forename"))
             current["familyname"] = clean_string(current.get("familyname"))
-            current["alternate_name"] = clean_string(current.get("alternate_name"))
+            current["alternate_name"] = clean_string(
+                current.get("alternate_name")
+            )
             # und ggf. weitere Felder wie "title", "role" etc., falls betroffen
             merged_raw_persons.append(current)
             i += 1
             continue
- 
 
         current_name = (
             current.get("name", "")
             if isinstance(current, dict)
             else str(current)
         ).strip()
+
+        if not current_name and isinstance(current, dict):
+            # Wenn kein expliziter Name vorhanden, aber Vor-/Nachname, nicht
+            # verwerfen, sondern direkt übernehmen
+            if current.get("forename") or current.get("familyname"):
+                merged_raw_persons.append(current)
+                i += 1
+                continue
 
         if not current_name:
             i += 1
@@ -1106,6 +1251,9 @@ def split_and_enrich_persons(
         merged_raw_persons.append({"name": current_name})
         i += 1
 
+    # Titel mit folgendem Namens-Token zusammenführen und dabei Gender setzen
+    merged_raw_persons = merge_title_tokens(merged_raw_persons)
+
     print("[DEBUG] Merged raw_persons vor Filter:", merged_raw_persons)
 
     processed_raw_persons = []
@@ -1120,7 +1268,11 @@ def split_and_enrich_persons(
 
         if isinstance(p, dict):
             # ✅ Wenn schon forename/familyname/nodegoat_id: unverändert übernehmen
-            if p.get("forename") and p.get("familyname") and p.get("nodegoat_id"):
+            if (
+                p.get("forename")
+                and p.get("familyname")
+                and p.get("nodegoat_id")
+            ):
                 processed_raw_persons.append(p)
                 continue
 
@@ -1178,8 +1330,6 @@ def split_and_enrich_persons(
                             new_person["familyname"] = name_str
                     new_person["name"] = name_str
 
-
-
                     processed_raw_persons.append(new_person)
 
                 else:
@@ -1191,34 +1341,47 @@ def split_and_enrich_persons(
                 if all(t in NON_PERSON_TOKENS for t in tokens):
                     continue
                 if name_str:
-                    processed_raw_persons.append({
-                        "forename": "",
-                        "familyname": name_str,
-                        "title": "",
-                        "gender": ""
-                    })
+                    processed_raw_persons.append(
+                        {
+                            "forename": "",
+                            "familyname": name_str,
+                            "title": "",
+                            "gender": "",
+                        }
+                    )
         else:
             name_str = str(p).strip()
             tokens = [t.lower() for t in name_str.split()]
             if all(t in NON_PERSON_TOKENS for t in tokens):
                 continue
             if name_str:
-                processed_raw_persons.append({
-                    "forename": "",
-                    "familyname": name_str,
-                    "title": "",
-                    "gender": ""
-                })
+                processed_raw_persons.append(
+                    {
+                        "forename": "",
+                        "familyname": name_str,
+                        "title": "",
+                        "gender": "",
+                    }
+                )
 
     # ✅ Final
     raw_persons = processed_raw_persons
 
     print(f"[DEBUG] raw persons nach Zeile 1116: {raw_persons}")
+    for p in raw_persons:
+        fam = p.get("familyname")
+        if isinstance(fam, str) and fam.startswith("{'forename':"):
+            try:
+                parsed = ast.literal_eval(fam)
+                print("[FIX] Repariere familyname mit embedded JSON:", parsed)
+                p.update(parsed)
+            except Exception as e:
+                print("[WARN] Konnte familyname nicht reparieren:", fam, e)
 
-    print("[DEBUG] processed_raw_persons:", processed_raw_persons)
+        #print("[DEBUG] processed_raw_persons:", processed_raw_persons)
 
     # --- 2. Kontextbasierte Rollenzuweisung ---
-    lines = content_transcription.splitlines()
+    lines = transcript.splitlines()
     for p in raw_persons:
         token = (
             p.get("name")
@@ -1252,7 +1415,7 @@ def split_and_enrich_persons(
             print(
                 f"[BYPASS] Person bereits gematcht (aus extract_person_from_custom): {p}"
             )
-            print(f" Diese Person ist {p}")
+            
             p["match_score"] = p.get("match_score", 100)
             p["confidence"] = p.get("confidence", "nodegoat")
             p["needs_review"] = False
@@ -1263,12 +1426,14 @@ def split_and_enrich_persons(
         if roles and not p.get("role"):
             p["role"] = roles[0]
 
-        person = extract_person_data({
-        "name": raw_token,
-        "title": p.get("title", ""),
-        "gender": p.get("gender", "")
-        })
-        
+        person = extract_person_data(
+            {
+                "name": raw_token,
+                "title": p.get("title", ""),
+                "gender": p.get("gender", ""),
+            }
+        )
+
         if (
             person.get("forename", "").strip()
             and person.get("familyname", "").strip()
@@ -1300,7 +1465,7 @@ def split_and_enrich_persons(
         else:
             seen.add(key)
 
-        person["content_transcription"] = content_transcription
+        person["content_transcription"] = transcript
         match, score = match_person(person, candidates=cand_list)
 
         if match and score > 0:
@@ -1330,25 +1495,30 @@ def split_and_enrich_persons(
                 swapped = {
                     "forename": ln,
                     "familyname": fn,
-                    "content_transcription": content_transcription,
+                    "content_transcription": transcript,
                 }
-                swapped_match, swapped_score = match_person(swapped, candidates=cand_list)
+                swapped_match, swapped_score = match_person(
+                    swapped, candidates=cand_list
+                )
 
                 if swapped_match and swapped_score > 0:
-                    print(f"[SWAP-MATCH] Tausch erfolgreich: {fn}/{ln} → {swapped_match}")
-                    matched.append({
-                        "raw_token": raw_token,
-                        "forename": swapped_match["forename"],
-                        "familyname": swapped_match["familyname"],
-                        "nodegoat_id": swapped_match["nodegoat_id"],
-                        "match_score": swapped_score,
-                        "confidence": "swapped",
-                    })
+                    print(
+                        f"[SWAP-MATCH] Tausch erfolgreich: {fn}/{ln} → {swapped_match}"
+                    )
+                    matched.append(
+                        {
+                            "raw_token": raw_token,
+                            "forename": swapped_match["forename"],
+                            "familyname": swapped_match["familyname"],
+                            "nodegoat_id": swapped_match["nodegoat_id"],
+                            "match_score": swapped_score,
+                            "confidence": "swapped",
+                        }
+                    )
                     continue
 
             # Wenn kein besserer Match → normal aufnehmen
             unmatched.append(person)
-
 
     # --- 4. Sonderfälle ---
     additional = []
@@ -1410,7 +1580,6 @@ def split_and_enrich_persons(
     if role_only_entries:
         unmatched.extend(role_only_entries)
 
-
     return matched, unmatched
 
 
@@ -1421,7 +1590,14 @@ def infer_role_and_organisation(
     forename: str = "",
     familyname: str = "",
 ) -> Tuple[str, str]:
-    from Module.letter_metadata_matcher import _CLOSING_RE, _RECIPIENT_RE, GREETING_PATTERNS, RECIPIENT_PATTERNS, INDIRECT_RECIPIENT_PATTERNS
+    from Module.letter_metadata_matcher import (
+        _CLOSING_RE,
+        _RECIPIENT_RE,
+        GREETING_PATTERNS,
+        RECIPIENT_PATTERNS,
+        INDIRECT_RECIPIENT_PATTERNS,
+    )
+
     """
     Analysiert die nachfolgende Zeile auf Rollen + Organisationen.
     Beispiel:
@@ -1750,8 +1926,12 @@ def deduplicate_and_group_persons(
             sorted(set(p.get("role", "") for p in group if p.get("role")))
         )
         best["role"] = combined_roles
-        best["mentioned_count"] = sum(int(p.get("mentioned_count", 1)) for p in group)
-        best["recipient_score"] = max(int(p.get("recipient_score", 0) or 0) for p in group)
+        best["mentioned_count"] = sum(
+            int(p.get("mentioned_count", 1)) for p in group
+        )
+        best["recipient_score"] = max(
+            int(p.get("recipient_score", 0) or 0) for p in group
+        )
         final.append(Person.from_dict(best))
 
     # 2) Manuelle Gruppierung nach Namensähnlichkeit
@@ -1765,10 +1945,11 @@ def deduplicate_and_group_persons(
             tfn = normalize(getattr(target, "forename", ""))
             tln = normalize(getattr(target, "familyname", ""))
 
-            if entry.get("match_score", 0) == 0 and not entry.get("nodegoat_id"):
+            if entry.get("match_score", 0) == 0 and not entry.get(
+                "nodegoat_id"
+            ):
                 entry["needs_review"] = True
                 entry["review_reason"] = "No nodegoat_id, match_score 0"
-
 
             # Wenn entweder Vorname oder Nachname übereinstimmt
             if (fn and fn == tfn) or (ln and ln == tln):
@@ -1786,12 +1967,16 @@ def deduplicate_and_group_persons(
 
                 # Rollen mergen
                 if entry.get("role"):
-                    existing_roles = set(filter(None, (target.role or "").split("; ")))
+                    existing_roles = set(
+                        filter(None, (target.role or "").split("; "))
+                    )
                     existing_roles.add(entry["role"])
                     target.role = "; ".join(sorted(existing_roles))
 
                 # role_schema ergänzen, falls Ziel leer
-                if entry.get("role_schema") and not getattr(target, "role_schema", ""):
+                if entry.get("role_schema") and not getattr(
+                    target, "role_schema", ""
+                ):
                     target.role_schema = entry.get("role_schema")
 
                 matched = True
@@ -1799,25 +1984,34 @@ def deduplicate_and_group_persons(
 
         if not matched:
             entry["mentioned_count"] = int(entry.get("mentioned_count", 1))
-            entry["recipient_score"] = int(entry.get("recipient_score", 0) or 0)
-            print(f"[NEU] Person ohne Merge: {entry.get('forename')} {entry.get('familyname')}")
+            entry["recipient_score"] = int(
+                entry.get("recipient_score", 0) or 0
+            )
+            print(
+                f"[NEU] Person ohne Merge: {entry.get('forename')} {entry.get('familyname')}"
+            )
             final.append(Person.from_dict(entry))
 
     # 3) recipient_score über nodegoat_id sichern
     recipient_score_lookup = {
         ensure_dict(p)["nodegoat_id"]: ensure_dict(p).get("recipient_score", 0)
         for p in persons
-        if ensure_dict(p).get("recipient_score", 0) > 0 and ensure_dict(p).get("nodegoat_id")
+        if ensure_dict(p).get("recipient_score", 0) > 0
+        and ensure_dict(p).get("nodegoat_id")
     }
 
     for person in final:
         nid = person.nodegoat_id
         if nid in recipient_score_lookup:
-            person.recipient_score = max(person.recipient_score or 0, recipient_score_lookup[nid])
+            person.recipient_score = max(
+                person.recipient_score or 0, recipient_score_lookup[nid]
+            )
 
     print("\n[DEBUG] Finale erwähnte Personen nach Deduplikation:")
     for p in final:
-        print(f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}")
+        print(
+            f" → {p.forename} {p.familyname}, Rolle: {p.role}, ID: {p.nodegoat_id}, Score: {p.match_score}, Count: {p.mentioned_count}"
+        )
 
     return final
 
