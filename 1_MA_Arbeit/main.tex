@@ -40,9 +40,12 @@
 % \usepackage{booktabs}    % für \toprule, \midrule, \bottomrule
 % \usepackage{longtable}   % falls nicht schon geladen
 % \usepackage{placeins} % Für \FloatBarrier
-\usepackage[authordate,backend=biber,language=ngerman]{biblatex-chicago}
-\addbibresource{assets/Literature_Bib/Masterarbeit.bib}
-\renewcommand{\cite}{\footcite}
+\usepackage[notes, backend=biber,language=ngerman, ibidtracker=context, citetracker=context, shorthandibid=true]{biblatex-chicago}
+\setlength{\skip\footins}{20pt}
+\addbibresource{assets/Literature_Bib/Exportierte Einträge.bib}
+% Optional:
+\let\cite\footcite
+
 \renewbibmacro*{date}{% 
     \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
         \printtext[parens]{Zugriff am \usebibmacro{urldate}}%
@@ -81,6 +84,7 @@
 \definecolor{vscode-blue}{HTML}{569CD6}             % VSCode Blau für python
 \definecolor{vscode-yellow}{HTML}{DCDCAA}           % VSCode Gelb für python
 \usepackage{array}
+\usepackage{wrapfig}
 \usepackage{colortbl}
 \usepackage{booktabs}
 \usepackage[x11names,table]{xcolor}
@@ -439,7 +443,6 @@ Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Person
 
 \section{Einleitung}
 \subsection{Ziel und Relevanz der Arbeit}
-\subsection{Forschungsstand und Forschungslücke}
 \subsection{Formulierung der Forschungsfrage}
 \subsection{Aufbau der Arbeit}
 \subsection{Geografischer und historischer Kontext}
@@ -452,6 +455,8 @@ Mit dem Ausbau der Landstraße, der heutigen Bundesstraße 34, sowie dem Anschlu
 von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Während der Industiralisierung mitte des 19. Jahrhunderts wurde die Wasserkraft zu einem entscheidenen Faktor der Region. Die Ansiedlung der Schweizer Textilfirma 
 \textit{Hüssy \& Künzli AG} im Jahr 1853 \cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug trug wesentlich zum Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte — auch aus der benachbarten Schweiz — machten die Gemeinde zu einem wichtigen
 Standort der regionalen Textilindustrie. Es waren eben diese schweizer Textilarbeiter, die 1861 den \textit{Männechor Murg} gründeten, damals unter dem Namen \textit{Schweizer Männerchor Murg}
+
+
 
   
 
@@ -551,6 +556,19 @@ blabla
 blabla
 \subsection{Export}
 blabla
+
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------%
+%------------------------           Forschungsstand         ----------------------------%
+%--------------------------------------------------------------------------------------%
+%--------------------------------------------------------------------------------------% 
+
+\subsection{Forschungsstand und Forschungslücke}\label{subsec:forschungsstand}
+Die oben beschriebenen Quellen wurden vor dieser Arbeit bislang nicht wissenschaftlich bearbeitet.
+
+\textcolor{red}{In LOD wird auf Vorprojekte verwiesen. Diese bitte beschreiben (Arcgis und Feldpost)}
+
+
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------%
 %------------------------           Methodenkritik         ----------------------------%
@@ -558,11 +576,78 @@ blabla
 %--------------------------------------------------------------------------------------% 
 \section{Methodenkritik}
 \subsection{Genutze Tools}
+Digitale Methoden spielen für die Durchführung dieser Arbeit eine zentrale Rolle. Von der Digitalisierung der Quellen
+über die Transkription bis hin zur Auswertung durchlaufen die Daten zahlreiche Prozessschritte, die mithilfe von Large 
+Language Models, Deep-Learning-Modellen und anderen digitalen Werkzeugen verarbeitet und visualisiert werden. 
+Die Auswahl der Tools orientierte sich dabei an Kriterien wie Verfügbarkeit (Open Source vs. proprietär), 
+Kompatibilität, Community-Support, erforderlichem Arbeitsaufwand und selbstverständlich dem konkreten Mehrwert für 
+die Forschungsfragen.
+
+In diesem Kapitel werden sowohl Werkzeuge vorgestellt, die tatsächlich eingesetzt wurden, als auch solche, die sich 
+im Verlauf des Projekts als ungeeignet erwiesen. Transparenz ist hierbei ein wesentlicher Aspekt: Ein großer Teil der 
+Methodik entwickelte sich erst im Forschungsprozess selbst. Da sich Large Language Models rasant weiterentwickeln, 
+ist nicht immer von Beginn an klar, ob ein Tool für den eigenen Anwendungsfall geeignet ist.
+Um diese Unsicherheiten zu dokumentieren, werden hier auch gescheiterte Versuche dargestellt.
+
+\subsubsection{LOD - Linked Open Data}
+
+Linked Open Data (LOD) bezeichnet einen dezentral organisierten Ansatz zur Veröffentlichung und 
+Verknüpfung strukturierter Daten im Web. Ziel ist es, Datensätze verschiedener Institutionen und Akteure 
+maschinenlesbar zugänglich zu machen und über standardisierte Formate wie RDF und SPARQL miteinander zu verbinden\cite[Vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
+Wesentliches Merkmal der LOD-Cloud ist dabei die Nutzung semantischer Beziehungen, insbesondere Äquivalenzen einzelner Daten. 
+Hierfür wird häufig das Prädikat \texttt{owl:sameAs} genutzt, um z.B. mit \colorbox{VeryLightGray}{\textit{:Choir owl:sameAs wd:Q131186}} eine eigene Instanz als identisch mit der Wikidata-Entität für einen Chor zu deklarieren.
+Klassen oder Instanzen können so aus unterschiedlichen Datenquellen eindeutig identifiziert und zusammengeführt werden.
+
+Die OWL Web Ontology Language, entwickelt vom World Wide Web Consortium (W3C), ist damit ein zentrales Werkzeug für die Realisierung von LOD.\cite[Vgl.][]{smith_owl_2004} 
+Mit ihr lassen sich Ontologien definieren, die Domänen über Klassen, Individuen und deren Relationen formal beschreiben. 
+Sie ermöglichen, logische Schlussfolgerungen zu ziehen, um verteilte Datenbestände zu verknüpfen und maschinenlesbar auszuwerten.
+Besonders relevant ist dabei \texttt{owl:sameAs}, das als Identitätsrelation fungiert: 
+Es deklariert Instanzen, die in unterschiedlichen Quellen unter verschiedenen URIs\footnote{Abk. URI; Uniform Resource Identifier} geführt werden, als dasselbe reale Objekt\cite[Vgl.][2.3. Data Aggregation and Privacy]{smith_owl_2004}
+und ermöglicht so eine präzise Zusammenführung von Informationen — ein Grundpfeiler für die Interoperabilität im Semantic Web.
+Die OWL-Spezifikation baut auf RDF\footnote{Abk. RDF; Resource Description Framework} auf und erweitert es um zusätzliche Konzepte. 
+Die Sprache liegt in drei Varianten vor \footnote{OWL Lite, OWL DL und OWL Full}, die sich im Grad ihrer Ausdrucksstärke unterscheiden.\cite[Vgl.][1.1. The Species of OWL.]{smith_owl_2004}
+Insbesondere OWL DL bietet einen praktikablen Mittelweg zwischen hoher Ausdruckskraft und vollständigem, entscheidbarem Schließen (Reasoning) 
+und ist daher für viele LOD-Anwendungsfälle geeignet.
+
+Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}.
+
+\begin{minipage}{0.48\textwidth}% Linke Box = TEXT
+Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
+Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst. 
+Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe ~\nameref{subsec:forschungsstand})
+
+Mit knapp 1600 Zeilen Code erweist sich diese jedoch als zu aufwendig, sodass der Fokus der Arbeit von der Ontologieentwicklung 
+auf die Extraktion von Entitäten verlagert wurde. Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen.
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}% Rechte Box = BILD
+  \centering
+  \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
+  \captionof{figure}{Ausschnitt der TTL-Ontologie.}
+  \label{fig:ttl-ontologie}
+\end{minipage}
+
+
+\vspace{1em}
+
+Zuverlässige Quellen für Informationen über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate} 
+und der „Suchdienst des DRK“\cite[Vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Zeichenketten 
+und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit.
+
+
+\paragraph {Protege}
+\paragraph {GraphDB}
 \subsubsection{Msty}
 \subsubsection{Alphabet -- Gemini}
 \subsubsection{Anthopic -- Claude}
+
+
 \subsubsection{OpenAI -- ChatGPT}
 \subsubsection{Transkribus}
+
+Abreviation Tag klappt nicht (wird nicht exportiert)
+Listen werden nicht exportiert
+
 \subsubsection{Nodegoat}
 \subsection{Netzwerkanalyse als Methode}
   \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
@@ -897,7 +982,7 @@ blabla
 %--------------------------------------------------------------------------------------%
 %--------------------------------------------------------------------------------------% 
 
-ﬁ\section{ALTER SCHEISS}
+\section{ALTER SCHEISS}
 
 In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{``Männerchor Akten 1925-1944''} bereits 2018 und 2022 ein 
 erster Korpus aus 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
@@ -929,7 +1014,7 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     %--------------------------------------------------------------------------------------% 
     
     
-    \section{Methodischer Zugang}
+\section{Methodischer Zugang}
     
     \subsection{Digitale Erfassung und Strukturierung der Quellen}
     \subsubsection{Gliederung in Akten}
@@ -951,7 +1036,6 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
     Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
     
-    \subsubsection{Strukturelle Tags}
     \begin{description}
 
     % Abbreviations
@@ -960,9 +1044,9 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
     
     \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind: „\textbf{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater }“.\\
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine ausgeschriebene Variante im selben Dokument vorhanden ist, bleibt die Abkürzung getaggt:\\
-    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß\textless /person\textgreater}
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.\\
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:\\
+    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
 
     
     % Unclear    
@@ -974,7 +1058,7 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: \\
     \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}\\
     \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:\\
-    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater }“.}\\
+    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}\\
     
 %Sic   
     \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
@@ -1053,7 +1137,7 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
 % Event
     \item \textbf{\colorbox{eventTag}{\texttt{event}}}
     
-    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
+    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:\\
     \noindent \textbf{\ding{43} Beispiel 1}: "Jubiläumskonzert"\\
     \textbf{\ding{43} Beispiel 2} "Gründung des Vereins" \\ 
     \textbf{\ding{43} Beispiel 2}"Kriegsausbruch" oder "Kriegsende"\\
@@ -1061,6 +1145,42 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
     \end{description}
     
+    \subsubsection{Strukturelle Tags}
+    \begin{description}
+
+    % Abbreviations
+    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+        
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.\\
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:\\
+    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
+
+    
+    % Unclear    
+    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    
+
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: \\
+    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}\\
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:\\
+    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}\\
+    
+%Sic   
+    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
+
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. \\
+
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: \\
+    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}\\
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: \\
+    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}\\
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
+    \end{description}
 
 \subsection{Digitalisierungsprozess und Herausforderungen}
     Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. 
