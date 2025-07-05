@@ -380,6 +380,38 @@
       \verb http://www.lexikonderwehrmacht.de/
       \endverb
     \endentry
+    \entry{martinez_comparative_nodate}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=f81da7493fac028a2dc21ac9844cf9fd}{%
+           family={Martinez},
+           familyi={M\bibinitperiod},
+           given={Roxana},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a39c909c4c285d71c82e9c48d36ce494}{%
+           family={Metnik},
+           familyi={M\bibinitperiod},
+           given={Gonzalo\bibnamedelima Pereyra},
+           giveni={G\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7bdd9152f680230096a202a8d34419f6}
+      \strng{fullhash}{7bdd9152f680230096a202a8d34419f6}
+      \strng{bibnamehash}{7bdd9152f680230096a202a8d34419f6}
+      \strng{authorbibnamehash}{7bdd9152f680230096a202a8d34419f6}
+      \strng{authornamehash}{7bdd9152f680230096a202a8d34419f6}
+      \strng{authorfullhash}{7bdd9152f680230096a202a8d34419f6}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The approach of this work is based on a comparative analysis of several tools used for the management of linked open data. To do this, different sections are shown, initially an introduction to the topic is presented, identifying the importance of open data for people, and showing how the results generated through them can benefit. In addition, special emphasis is placed on the need for tools that facilitate both their interaction and manipulation. A section is also shown with related works on this topic, identifying previous studies that evaluated similar tools. The objective is the presentation of a comparative analysis of tools on the study of a proposed data model, which is used to perform tests with five selected tools: 1) {API}, 2) {SPARQL} in Wikidata Query Service ({WDQS}), 3 ) Pywikibot and 4) {OpenRefine} with the Wikidata plugin. The main task is to identify, for each tool, the evaluation in terms of its ability to integrate and manage Linked Open Data, its ease of use, and its performance in executing specific tasks. Finally, the results obtained in the performance of the analyzed tools are shown, allowing us to know the strengths and weaknesses of each one concerning the proposed data model. On the other hand, the findings of the study are presented that suggest recommendations for the selection of the most appropriate tool according to the specific requirements needed in aspects of data integration in a project.}
+      \field{langid}{english}
+      \field{title}{Comparative Study of Tools for the Integration of Linked Open Data: Case study with Wikidata Proposal}
+      \verb{file}
+      \verb PDF:/Users/svenburkhardt/Zotero/storage/T8J3BE82/Martinez und Metnik - Comparative Study of Tools for the Integration of Linked Open Data Case study with Wikidata Proposa.pdf:application/pdf
+      \endverb
+    \endentry
     \entry{smith_owl_2004}{online}{}
       \name{editora}{3}{}{%
         {{hash=4513204e1b754f56fed99514e23f0a2d}{%
@@ -488,6 +520,26 @@
       \field{volume}{Band 1 - Die Waffengattungen — Gesamtübersicht}
       \field{year}{1977}
       \field{dateera}{ce}
+    \endentry
+    \entry{noauthor_wgs84_nodate}{online}{}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labeltitlesource}{title}
+      \field{title}{{WGS}84 {|} Landesamt für Geoinformation und Landesvermessung Niedersachsen}
+      \field{titleaddon}{Landesamt für Geoinformation und Landesvermessung Niedersachsen}
+      \field{urlday}{5}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb WGS84 | Landesamt für Geoinformation und Landesvermessung Niedersachsen:/Users/svenburkhardt/Zotero/storage/VLCV84P8/wgs84-190576.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://www.lgln.niedersachsen.de/startseite/wir_uber_uns/hilfe_support/lgln_lexikon/w/wgs84-190576.html
+      \endverb
+      \verb{url}
+      \verb https://www.lgln.niedersachsen.de/startseite/wir_uber_uns/hilfe_support/lgln_lexikon/w/wgs84-190576.html
+      \endverb
     \endentry
   \enddatalist
   \missing{burkhardt_transkribus_nodate}

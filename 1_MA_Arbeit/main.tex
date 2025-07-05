@@ -56,6 +56,7 @@
 }
 
 \usepackage[ngerman]{babel}
+\usepackage[autostyle]{csquotes}
 \usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
 \usepackage{minted}  % Für Python-Code
 \usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
@@ -609,34 +610,93 @@ Die Sprache liegt in drei Varianten vor \footnote{OWL Lite, OWL DL und OWL Full}
 Insbesondere OWL DL bietet einen praktikablen Mittelweg zwischen hoher Ausdruckskraft und vollständigem, entscheidbarem Schließen (Reasoning) 
 und ist daher für viele LOD-Anwendungsfälle geeignet.
 
-Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}.
+Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
+Umsetzung für diese Arbeit werden zwei zentrale Werkzeuge genutzt: Protégé zur Modellierung der Ontologie und GraphDB für deren Verwaltung und Abfrage.
+
+\paragraph{Protégé}
+
+Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
+Protégé ist eine weit verbreitete Open-Source-Software zur Erstellung, Visualisierung und Verwaltung von Ontologien.
+Die grafische Oberfläche unterstützt eine intuitive Klassendefinition, 
+Relationserstellung und Instanzverwaltung. 
+Mit Hilfe von Plugins können darüber hinaus logische Konsistenzprüfungen durchgeführt und 
+Ontologien direkt im OWL-Format exportiert werden, um sie in LOD-Workflows einzubinden.
+Die initiale Version der Ontologie für dieses Projekt entstand zuerst im Codeeditor \textit{Visual Studio Code} wurde aber schnell vollständig in Protégé überarbeitet.
+Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in SPARQL.
+
+\paragraph{GraphDB}
+
+Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
+GraphDB ist eine spezialisierte RDF-Triplestore-Datenbank, die es ermöglicht, 
+große Mengen an semantisch verknüpften Daten effizient zu verwalten. 
+Mit der integrierten SPARQL-Schnittstelle können Benutzer gezielt nach Instanzen, Klassen und Relationen suchen 
+und komplexe Muster in den Datenbeständen erkennen. 
+Im Rahmen dieser Arbeit diente GraphDB als Backend, um die in Protégé entwickelte Ontologie zu testen 
+und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
+
+
+\paragraph{mmma-Ontologie}\\
 
 \begin{minipage}{0.48\textwidth}% Linke Box = TEXT
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
-Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst. 
-Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe ~\nameref{subsec:forschungsstand})
-
-Mit knapp 1600 Zeilen Code erweist sich diese jedoch als zu aufwendig, sodass der Fokus der Arbeit von der Ontologieentwicklung 
-auf die Extraktion von Entitäten verlagert wurde. Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen.
+Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark 
+Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe ~\nameref{subsec:forschungsstand}) ist 
+zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross und damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
+auf die Extraktion von Entitäten.
 \end{minipage}%
 \hfill%
 \begin{minipage}{0.48\textwidth}% Rechte Box = BILD
   \centering
   \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
-  \captionof{figure}{Ausschnitt der TTL-Ontologie.}
+  \captionof{figure}{Ausschnitt der Turtle-Ontologie.}
   \label{fig:ttl-ontologie}
 \end{minipage}
+\footnotetext{Abk. mmma; Männerchor Murg MasterArbeit.}
 
 
 \vspace{1em}
 
-Zuverlässige Quellen für Informationen über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate} 
-und der „Suchdienst des DRK“\cite[Vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Zeichenketten 
-und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit.
+Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen. Hinzu kommen externe Quellen, und deren Zugänglichkeit. Zuverlässige Quellen für Informationen 
+über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate} 
+und der „Suchdienst des DRK“\cite[Vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
+und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit. Ein manuelles Recherchieren dieser Daten scheint zu diesem Zeitpunkt
+den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
+wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Kapitel Nodegoat}.
 
+\subsubsection{Wikidata}
 
-\paragraph {Protege}
-\paragraph {GraphDB}
+\textit{Wikidata} Wikidata ist eines der zentralen Repositorien für Linked Open Data, und bietet eine hohe Interoperabilität durch standardisierte
+URIs, SPARQL-Endpunkte und offene APIs zu den Entitäten.
+Jede Entität erhält dabei eine eindeutige, persistente URI 
+(z.B. \colorbox{VeryLightGray}{\textit{wd:Q131186}} für einen Chor), die in LOD-Szenarien 
+als stabiler Referenzpunkt dient.
+Neben anderen betonen Martinez \& Pereyra Metnik (2024) beispielsweise: \\
+\textit{\enquote{Wikidata stands out for its great potential in interoperability and its ability to connect data from various domains.}}
+\cite{martinez_comparative_nodate}
+
+Wikidata entspricht, ebenso wie das nachfolgend beschriebene GeoNames, den FAIR-Prinzipien: Die Daten sind 
+\textbf{F}\textit{indable} und \textbf{A}\textit{ccessible}, \textbf{I}\textit{nteroperable} und \textbf{R}\textit{eusable} \cite[Vgl.][S. 2]{wilkinson_fair_2016}.
+
+Im Rahmen dieser Arbeit dient Wikidata als zentrale externe Referenz, um lokal erhobene Entitäten mit international etablierten Datenobjekten 
+zu verknüpfen und so ihre Interoperabilität sicherzustellen. Die Plattform ermöglicht eine eindeutige Identifizierung sowie die maschinenlesbare 
+Anreicherung um zusätzliche Informationen.
+
+Die praktische Umsetzung zeigt jedoch eine strukturelle Einschränkung: Trotz systematischer Verknüpfung eigens angelegter Datensätze, 
+etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community-Moderation etwa 70\% dieser Beiträge. 
+Dies verweist auf die hohen internen Qualitätsanforderungen, begrenzt jedoch die Verlässlichkeit und den Nutzen der Arbeit erheblich. 
+Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD-Ansatz in dieser Form nicht praktikabel.
+
+\subsubsection{GeoNames}
+
+Ebenso wie Wikidata bietet \textit{GeoNames} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
+und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
+Alle Einträge sind in neun Feature-Klassen und über 600 spezifische Feature-Codes kategorisiert. Die Plattform integriert Daten zu 
+Ortsnamen in verschiedenen Sprachen, Höhenlagen, Bevölkerungszahlen und weiteren Attributen aus unterschiedlichen nationalen und internationalen Quellen.  
+Sämtliche Geokoordinaten basieren auf dem WGS84-System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}, vgl.:][]{noauthor_wgs84_nodate}
+und können über frei zugängliche Webservices oder eine API abgerufen werden.  
+Darüber hinaus erlaubt GeoNames registrierten Nutzenden, bestehende Datensätze über eine Wiki-Oberfläche zu bearbeiten oder zu ergänzen, wodurch eine 
+kollaborative Qualitätssicherung gewährleistet wird. 
+
 \subsubsection{Msty}
 \subsubsection{Alphabet -- Gemini}
 \subsubsection{Anthopic -- Claude}
@@ -648,7 +708,9 @@ und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Reco
 Abreviation Tag klappt nicht (wird nicht exportiert)
 Listen werden nicht exportiert
 
-\subsubsection{Nodegoat}
+\subsubsection{Nodegoat}\label{subsec:Nodegoat_chapter}
+
+Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned in mmma-Ontologie
 \subsection{Netzwerkanalyse als Methode}
   \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
   \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
