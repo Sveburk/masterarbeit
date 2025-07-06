@@ -1,23 +1,22 @@
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%-----------------------------    S E T T I N G S     ---------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––    S E T T I N G S        ––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 
 \sloppy
 
 
 % Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[12pt, a4paper, ngerman, bidi=default]{article}
 
-%--------------------------------------------------------------------------------------%
-%-----------------------------    S E T T I N G S     ---------------------------------%
-%-----------------------------      P A K E T E        --------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––    S E T T I N G S     ––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––      P A K E T E        ––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[fixed]{fontawesome5} %Fontawesome für Icons und Symbole; siehe https://mirrors.ibiblio.org/CTAN/fonts/fontawesome5/doc/fontawesome5.pdf
@@ -25,21 +24,21 @@
 \usepackage{tcolorbox}
 \usepackage{afterpage}
 \usepackage{graphicx}
-\usepackage{subcaption}  % Für die Verwendung von subfigure
-\usepackage{setspace}  % Für den Befehl \setstretch
+\usepackage{subcaption} %Für die Verwendung von subfigure
+\usepackage{setspace} %Für den Befehl \setstretch
 \usepackage{transparent}
 \usepackage{tikz}
   \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
-\usepackage{pgf-pie} % Für Kreisdiagramme
-\usepackage{pgfplots} % Für Diagramme
+\usepackage{pgf-pie}%Für Kreisdiagramme
+\usepackage{pgfplots}%Für Diagramme
   \pgfplotsset{compat=1.18}
-\usepackage{eso-pic} % Für Hintergrundbilder
-\usepackage{fvextra}     % Muss vor csquotes geladen werden
-\usepackage{csquotes}    % Nach fvextra laden
-% \usepackage{csvsimple} % Für CSV-Dateien
-% \usepackage{booktabs}    % für \toprule, \midrule, \bottomrule
-% \usepackage{longtable}   % falls nicht schon geladen
-% \usepackage{placeins} % Für \FloatBarrier
+\usepackage{eso-pic}%Für Hintergrundbilder
+\usepackage{fvextra}    %Muss vor csquotes geladen werden
+% \usepackage{csvsimple}%Für CSV-Dateien
+% \usepackage{booktabs}   %für \toprule, \midrule, \bottomrule
+% \usepackage{longtable}  %falls nicht schon geladen
+% \usepackage{placeins}%Für \FloatBarrier
+\usepackage[autostyle, german=quotes]{csquotes}
 \usepackage[notes, backend=biber,language=ngerman, ibidtracker=context, citetracker=context, shorthandibid=true]{biblatex-chicago}
 \setlength{\skip\footins}{20pt}
 \addbibresource{assets/Literature_Bib/Exportierte Einträge.bib}
@@ -56,40 +55,38 @@
 }
 
 \usepackage[ngerman]{babel}
-\usepackage[autostyle]{csquotes}
-\usepackage{pifont}  % Für die Kästchen und Häkchen-Symbole
-\usepackage{minted}  % Für Python-Code
-\usepackage{xcolor}  % Zum Definieren und Verwenden von Farben
+\usepackage{pifont} %Für die Kästchen und Häkchen-Symbole
+\usepackage{minted} %Für Python-Code
+\usepackage[dvipsnames,svgnames,x11names,table]{xcolor}
+ %Zum Definieren und Verwenden von Farben
 \definecolor{LightGray}{gray}{0.9}
 \definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
 \definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
 \definecolor{LightGray}{gray}{0.9}
-\definecolor{VeryLightGray}{gray}{0.95} % Sehr helles Grau
+\definecolor{VeryLightGray}{gray}{0.95}%Sehr helles Grau
 
-\definecolor{UniBlue}{HTML}{1F78B4}      % Kräftiges Blau
-\definecolor{UniGold}{HTML}{FFB000}      % Goldgelb
-\definecolor{UniViolet}{HTML}{6A3D9A}    % Violett
+\definecolor{UniBlue}{HTML}{1F78B4}     %Kräftiges Blau
+\definecolor{UniGold}{HTML}{FFB000}     %Goldgelb
+\definecolor{UniViolet}{HTML}{6A3D9A}   %Violett
 
-\definecolor{abbrev}{RGB}{255,153,153}              % Rot für Tags
-\definecolor{add}{RGB}{204,255,238}                 % Hellgrün/Türkis für Tags
-\definecolor{sic}{RGB}{255,255,153}                 % Hellgelb für Tags
-\definecolor{unclear}{RGB}{255,230,184}             % Hellorange für Tags
-\definecolor{date}{RGB}{153,153,255}                % Blau für Tags
-\definecolor{organization}{RGB}{255,153,255}        % Pink für Tags
-\definecolor{place}{RGB}{204,153,255}               % Lila für Tags
-\definecolor{person}{RGB}{153,255,153}              % Hellgrün für Tags
-\definecolor{signature}{RGB}{153,255,153}           % Hellgrün (gleiche Farbe wie Person) für Tags
-\definecolor{eventTag}{HTML}{05A9FF}                % Blau für Tags
-\definecolor{oldLetter}{RGB}{246,238,227}           % Beige für Hintergrund  
-\definecolor{vscode-blue}{HTML}{569CD6}             % VSCode Blau für python
-\definecolor{vscode-yellow}{HTML}{DCDCAA}           % VSCode Gelb für python
+\definecolor{abbrev}{RGB}{255,153,153}             %Rot für Tags
+\definecolor{add}{RGB}{204,255,238}                %Hellgrün/Türkis für Tags
+\definecolor{sic}{RGB}{255,255,153}                %Hellgelb für Tags
+\definecolor{unclear}{RGB}{255,230,184}            %Hellorange für Tags
+\definecolor{date}{RGB}{153,153,255}               %Blau für Tags
+\definecolor{organization}{RGB}{255,153,255}       %Pink für Tags
+\definecolor{place}{RGB}{204,153,255}              %Lila für Tags
+\definecolor{person}{RGB}{153,255,153}             %Hellgrün für Tags
+\definecolor{signature}{RGB}{153,255,153}          %Hellgrün (gleiche Farbe wie Person) für Tags
+\definecolor{eventTag}{HTML}{05A9FF}               %Blau für Tags
+\definecolor{oldLetter}{RGB}{246,238,227}          %Beige für Hintergrund  
+\definecolor{vscode-blue}{HTML}{569CD6}            %VSCode Blau für python
+\definecolor{vscode-yellow}{HTML}{DCDCAA}          %VSCode Gelb für python
 \usepackage{array}
 \usepackage{wrapfig}
 \usepackage{colortbl}
 \usepackage{booktabs}
-\usepackage[x11names,table]{xcolor}
-\usepackage[dvipsnames,svgnames,x11names]{xcolor}
 \usepackage[hyphens]{url}
 \usepackage{ragged2e}
 \usepackage[
@@ -103,11 +100,10 @@
 ]{hyperref}
 
 \usepackage{iftex}
-\usepackage{csquotes}
 \ifPDFTeX%
-\usepackage{lmodern}  % Nur für PDFTeX
+\usepackage{lmodern} %Nur für PDFTeX
 \else
-    \usepackage{fontspec} % Für XeTeX und LuaTeX
+    \usepackage{fontspec}%Für XeTeX und LuaTeX
 \fi
 
 % Use upquote if available, for straight quotes in verbatim environments
@@ -127,8 +123,8 @@
 
 
 \usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\setlength{\emergencystretch}{3em}%prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen}%remove section numbering
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -156,7 +152,7 @@
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
+\usepackage{calc}%for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -165,7 +161,6 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
-\usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -183,9 +178,9 @@
 \NewDocumentCommand\citeproc{mm}{%
   \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
 \makeatletter
- % allow citations to break across lines
+%allow citations to break across lines
  \let\@cite@ofmt\@firstofone%
- % avoid brackets around text for \cite:
+%avoid brackets around text for\cite:
  \def\@biblabel#1{}
  \def\@cite#1#2{{#1\if@tempswa, #2\fi}}
 \makeatother
@@ -193,17 +188,17 @@
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+\newenvironment{CSLReferences}[2]%#1 hanging-indent, #2 entry-spacing
  {\begin{list}{}{%
   \setlength{\itemindent}{0pt}
   \setlength{\leftmargin}{0pt}
   \setlength{\parsep}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1 \else % chktex 1
+ %turn on hanging indent if param 1 is 1
+  \ifodd #1 \else%chktex 1
    \setlength{\leftmargin}{\cslhangindent}
    \setlength{\itemindent}{-1\cslhangindent}
   \fi
-  % set entry spacing
+ %set entry spacing
   \setlength{\itemsep}{#2\baselineskip}}}
  {\end{list}}
 \usepackage{calc}
@@ -213,9 +208,9 @@
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \ifpdf
-  \usepackage{authblk} % Paket für Affiliations
-  \usepackage{orcidlink} % Paket für ORCID-Link
-  \usepackage{pdfpages} % Paket zum Einbinden von PDFs
+  \usepackage{authblk}%Paket für Affiliations
+  \usepackage{orcidlink}%Paket für ORCID-Link
+  \usepackage{pdfpages}%Paket zum Einbinden von PDFs
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -263,15 +258,13 @@
 \def\languageshorthands#1{}
 \usepackage{bookmark}
 
-\usepackage{placeins}                   % für \FloatBarrier
-\usepackage[toc,page]{appendix}         % für eigene Anhangs-Umgebung
+\usepackage{placeins}                  %für \FloatBarrier
+\usepackage[toc,page]{appendix}        %für eigene Anhangs-Umgebung
 % optional:
-% \usepackage{pdfcrypt}                   % für PDF-Passwortschutz
+% \usepackage{pdfcrypt}                  %für PDF-Passwortschutz
 
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
-
-\usepackage[unicode=true, hyperfootnotes=true]{hyperref}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{}%add URL line breaks if available
+\urlstyle{same}%disable monospaced font for URLs
 \hypersetup{
   pdftitle={Konzeption für AG Masterarbeit am
 17.01.2025},
@@ -303,32 +296,32 @@
 \makeatother
 \subtitle{}
 \author{Sven Burkhardt}
-\date{2025-08-14} % chktex 8
-\usepackage{hyperref} 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%----------------------------- T I T E L B L A T T   ----------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+\date{2025-08-14}%chktex 8
+
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––– T I T E L B L A T T   ––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \begin{document}
 \begin{titlepage}
     
 % Setzt die Schriftfarbe auf Weiß
 \color{white}
 \pagecolor[HTML]{46505A} %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
-\pagenumbering{gobble}    % Verhindert die Anzeige der Seitennummer auf dem Titelblatt
+\pagenumbering{gobble}   %Verhindert die Anzeige der Seitennummer auf dem Titelblatt
 \date{}
 \author{}
 \maketitle
 \begin{center}
   \author{\LARGE{\author{\vspace{-0.5cm}Sven Burkhardt}}}\\
   \vspace{4mm}
-  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\ % chktex 8 % Orcid Link und Nummer
+  \large{\orcidlink{0009-0001-4954-4426} {0009-0001-4954-4426}}\\%chktex 8%Orcid Link und Nummer
   \begin{figure}[h]
     \centering
     \color{white}
     \large{\href{https://dhlab.philhist.unibas.ch/en/persons/sven-burkhardt/}{{\hspace*{0.5mm}\includegraphics[height=4.5
-  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\ % chktex 8 %logo Unibas + Link + Immatrikulationsnummer
+  mm]{./assets/Logos/Uni_basel_logo_white.png}}\hspace{3.4mm}\color{white} 17-056-912}}\\%chktex 8 %logo Unibas + Link + Immatrikulationsnummer
     \faIcon[regular]{calendar-alt}\date{\hspace*{2mm}15.08.2025}% chktex 8
   \end{figure}
   \setcounter{figure}{0}
@@ -363,7 +356,7 @@
 
 
 
-\noindent % Verhindert Einzug des nachfolgenden Textes
+\noindent%Verhindert Einzug des nachfolgenden Textes
 % ------------ Hexagon grafik ende -----------
 
 
@@ -390,71 +383,72 @@
 
 
 \newpage
-\newpage
-\pagenumbering{arabic}
-\color{black}           % Setzt die Schriftfarbe auf Schwarz für die folgenden Seiten
+\color{black}          %Setzt die Schriftfarbe auf Schwarz für die folgenden Seiten
 \setstretch{1.5}
-\thispagestyle{empty}
 \end{titlepage}
 \newpage
 %________________
 
 %________________
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%-----------------------------   A B S T R A C T     ----------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––   A B S T R A C T     ––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 
 
 \pagecolor{white}  
-\color{black}  % Textfarbe zurücksetzen
-\section*{Abstract}
+\color{black}  %Textfarbe zurücksetzen
+\color{black} 
+\setstretch{1.5}
+
+
+\cleardoublepage
 
 Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren des Zweiten Weltkrieges. 
 Hierfür wird eine automatisierte Pipline auf Basis von LLMs und Patternmatching vorgestellt, mit deren Hilfe Named Entities extrahiert und weiterverarbeitet werden. 
 Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
 
-\newpage
-
-%--------------------------------------------------------------------------------------%
-%-----------------------------      T A B L E        ----------------------------------%
-%-----------------------------        O F            ----------------------------------%
-%-----------------------------   C O N T E N T S     ----------------------------------%
-%--------------------------------------------------------------------------------------%
 
 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––      T A B L E        ––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––        O F            ––––––––––––––––––––––––––––––––––%
+%–––––––––––––––––––––––––––––   C O N T E N T S     ––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 
-\renewcommand*\contentsname{Inhaltsverzeichnis} % This controls the title of your table of contents.
+
+
+\cleardoublepage
+\renewcommand*\contentsname{Inhaltsverzeichnis}%This controls the title of your table of contents.
 {
 \hypersetup{linkcolor=}
-\setcounter{tocdepth}{5} % Sets the maximum sublevel to be displayed within the table of contents.
+\setcounter{tocdepth}{5}%Sets the maximum sublevel to be displayed within the table of contents.
 \tableofcontents
 }
+\pagenumbering{arabic}\setstretch{1.5}%Overwrites the previous command, pages are counted as normal from this point.
+
+
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––      I N T R O D U C T I O N    ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \newpage
-\pagenumbering{arabic}\setstretch{1.5} % Overwrites the previous command, pages are counted as normal from this point.
-
-
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------      I N T R O D U C T I O N     ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-
 \section{Einleitung}
 \subsection{Ziel und Relevanz der Arbeit}
 \subsection{Formulierung der Forschungsfrage}
 \subsection{Aufbau der Arbeit}
 \subsection{Geografischer und historischer Kontext}
-Die vorliegende Arbeit beschäftigt sich mit Unterlagen aus dem Archiv des "Männerchor Murg" und dessen Nachfolger, den "New Gospelsingers Murg". Murg ist eine Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt.
+Die vorliegende Arbeit beschäftigt sich mit Unterlagen aus dem Archiv des \endquote{Männerchor Murg} und dessen Nachfolger, den \endquote{New Gospelsingers Murg}. Murg ist eine Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt.
 Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg begünstigte 
 früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs. Parallel bot der Rhein mit seiner Drahtseil-Fähre 
 eine wichtige Verkehrs- und Handelsverbindung, und bis zum Ersten Weltkrieg privat betrieben wurde.
 
 Mit dem Ausbau der Landstraße, der heutigen Bundesstraße 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz wandelte sich Murg im 19. Jahrhundert 
 von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Während der Industiralisierung mitte des 19. Jahrhunderts wurde die Wasserkraft zu einem entscheidenen Faktor der Region. Die Ansiedlung der Schweizer Textilfirma 
-\textit{Hüssy \& Künzli AG} im Jahr 1853 \cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug trug wesentlich zum Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte — auch aus der benachbarten Schweiz — machten die Gemeinde zu einem wichtigen
+\textit{Hüssy \& Künzli AG} im Jahr 1853\cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug trug wesentlich zum Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte — auch aus der benachbarten Schweiz — machten die Gemeinde zu einem wichtigen
 Standort der regionalen Textilindustrie. Es waren eben diese schweizer Textilarbeiter, die 1861 den \textit{Männechor Murg} gründeten, damals unter dem Namen \textit{Schweizer Männerchor Murg}
 
 
@@ -462,11 +456,11 @@ Standort der regionalen Textilindustrie. Es waren eben diese schweizer Textilarb
   
 
   \newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------              Quellen             ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––              Quellen            ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Quellen}
 \subsection{Quellentradierung}
 In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
@@ -487,15 +481,15 @@ blabla
 blabla
 \subsubsection{Inhalt???}
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------              Korpus             ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––              Korpus            ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Korpus}
 Aus dem Bestand des Ordners \textit{``Männerchor Akten 1925-1944''} werden für diese Arbeit ausschlieslich Akten verwendet, 
 die während des Zweiten Weltkriegs verfasst wurden. Der Analysezeitraum erstreckt sich dementsprchend zwischen dem 01. September 1939 
-und dem 8. Mai 1945\footnote{\textcolor{red}{[[vgl.][Finde hier eine Referenz]]}{keylist}}, dem Tag der bedingungslosen Kapitulation Deutschlands.
+und dem \textcolor{red}{8. Mai 1945}\footnote{[vgl.][Finde hier eine Referenz]{keylist}}, dem Tag der bedingungslosen Kapitulation Deutschlands.
 
 Diese Begrenzung des zeitlichen Rahmens ist notwendig, um die Funktionaliät der weiter unten beschriebenen Pipeline darstellen zu können. 
 Hieraus ergibt sich in der Folge eine Limitation der Anzahl potetieller Akteurinnen und Akteure, Orte und Organisationen. Notwendig ist das 
@@ -532,7 +526,7 @@ historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer
     };
     \end{axis}
   \end{tikzpicture}
-  \caption{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten - 381 Seiten).}
+  \caption{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten — 381 Seiten).}
   \label{fig:dokumententypen-bar}
 \end{figure}
 
@@ -558,11 +552,11 @@ blabla
 \subsection{Export}
 blabla
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------           Forschungsstand         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Forschungsstand        ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 
 \subsection{Forschungsstand und Forschungslücke}\label{subsec:forschungsstand}
 Die oben beschriebenen Quellen wurden vor dieser Arbeit bislang nicht wissenschaftlich bearbeitet.
@@ -570,11 +564,11 @@ Die oben beschriebenen Quellen wurden vor dieser Arbeit bislang nicht wissenscha
 \textcolor{red}{In LOD wird auf Vorprojekte verwiesen. Diese bitte beschreiben (Arcgis und Feldpost)}
 
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------           Methodenkritik         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Methodenkritik        ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Methodenkritik}
 \subsection{Genutze Tools}
 Digitale Methoden spielen für die Durchführung dieser Arbeit eine zentrale Rolle. Von der Digitalisierung der Quellen
@@ -594,28 +588,34 @@ Um diese Unsicherheiten zu dokumentieren, werden hier auch gescheiterte Versuche
 
 Linked Open Data (LOD) bezeichnet einen dezentral organisierten Ansatz zur Veröffentlichung und 
 Verknüpfung strukturierter Daten im Web. Ziel ist es, Datensätze verschiedener Institutionen und Akteure 
-maschinenlesbar zugänglich zu machen und über standardisierte Formate wie RDF und SPARQL miteinander zu verbinden\cite[Vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
+maschinenlesbar zugänglich zu machen und über standardisierte Formate wie RDF und SPARQL miteinander zu 
+verbinden\cite[Vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
 Wesentliches Merkmal der LOD-Cloud ist dabei die Nutzung semantischer Beziehungen, insbesondere Äquivalenzen einzelner Daten. 
-Hierfür wird häufig das Prädikat \texttt{owl:sameAs} genutzt, um z.B. mit \colorbox{VeryLightGray}{\textit{:Choir owl:sameAs wd:Q131186}} eine eigene Instanz als identisch mit der Wikidata-Entität für einen Chor zu deklarieren.
+Hierfür wird häufig das Prädikat \texttt{owl:sameAs} genutzt, um z.B. mit \colorbox{VeryLightGray}{\textit{:Choir owl:sameAs wd:Q131186}} eine eigene 
+Instanz als identisch mit der Wikidata-Entität für einen Chor zu deklarieren.
 Klassen oder Instanzen können so aus unterschiedlichen Datenquellen eindeutig identifiziert und zusammengeführt werden.
 
-Die OWL Web Ontology Language, entwickelt vom World Wide Web Consortium (W3C), ist damit ein zentrales Werkzeug für die Realisierung von LOD.\cite[Vgl.][]{smith_owl_2004} 
+Die OWL Web Ontology Language, entwickelt vom World Wide Web Consortium (W3C), ist damit ein zentrales Werkzeug für die Realisierung von 
+LOD.\cite[Vgl.][]{smith_owl_2004} 
 Mit ihr lassen sich Ontologien definieren, die Domänen über Klassen, Individuen und deren Relationen formal beschreiben. 
 Sie ermöglichen, logische Schlussfolgerungen zu ziehen, um verteilte Datenbestände zu verknüpfen und maschinenlesbar auszuwerten.
 Besonders relevant ist dabei \texttt{owl:sameAs}, das als Identitätsrelation fungiert: 
-Es deklariert Instanzen, die in unterschiedlichen Quellen unter verschiedenen URIs\footnote{Abk. URI; Uniform Resource Identifier} geführt werden, als dasselbe reale Objekt\cite[Vgl.][2.3. Data Aggregation and Privacy]{smith_owl_2004}
+Es deklariert Instanzen, die in unterschiedlichen Quellen unter verschiedenen URIs\footnote{Abk. URI: Uniform Resource Identifier} geführt werden, 
+als dasselbe reale Objekt\cite[Vgl.][2.3. Data Aggregation and Privacy]{smith_owl_2004}
 und ermöglicht so eine präzise Zusammenführung von Informationen — ein Grundpfeiler für die Interoperabilität im Semantic Web.
-Die OWL-Spezifikation baut auf RDF\footnote{Abk. RDF; Resource Description Framework} auf und erweitert es um zusätzliche Konzepte. 
-Die Sprache liegt in drei Varianten vor \footnote{OWL Lite, OWL DL und OWL Full}, die sich im Grad ihrer Ausdrucksstärke unterscheiden.\cite[Vgl.][1.1. The Species of OWL.]{smith_owl_2004}
+Die OWL-Spezifikation baut auf RDF\footnote{Abk. RDF; Resource Description Framework} auf und erweitert es um zusätzliche Konzepte.
+Die RDF-Daten werden häufig im Turtle-Format (TTL) serialisiert, einer textbasierten Notation für RDF, die eine kompakte, leicht lesbare Schreibweise bietet.
+Dieses Format eignet sich besonders für den Austausch und die manuelle Bearbeitung von RDF-Tripeln.
+Die Sprache liegt in drei Varianten vor\footnote{OWL Lite, OWL DL und OWL Full}, die sich im Grad ihrer Ausdrucksstärke 
+unterscheiden.\cite[Vgl.][1.1. The Species of OWL.]{smith_owl_2004}
 Insbesondere OWL DL bietet einen praktikablen Mittelweg zwischen hoher Ausdruckskraft und vollständigem, entscheidbarem Schließen (Reasoning) 
 und ist daher für viele LOD-Anwendungsfälle geeignet.
 
-Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
+Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent 
+umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
 Umsetzung für diese Arbeit werden zwei zentrale Werkzeuge genutzt: Protégé zur Modellierung der Ontologie und GraphDB für deren Verwaltung und Abfrage.
 
-\paragraph{Protégé}
-
-Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
+\paragraph{Protégé} Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
 Protégé ist eine weit verbreitete Open-Source-Software zur Erstellung, Visualisierung und Verwaltung von Ontologien.
 Die grafische Oberfläche unterstützt eine intuitive Klassendefinition, 
 Relationserstellung und Instanzverwaltung. 
@@ -624,9 +624,7 @@ Ontologien direkt im OWL-Format exportiert werden, um sie in LOD-Workflows einzu
 Die initiale Version der Ontologie für dieses Projekt entstand zuerst im Codeeditor \textit{Visual Studio Code} wurde aber schnell vollständig in Protégé überarbeitet.
 Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in SPARQL.
 
-\paragraph{GraphDB}
-
-Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
+\paragraph{GraphDB} Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
 GraphDB ist eine spezialisierte RDF-Triplestore-Datenbank, die es ermöglicht, 
 große Mengen an semantisch verknüpften Daten effizient zu verwalten. 
 Mit der integrierten SPARQL-Schnittstelle können Benutzer gezielt nach Instanzen, Klassen und Relationen suchen 
@@ -648,7 +646,7 @@ auf die Extraktion von Entitäten.
 \begin{minipage}{0.48\textwidth}% Rechte Box = BILD
   \centering
   \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
-  \captionof{figure}{Ausschnitt der Turtle-Ontologie.}
+  \captionof{figure}{Ausschnitt der TTL-Ontologie.}
   \label{fig:ttl-ontologie}
 \end{minipage}
 \footnotetext{Abk. mmma; Männerchor Murg MasterArbeit.}
@@ -657,7 +655,7 @@ auf die Extraktion von Entitäten.
 \vspace{1em}
 
 Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen. Hinzu kommen externe Quellen, und deren Zugänglichkeit. Zuverlässige Quellen für Informationen 
-über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate} 
+über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate-1} 
 und der „Suchdienst des DRK“\cite[Vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
 und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit. Ein manuelles Recherchieren dieser Daten scheint zu diesem Zeitpunkt
 den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
@@ -665,7 +663,7 @@ wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Kapitel No
 
 \subsubsection{Wikidata}
 
-\textit{Wikidata} Wikidata ist eines der zentralen Repositorien für Linked Open Data, und bietet eine hohe Interoperabilität durch standardisierte
+\textit{Wikidata}\cite[vgl.][]{noauthor_wikidata_nodate} ist eines der zentralen Repositorien für Linked Open Data, und bietet eine hohe Interoperabilität durch standardisierte
 URIs, SPARQL-Endpunkte und offene APIs zu den Entitäten.
 Jede Entität erhält dabei eine eindeutige, persistente URI 
 (z.B. \colorbox{VeryLightGray}{\textit{wd:Q131186}} für einen Chor), die in LOD-Szenarien 
@@ -675,29 +673,40 @@ Neben anderen betonen Martinez \& Pereyra Metnik (2024) beispielsweise: \\
 \cite{martinez_comparative_nodate}
 
 Wikidata entspricht, ebenso wie das nachfolgend beschriebene GeoNames, den FAIR-Prinzipien: Die Daten sind 
-\textbf{F}\textit{indable} und \textbf{A}\textit{ccessible}, \textbf{I}\textit{nteroperable} und \textbf{R}\textit{eusable} \cite[Vgl.][S. 2]{wilkinson_fair_2016}.
+\textbf{F}\textit{indable} und \textbf{A}\textit{ccessible}, \textbf{I}\textit{nteroperable} und \textbf{R}\textit{eusable}\cite[Vgl.][S. 2]{wilkinson_fair_2016}.
 
 Im Rahmen dieser Arbeit dient Wikidata als zentrale externe Referenz, um lokal erhobene Entitäten mit international etablierten Datenobjekten 
 zu verknüpfen und so ihre Interoperabilität sicherzustellen. Die Plattform ermöglicht eine eindeutige Identifizierung sowie die maschinenlesbare 
 Anreicherung um zusätzliche Informationen.
 
 Die praktische Umsetzung zeigt jedoch eine strukturelle Einschränkung: Trotz systematischer Verknüpfung eigens angelegter Datensätze, 
-etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community-Moderation etwa 70\% dieser Beiträge. 
+etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community–Moderation etwa 70\% dieser Beiträge. 
 Dies verweist auf die hohen internen Qualitätsanforderungen, begrenzt jedoch die Verlässlichkeit und den Nutzen der Arbeit erheblich. 
-Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD-Ansatz in dieser Form nicht praktikabel.
+Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel.
 
 \subsubsection{GeoNames}
 
-Ebenso wie Wikidata bietet \textit{GeoNames} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
+Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open—Source—Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
-Alle Einträge sind in neun Feature-Klassen und über 600 spezifische Feature-Codes kategorisiert. Die Plattform integriert Daten zu 
+Alle Einträge sind in neun Feature–Klassen und über 600 spezifische Feature–Codes kategorisiert. Die Plattform integriert Daten zu 
 Ortsnamen in verschiedenen Sprachen, Höhenlagen, Bevölkerungszahlen und weiteren Attributen aus unterschiedlichen nationalen und internationalen Quellen.  
-Sämtliche Geokoordinaten basieren auf dem WGS84-System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}, vgl.:][]{noauthor_wgs84_nodate}
+Sämtliche Geokoordinaten basieren auf dem WGS84–System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}, vgl.][]{noauthor_wgs84_nodate}
 und können über frei zugängliche Webservices oder eine API abgerufen werden.  
-Darüber hinaus erlaubt GeoNames registrierten Nutzenden, bestehende Datensätze über eine Wiki-Oberfläche zu bearbeiten oder zu ergänzen, wodurch eine 
-kollaborative Qualitätssicherung gewährleistet wird. 
+Darüber hinaus erlaubt GeoNames registrierten Nutzenden, bestehende Datensätze über eine Wiki–Oberfläche zu bearbeiten oder zu ergänzen, wodurch eine 
+kollaborative Qualitätssicherung gewährleistet wird.
 
-\subsubsection{Msty}
+GeoNames wird in dieser Arbeit intensiv zur Referenzierung von Ortsnamen verwendet und bildet die Basis für die Groundtruth, wie sie in den Kapiteln \textit{Nodegoat} und 
+\textit{place\_matcher.py} beschrieben ist. Im Gegensatz zu Wikidata wurde hier von Beginn an darauf verzichtet, eigene Ortsdatensätze zu ergänzen. Dies liegt einerseits an 
+den klar kommunizierten Community–Guidelines und andererseits daran, dass der Datensatz bis auf wenige, sehr lokale Flurnamen als nahezu vollständig gilt.
+
+Historische Gebäude wie Gaststätten oder Spitäler fehlen folgerichtig in der GeoNames–Datenbank. Diese Lücke ist erwartbar, aber erwähnenswert, da GeoNames 
+ansonsten eine nahezu vollständige und ausgesprochen detaillierte Datengrundlage bietet.
+
+
+
+\subsubsection{Msty}  
+Ein absolut zentrales Tool bei der Verarbeitung der historischen Quellen ist die unten dargelegte Python–Pipeline, die auf der
+Verarbeitung von XML–Files fusst.
 \subsubsection{Alphabet -- Gemini}
 \subsubsection{Anthopic -- Claude}
 
@@ -710,7 +719,7 @@ Listen werden nicht exportiert
 
 \subsubsection{Nodegoat}\label{subsec:Nodegoat_chapter}
 
-Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned in mmma-Ontologie
+Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned in mmma–Ontologie
 \subsection{Netzwerkanalyse als Methode}
   \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
   \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
@@ -718,11 +727,12 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------           Pipeline         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Pipeline        ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Pipeline}
 
 \subsection{Aufbau XML to JSON Pipeline}
@@ -782,7 +792,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[group, fit=(transkribus), name=pretranskribusbox,
   label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{Vorverarbeitung: Transkribus}}] {};
 
-  % --- Gruppenrahmen für Modulblock ---
+ %--- Gruppenrahmen für Modulblock ---
 \node[group, fit=
   (persons)(authors)(roles)
   (orgs)(dates)(events)
@@ -1006,19 +1016,19 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \subsubsection{enrich\_pipeline.py}
 
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%---------------    Analyse & Diskussion der Ergebnisse    ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%---------------    Analyse & Diskussion der Ergebnisse   ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Analyse \& Diskussion der Ergebnisse}
 \subsection{Visualisierung auf der VM}
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------           Fazit         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Fazit        ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Fazit und Ausblick}
 \subsection{Zusammenfassung der zentralen Erkenntnisse}
 \subsection{Methodische Herausforderungen und Lösungen}
@@ -1034,30 +1044,30 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------                                  ----------------------------% 
-%------------------------           ALTER SCHEISS          ----------------------------%
-%------------------------                                  ----------------------------% 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––                                 ––––––––––––––––––––––% 
+%––––––––––––––––––––––––           ALTER SCHEISS         ––––––––––––––––––––––%
+%––––––––––––––––––––––––                                 ––––––––––––––––––––––% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 
 \section{ALTER SCHEISS}
 
-In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{``Männerchor Akten 1925-1944''} bereits 2018 und 2022 ein 
-erster Korpus aus 137 Akten\footnote{Weiterführend vgl. \cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
+In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{\endquote{Männerchor Akten 1925-1944}} bereits 2018 und 2022 ein 
+erster Korpus aus 137 Akten\footnote{Weiterführend vgl.\cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
 Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
 oder  ihren Inhalt eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasst 96 Seiten, 
 während andere Akten nur aus einer einzelnen Seite bestehen können.  
-Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen "Carl Burger" und "Fritz Jung" liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
+Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen \endquote{Carl Burger} und \endquote{Fritz Jung} liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
 Zu diesem Zeitpunkt erfolgt die Transkription mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
 ist.
 \subsection{Forschungsstand zu den Quellen}
 Die vorliegenden Arbeit stützt sich auf diese Vorarbeit, und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Daten ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten 
 verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben werden?}\\
-Hierzu werden Nachschlagetabellen in Fachliteratur \footnote{vgl.:\cite{tessin_verbande_1977},\cite{hartmann_wehrmacht_2010}, \cite{rass_deutsche_2009}},
+Hierzu werden Nachschlagetabellen in Fachliteratur\footnote{vgl.:\cite{tessin_verbande_1977},\cite{hartmann_wehrmacht_2010},\cite{rass_deutsche_2009}},
 die Bestände des \textit{Bundesarchives -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025}, 
 des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}, sowie Citizen Scientist Projekte\footnote{vgl. 
 Wikidata (Beispiel:\cite{burkhardt_78th_2024}),\\\indent{\cite{altenburger_lexikon_nodate-1}},\\\indent{\cite{hermans_forum_nodate}}} herangezogen und letztere teils druch eigene Recherche ergänzt. 
@@ -1069,12 +1079,28 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
 
 \href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
 
-    %--------------------------------------------------------------------------------------%
-    %--------------------------------------------------------------------------------------%
-    %------------------------          Methodik        ----------------------------%
-    %--------------------------------------------------------------------------------------%
-    %--------------------------------------------------------------------------------------% 
+    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+    %––––––––––––––––––––––––          Methodik       ––––––––––––––––––––––%
+    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
     
+    
+\section{Methodischer Zugang}
+    
+    \subsection{Digitale Erfassung und Strukturierung der Quellen}
+    \subsubsection{Gliederung in Akten}
+
+    Die analogen Akten müssen zuerst für die Digitalisierung vorbereitet werden. Sie werden aus den Ordnern genommen und vorsichtig von Heftklammern, 
+    Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
+    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefraß durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
+
+    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die „Dateien“-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
+    Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
+    Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im 90\textdegree Winkel über den Seiten positioniert ist. 
+    Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
+  
+    \subsubsection{Digitalisierung und Transkription}
     
 \section{Methodischer Zugang}
     
@@ -1103,11 +1129,13 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     % Abbreviations
     \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
         
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. 
     
-    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.\\
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:\\
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
+    
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\ldots\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
+    
     \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
 
     
@@ -1115,23 +1143,32 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
     
 
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. 
+
     
-    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: \\
-    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}\\
-    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:\\
-    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}\\
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
+
+    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
+
+    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}
     
 %Sic   
     \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
 
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. \\
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. 
+    
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
 
-    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: \\
-    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}\\
-    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: \\
-    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}\\
-    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
+    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}
+
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
+
+    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}
+
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
+
     \end{description}
 
     \subsubsection{Inhaltliche Tags}
@@ -1141,7 +1178,8 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
         
     Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
     
-    \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. \\
+    \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. 
+
     \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc., wenn Ort, Name oder Organisation bekannt. 
     
     Eine Person kann sowohl mit ihrem Namen als auch ihrer Funktion (wie Dirigent) getaggt werden.  
@@ -1154,55 +1192,72 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
     Er dient zur \textbf{graduellen Unterscheidung}, ob ein Name im Fließtext als gesichert leserlich oder handschriftlich als Signatur vorliegt.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  \\
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. \\
+    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. 
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: 
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}. 
+
     
-    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: \\ 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}. \\  
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}.} 
     
-    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:\\  
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}.} \\  
-    
-    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: \\ 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} \\  
+    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: 
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} 
     
     \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} \\  
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} 
     
     % Organization    
     \item \textbf{\colorbox{organization}{\texttt{organization}}}
         
     Mit dem Tag \texttt{\colorbox{organization}{organization}} werden alle Strings getaggt, die eine direkte Zuordnung einer Organisation ermöglichen.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.\\
-    \textbf{\ding{43} Beispiel 2}: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.\\
+    \noindent \textbf{\ding{43} Beispiel 1}: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.
+
+    \textbf{\ding{43} Beispiel 2}: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.
     
+
     % Place    
     \item \textbf{\colorbox{place}{\texttt{place}}}
         
     Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.\\
-    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  \\
-    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} \\
+    \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.
+
+    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  
+
+    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} 
+
     
     % Date    
     \item \textbf{\colorbox{date}{\texttt{date}}}
         
     Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
     
-    \noindent \textbf{\ding{43} Beispiel 1}:  29.05.1936  \\
-    \textbf{\ding{43} Beispiel 2}: 29. Mai 1936 \\
-    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:\\
-    \colorbox{VeryLightGray}{\texttt{\textless date when="29.05.1936 "\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
+    \noindent \textbf{\ding{43} Beispiel 1}:  29.05.1936
+
+    \textbf{\ding{43} Beispiel 2}: 29. Mai 1936
+
+    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:
+
+    \colorbox{VeryLightGray}{\texttt{\textless date when="29.05.1936"\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
 
 % Event
     \item \textbf{\colorbox{eventTag}{\texttt{event}}}
     
-    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:\\
-    \noindent \textbf{\ding{43} Beispiel 1}: "Jubiläumskonzert"\\
-    \textbf{\ding{43} Beispiel 2} "Gründung des Vereins" \\ 
-    \textbf{\ding{43} Beispiel 2}"Kriegsausbruch" oder "Kriegsende"\\
+    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
+
+    \noindent \textbf{\ding{43} Beispiel 1}: "Jubiläumskonzert"
+
+    \textbf{\ding{43} Beispiel 2} "Gründung des Vereins" 
+
+    \textbf{\ding{43} Beispiel 2}"Kriegsausbruch" oder "Kriegsende"
 
     Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
     \end{description}
@@ -1213,11 +1268,15 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     % Abbreviations
     \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
         
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. \\
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
+
     
-    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.\\
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.\\
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:\\
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
+
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
+
     \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
 
     
@@ -1225,103 +1284,140 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
     
 
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. \\
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
     
-    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: \\
-    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}\\
-    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:\\
-    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}\\
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
+
+    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [\ldots]\textless unclear\textgreater“.}
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
+
+    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [\ldots]\textless unclear\textgreater \textless place\textgreater}“.}
+
     
 %Sic   
     \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
 
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. \\
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.
 
-    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: \\
-    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}\\
-    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: \\
-    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}\\
-    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. \\
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
+
+    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}
+
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
+
+    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}
+
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
+
     \end{description}
 
+
 \subsection{Digitalisierungsprozess und Herausforderungen}
-    Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. Das bedeutet, dass sich die Kameras geändert haben. 
-    Verwendet wurden primär ein IPad Pro 2nd Generation (2017) und ein IPad Air 4th Generation (2022). Die Verwendete Software ist die Scan-Funktion von Apple ICloud. 
-    Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
-    die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archiv-Kursen des Bachelor-Geschichtsstudiums vermittelt wurden 
-    (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu problemen bei der OCR Erkennung mit OCR Software (Apple OCR, Adobe, etc.) führte. 
-    Aus diesem Grund wurden 75 Akten zunächst mit dem Model ”The German Giant I” mit einer CER von 8,30\% transkribiert. Mit insgesammt 4 Iterationen wurde eine Groundtruth 
-    für ein eigenes Modell erstellt, und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs CHatGPT 4o Modell verwendet, das für die 
-    Rechtschreibprüfung verwendet wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, so wurde der Tag ”sic” verwendet,
-    und eine Korrektur beigefügt.\\
-    Die so erstellten 70 Akten ergaben 158 Seiten zu insgesammt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus Modell \cite{burkhardt_transkribus_nodate}
-    (\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\%. Später wurden die verbleibenden 80 Akten nur noch 
-    mit diesem Modell transkribiert. \\
-  
-    \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=\textwidth]{./assets/Images/Akte_076_S001.jpg}
-      \caption{Beispiel für handschriftlichen Text in Akte\_076 erkannt mit Transkribus}
-      \label{fig:transkribus-handschrift}
-    \end{figure}
+
+Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. 
+Das bedeutet, dass sich die Kameras geändert haben.Verwendet wurden primär ein iPad Pro 2nd Generation (2017) und ein iPad Air 4th Generation (2022). 
+Die verwendete Software ist die Scan-Funktion von Apple iCloud. 
+Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonnen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
+die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archivkursen des Bachelor-Geschichtsstudiums vermittelt wurden 
+(gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu Problemen bei der OCR-Erkennung mit OCR-Software (Apple OCR, Adobe etc.) führte. 
+Aus diesem Grund wurden 75 Akten zunächst mit dem Modell „The German Giant I“ mit einer CER von 8,30\,\% transkribiert. Mit insgesamt vier Iterationen wurde eine Groundtruth 
+für ein eigenes Modell erstellt und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs ChatGPT-4o-Modell verwendet, 
+das für die Rechtschreibprüfung genutzt wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, 
+so wurde der Tag \texttt{sic} verwendet und eine Korrektur beigefügt.\\
+
+Die so erstellten 70 Akten ergaben 158 Seiten mit insgesamt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus-Modell \cite{burkhardt_transkribus_2024}
+(\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\,\%. Später wurden die verbleibenden 
+80 Akten nur noch mit diesem Modell transkribiert.\\
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./assets/Images/Akte_076_S001.jpg}
+  \caption{Beispiel für handschriftlichen Text in Akte\_076 erkannt mit Transkribus}
+  \label{fig:transkribus-handschrift}
+\end{figure}
 
   \begin{figure}[htbp]
   \centering
   \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-    Murg. 15. Aug 41 \\
-    \\
-    Mein lieber Alfons! \\
-    Sehen lunge Lreitt es mich dem Männer- \\
-    chor wieder einmal ein Liedehen zu stehten. \\
-    und kam mir die gestege Gelegenheit gussend. \\
-    Männechor Venstad um den Title das Liedchen \\
-    zu erhalten, wo sie zum Abschied am Aute \\
-    sängen „auf Wiederschen Owohl ich Frei! \\
-    märke beifügte, keine Aentwarb. Vielleicht \\
-    gelingt es Dir diesen Iitel zu erhalten. \\
-    Weiterhin sänge ich fal Lied nur \\
-    "Bas alte Lied von being. Rerohl \\
-    Es wurde 1928 am 10. Dachub. Sängerb. Frst \\
-    von Begrüßungsabend in Dien gesungen. \\
-    und erntete überaus großen Reifall. \\
-    Es ich schwer das Richtige zu finden. \\
-    Aler Alfon, werst das Vemsladler Liedchen. \\
-    alsdann das Biener Lidchen und wenn \\
-    Leides unmöglich, dann freu Nall. \\
-    Mit herzl. Grüße \\
-    Dein \\
-    Carl \\
+    Murg. 15. Aug 41 
+
+    
+    Mein lieber Alfons! 
+
+    Sehen lunge Lreitt es mich dem Männer- 
+
+    chor wieder einmal ein Liedehen zu stehten. 
+
+    und kam mir die gestege Gelegenheit gussend. 
+
+    Männechor Venstad um den Title das Liedchen 
+
+    zu erhalten, wo sie zum Abschied am Aute 
+
+    sängen „auf Wiederschen Owohl ich Frei! 
+
+    märke beifügte, keine Aentwarb. Vielleicht 
+
+    gelingt es Dir diesen Iitel zu erhalten. 
+    
+    Weiterhin sänge ich fal Lied nur 
+    
+    ``Bas alte Lied'' von being. Rerohl 
+
+    Es wurde 1928 am 10. Dachub. Sängerb. Frst 
+
+    von Begrüßungsabend in Dien gesungen. 
+
+    und erntete überaus großen Reifall. 
+
+    Es ich schwer das Richtige zu finden. 
+
+    Aler Alfon, werst das Vemsladler Liedchen. 
+
+    alsdann das Biener Lidchen und wenn 
+
+    Leides unmöglich, dann freu Nall. 
+
+    Mit herzl. Grüße 
+
+    Dein 
+
+    Carl 
   \end{tcolorbox}
   \caption{Transkription von \autoref{fig:transkribus-handschrift}}
   \label{fig:transkription-brief}
+
 \end{figure}
 
-    ChatGPT produziert daraus:
+ChatGPT produziert daraus:
 
-  \begin{figure}[htbp]
-  \centering
-    \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-    Murg, 15. Aug. 41\\
-    \\
-Mein lieber Alfons!\\
-\\
-Schon lange treibt es mich, dem Männerchor wieder einmal ein Liedchen zu stiften, und kam mir die günstige Gelegenheit gelegen.\\
-Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: „Auf Wiedersehen, o wohl ich frei!“\\
-Ich fügte eine Frankierung bei, erhielt jedoch keine Antwort. Vielleicht gelingt es Dir, diesen Titel zu erhalten.\\
-\\
-Weiterhin sang ich das Lied nur „Das alte Lied von Wien“. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüßungsabend in Wien gesungen wurde und überaus großen Beifall erntete, ist es schwer, das Richtige zu finden.\\
+\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
+Murg, 15. Aug. 41
 
-Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn beides unmöglich, dann Fröhlichsein.\\
+Mein lieber Alfons!
 
-Mit herzlichen Grüßen\\
-Dein\\
-Carl\\
+Schon lange treibt es mich, dem Männerchor wieder einmal ein Liedchen zu stiften, und kam mir die günstige Gelegenheit gelegen.
+
+Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: „Auf Wiedersehen, o wohl ich frei!“
+
+Ich fügte eine Frankierung bei, erhielt jedoch keine Antwort. Vielleicht gelingt es Dir, diesen Titel zu erhalten.
+
+Weiterhin sang ich das Lied nur „Das alte Lied von Wien“. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüßungsabend in Wien gesungen wurde und überaus großen Beifall erntete, ist es schwer, das Richtige zu finden.
+
+Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn beides unmöglich, dann Fröhlichsein.
+
+Mit herzlichen Grüßen
+
+Dein
+
+Carl
 \end{tcolorbox}
-\caption{Transkription durch ChatGPT von \autoref{fig:transkription-brief}}
-  \label{fig:brief-carl-alfons}
-\end{figure}
 
-Durch CHatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das "Venstadler Liedchen" ist eigendlich eines aus "Neustadt". Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkribtion.
+\captionof{figure}{Transkription durch ChatGPT von \autoref{fig:transkription-brief}}
+\label{fig:brief-carl-alfons}
+
+Durch ChatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das \endquote{Venstadler Liedchen} ist eigendlich eines aus \endquote{Neustadt}. Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkribtion.
 
 Korrigiert und getagt lautet der Brief nun:
   \begin{figure}[htbp]
@@ -1336,11 +1432,11 @@ und kam mir die günstige Gelegenheit passend.\\
 Ich schrieb vergangenes Jahr an den\\
 Männechor Vorstand um den Titel das Liedchen\\
 zu erhalten, wo sie zum Abschied am Auto \\
-sangen "auf Wiederschen" Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
+sangen \endquote{auf Wiederschen} Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
 marke beifügte, keine Antwort. Vielleicht\\
 gelingt es Dir diesen Titel zu erhalten.\\
 Weiterhin sänge ich das Lied nur\\
-"Das alte Lied" von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
+\endquote{Das alte Lied} von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
 Es wurde \textbf{\colorbox{date}{\texttt{1928}}} am \textbf{\colorbox{eventTag}{\texttt{10. Deutsch. Sängerb. Fest}}}\\
 am Begrüßungsabend in \textbf{\colorbox{place}{\texttt{Wien}}} gesungen.\\
 und erntete überaus großen Beifall.\\
@@ -1436,7 +1532,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 \node[group, fit=(transkribus), name=pretranskribusbox,
   label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{preprocessing: Transkribus}}] {};
 
-  % --- Gruppenrahmen für Modulblock ---
+ %--- Gruppenrahmen für Modulblock ---
 \node[group, fit=
   (persons)(authors)(roles)
   (orgs)(dates)(events)
@@ -1641,7 +1737,6 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
         \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
         \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
         \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
-
 \subsection{Normalisierung der Dateien --- von PDF zu JPEG}
 \begin{minted}[
 frame=lines,
@@ -1650,7 +1745,7 @@ baselinestretch=1.2,
 bgcolor=LightGray,
 fontsize=\footnotesize,
 linenos,
-breaklines=true,   % Automatischer Zeilenumbruch
+breaklines=true,  %Automatischer Zeilenumbruch
 breakanywhere=true % Minted darf überall umbrechen (optional)
 ]{python}
 import os
@@ -1703,11 +1798,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
 \end{minted}
 \newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Aufbau der Datenbank        ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Aufbau der Datenbank          ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 
      \section{Aufbau der Datenbank}
     \subsection{Konzeption der Datenmodelieung}
@@ -1720,11 +1815,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
       \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
 
     \newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Analyse der Netzwerke         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Analyse der Netzwerke         ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \section{Analyse der Netzwerke}
   \subsection{Soziale Netzwerke des Vereinslebens}
     \subsubsection{Verbindungen zwischen Mitgliedern}
@@ -1737,21 +1832,21 @@ convert_pdf_to_jpg(src_folder, dest_folder)
   \subsubsection{Einsatzorte der Chormitglieder während des Krieges}
   \subsubsection{ Lokale und überregionale Verbindungen}
   \newpage
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------          Diskussion der Erebnisse         ----------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Diskussion der Erebnisse      ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \section{Diskussion der Ergebnisse}
   \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
   \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
   \newpage
 
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
-%------------------------           Bibliographie      --------------------------------%
-%--------------------------------------------------------------------------------------%
-%--------------------------------------------------------------------------------------%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \section{Bibliographie}
 
 Referenzen, die noch nachzuschauen sind:
@@ -1759,7 +1854,7 @@ Referenzen, die noch nachzuschauen sind:
 -- Akten\_Gesamtübersicht.csv im Anhang
 \printbibliography[
 heading=bibintoc,
-title={References} % title of the 'references' section, change this if necessary
+title={References}%title of the 'references' section, change this if necessary
 ]
 
 \end{document}
