@@ -534,17 +534,35 @@ blabla
 
 \subsection{Digitalisierung der Quellen}
 
-Die vorliegenden analogen Dokumente müssen zunächst sachgerecht für den Digitalisierungsprozess vorbereitet werden. Zu diesem Zweck werden die Akten aus ihren ursprünglichen Ablagesystemen entnommen und behutsam von Heftklammern und Gummibändern befreit. Diese Maßnahmen dienen in erster Linie dem langfristigen Erhalt des Papiers, da insbesondere Rostspuren ehemaliger Metallklammern die Papierfasern angreifen und irreparable Schäden verursachen können. Darüber hinaus treten häufig Spuren von Säurefraß auf, sofern nicht säurefreies Papier oder unsachgemäßes Archivmaterial verwendet wurde.
+Die vorhandenen analogen Dokumente müssen zunächst fachgerecht für den Digitalisierungsprozess aufbereitet werden. 
+Hierzu werden die Akten aus ihren ursprünglichen Ablagesystemen entnommen und sorgfältig von Heftklammern, Büro- und Gummibändern 
+befreit. Diese konservatorischen Maßnahmen sind notwendig, um die langfristige Materialerhaltung zu gewährleisten, 
+da insbesondere Korrosionsspuren ehemaliger Metallklammern die Papierfasern nachhaltig schädigen können. Zudem finden sich häufig 
+Anzeichen von Säurefraß, sofern nicht säurefreies Archivmaterial verwendet wurde.
 
-Für die eigentliche Digitalisierung wird die native \enquote{Dateien}-App von Apple\footnote{Vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} eingesetzt. Diese ermöglicht nicht nur eine vergleichsweise hochauflösende Erfassung, sondern auch die unmittelbare Speicherung in einem Cloud-basierten Speichersystem sowie die automatische Texterkennung (OCR). Ziel ist es, die erfassten Inhalte schnell durchsuchbar und standortunabhängig zugänglich zu machen.
+Für die eigentliche Digitalisierung kommt die native \enquote{Dateien}-Applikation von 
+Apple\footnote{Vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} zum Einsatz. 
+Diese bietet neben einer vergleichsweise hochauflösenden Erfassung die Möglichkeit zur direkten Speicherung in einem Cloud-basierten 
+Speichersystem sowie eine automatische Texterkennung (OCR). Ziel dieser Vorgehensweise ist es, die digitalisierten Inhalte möglichst 
+schnell durchsuchbar zu machen und standortunabhängig für das Projekt zugänglich zu machen.
 
-Die Digitalisierung erfolgt mithilfe eines Tablets, das auf einem stabilen Stativ in einem Winkel von 90° über den zu erfassenden Dokumenten positioniert wird. Diese einfache, jedoch effiziente Aufnahmetechnik gewährleistet eine gleichbleibend hohe Bildqualität bei gleichzeitig zügiger Bearbeitung. Die digitalisierten Dateien werden systematisch benannt und orientieren sich an einer zuvor erstellten Gesamtübersicht der Akten. Mehrseitige Konvolute werden als zusammenhängende Akte geführt, während Einzeldokumente entsprechend separat erfasst werden. Die Archivierung erfolgt sowohl in physischer als auch in digitaler Form auf Ebene einzelner Seiten, um eine möglichst feingranulare Erschließung der Bestände sicherzustellen.
+Die Aufnahme der Dokumente erfolgt mithilfe eines Tablets, das auf einem stabilen Stativ exakt im rechten Winkel (90\textdegree)
+über dem zu digitalisierenden Schriftgut positioniert wird. Diese einfache, jedoch effiziente Konfiguration gewährleistet eine 
+gleichbleibend hohe Bildqualität bei gleichzeitig hoher Verarbeitungsgeschwindigkeit. Die digital erfassten Dateien werden konsistent
+ benannt und folgen einer vorab definierten Gesamtübersicht der Bestände. Mehrseitige Konvolute werden dabei als zusammengehörige 
+ Akteneinheiten geführt, während Einzeldokumente entsprechend separat erfasst werden. Die Archivierung erfolgt sowohl analog als auch 
+ digital auf Seitenebene, um eine möglichst feingranulare Erschließung zu ermöglichen.
 
-Das Dateiformat ist in der \enquote{Dateien}-App standarmässig PDF. Für die anschliessende Transkription
+Die initiale Speicherung erfolgt dabei standardmäßig im PDF-Format. Für die anschließende Verarbeitung mit den unten dargestellten 
+Transkriptionswerkzeugen müssen die Dokumente jedoch in das JPEG-Format konvertiert werden. Die Umwandlung erfolgt automatisiert 
+mithilfe eines eigens erstellten Python-Skripts, wie in Anhang~\ref{section:PDF_to_JPEG} beschrieben.\footcite{burkhardt_githubpdf_to_jpegpy_2025}
+Es extrahiert die Seiten, speichert im geeigneten 
+Format ab und ergänzt die Dateinamen systematisch um eine dreistellige, führend nullengefüllte Seitennummer.
 
 \subsection{Transkription}
 Für die Transkrition der Daten wurde ein best-practise Ansatz gewählt. Nach Tests mit dem Python-Modul \textit{\enquote{Tesseract}} 
-und unterschiedlichen LLMs wurde auf Transkribus zurückgegriffen. Eine Gegenüberstellung der drei erwähnten Tools findet sich im Kapitel~\nameref{section:Transkriptionen_Methoden}
+und unterschiedlichen LLMs wurde auf Transkribus zurückgegriffen. Eine Gegenüberstellung der drei erwähnten Tools findet 
+sich im Kapitel~\nameref{section:Transkriptionen_Methoden}
 
 \subsection{Tagging}
 blabla
@@ -1102,7 +1120,7 @@ Die vorliegende Arbeit stützt sich auf diese Vorarbeit und die darin gesammelte
 Hierzu werden Nachschlagetabellen in der Fachliteratur (vgl. \autocites{tessin_verbande_1977}{hartmann_wehrmacht_2010}{rass_deutsche_2009}), die Bestände des \textit{Bundesarchives – Militärarchiv Freiburg} \autocite{hollmann_freiburg_2025}, des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)} \autocite{reuter_drk_2025} sowie Citizen-Science-Projekte\footnote{ vgl. z.B. Wikidata: \autocite{burkhardt_78th_2024}, \autocite{altenburger_lexikon_nodate-1}, \autocite{hermans_forum_nodate}.} herangezogen und letztere teils durch eigene Recherche ergänzt.
 
 
-Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\footnote{Akten\_Gesamtübersicht.csv im Anhang} 
+Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\cite[vgl.][]{burkhardt_githubakten_gesamtubersichtcsv_2025} 
 
 \subsection{Beschreibung des Archivbestands}
 \newpage
@@ -1114,23 +1132,6 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     %––––––––––––––––––––––––          Methodik       ––––––––––––––––––––––%
     %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
     %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
-    
-    
-\section{Methodischer Zugang}
-    
-    \subsection{Digitale Erfassung und Strukturierung der Quellen}
-    \subsubsection{Gliederung in Akten}
-
-    Die analogen Akten müssen zuerst für die Digitalisierung vorbereitet werden. Sie werden aus den Ordnern genommen und vorsichtig von Heftklammern, 
-    Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
-    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefrass durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
-
-    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
-    Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
-    Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im 90\textdegree Winkel über den Seiten positioniert ist. 
-    Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
-  
-    \subsubsection{Digitalisierung und Transkription}
     
 \section{Methodischer Zugang}
     
@@ -1580,7 +1581,75 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
         \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
         \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
         \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
-\subsection{Normalisierung der Dateien --- von PDF zu JPEG}
+
+\newpage
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Aufbau der Datenbank          ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+
+     \section{Aufbau der Datenbank}
+    \subsection{Konzeption der Datenmodelieung}
+      \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
+      \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
+    
+    \subsection{Implementierung der Datenbank}
+      \subsubsection{Datenbankdesign}
+      \subsubsection{Herausforderungen bei der Datenaufnahme}
+      \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
+
+    \newpage
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Analyse der Netzwerke         ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+\section{Analyse der Netzwerke}
+  \subsection{Soziale Netzwerke des Vereinslebens}
+    \subsubsection{Verbindungen zwischen Mitgliedern}
+    \subsubsection{ Kooperationen mit anderen Vereinen}
+\subsection{ Politische Netzwerke und deren Veränderungen}
+    \subsubsection{Einfluss der NS-Diktatur auf die Netzwerke}
+    \subsubsection{Feldpostkarten als Quelle für militärische Netzwerke}
+    
+ \subsection{ Geografische Ausdehnung der Netzwerke}
+  \subsubsection{Einsatzorte der Chormitglieder während des Krieges}
+  \subsubsection{ Lokale und überregionale Verbindungen}
+  \newpage
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––          Diskussion der Erebnisse      ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+\section{Diskussion der Ergebnisse}
+  \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
+  \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
+  \newpage
+
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+\section{Bibliographie}
+
+
+\begingroup
+\small
+\singlespacing
+\printbibliography[
+heading=bibintoc,
+title={References}%title of the 'references' section, change this if necessary
+]
+\endgroup
+
+\newpage
+\appendix
+\section{Anhang}
+\begingroup
+\small
+\subsection{PDF\_to\_JPEG.py}\label{section:PDF_to_JPEG}
 \begin{minted}[
 frame=lines,
 framesep=2mm,
@@ -1640,70 +1709,6 @@ dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/M
 convert_pdf_to_jpg(src_folder, dest_folder)
 
 \end{minted}
-\newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Aufbau der Datenbank          ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-
-     \section{Aufbau der Datenbank}
-    \subsection{Konzeption der Datenmodelieung}
-      \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
-      \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
-    
-    \subsection{Implementierung der Datenbank}
-      \subsubsection{Datenbankdesign}
-      \subsubsection{Herausforderungen bei der Datenaufnahme}
-      \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
-
-    \newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Analyse der Netzwerke         ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\section{Analyse der Netzwerke}
-  \subsection{Soziale Netzwerke des Vereinslebens}
-    \subsubsection{Verbindungen zwischen Mitgliedern}
-    \subsubsection{ Kooperationen mit anderen Vereinen}
-\subsection{ Politische Netzwerke und deren Veränderungen}
-    \subsubsection{Einfluss der NS-Diktatur auf die Netzwerke}
-    \subsubsection{Feldpostkarten als Quelle für militärische Netzwerke}
-    
- \subsection{ Geografische Ausdehnung der Netzwerke}
-  \subsubsection{Einsatzorte der Chormitglieder während des Krieges}
-  \subsubsection{ Lokale und überregionale Verbindungen}
-  \newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Diskussion der Erebnisse      ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\section{Diskussion der Ergebnisse}
-  \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
-  \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
-  \newpage
-
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\section{Bibliographie}
-
-Referenzen, die noch nachzuschauen sind:
-
--- Akten\_Gesamtübersicht.csv im Anhang
-\printbibliography[
-heading=bibintoc,
-title={References}%title of the 'references' section, change this if necessary
-]
-
-\appendix
-\section{Anhang}
-\begingroup
-\small
 \subsection{Tagging in Transkribus}
 
 

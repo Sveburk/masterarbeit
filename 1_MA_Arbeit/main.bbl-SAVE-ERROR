@@ -98,7 +98,7 @@
       \verb https://storymaps.arcgis.com
       \endverb
     \endentry
-    \entry{burkhardt_transkribus_2024}{online}{}
+    \entry{burkhardt_githubpdf_to_jpegpy_2025}{software}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=aa7555ad04e58230fba1f0a5f815dea4}{%
            family={Burkhardt},
@@ -106,6 +106,9 @@
            given={Sven},
            giveni={S\bibinitperiod},
            givenun=0}}%
+      }
+      \list{location}{1}{%
+        {Basel}%
       }
       \strng{namehash}{aa7555ad04e58230fba1f0a5f815dea4}
       \strng{fullhash}{aa7555ad04e58230fba1f0a5f815dea4}
@@ -117,25 +120,27 @@
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{{AI}-powered platform for text recognition and document analysis}
-      \field{month}{11}
-      \field{title}{Transkribus}
-      \field{titleaddon}{Transkribus\_Model\_mmma}
-      \field{urlday}{25}
-      \field{urlmonth}{6}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Contribute to Sveburk/masterarbeit development by creating an account on {GitHub}.}
+      \field{day}{23}
+      \field{month}{4}
+      \field{shorttitle}{{PDF}\_to\_JPEG.py}
+      \field{title}{github/{PDF}\_to\_JPEG.py}
+      \field{urlday}{23}
+      \field{urlmonth}{4}
       \field{urlyear}{2025}
-      \field{year}{2024}
+      \field{version}{1.0}
+      \field{year}{2025}
       \field{dateera}{ce}
       \field{urldateera}{ce}
       \verb{file}
-      \verb Snapshot:/Users/svenburkhardt/Zotero/storage/VZ5KWTWW/287793.html:text/html
+      \verb Snapshot:/Users/svenburkhardt/Zotero/storage/GFVIS8X2/Hilfs_Scripte.html:text/html
       \endverb
       \verb{urlraw}
-      \verb https://app.transkribus.eu
+      \verb https://github.com/Sveburk/masterarbeit/tree/main/3_MA_Project/Hilfs_Scripte
       \endverb
       \verb{url}
-      \verb https://app.transkribus.eu
+      \verb https://github.com/Sveburk/masterarbeit/tree/main/3_MA_Project/Hilfs_Scripte
       \endverb
     \endentry
     \entry{capurro_experimenting_2023}{article}{}
@@ -726,6 +731,41 @@
       \field{year}{1977}
       \field{dateera}{ce}
     \endentry
+    \entry{burkhardt_transkribus_2024}{online}{}
+      \name{editora}{1}{}{%
+        {{hash=aa7555ad04e58230fba1f0a5f815dea4}{%
+           family={Burkhardt},
+           familyi={B\bibinitperiod},
+           given={Sven},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{editorabibnamehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{editoranamehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{editorafullhash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labeltitlesource}{title}
+      \field{abstract}{{AI}-powered platform for text recognition and document analysis}
+      \field{editoratype}{collaborator}
+      \field{month}{11}
+      \field{title}{Transkribus}
+      \field{titleaddon}{Transkribus\_Model\_mmma}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2025}
+      \field{year}{2024}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Snapshot:/Users/svenburkhardt/Zotero/storage/VZ5KWTWW/287793.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://app.transkribus.eu
+      \endverb
+      \verb{url}
+      \verb https://app.transkribus.eu
+      \endverb
+    \endentry
     \entry{noauthor_wgs84_nodate}{online}{}
       \field{sortinit}{W}
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
@@ -1141,7 +1181,6 @@
       \keyw{Publication characteristics,Research data}
     \endentry
   \enddatalist
-  \missing{noauthor_msty_nodae}
 \endrefsection
 \endinput
 
