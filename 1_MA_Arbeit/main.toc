@@ -4,112 +4,114 @@
 \contentsline {subsection}{Formulierung der Forschungsfrage}{2}{section*.6}%
 \contentsline {subsection}{Aufbau der Arbeit}{2}{section*.7}%
 \contentsline {subsection}{Geografischer und historischer Kontext}{2}{section*.8}%
-\contentsline {section}{Quellen}{3}{section*.9}%
-\contentsline {subsection}{Quellentradierung}{3}{section*.10}%
-\contentsline {subsection}{Quellenbeschrieb}{3}{section*.11}%
-\contentsline {subsubsection}{Zeitraum}{3}{section*.12}%
-\contentsline {subsubsection}{Dokumententyp}{3}{section*.13}%
-\contentsline {subsubsection}{Inhalt???}{3}{section*.14}%
-\contentsline {section}{Korpus}{3}{section*.15}%
-\contentsline {subsection}{Digitalisierung}{4}{section*.17}%
-\contentsline {subsection}{Sichtung \& Kategorisierung in Akten}{4}{section*.18}%
-\contentsline {subsection}{Transkribtion}{4}{section*.19}%
-\contentsline {subsubsection}{Test mit Tesseract}{4}{section*.20}%
-\contentsline {subsubsection}{Test mit LLM}{5}{section*.21}%
-\contentsline {subsubsection}{Transkribus}{5}{section*.22}%
-\contentsline {subsection}{Tagging}{5}{section*.23}%
-\contentsline {subsubsection}{Tagging mit Transkribus}{5}{section*.24}%
-\contentsline {subsubsection}{Tagging mit LLM}{5}{section*.25}%
-\contentsline {subsection}{Export}{5}{section*.26}%
-\contentsline {subsection}{Forschungsstand und Forschungslücke}{5}{section*.27}%
-\contentsline {section}{Methodenkritik}{5}{section*.28}%
-\contentsline {subsection}{Genutze Tools}{5}{section*.29}%
-\contentsline {subsubsection}{LOD - Linked Open Data}{6}{section*.30}%
-\contentsline {paragraph}{Protégé}{7}{section*.31}%
-\contentsline {paragraph}{GraphDB}{7}{section*.32}%
-\contentsline {paragraph}{mmma-Ontologie}{8}{section*.33}%
-\contentsline {subsubsection}{Wikidata}{9}{section*.34}%
-\contentsline {subsubsection}{GeoNames}{10}{section*.35}%
-\contentsline {subsubsection}{Msty}{10}{section*.36}%
-\contentsline {subsubsection}{Alphabet -- Gemini}{11}{section*.37}%
-\contentsline {subsubsection}{Anthopic -- Claude}{11}{section*.38}%
-\contentsline {subsubsection}{OpenAI -- ChatGPT}{11}{section*.39}%
-\contentsline {subsubsection}{Transkribus}{11}{section*.40}%
-\contentsline {subsubsection}{Nodegoat}{11}{section*.41}%
-\contentsline {subsection}{Netzwerkanalyse als Methode}{13}{section*.42}%
-\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{13}{section*.43}%
-\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{13}{section*.44}%
-\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{13}{section*.45}%
-\contentsline {section}{Pipeline}{13}{section*.46}%
-\contentsline {subsection}{Aufbau XML to JSON Pipeline}{13}{section*.47}%
-\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{13}{section*.48}%
-\contentsline {subsection}{Module im Detail}{13}{section*.50}%
-\contentsline {subsubsection}{document\_schemas.py}{13}{section*.51}%
-\contentsline {subsubsection}{\_\_init\_\_.py}{13}{section*.52}%
-\contentsline {subsubsection}{Person-Matcher}{14}{section*.53}%
-\contentsline {subsubsection}{place\_matcher.py}{15}{section*.55}%
-\contentsline {subsubsection}{organization\_matcher.py}{15}{section*.56}%
-\contentsline {subsubsection}{letter\_metadata\_matcher.py}{15}{section*.57}%
-\contentsline {subsubsection}{type\_matcher.py}{15}{section*.58}%
-\contentsline {subsubsection}{event\_matcher.py}{15}{section*.59}%
-\contentsline {subsubsection}{date\_matcher.py}{15}{section*.60}%
-\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{15}{section*.61}%
-\contentsline {subsubsection}{unmatched\_logger.py}{15}{section*.62}%
-\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{15}{section*.63}%
-\contentsline {subsubsection}{validation\_module.py}{15}{section*.64}%
-\contentsline {subsubsection}{validation\_module.py}{15}{section*.65}%
-\contentsline {subsubsection}{test\_role\_schema.py}{15}{section*.66}%
-\contentsline {subsubsection}{llm\_enricher.py}{15}{section*.67}%
-\contentsline {subsubsection}{enrich\_pipeline.py}{15}{section*.68}%
-\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{15}{section*.69}%
-\contentsline {subsection}{Visualisierung auf der VM}{15}{section*.70}%
-\contentsline {section}{Fazit und Ausblick}{15}{section*.71}%
-\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{15}{section*.72}%
-\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{15}{section*.73}%
-\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{15}{section*.74}%
-\contentsline {section}{ALTER SCHEISS}{16}{section*.75}%
-\contentsline {subsection}{Forschungsstand zu den Quellen}{16}{section*.76}%
-\contentsline {subsection}{Beschreibung des Archivbestands}{17}{section*.77}%
-\contentsline {section}{Methodischer Zugang}{18}{section*.78}%
-\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{18}{section*.79}%
-\contentsline {subsubsection}{Gliederung in Akten}{18}{section*.80}%
-\contentsline {subsubsection}{Digitalisierung und Transkription}{19}{section*.81}%
-\contentsline {section}{Methodischer Zugang}{19}{section*.82}%
-\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{19}{section*.83}%
-\contentsline {subsubsection}{Gliederung in Akten}{19}{section*.84}%
-\contentsline {subsubsection}{Digitalisierung und Transkription}{19}{section*.85}%
-\contentsline {subsection}{Tagging in Transkribus}{19}{section*.86}%
-\contentsline {subsubsection}{Inhaltliche Tags}{20}{section*.87}%
-\contentsline {subsubsection}{Strukturelle Tags}{23}{section*.88}%
-\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{24}{section*.89}%
-\contentsline {subsection}{Diagram english}{30}{section*.93}%
-\contentsline {subsubsection}{Gründe für den Wechsel zu Nodegoat}{32}{section*.94}%
-\contentsline {subsubsection}{Nodegoat Modelierung}{32}{section*.95}%
-\contentsline {subsection}{Netzwerkanalyse als Methode}{32}{section*.96}%
-\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{32}{section*.97}%
-\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{32}{section*.98}%
-\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{32}{section*.99}%
-\contentsline {subsection}{Normalisierung der Dateien --- von PDF zu JPEG}{32}{section*.100}%
-\contentsline {section}{Aufbau der Datenbank}{34}{section*.101}%
-\contentsline {subsection}{Konzeption der Datenmodelieung}{34}{section*.102}%
-\contentsline {subsubsection}{Eigene Ontologie im Vergleich zu bestehenden Standards}{34}{section*.103}%
-\contentsline {subsubsection}{Verknüpfung von Personen, Orten und Ereignissen}{34}{section*.104}%
-\contentsline {subsection}{Implementierung der Datenbank}{34}{section*.105}%
-\contentsline {subsubsection}{Datenbankdesign}{34}{section*.106}%
-\contentsline {subsubsection}{Herausforderungen bei der Datenaufnahme}{34}{section*.107}%
-\contentsline {subsubsection}{Verknüpfung mit externen Quellen (z.B. Wikidata)}{34}{section*.108}%
-\contentsline {section}{Analyse der Netzwerke}{35}{section*.109}%
-\contentsline {subsection}{Soziale Netzwerke des Vereinslebens}{35}{section*.110}%
-\contentsline {subsubsection}{Verbindungen zwischen Mitgliedern}{35}{section*.111}%
-\contentsline {subsubsection}{ Kooperationen mit anderen Vereinen}{35}{section*.112}%
-\contentsline {subsection}{ Politische Netzwerke und deren Veränderungen}{35}{section*.113}%
-\contentsline {subsubsection}{Einfluss der NS-Diktatur auf die Netzwerke}{35}{section*.114}%
-\contentsline {subsubsection}{Feldpostkarten als Quelle für militärische Netzwerke}{35}{section*.115}%
-\contentsline {subsection}{ Geografische Ausdehnung der Netzwerke}{35}{section*.116}%
-\contentsline {subsubsection}{Einsatzorte der Chormitglieder während des Krieges}{35}{section*.117}%
-\contentsline {subsubsection}{ Lokale und überregionale Verbindungen}{35}{section*.118}%
-\contentsline {section}{Diskussion der Ergebnisse}{36}{section*.119}%
-\contentsline {subsection}{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}{36}{section*.120}%
-\contentsline {subsection}{Gibt es Veränderungen der Netzwerke im historischen Kontext?}{36}{section*.121}%
-\contentsline {section}{Bibliographie}{37}{section*.122}%
-\contentsline {section}{References}{37}{section*.123}%
+\contentsline {section}{Korpus}{3}{section*.9}%
+\contentsline {subsection}{Quellen}{3}{section*.10}%
+\contentsline {subsubsection}{Quellentradierung}{3}{section*.11}%
+\contentsline {subsubsection}{Quellenbeschrieb}{3}{section*.12}%
+\contentsline {subsubsection}{Datierung der Quelle}{3}{section*.13}%
+\contentsline {subsubsection}{Dokumententyp}{4}{section*.14}%
+\contentsline {subsubsection}{Sichtung \& Kategorisierung in Akten}{4}{section*.16}%
+\contentsline {subsection}{Digitalisierung der Quellen}{4}{section*.17}%
+\contentsline {subsection}{Transkription}{5}{section*.18}%
+\contentsline {subsection}{Tagging}{5}{section*.19}%
+\contentsline {subsubsection}{Tagging mit Transkribus}{5}{section*.20}%
+\contentsline {subsubsection}{Tagging mit LLM}{5}{section*.21}%
+\contentsline {subsection}{Export}{5}{section*.22}%
+\contentsline {subsection}{Forschungsstand und Forschungslücke}{6}{section*.23}%
+\contentsline {section}{Methodisches Vorgehen}{6}{section*.24}%
+\contentsline {subsection}{Genutze Tools}{6}{section*.25}%
+\contentsline {subsubsection}{LOD – Linked Open Data}{6}{section*.26}%
+\contentsline {paragraph}{Protégé}{8}{section*.27}%
+\contentsline {paragraph}{GraphDB}{8}{section*.28}%
+\contentsline {paragraph}{mmma-Ontologie}{8}{section*.29}%
+\contentsline {subsubsection}{Wikidata}{10}{section*.30}%
+\contentsline {subsubsection}{GeoNames}{11}{section*.31}%
+\contentsline {subsubsection}{Transkriptionen (Methodenvergleich)}{11}{section*.32}%
+\contentsline {paragraph}{Tesseract}{11}{section*.33}%
+\contentsline {paragraph}{LLM}{11}{section*.34}%
+\contentsline {paragraph}{Transkribus}{12}{section*.35}%
+\contentsline {subsubsection}{Large Language Models}{14}{section*.36}%
+\contentsline {paragraph}{Msty}{14}{section*.37}%
+\contentsline {paragraph}{Alphabet – Gemini}{15}{section*.38}%
+\contentsline {paragraph}{Anthopic – Claude}{15}{section*.39}%
+\contentsline {paragraph}{OpenAI – ChatGPT}{15}{section*.40}%
+\contentsline {subsubsection}{Nodegoat}{15}{section*.41}%
+\contentsline {subsection}{Netzwerkanalyse als Methode}{16}{section*.42}%
+\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{16}{section*.43}%
+\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{16}{section*.44}%
+\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{16}{section*.45}%
+\contentsline {section}{Pipeline}{16}{section*.46}%
+\contentsline {subsection}{Aufbau XML to JSON Pipeline}{16}{section*.47}%
+\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{16}{section*.48}%
+\contentsline {subsection}{Module im Detail}{16}{section*.50}%
+\contentsline {subsubsection}{document\_schemas.py}{16}{section*.51}%
+\contentsline {subsubsection}{\_\_init\_\_.py}{16}{section*.52}%
+\contentsline {subsubsection}{Person-Matcher}{18}{section*.53}%
+\contentsline {subsubsection}{place\_matcher.py}{19}{section*.55}%
+\contentsline {subsubsection}{organization\_matcher.py}{19}{section*.56}%
+\contentsline {subsubsection}{letter\_metadata\_matcher.py}{19}{section*.57}%
+\contentsline {subsubsection}{type\_matcher.py}{19}{section*.58}%
+\contentsline {subsubsection}{event\_matcher.py}{19}{section*.59}%
+\contentsline {subsubsection}{date\_matcher.py}{19}{section*.60}%
+\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{19}{section*.61}%
+\contentsline {subsubsection}{unmatched\_logger.py}{19}{section*.62}%
+\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{19}{section*.63}%
+\contentsline {subsubsection}{validation\_module.py}{19}{section*.64}%
+\contentsline {subsubsection}{validation\_module.py}{19}{section*.65}%
+\contentsline {subsubsection}{test\_role\_schema.py}{19}{section*.66}%
+\contentsline {subsubsection}{llm\_enricher.py}{19}{section*.67}%
+\contentsline {subsubsection}{enrich\_pipeline.py}{19}{section*.68}%
+\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{19}{section*.69}%
+\contentsline {subsection}{Visualisierung auf der VM}{19}{section*.70}%
+\contentsline {section}{Fazit und Ausblick}{19}{section*.71}%
+\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{19}{section*.72}%
+\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{19}{section*.73}%
+\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{19}{section*.74}%
+\contentsline {section}{ALTER SCHEISS}{20}{section*.75}%
+\contentsline {subsection}{Forschungsstand zu den Quellen}{20}{section*.76}%
+\contentsline {subsection}{Beschreibung des Archivbestands}{21}{section*.77}%
+\contentsline {section}{Methodischer Zugang}{22}{section*.78}%
+\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{22}{section*.79}%
+\contentsline {subsubsection}{Gliederung in Akten}{22}{section*.80}%
+\contentsline {subsubsection}{Digitalisierung und Transkription}{23}{section*.81}%
+\contentsline {section}{Methodischer Zugang}{23}{section*.82}%
+\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{23}{section*.83}%
+\contentsline {subsubsection}{Gliederung in Akten}{23}{section*.84}%
+\contentsline {subsubsection}{Digitalisierung und Transkription}{23}{section*.85}%
+\contentsline {subsection}{Tagging in Transkribus}{23}{section*.86}%
+\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{24}{section*.87}%
+\contentsline {subsection}{Diagram english}{29}{section*.91}%
+\contentsline {subsubsection}{Gründe für den Wechsel zu Nodegoat}{31}{section*.92}%
+\contentsline {subsubsection}{Nodegoat Modelierung}{31}{section*.93}%
+\contentsline {subsection}{Netzwerkanalyse als Methode}{31}{section*.94}%
+\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{31}{section*.95}%
+\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{31}{section*.96}%
+\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{31}{section*.97}%
+\contentsline {subsection}{Normalisierung der Dateien --- von PDF zu JPEG}{31}{section*.98}%
+\contentsline {section}{Aufbau der Datenbank}{33}{section*.99}%
+\contentsline {subsection}{Konzeption der Datenmodelieung}{33}{section*.100}%
+\contentsline {subsubsection}{Eigene Ontologie im Vergleich zu bestehenden Standards}{33}{section*.101}%
+\contentsline {subsubsection}{Verknüpfung von Personen, Orten und Ereignissen}{33}{section*.102}%
+\contentsline {subsection}{Implementierung der Datenbank}{33}{section*.103}%
+\contentsline {subsubsection}{Datenbankdesign}{33}{section*.104}%
+\contentsline {subsubsection}{Herausforderungen bei der Datenaufnahme}{33}{section*.105}%
+\contentsline {subsubsection}{Verknüpfung mit externen Quellen (z.B. Wikidata)}{33}{section*.106}%
+\contentsline {section}{Analyse der Netzwerke}{34}{section*.107}%
+\contentsline {subsection}{Soziale Netzwerke des Vereinslebens}{34}{section*.108}%
+\contentsline {subsubsection}{Verbindungen zwischen Mitgliedern}{34}{section*.109}%
+\contentsline {subsubsection}{ Kooperationen mit anderen Vereinen}{34}{section*.110}%
+\contentsline {subsection}{ Politische Netzwerke und deren Veränderungen}{34}{section*.111}%
+\contentsline {subsubsection}{Einfluss der NS-Diktatur auf die Netzwerke}{34}{section*.112}%
+\contentsline {subsubsection}{Feldpostkarten als Quelle für militärische Netzwerke}{34}{section*.113}%
+\contentsline {subsection}{ Geografische Ausdehnung der Netzwerke}{34}{section*.114}%
+\contentsline {subsubsection}{Einsatzorte der Chormitglieder während des Krieges}{34}{section*.115}%
+\contentsline {subsubsection}{ Lokale und überregionale Verbindungen}{34}{section*.116}%
+\contentsline {section}{Diskussion der Ergebnisse}{35}{section*.117}%
+\contentsline {subsection}{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}{35}{section*.118}%
+\contentsline {subsection}{Gibt es Veränderungen der Netzwerke im historischen Kontext?}{35}{section*.119}%
+\contentsline {section}{Bibliographie}{36}{section*.120}%
+\contentsline {section}{References}{36}{section*.121}%
+\contentsline {section}{Anhang}{39}{section*.122}%
+\contentsline {subsection}{Tagging in Transkribus}{39}{section*.123}%
+\contentsline {subsubsection}{Inhaltliche Tags}{40}{section*.124}%
+\contentsline {subsubsection}{Strukturelle Tags}{41}{section*.125}%
