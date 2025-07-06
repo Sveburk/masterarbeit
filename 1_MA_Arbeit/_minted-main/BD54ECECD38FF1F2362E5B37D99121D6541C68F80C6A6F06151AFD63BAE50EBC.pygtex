@@ -23,7 +23,7 @@
                     \PYG{n}{pix} \PYG{o}{=} \PYG{n}{page}\PYG{o}{.}\PYG{n}{get\PYGZus{}pixmap}\PYG{p}{()}
                     \PYG{c+c1}{\PYGZsh{} Dateinamen ohne Dateiendung extrahieren}
                     \PYG{n}{filename\PYGZus{}without\PYGZus{}extension} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{splitext}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
-                    \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die}
+                    \PYG{c+c1}{\PYGZsh{} Ausgabedateinamen erstellen mit führehrenden Nullen für die}
                     \PYG{c+c1}{\PYGZsh{} Seitennummer}
                     \PYG{n}{output\PYGZus{}filename} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{filename\PYGZus{}without\PYGZus{}extension}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}S}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{page\PYGZus{}num}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{l+s+si}{:}\PYG{l+s+s2}{03d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.jpg\PYGZdq{}}
 
@@ -32,7 +32,7 @@
                     \PYG{n}{output\PYGZus{}path} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{dest\PYGZus{}folder}\PYG{p}{,} \PYG{n}{output\PYGZus{}filename}\PYG{p}{)}
                     \PYG{c+c1}{\PYGZsh{} Bild speichern}
                     \PYG{n}{pix}\PYG{o}{.}\PYG{n}{save}\PYG{p}{(}\PYG{n}{output\PYGZus{}path}\PYG{p}{)}
-                \PYG{c+c1}{\PYGZsh{} PDF\PYGZhy{}Datei schließen}
+                \PYG{c+c1}{\PYGZsh{} PDF\PYGZhy{}Datei schliessen}
                 \PYG{n}{doc}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
 
                 \PYG{c+c1}{\PYGZsh{} Erfolgsmeldung ausgeben}

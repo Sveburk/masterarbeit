@@ -47,10 +47,7 @@
 
 \renewbibmacro*{date}{% 
     \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
-        \printtext[parens]{Zugriff am \usebibmacro{urldate}}%
-    }{% Falls nicht online, nimm das normale Datum
-        \printdate
-    }%
+        \printtext[parens]{Zugriff am \usebibmacro{urldate}}}{\printdate}
     
 }
 
@@ -96,14 +93,25 @@
   linkcolor=Blue,
   filecolor=Maroon,
   citecolor=Blue,
-  urlcolor=Blue
+  urlcolor=Blue,
+  pdfborder={0 0 0}
 ]{hyperref}
+\usepackage{nameref}
+\usepackage{ifpdf}   % für \ifpdf
+\usepackage{iftex}   % für \ifPDFTeX
 
-\usepackage{iftex}
-\ifPDFTeX%
-\usepackage{lmodern} %Nur für PDFTeX
+\ifpdf
+  % Nur für PDF-Output
+  \usepackage{authblk} % Affiliations
+  \usepackage{orcidlink} % ORCID-Links
+  \usepackage{pdfpages} % PDF einbinden
+\fi
+
+% Engine-spezifisch:
+\ifPDFTeX
+  \usepackage{lmodern} % Nur für PDFTeX
 \else
-    \usepackage{fontspec}%Für XeTeX und LuaTeX
+  \usepackage{fontspec} % Für XeTeX & LuaTeX
 \fi
 
 % Use upquote if available, for straight quotes in verbatim environments
@@ -207,10 +215,6 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth-\csllabelwidth}{\strut#1\strut}} %chktex 8
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\ifpdf
-  \usepackage{authblk}%Paket für Affiliations
-  \usepackage{orcidlink}%Paket für ORCID-Link
-  \usepackage{pdfpages}%Paket zum Einbinden von PDFs
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -252,7 +256,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\fi
+
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands%
 \def\languageshorthands#1{}
@@ -306,7 +310,7 @@
 \begin{document}
 \begin{titlepage}
     
-% Setzt die Schriftfarbe auf Weiß
+% Setzt die Schriftfarbe auf Weiss
 \color{white}
 \pagecolor[HTML]{46505A} %Seitenfarbe in Uni Basel Anthrazit D20537 (rot)
 \pagenumbering{gobble}   %Verhindert die Anzeige der Seitennummer auf dem Titelblatt
@@ -404,11 +408,10 @@
 \setstretch{1.5}
 
 
-\cleardoublepage
-
+\newpage 
 Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren des Zweiten Weltkrieges. 
 Hierfür wird eine automatisierte Pipline auf Basis von LLMs und Patternmatching vorgestellt, mit deren Hilfe Named Entities extrahiert und weiterverarbeitet werden. 
-Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
+Ziel ist es, dieses Archiv digital zugänglich, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
 
 
 
@@ -420,7 +423,7 @@ Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Person
 
 
 
-\cleardoublepage
+\newpage
 \renewcommand*\contentsname{Inhaltsverzeichnis}%This controls the title of your table of contents.
 {
 \hypersetup{linkcolor=}
@@ -441,45 +444,16 @@ Ziel ist es, dieses Archiv digital zugänglich zu machen, die beteiligten Person
 \subsection{Formulierung der Forschungsfrage}
 \subsection{Aufbau der Arbeit}
 \subsection{Geografischer und historischer Kontext}
-Die vorliegende Arbeit beschäftigt sich mit Unterlagen aus dem Archiv des \endquote{Männerchor Murg} und dessen Nachfolger, den \endquote{New Gospelsingers Murg}. Murg ist eine Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt.
-Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg begünstigte 
-früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs. Parallel bot der Rhein mit seiner Drahtseil-Fähre 
-eine wichtige Verkehrs- und Handelsverbindung, und bis zum Ersten Weltkrieg privat betrieben wurde.
+Die vorliegende Arbeit stützt sich auf Unterlagen aus dem Archiv des \enquote{Männerchor Murg} dessen Nachfolge im Jahr 2021 durch die \enquote{New Gospelsingers Murg} angetreten wurde. Murg ist eine deutsche Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt. Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg begünstigte früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs, während der Rhein mit seiner Drahtseil-Fähre eine bedeutende Verkehrs- und Handelsverbindung bot, die bis zum Ersten Weltkrieg privat betrieben wurde.
 
-Mit dem Ausbau der Landstraße, der heutigen Bundesstraße 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz wandelte sich Murg im 19. Jahrhundert 
-von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Während der Industiralisierung mitte des 19. Jahrhunderts wurde die Wasserkraft zu einem entscheidenen Faktor der Region. Die Ansiedlung der Schweizer Textilfirma 
-\textit{Hüssy \& Künzli AG} im Jahr 1853\cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug trug wesentlich zum Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte — auch aus der benachbarten Schweiz — machten die Gemeinde zu einem wichtigen
-Standort der regionalen Textilindustrie. Es waren eben diese schweizer Textilarbeiter, die 1861 den \textit{Männechor Murg} gründeten, damals unter dem Namen \textit{Schweizer Männerchor Murg}
+Mit dem Ausbau der Landstrasse, der heutigen Bundesstrasse 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz entwickelte sich Murg im 19. Jahrhundert von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Die Wasserkraft wurde dabei zu einem entscheidenden Standortfaktor: Die Ansiedlung der Schweizer Textilfirma \textit{Hüssy \& Künzli AG} im Jahr 1853\cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug wesentlich zum wirtschaftlichen Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte, auch aus der benachbarten Schweiz, machten Murg zu einem wichtigen Standort der regionalen Textilindustrie.
 
+Die Gründung des \textit{Männerchor Murg} im Jahr 1861 durch Schweizer Textilarbeiter belegt diesen engen Zusammenhang zwischen wirtschaftlicher Migration, Industrialisierung und lokalem Vereinswesen. Diese historische Verflechtung bildet eine zentrale Grundlage für die vorliegende Untersuchung.
 
 
   
 
-  \newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––              Quellen            ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
-\section{Quellen}
-\subsection{Quellentradierung}
-In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
-wird im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
-Für diese Arbeit wird ein Ordner mit der Aufschrift \textit{``Männerchor Akten 1925-1944''} gewählt, da er neben dem Ordner 
-\textit{``Männerchor Akten 1946-1950‘‘} den größten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, aufschlussreiche Einblicke in das Vereinsleben
-in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
-Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als ``Protokoll'', ``Brief'', ``Postkarte'', ``Rechnung'', 
-``Regierungsdokument'', ``Noten'', ``Zeitungsartikel'', ``Liste'', ``Notizzettel'' oder ``Offerte'' kategorisiert werden.
-
-
-\subsection{Quellenbeschrieb}
-
-
-\subsubsection{Zeitraum}
-blabla
-\subsubsection{Dokumententyp}
-blabla
-\subsubsection{Inhalt???}
+\newpage
 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
@@ -487,7 +461,7 @@ blabla
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Korpus}
-Aus dem Bestand des Ordners \textit{``Männerchor Akten 1925-1944''} werden für diese Arbeit ausschlieslich Akten verwendet, 
+Aus dem Bestand des Ordners \textit{``Männerchor Akten 1925--1944''} werden für diese Arbeit ausschlieslich Akten verwendet, 
 die während des Zweiten Weltkriegs verfasst wurden. Der Analysezeitraum erstreckt sich dementsprchend zwischen dem 01. September 1939 
 und dem \textcolor{red}{8. Mai 1945}\footnote{[vgl.][Finde hier eine Referenz]{keylist}}, dem Tag der bedingungslosen Kapitulation Deutschlands.
 
@@ -496,7 +470,29 @@ Hieraus ergibt sich in der Folge eine Limitation der Anzahl potetieller Akteurin
 besonders mit hinblick auf die Erstellung einer verlässlichen Groundtruth mit angereicherten
 historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer digital unterstützen Arbeitsweise zu unterstreichen. 
 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––              Quellen            ––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 
+\subsection{Quellen}
+\subsubsection{Quellentradierung}
+In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
+wird im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
+Für diese Arbeit wird ein Ordner mit der Aufschrift \textit{\enquote{Männerchor Akten 1925--1944}} gewählt, da er neben dem Ordner 
+\textit{\enquote{Männerchor Akten 1946--1950}} den grössten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, aufschlussreiche Einblicke in das Vereinsleben
+in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
+Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als \enquote{Protokoll}, \enquote{Brief}, \enquote{Postkarte}, \enquote{Rechnung}, 
+\enquote{Regierungsdokument}, \enquote{Noten}, \enquote{Zeitungsartikel}, \enquote{Liste}, \enquote{Notizzettel} oder \enquote{Offerte} kategorisiert werden.
+
+
+\subsubsection{Quellenbeschrieb}
+
+
+\subsubsection{Datierung der Quelle}
+blabla
+Hier eine Grafik über die Verteilung im Ordner einfügen. 
+
+\subsubsection{Dokumententyp}
 
 \begin{figure}[htbp]
   \centering
@@ -526,23 +522,30 @@ historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer
     };
     \end{axis}
   \end{tikzpicture}
-  \caption{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten — 381 Seiten).}
-  \label{fig:dokumententypen-bar}
+  \caption{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten – 381 Seiten).}\label{fig:dokumententypen-bar}
 \end{figure}
 
 
-\subsection{Digitalisierung}
+
+\subsubsection{Sichtung \& Kategorisierung in Akten}
 blabla
-\subsection{Sichtung \& Kategorisierung in Akten}
-blabla
-\subsection{Transkribtion}
-blabla
-\subsubsection{Test mit Tesseract}
-blabla
-\subsubsection{Test mit LLM}
-blabla
-\subsubsection{Transkribus}
-blabla
+% \paragraph{Inhalt???}
+% blabla
+
+\subsection{Digitalisierung der Quellen}
+
+Die vorliegenden analogen Dokumente müssen zunächst sachgerecht für den Digitalisierungsprozess vorbereitet werden. Zu diesem Zweck werden die Akten aus ihren ursprünglichen Ablagesystemen entnommen und behutsam von Heftklammern und Gummibändern befreit. Diese Maßnahmen dienen in erster Linie dem langfristigen Erhalt des Papiers, da insbesondere Rostspuren ehemaliger Metallklammern die Papierfasern angreifen und irreparable Schäden verursachen können. Darüber hinaus treten häufig Spuren von Säurefraß auf, sofern nicht säurefreies Papier oder unsachgemäßes Archivmaterial verwendet wurde.
+
+Für die eigentliche Digitalisierung wird die native \enquote{Dateien}-App von Apple\footnote{Vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} eingesetzt. Diese ermöglicht nicht nur eine vergleichsweise hochauflösende Erfassung, sondern auch die unmittelbare Speicherung in einem Cloud-basierten Speichersystem sowie die automatische Texterkennung (OCR). Ziel ist es, die erfassten Inhalte schnell durchsuchbar und standortunabhängig zugänglich zu machen.
+
+Die Digitalisierung erfolgt mithilfe eines Tablets, das auf einem stabilen Stativ in einem Winkel von 90° über den zu erfassenden Dokumenten positioniert wird. Diese einfache, jedoch effiziente Aufnahmetechnik gewährleistet eine gleichbleibend hohe Bildqualität bei gleichzeitig zügiger Bearbeitung. Die digitalisierten Dateien werden systematisch benannt und orientieren sich an einer zuvor erstellten Gesamtübersicht der Akten. Mehrseitige Konvolute werden als zusammenhängende Akte geführt, während Einzeldokumente entsprechend separat erfasst werden. Die Archivierung erfolgt sowohl in physischer als auch in digitaler Form auf Ebene einzelner Seiten, um eine möglichst feingranulare Erschließung der Bestände sicherzustellen.
+
+Das Dateiformat ist in der \enquote{Dateien}-App standarmässig PDF. Für die anschliessende Transkription
+
+\subsection{Transkription}
+Für die Transkrition der Daten wurde ein best-practise Ansatz gewählt. Nach Tests mit dem Python-Modul \textit{\enquote{Tesseract}} 
+und unterschiedlichen LLMs wurde auf Transkribus zurückgegriffen. Eine Gegenüberstellung der drei erwähnten Tools findet sich im Kapitel~\nameref{section:Transkriptionen_Methoden}
+
 \subsection{Tagging}
 blabla
 \subsubsection{Tagging mit Transkribus}
@@ -566,53 +569,53 @@ Die oben beschriebenen Quellen wurden vor dieser Arbeit bislang nicht wissenscha
 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––           Methodenkritik        ––––––––––––––––––––––%
+%––––––––––––––––––––––––           Methodisches Vorgehen        ––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
-\section{Methodenkritik}
+\section{Methodisches Vorgehen}
 \subsection{Genutze Tools}
 Digitale Methoden spielen für die Durchführung dieser Arbeit eine zentrale Rolle. Von der Digitalisierung der Quellen
 über die Transkription bis hin zur Auswertung durchlaufen die Daten zahlreiche Prozessschritte, die mithilfe von Large 
 Language Models, Deep-Learning-Modellen und anderen digitalen Werkzeugen verarbeitet und visualisiert werden. 
-Die Auswahl der Tools orientierte sich dabei an Kriterien wie Verfügbarkeit (Open Source vs. proprietär), 
+Die Auswahl der Tools orientierte sich dabei an Kriterien wie Verfügbarkeit (Open~Source vs.\ proprietär), 
 Kompatibilität, Community-Support, erforderlichem Arbeitsaufwand und selbstverständlich dem konkreten Mehrwert für 
 die Forschungsfragen.
 
 In diesem Kapitel werden sowohl Werkzeuge vorgestellt, die tatsächlich eingesetzt wurden, als auch solche, die sich 
-im Verlauf des Projekts als ungeeignet erwiesen. Transparenz ist hierbei ein wesentlicher Aspekt: Ein großer Teil der 
+im Verlauf des Projekts als ungeeignet erwiesen. Transparenz ist hierbei ein wesentlicher Aspekt: Ein grosser Teil der 
 Methodik entwickelte sich erst im Forschungsprozess selbst. Da sich Large Language Models rasant weiterentwickeln, 
 ist nicht immer von Beginn an klar, ob ein Tool für den eigenen Anwendungsfall geeignet ist.
 Um diese Unsicherheiten zu dokumentieren, werden hier auch gescheiterte Versuche dargestellt.
 
-\subsubsection{LOD - Linked Open Data}
+\subsubsection{LOD – Linked Open Data}
 
 Linked Open Data (LOD) bezeichnet einen dezentral organisierten Ansatz zur Veröffentlichung und 
 Verknüpfung strukturierter Daten im Web. Ziel ist es, Datensätze verschiedener Institutionen und Akteure 
 maschinenlesbar zugänglich zu machen und über standardisierte Formate wie RDF und SPARQL miteinander zu 
-verbinden\cite[Vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
+verbinden\cite[ vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
 Wesentliches Merkmal der LOD-Cloud ist dabei die Nutzung semantischer Beziehungen, insbesondere Äquivalenzen einzelner Daten. 
 Hierfür wird häufig das Prädikat \texttt{owl:sameAs} genutzt, um z.B. mit \colorbox{VeryLightGray}{\textit{:Choir owl:sameAs wd:Q131186}} eine eigene 
 Instanz als identisch mit der Wikidata-Entität für einen Chor zu deklarieren.
 Klassen oder Instanzen können so aus unterschiedlichen Datenquellen eindeutig identifiziert und zusammengeführt werden.
 
 Die OWL Web Ontology Language, entwickelt vom World Wide Web Consortium (W3C), ist damit ein zentrales Werkzeug für die Realisierung von 
-LOD.\cite[Vgl.][]{smith_owl_2004} 
+LOD.\cite[ vgl.][]{smith_owl_2004} 
 Mit ihr lassen sich Ontologien definieren, die Domänen über Klassen, Individuen und deren Relationen formal beschreiben. 
 Sie ermöglichen, logische Schlussfolgerungen zu ziehen, um verteilte Datenbestände zu verknüpfen und maschinenlesbar auszuwerten.
 Besonders relevant ist dabei \texttt{owl:sameAs}, das als Identitätsrelation fungiert: 
-Es deklariert Instanzen, die in unterschiedlichen Quellen unter verschiedenen URIs\footnote{Abk. URI: Uniform Resource Identifier} geführt werden, 
-als dasselbe reale Objekt\cite[Vgl.][2.3. Data Aggregation and Privacy]{smith_owl_2004}
+Es deklariert Instanzen, die in unterschiedlichen Quellen unter verschiedenen URIs\footnote{Abk. URI\: Uniform Resource Identifier} geführt werden, 
+als dasselbe reale Objekt\cite[ vgl.][2.3. Data Aggregation and Privacy]{smith_owl_2004}
 und ermöglicht so eine präzise Zusammenführung von Informationen — ein Grundpfeiler für die Interoperabilität im Semantic Web.
-Die OWL-Spezifikation baut auf RDF\footnote{Abk. RDF; Resource Description Framework} auf und erweitert es um zusätzliche Konzepte.
+Die OWL-Spezifikation baut auf RDF\footnote{Abk. RDF\; Resource Description Framework} auf und erweitert es um zusätzliche Konzepte.
 Die RDF-Daten werden häufig im Turtle-Format (TTL) serialisiert, einer textbasierten Notation für RDF, die eine kompakte, leicht lesbare Schreibweise bietet.
 Dieses Format eignet sich besonders für den Austausch und die manuelle Bearbeitung von RDF-Tripeln.
 Die Sprache liegt in drei Varianten vor\footnote{OWL Lite, OWL DL und OWL Full}, die sich im Grad ihrer Ausdrucksstärke 
-unterscheiden.\cite[Vgl.][1.1. The Species of OWL.]{smith_owl_2004}
-Insbesondere OWL DL bietet einen praktikablen Mittelweg zwischen hoher Ausdruckskraft und vollständigem, entscheidbarem Schließen (Reasoning) 
+unterscheiden.\cite[ vgl.][1.1. The Species of OWL.]{smith_owl_2004}
+Insbesondere OWL DL bietet einen praktikablen Mittelweg zwischen hoher Ausdruckskraft und vollständigem, entscheidbarem Schliessen (Reasoning) 
 und ist daher für viele LOD-Anwendungsfälle geeignet.
 
 Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nicht von allen Websites konsequent 
-umgesetzt.\cite[Vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
+umgesetzt.\cite[ vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
 Umsetzung für diese Arbeit werden zwei zentrale Werkzeuge genutzt: Protégé zur Modellierung der Ontologie und GraphDB für deren Verwaltung und Abfrage.
 
 \paragraph{Protégé} Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
@@ -626,7 +629,7 @@ Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in S
 
 \paragraph{GraphDB} Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
 GraphDB ist eine spezialisierte RDF-Triplestore-Datenbank, die es ermöglicht, 
-große Mengen an semantisch verknüpften Daten effizient zu verwalten. 
+grosse Mengen an semantisch verknüpften Daten effizient zu verwalten. 
 Mit der integrierten SPARQL-Schnittstelle können Benutzer gezielt nach Instanzen, Klassen und Relationen suchen 
 und komplexe Muster in den Datenbeständen erkennen. 
 Im Rahmen dieser Arbeit diente GraphDB als Backend, um die in Protégé entwickelte Ontologie zu testen 
@@ -637,26 +640,25 @@ und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
 
 \begin{minipage}{0.48\textwidth}% Linke Box = TEXT
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
-Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark 
-Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe ~\nameref{subsec:forschungsstand}) ist 
-zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross und damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
+Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark
+Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe~\nameref{subsec:forschungsstand}) ist 
+zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross tische Grundlage des Globalund damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
 auf die Extraktion von Entitäten.
 \end{minipage}%
 \hfill%
 \begin{minipage}{0.48\textwidth}% Rechte Box = BILD
   \centering
   \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
-  \captionof{figure}{Ausschnitt der TTL-Ontologie.}
-  \label{fig:ttl-ontologie}
+  \captionof{figure}{Ausschnitt der TTL-Ontologie.}\label{fig:ttl-ontologie}
 \end{minipage}
-\footnotetext{Abk. mmma; Männerchor Murg MasterArbeit.}
+\footnotetext{Abk.\ mmma; Männerchor Murg MasterArbeit.}
 
 
 \vspace{1em}
 
 Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen. Hinzu kommen externe Quellen, und deren Zugänglichkeit. Zuverlässige Quellen für Informationen 
-über militärische Einheiten und deren Feldpostnummern sind das „Forum der Wehrmacht“\cite[Vgl.][]{altenburger_lexikon_nodate-1} 
-und der „Suchdienst des DRK“\cite[Vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
+über militärische Einheiten und deren Feldpostnummern sind das \enquote{Forum der Wehrmacht}\cite[ vgl.][]{altenburger_lexikon_nodate-1} 
+und der \enquote{Suchdienst des DRK}\cite[ vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
 und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit. Ein manuelles Recherchieren dieser Daten scheint zu diesem Zeitpunkt
 den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
 wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Kapitel Nodegoat}.
@@ -669,28 +671,28 @@ Jede Entität erhält dabei eine eindeutige, persistente URI
 (z.B. \colorbox{VeryLightGray}{\textit{wd:Q131186}} für einen Chor), die in LOD-Szenarien 
 als stabiler Referenzpunkt dient.
 Neben anderen betonen Martinez \& Pereyra Metnik (2024) beispielsweise: \\
-\textit{\enquote{Wikidata stands out for its great potential in interoperability and its ability to connect data from various domains.}}
-\cite{martinez_comparative_nodate}
+\textit{\enquote{Wikidata stands out for its great potential in interoperability and its ability to connect data from various domains.}}\cite{martinez_comparative_nodate}
 
 Wikidata entspricht, ebenso wie das nachfolgend beschriebene GeoNames, den FAIR-Prinzipien: Die Daten sind 
-\textbf{F}\textit{indable} und \textbf{A}\textit{ccessible}, \textbf{I}\textit{nteroperable} und \textbf{R}\textit{eusable}\cite[Vgl.][S. 2]{wilkinson_fair_2016}.
+\textbf{F}\textit{indable} und \textbf{A}\textit{ccessible}, \textbf{I}\textit{nteroperable} und \textbf{R}\textit{eusable}\cite[ vgl.][S. 2]{wilkinson_fair_2016}.
 
 Im Rahmen dieser Arbeit dient Wikidata als zentrale externe Referenz, um lokal erhobene Entitäten mit international etablierten Datenobjekten 
 zu verknüpfen und so ihre Interoperabilität sicherzustellen. Die Plattform ermöglicht eine eindeutige Identifizierung sowie die maschinenlesbare 
 Anreicherung um zusätzliche Informationen.
 
-Die praktische Umsetzung zeigt jedoch eine strukturelle Einschränkung: Trotz systematischer Verknüpfung eigens angelegter Datensätze, 
-etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community–Moderation etwa 70\% dieser Beiträge. 
-Dies verweist auf die hohen internen Qualitätsanforderungen, begrenzt jedoch die Verlässlichkeit und den Nutzen der Arbeit erheblich. 
+Die praktische Umsetzung zeigt jedoch eine strukturelle Einschränkung. Für diese Arbeiteigens angelegter Einträge auf Wikidata werden
+trotz systematischer Verknüpfung mit anderen dort verwalteten Entitäten, etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community–Moderation etwa 70\% dieser Einträge. 
+Das zeigt einerseits hohe internen Qualitätsanforderungen auf, andererseits werden diese jedoch nicht klar kommuniziert. Mit regidem Löschen neuer Einträge wird die Verlässlichkeit und den Nutzen der 
+geleisteten Arbeit erheblich begrenzt. 
 Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel.
 
 \subsubsection{GeoNames}
 
-Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open—Source—Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
+Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
 Alle Einträge sind in neun Feature–Klassen und über 600 spezifische Feature–Codes kategorisiert. Die Plattform integriert Daten zu 
 Ortsnamen in verschiedenen Sprachen, Höhenlagen, Bevölkerungszahlen und weiteren Attributen aus unterschiedlichen nationalen und internationalen Quellen.  
-Sämtliche Geokoordinaten basieren auf dem WGS84–System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}, vgl.][]{noauthor_wgs84_nodate}
+Sämtliche Geokoordinaten basieren auf dem WGS84–System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}; vgl.][]{noauthor_wgs84_nodate}
 und können über frei zugängliche Webservices oder eine API abgerufen werden.  
 Darüber hinaus erlaubt GeoNames registrierten Nutzenden, bestehende Datensätze über eine Wiki–Oberfläche zu bearbeiten oder zu ergänzen, wodurch eine 
 kollaborative Qualitätssicherung gewährleistet wird.
@@ -702,20 +704,53 @@ den klar kommunizierten Community–Guidelines und andererseits daran, dass der 
 Historische Gebäude wie Gaststätten oder Spitäler fehlen folgerichtig in der GeoNames–Datenbank. Diese Lücke ist erwartbar, aber erwähnenswert, da GeoNames 
 ansonsten eine nahezu vollständige und ausgesprochen detaillierte Datengrundlage bietet.
 
+\subsubsection{Transkriptionen (Methodenvergleich)}\label{section:Transkriptionen_Methoden}
+\paragraph{Tesseract}
+
+war scheisse
+
+\paragraph{LLM}
+
+war scheisse und manipulativ
+
+\paragraph{Transkribus}
+
+Transkribus ist eine webbasierte Plattform zur automatisierten Handschrifterkennung (HTR) und Texterkennung (OCR), die sich seit ihrer Entwicklung im EU-Projekt READ (Recognition and Enrichment of Archival Documents)\cite[vgl.][]{noauthor_recognition_nodate} als Standardwerkzeug in den digitalen Geschichtswissenschaften etabliert hat \cite[vgl.][postnote]{muhlberger_transkribus_2019}. Betrieben wird Transkribus durch die READ-COOP SCE, einer europäischen Genossenschaft.
+
+Für die vorliegende Arbeit wird sowohl die Webanwendung \textit{\enquote{Transkribus Lite}} als auch der \textit{Desktop-\enquote{Transkribus Expert Client}} genutzt. Letzterer ist eine Fortführung der ursprünglichen, im Rahmen des READ-Projekts entwickelten Software. Die Verwendung des Expert Clients in Kombination mit \textit{FileZilla Pro} als FTP-Client ermöglicht es, die grosse Zahl an Scanseiten effizienter in das Transkribus-Dateimanagement einzupflegen. Die für das Projekt nötige Scholar-Lizenz wird über RISE der Universität Basel\cite[weitere Informationen:][postnote]{decker_home_nodate} bezogen.
+
+Neben der eigentlichen Transkription bietet Transkribus die Möglichkeit, Named Entities wie Personen, Orte, Organisationen und Datumsangaben direkt im Dokument zu annotieren. Dies geschieht über eine umfangreiche Tagging-Funktion, die neben struktureller Tags wie Abkürzungen (\enquote{abbrev}) auch individuell erweiterbar sind. Für diese Arbeit wird beispielsweise der Custom-Tag \colorbox{signature}{\texttt{signature}} eingeführt, der dem Anhang entnommen werden können.
+
+Nach erfolgter Bearbeitung stellt Transkribus Funktionen zur Verfügung, die Transkriptionen inklusive Tags als strukturiertes Markup im XML-Format zu exportieren.
+
+In der praktischen Anwendung zeigt sich jedoch eine erhebliche Diskrepanz zwischen den vorgesehenen Funktionen und der tatsächlich umgesetzten Exportlogik. Die händisch markierten und ausformulierten Abkürzungen werden im generierten Page-XML nicht ausgegeben, sodass diese Information für eine weitergehende Auswertung verloren geht. 
+
+Aus Abkürzungen wie V.D.A soll in XML \colorbox{VeryLightGray}{\textless abbrev expansion=\enquote{Verein für das Deutschtum im Ausland}\textgreater V.D.A.\textless /abbrev\textgreater} werden. Tatsächlich fehlt der Tag komplett, V.D.A wird zum einfachen String. Unter Umständen wird dieser nun von den LLMs nicht mehr als Organisation erkannt. 
+
+Besonders gravierend ist das Defizit bei der Handhabung von Listen. Zwar können Listenobjekte innerhalb der Benutzeroberfläche manuell angelegt und befüllt werden, beim Export bleibt die zugehörige XML-Struktur jedoch leer. Ein technischer oder benutzerfreundlicher Workaround, um diese Daten maschinenlesbar zu extrahieren, existiert bislang nicht. Um auf die Listeninhalte im XML nicht zu verzichten, müssen sie daher als regulärer Fliesstext markiert werden — mit dem Effekt, dass die logische Gliederung, die etwa für Mitgliederverzeichnisse, Inventarlisten oder Aufstellungen forschungsrelevant ist, systematisch verloren geht. Dies führt zu erheblichem Mehraufwand und stellt eine signifikante methodische Limitation dar, insbesondere für Vorhaben, die auf einer automatisierten Weiterverarbeitung konsistenter Strukturdaten beruhen. Hinzu kommt der grosse Zeitaufwand für die manuelle Listengestaltung, die letztlich nicht zielführend verwertet werden kann.
+
+Die Herausforderungen decken sich mit den Beobachtungen von Capurro et al.\cite[][]{capurro_experimenting_2023}, die in ihrem Experiment mit einem mehrsprachigen und multi-autoren Handschriftenkorpus ebenfalls auf erhebliche Grenzen von Transkribus hinweisen: Sowohl die automatische Layout-Erkennung als auch die Handhabung komplexer Dokumentstrukturen erwiesen sich als fehleranfällig und machten umfangreiche manuelle Nachbearbeitung unvermeidbar. Auch der Versuch, HTR-Ergebnisse\footnote{Abk.: \textbf{HTR}, Handwritten Text Recognition} nachträglich automatisch zu verbessern (Postcorrection), brachte keine Verbesserung der Fehlerquote. Damit bestätigt sich der Befund, dass ein projektspezifisch trainiertes Modell – wie es hier mit vier Trainings-Iterationen umgesetzt wurde – zwar die CER senken kann, strukturelle Probleme jedoch ungelöst bleiben.
+
+Der methodische Mehrwert von Transkribus liegt trotz dieser Limitierungen in der Möglichkeit, ein eigenes, auf den spezifischen Handschriftencorpus angepasstes HTR-Modell zu trainieren. Ein generisches Modell \textit{(The German Giant I)} erzielt zu Beginn eine Character Error Rate \textit{(CER)} von 8,3\%. Durch das Training auf einer eigens erstellten Groundtruth mit 149 Seiten lässt sich ein projektspezifisches Modell entwickeln, das die CER auf 6,58\% senkt. Auch für das Tagging selbst wurde eine umfassende Groundtruth für etwaige spätere Anwendungen (und als Vergleich für die LLMs) erstellt. Sie besteht aus insgesamt 100 Seiten händischer Annotation. Diese umfassende manuelle Nachbearbeitung stellt ein möglichst konsistentes, maschinenlesbares XML sicher. Aus diesem Grund werden auch Taggingregeln festgehalten, die später auch an das LLM weitergegeben werden.
+
+Insgesamt zeigt sich, dass Transkribus als Plattform eine sehr hilfreiche Basis für grossvolumige Transkriptionsprojekte bietet. Die automatisierte Erkennung spart erhebliche Zeit, ersetzt jedoch weder editorische Sorgfalt noch eine manuelle Qualitätssicherung. Gerade für Forschungsprojekte, die auf präzisen Strukturdaten beruhen, wie hier für Netzwerkanalysen mit Nodegoat, bleibt eine kritische Reflexion der Tool-Limitierungen unerlässlich. Transkribus unterstützt ausgesprochen bei der initialen Transkription, ermöglicht das verständlichere Lesen einzelner Passagen -- darauf aufbauend ergibt sich ein Kontext, der eine vollständige Transkription mit viel manueller Arbeit möglich macht. Für Netzwerkanalysen relevante Informationen wie Signaturen werden oft falsch transkribiert - und eine Zuordnung per Tag ist daher durch den Menschen effizienter, als für sehr kleine Beispielmengen ein spezialisiertes Neuronales Netzwerk zu trainieren.
 
 
-\subsubsection{Msty}  
-Ein absolut zentrales Tool bei der Verarbeitung der historischen Quellen ist die unten dargelegte Python–Pipeline, die auf der
-Verarbeitung von XML–Files fusst.
-\subsubsection{Alphabet -- Gemini}
-\subsubsection{Anthopic -- Claude}
+\subsubsection{Large Language Models}  
+Ein zentrales Werkzeug bei der Verarbeitung der historischen Quellen ist die weiter unten näher beschriebene Python-Pipeline, die auf der Verarbeitung von XML-Dateien basiert. Vorgreifend sei erwähnt, dass diese XML-Verarbeitung ein Large Language Model (LLM) zum Custom-Tagging nutzt. Nebst dem Tagging stellt das Programmieren dieser Pipeline eine der Kernherausforderungen dieses Forschungsprojekts dar. 
+Für das Tagging und die Entwicklung der Pipeline werden verschiedene Large Language Models intensiv getestet und eingesetzt.
+\paragraph{Msty}
+Um ein dafür geeignetes LLM zu evaluieren, werden zu Beginn des Projektes beispielhafte Prompts erstellt und deren Ergebnisse systematisch verglichen. Um diesen Vergleich zu erleichtern, wird die Desktop-Anwendung Msty\cite[vgl][]{noauthor_msty_nodate} eingesetzt. Zu den zentralen Funktionen gehören parallele Chatinterfaces (\enquote{Parallel Multiverse Chats}),
+eine flexible Verwaltung lokaler Wissensbestände (\enquote{Knowledge Stacks})\cite[vgl][]{noauthor_msty_nodate}, sowie eine vollständige Offline-Nutzung ohne externe Datenübertragung. Msty dient dazu, verschiedene Modelle zu testen, durch die Parallel Multiverse Chats Antworten zu vergleichen und Konversationen strukturiert zu verzweigen und auszuwerten.
+
+Wichtig ist, dass dies kein klassisches Benchmarking auf Basis vergleichbarer Resultate ist. Es wird zu diesem frühen Projektzeitpunkt weder systematisch überpüft, welche Qualität der jeweilge Codeteil hat, noch wird gemessen, wie viel Prozent der Named Entities jeweils richtig erkannt werden. Der direkte Vergleich der getesteten LLMs liefert jedoch schnell ein klares Bild, welches Modell sich am besten eignet. Beprobt werden die Folgenden Anbieter und Modelle:
 
 
-\subsubsection{OpenAI -- ChatGPT}
-\subsubsection{Transkribus}
 
-Abreviation Tag klappt nicht (wird nicht exportiert)
-Listen werden nicht exportiert
+\paragraph{Alphabet – Gemini}
+\paragraph{Anthopic – Claude}
+\paragraph{OpenAI – ChatGPT}
+
 
 \subsubsection{Nodegoat}\label{subsec:Nodegoat_chapter}
 
@@ -855,8 +890,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
   node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{liefert Groundtruth}};
 \end{tikzpicture}
   }
-  \caption{Übersicht der gesamten XML-to-JSON-Pipeline}
-  \label{fig:pipeline-uebersicht}
+  \caption{Übersicht der gesamten XML-to-JSON-Pipeline}\label{fig:pipeline-uebersicht}
 \end{figure}
 \vspace{6\baselineskip}
 
@@ -943,7 +977,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (json.south) -- (save.north);
 \end{scope}
 
-% Großes Prozessdiagramm
+% Grosses Prozessdiagramm
 \node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
 
 \node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
@@ -986,8 +1020,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
 \end{tikzpicture}
   }
-  \caption{Detailliertes Prozessdiagramm: Personen-Matching}
-  \label{fig:person-matcher-prozess}
+  \caption{Detailliertes Prozessdiagramm: Personen-Matching}\label{fig:person-matcher-prozess}
 \end{figure}
 
 
@@ -1056,21 +1089,18 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 \section{ALTER SCHEISS}
 
-In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{\endquote{Männerchor Akten 1925-1944}} bereits 2018 und 2022 ein 
-erster Korpus aus 137 Akten\footnote{Weiterführend vgl.\cite{burkhardt_arcgis_2022}}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem
-Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
+In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{\enquote{Männerchor Akten 1925--1944}} bereits 2018 und 2022 ein 
+erster Korpus aus 137 Akten\cite[Weiterführend vgl.][]{burkhardt_arcgis_2022}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
 oder  ihren Inhalt eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasst 96 Seiten, 
 während andere Akten nur aus einer einzelnen Seite bestehen können.  
-Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen \endquote{Carl Burger} und \endquote{Fritz Jung} liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
+Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen \enquote{Carl Burger} und \enquote{Fritz Jung} liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
 Zu diesem Zeitpunkt erfolgt die Transkription mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
 ist.
 \subsection{Forschungsstand zu den Quellen}
-Die vorliegenden Arbeit stützt sich auf diese Vorarbeit, und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Daten ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten 
-verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben werden?}\\
-Hierzu werden Nachschlagetabellen in Fachliteratur\footnote{vgl.:\cite{tessin_verbande_1977},\cite{hartmann_wehrmacht_2010},\cite{rass_deutsche_2009}},
-die Bestände des \textit{Bundesarchives -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025}, 
-des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}, sowie Citizen Scientist Projekte\footnote{vgl. 
-Wikidata (Beispiel:\cite{burkhardt_78th_2024}),\\\indent{\cite{altenburger_lexikon_nodate-1}},\\\indent{\cite{hermans_forum_nodate}}} herangezogen und letztere teils druch eigene Recherche ergänzt. 
+Die vorliegende Arbeit stützt sich auf diese Vorarbeit und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Informationen ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben wurde?}
+
+Hierzu werden Nachschlagetabellen in der Fachliteratur (vgl. \autocites{tessin_verbande_1977}{hartmann_wehrmacht_2010}{rass_deutsche_2009}), die Bestände des \textit{Bundesarchives – Militärarchiv Freiburg} \autocite{hollmann_freiburg_2025}, des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)} \autocite{reuter_drk_2025} sowie Citizen-Science-Projekte\footnote{ vgl. z.B. Wikidata: \autocite{burkhardt_78th_2024}, \autocite{altenburger_lexikon_nodate-1}, \autocite{hermans_forum_nodate}.} herangezogen und letztere teils durch eigene Recherche ergänzt.
+
 
 Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\footnote{Akten\_Gesamtübersicht.csv im Anhang} 
 
@@ -1093,9 +1123,9 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
 
     Die analogen Akten müssen zuerst für die Digitalisierung vorbereitet werden. Sie werden aus den Ordnern genommen und vorsichtig von Heftklammern, 
     Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
-    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefraß durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
+    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefrass durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
 
-    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die „Dateien“-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
+    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
     Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
     Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im 90\textdegree Winkel über den Seiten positioniert ist. 
     Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
@@ -1109,9 +1139,9 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
 
     Die analogen Akten müssen zuerst für die Digitalisierung vorbereitet werden. Sie werden aus den Ordnern genommen und vorsichtig von Heftklammern, 
     Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
-    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefraß durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
+    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefrass durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
 
-    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die „Dateien“-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
+    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
     Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
     Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im 90\textdegree Winkel über den Seiten positioniert ist. 
     Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
@@ -1126,193 +1156,6 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     
     \begin{description}
 
-    % Abbreviations
-    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
-        
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. 
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
-    
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\ldots\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
-    
-    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
-
-    
-    % Unclear    
-    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
-    
-
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. 
-
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
-
-    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater“.}
-
-    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
-
-    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}“.}
-    
-%Sic   
-    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
-
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. 
-    
-    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
-
-    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}
-
-    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
-
-    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}
-
-    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
-
-    \end{description}
-
-    \subsubsection{Inhaltliche Tags}
-    \begin{description}
-    % Person      
-    \item \textbf{\colorbox{person}{\texttt{person}}}
-        
-    Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
-    
-    \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. 
-
-    \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc., wenn Ort, Name oder Organisation bekannt. 
-    
-    Eine Person kann sowohl mit ihrem Namen als auch ihrer Funktion (wie Dirigent) getaggt werden.  
-    Aus der Korrespondenz ist in der Regel eine zugehörige Organisation ersichtlich, mit deren Verknüpfung eine namentlich nicht genannte Person identifiziert werden könnte.
-    
-    % Signature    
-    \item \textbf{\colorbox{signature}{\texttt{signature}}}
-        
-    Mit dem Tag \texttt{\colorbox{signature}{signature}} werden alle Strings getaggt, die eine handschriftliche Unterschrift darstellen.  
-    Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
-    Er dient zur \textbf{graduellen Unterscheidung}, ob ein Name im Fließtext als gesichert leserlich oder handschriftlich als Signatur vorliegt.  
-    
-    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
-
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. 
-
-    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: 
-
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}}. 
-
-    
-    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:
-
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater Unleserlich\textless /unclear\textgreater \textless /signature\textgreater}.} 
-    
-    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: 
-
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} 
-    
-    \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
-
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} 
-    
-    % Organization    
-    \item \textbf{\colorbox{organization}{\texttt{organization}}}
-        
-    Mit dem Tag \texttt{\colorbox{organization}{organization}} werden alle Strings getaggt, die eine direkte Zuordnung einer Organisation ermöglichen.  
-    
-    \noindent \textbf{\ding{43} Beispiel 1}: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.
-
-    \textbf{\ding{43} Beispiel 2}: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.
-    
-
-    % Place    
-    \item \textbf{\colorbox{place}{\texttt{place}}}
-        
-    Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
-    
-    \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.
-
-    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. „bei Berlin“, „im Murgtal“ werden getaggt:  
-
-    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} 
-
-    
-    % Date    
-    \item \textbf{\colorbox{date}{\texttt{date}}}
-        
-    Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
-    
-    \noindent \textbf{\ding{43} Beispiel 1}:  29.05.1936
-
-    \textbf{\ding{43} Beispiel 2}: 29. Mai 1936
-
-    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:
-
-    \colorbox{VeryLightGray}{\texttt{\textless date when="29.05.1936"\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
-
-% Event
-    \item \textbf{\colorbox{eventTag}{\texttt{event}}}
-    
-    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
-
-    \noindent \textbf{\ding{43} Beispiel 1}: "Jubiläumskonzert"
-
-    \textbf{\ding{43} Beispiel 2} "Gründung des Vereins" 
-
-    \textbf{\ding{43} Beispiel 2}"Kriegsausbruch" oder "Kriegsende"
-
-    Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
-    \end{description}
-    
-    \subsubsection{Strukturelle Tags}
-    \begin{description}
-
-    % Abbreviations
-    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
-        
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
-
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
-
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
-
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
-
-    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiß{\textless /person\textgreater}}
-
-    
-    % Unclear    
-    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
-    
-
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
-
-    \colorbox{VeryLightGray}{„Er wohnte in\textless unclear\textgreater [\ldots]\textless unclear\textgreater“.}
-
-    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
-
-    \colorbox{VeryLightGray}{"{\textless place\textgreater Frei\textless unclear\textgreater [\ldots]\textless unclear\textgreater \textless place\textgreater}“.}
-
-    
-%Sic   
-    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
-
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.
-
-    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
-
-    \colorbox{VeryLightGray}{„{<sic>daß</sic>}“ für dass.}
-
-    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
-
-    \colorbox{VeryLightGray}{„Wir haben {<sic>einen</sic>} große Freude.“}
-
-    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
-
-    \end{description}
-
-
 \subsection{Digitalisierungsprozess und Herausforderungen}
 
 Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. 
@@ -1321,7 +1164,7 @@ Die verwendete Software ist die Scan-Funktion von Apple iCloud.
 Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonnen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
 die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archivkursen des Bachelor-Geschichtsstudiums vermittelt wurden 
 (gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu Problemen bei der OCR-Erkennung mit OCR-Software (Apple OCR, Adobe etc.) führte. 
-Aus diesem Grund wurden 75 Akten zunächst mit dem Modell „The German Giant I“ mit einer CER von 8,30\,\% transkribiert. Mit insgesamt vier Iterationen wurde eine Groundtruth 
+Aus diesem Grund wurden 75 Akten zunächst mit dem Modell \enquote{The German Giant I} mit einer CER von 8,30\,\% transkribiert. Mit insgesamt vier Iterationen wurde eine Groundtruth 
 für ein eigenes Modell erstellt und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs ChatGPT-4o-Modell verwendet, 
 das für die Rechtschreibprüfung genutzt wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, 
 so wurde der Tag \texttt{sic} verwendet und eine Korrektur beigefügt.\\
@@ -1367,9 +1210,9 @@ Die so erstellten 70 Akten ergaben 158 Seiten mit insgesamt 22.155 Wörtern Grou
 
     Es wurde 1928 am 10. Dachub. Sängerb. Frst 
 
-    von Begrüßungsabend in Dien gesungen. 
+    von Begrüssungsabend in Dien gesungen. 
 
-    und erntete überaus großen Reifall. 
+    und erntete überaus grossen Reifall. 
 
     Es ich schwer das Richtige zu finden. 
 
@@ -1379,7 +1222,7 @@ Die so erstellten 70 Akten ergaben 158 Seiten mit insgesamt 22.155 Wörtern Grou
 
     Leides unmöglich, dann freu Nall. 
 
-    Mit herzl. Grüße 
+    Mit herzl. Grüsse 
 
     Dein 
 
@@ -1399,15 +1242,15 @@ Mein lieber Alfons!
 
 Schon lange treibt es mich, dem Männerchor wieder einmal ein Liedchen zu stiften, und kam mir die günstige Gelegenheit gelegen.
 
-Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: „Auf Wiedersehen, o wohl ich frei!“
+Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: \enquote{Auf Wiedersehen, o wohl ich frei!}
 
 Ich fügte eine Frankierung bei, erhielt jedoch keine Antwort. Vielleicht gelingt es Dir, diesen Titel zu erhalten.
 
-Weiterhin sang ich das Lied nur „Das alte Lied von Wien“. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüßungsabend in Wien gesungen wurde und überaus großen Beifall erntete, ist es schwer, das Richtige zu finden.
+Weiterhin sang ich das Lied nur \enquote{Das alte Lied von Wien}. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüssungsabend in Wien gesungen wurde und überaus grossen Beifall erntete, ist es schwer, das Richtige zu finden.
 
 Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn beides unmöglich, dann Fröhlichsein.
 
-Mit herzlichen Grüßen
+Mit herzlichen Grüssen
 
 Dein
 
@@ -1417,7 +1260,7 @@ Carl
 \captionof{figure}{Transkription durch ChatGPT von \autoref{fig:transkription-brief}}
 \label{fig:brief-carl-alfons}
 
-Durch ChatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das \endquote{Venstadler Liedchen} ist eigendlich eines aus \endquote{Neustadt}. Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkribtion.
+Durch ChatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das \enquote{Venstadler Liedchen} ist eigendlich eines aus \enquote{Neustadt}. Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkription.
 
 Korrigiert und getagt lautet der Brief nun:
   \begin{figure}[htbp]
@@ -1432,19 +1275,19 @@ und kam mir die günstige Gelegenheit passend.\\
 Ich schrieb vergangenes Jahr an den\\
 Männechor Vorstand um den Titel das Liedchen\\
 zu erhalten, wo sie zum Abschied am Auto \\
-sangen \endquote{auf Wiederschen} Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
+sangen \enquote{auf Wiederschen} Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
 marke beifügte, keine Antwort. Vielleicht\\
 gelingt es Dir diesen Titel zu erhalten.\\
 Weiterhin sänge ich das Lied nur\\
-\endquote{Das alte Lied} von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
+\enquote{Das alte Lied} von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
 Es wurde \textbf{\colorbox{date}{\texttt{1928}}} am \textbf{\colorbox{eventTag}{\texttt{10. Deutsch. Sängerb. Fest}}}\\
-am Begrüßungsabend in \textbf{\colorbox{place}{\texttt{Wien}}} gesungen.\\
-und erntete überaus großen Beifall.\\
+am Begrüssungsabend in \textbf{\colorbox{place}{\texttt{Wien}}} gesungen.\\
+und erntete überaus grossen Beifall.\\
 Es ich schwer das Richtige zu finden.\\
 Also \textbf{\colorbox{person}{\texttt{Alfons}}}! zuerst das \textbf{\colorbox{place}{\texttt{Neustadter}}} Liedchen.\\
 alsdann das \textbf{\colorbox{place}{\texttt{Wiener}}} Liedchen und wenn\\
 Beides unmöglich, dann freie Wahl.\\
-Mit herzl. Grüßen \\
+Mit herzl. Grüssen \\
 Dein\\
 \textbf{\colorbox{person}{\texttt{Carl}}}\\
 \end{tcolorbox}
@@ -1457,7 +1300,7 @@ Dein\\
 \textbf{\colorbox{place}{\texttt{München}}}, \textbf{\colorbox{date}{\texttt{28.V.1941}}} \\
 \\
 Lieber \textbf{\colorbox{person}{\texttt{Otto}}}!\\
-Nur wer die Sehnsucht kennt weiß was ich leide\\
+Nur wer die Sehnsucht kennt weiss was ich leide\\
 Ich wandle traurig her in schwarzer Seide.\\
 Die Sehnsucht brennt, du bist so fern.\\
 Ach lieber \textbf{\colorbox{person}{\texttt{Otto}}}, wie hab ich dich gern.\\
@@ -1781,7 +1624,7 @@ def convert_pdf_to_jpg(src_folder, dest_folder):
                     output_path = os.path.join(dest_folder, output_filename)
                     # Bild speichern
                     pix.save(output_path)
-                # PDF-Datei schließen
+                # PDF-Datei schliessen
                 doc.close()
                 
                 # Erfolgsmeldung ausgeben
@@ -1857,4 +1700,207 @@ heading=bibintoc,
 title={References}%title of the 'references' section, change this if necessary
 ]
 
+\appendix
+\section{Anhang}
+\begingroup
+\small
+\subsection{Tagging in Transkribus}
+
+
+    Transkribus und seine Modelle unterstützen nicht nur beim Transkribieren der Texte, sondern erlauben auch das Taggen von \textit{Named Entities}.  
+    Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
+    Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
+    
+    \begin{description}
+
+    % Abbreviations
+    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+        
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. 
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
+    
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind: 
+    \colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
+    
+    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiss{\textless /person\textgreater}}
+
+    
+    % Unclear    
+    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    
+
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. 
+
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
+
+    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater}.}
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
+
+    \colorbox{VeryLightGray}{\enquote{{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}}.}
+    
+%Sic   
+    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
+
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. 
+    
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
+
+    \colorbox{VeryLightGray}{\enquote{{<sic>dass</sic>}} für dass.}
+
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
+
+    \colorbox{VeryLightGray}{\enquote{Wir haben {<sic>einen</sic>} grosse Freude.}}
+
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
+
+    \end{description}
+
+    \subsubsection{Inhaltliche Tags}
+    
+    % Person      
+    \item \textbf{\colorbox{person}{\texttt{person}}}
+        
+    Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Vereinsführer, Alfons, Zimmermann, Alfons Zimmermann, Z. A. Zimmermann, Herr Zimmermann, Herr Alfons Zimmermann, etc. 
+
+    \textbf{\ding{43} Beispiel 2}: Funktionen wie Oberlehrer, Chorleiter, etc.
+    Wenn Ort, Name oder Organisation bekannt sind. Eine Person kann sowohl mit ihrem Namen als auch ihrer Funktion (wie Dirigent) getaggt werden.  
+    Aus der Korrespondenz ist in der Regel eine zugehörige Organisation ersichtlich, mit deren Verknüpfung eine namentlich nicht genannte Person identifiziert werden könnte.
+
+    
+    % Signature    
+    \item \textbf{\colorbox{signature}{\texttt{signature}}}
+        
+    Mit dem Tag \texttt{\colorbox{signature}{signature}} werden alle Strings getaggt, die eine handschriftliche Unterschrift darstellen.  
+    Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
+    Er dient zur \textbf{graduellen Unterscheidung}, ob ein Name im Fliesstext als gesichert leserlich oder handschriftlich als Signatur vorliegt.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. 
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: 
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [\ldots]\textless /unclear\textgreater\textless /signature\textgreater}}. 
+
+    
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater \textit{etwas unleserliches}\textless /unclear\textgreater \textless /signature\textgreater}.} 
+    
+    \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: 
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} 
+    
+    \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
+
+    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} 
+    
+    % Organization    
+    \item \textbf{\colorbox{organization}{\texttt{organization}}}
+        
+    Mit dem Tag \texttt{\colorbox{organization}{organization}} werden alle Strings getaggt, die eine direkte Zuordnung einer Organisation ermöglichen.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Männerchor Murg, Verein Deutscher Arbeiter (V.D.A.), Murgtalschule, etc.
+
+    \textbf{\ding{43} Beispiel 2}: Abkürzungen, wenn sie eine Organisation eindeutig bezeichnen, z.B. V.D.A., NSDAP, STAGMA, etc.
+    
+
+    % Place    
+    \item \textbf{\colorbox{place}{\texttt{place}}}
+        
+    Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}: Murg (Baden), Freiburg, Berlin, Murgtal, Schwarzwald, etc.
+
+    \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. \enquote{bei Berlin}, \enquote{im Murgtal} werden getaggt:  
+
+    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} 
+
+    
+    % Date    
+    \item \textbf{\colorbox{date}{\texttt{date}}}
+        
+    Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
+    
+    \noindent \textbf{\ding{43} Beispiel 1}:  29.05.1936
+
+    \textbf{\ding{43} Beispiel 2}: 29. Mai 1936
+
+    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:
+
+    \colorbox{VeryLightGray}{\texttt{\textless date when=\enquote{29.05.1936}\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
+
+% Event
+    \item \textbf{\colorbox{eventTag}{\texttt{event}}}
+    
+    Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
+
+    \noindent \textbf{\ding{43} Beispiel 1}: \enquote{Jubiläumskonzert}
+
+    \textbf{\ding{43} Beispiel 2} \enquote{Gründung des Vereins} 
+
+    \textbf{\ding{43} Beispiel 2}\enquote{Kriegsausbruch} oder \enquote{Kriegsende}
+
+    Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
+    \end{description}
+    
+    \subsubsection{Strukturelle Tags}
+    \begin{description}
+
+    % Abbreviations
+    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+        
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
+
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
+
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+
+    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
+
+    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiss{\textless /person\textgreater}}
+    
+    % Unclear    
+    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    
+
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
+    
+    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
+
+    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless unclear\textgreater [\ldots]\textless unclear\textgreater}.}
+
+    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
+
+    \colorbox{VeryLightGray}{\enquote{{\textless place\textgreater Frei\textless unclear\textgreater [\ldots]\textless unclear\textgreater \textless place\textgreater}}.}
+
+    
+%Sic   
+    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
+
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.
+
+    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
+
+    \colorbox{VeryLightGray}{\enquote{{<sic>dass</sic>}} für dass.}
+
+    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
+
+    \colorbox{VeryLightGray}{\enquote{Wir haben {<sic>einen</sic>} grosse Freude.}}
+
+    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
+
+    \end{description}
+
+
+
+    \endgroup
 \end{document}
