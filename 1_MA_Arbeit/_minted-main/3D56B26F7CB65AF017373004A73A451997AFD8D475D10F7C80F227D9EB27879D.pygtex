@@ -1,0 +1,50 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{x}{import os}
+\PYG{x}{import fitz  \PYGZsh{} PyMuPDF}
+
+\PYG{x}{def convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg(src\PYGZus{}folder, dest\PYGZus{}folder):}
+\PYG{x}{    \PYGZsh{} Überprüfen, ob der Zielordner existiert, und ihn ggf. erstellen}
+\PYG{x}{    if not os.path.exists(dest\PYGZus{}folder):}
+\PYG{x}{        os.makedirs(dest\PYGZus{}folder)}
+
+\PYG{x}{    \PYGZsh{} Durchgehen durch alle Dateien im Quellordner}
+\PYG{x}{    for root, dirs, files in os.walk(src\PYGZus{}folder):}
+\PYG{x}{        for file in files:}
+\PYG{x}{            \PYGZsh{} Überprüfen, ob die Datei eine PDF\PYGZhy{}Datei ist}
+\PYG{x}{            if file.lower().endswith(\PYGZdq{}.pdf\PYGZdq{}):}
+\PYG{x}{                \PYGZsh{} Vollständigen Pfad zur PDF\PYGZhy{}Datei erstellen}
+\PYG{x}{                pdf\PYGZus{}path = os.path.join(root, file)}
+\PYG{x}{                \PYGZsh{} PDF\PYGZhy{}Datei öffnen}
+\PYG{x}{                doc = fitz.open(pdf\PYGZus{}path)}
+\PYG{x}{                \PYGZsh{} Durch alle Seiten der PDF\PYGZhy{}Datei gehen}
+\PYG{x}{                for page\PYGZus{}num in range(len(doc)):}
+\PYG{x}{                    page = doc[page\PYGZus{}num]}
+\PYG{x}{                    \PYGZsh{} Seite in ein PixMap\PYGZhy{}Objekt umwandeln (für die Konvertierung in JPG)}
+\PYG{x}{                    pix = page.get\PYGZus{}pixmap()}
+\PYG{x}{                    \PYGZsh{} Dateinamen ohne Dateiendung extrahieren}
+\PYG{x}{                    filename\PYGZus{}without\PYGZus{}extension = os.path.splitext(file)[0]}
+\PYG{x}{                    \PYGZsh{} Ausgabedateinamen erstellen mit führenden Nullen für die}
+\PYG{x}{                    \PYGZsh{} Seitennummer}
+\PYG{x}{                    output\PYGZus{}filename = f\PYGZdq{}\PYGZob{}filename\PYGZus{}without\PYGZus{}extension\PYGZcb{}\PYGZus{}S\PYGZob{}page\PYGZus{}num + 1:03d\PYGZcb{}.jpg\PYGZdq{}}
+
+
+\PYG{x}{                    \PYGZsh{} Vollständigen Pfad zur Ausgabedatei erstellen}
+\PYG{x}{                    output\PYGZus{}path = os.path.join(dest\PYGZus{}folder, output\PYGZus{}filename)}
+\PYG{x}{                    \PYGZsh{} Bild speichern}
+\PYG{x}{                    pix.save(output\PYGZus{}path)}
+\PYG{x}{                \PYGZsh{} PDF\PYGZhy{}Datei schliessen}
+\PYG{x}{                doc.close()}
+
+\PYG{x}{                \PYGZsh{} Erfolgsmeldung ausgeben}
+\PYG{x}{                print(f\PYGZdq{}\PYGZob{}file\PYGZcb{} wurde erfolgreich umgewandelt und gespeichert}
+\PYG{x}{                in \PYGZob{}dest\PYGZus{}folder\PYGZcb{}\PYGZdq{})}
+
+\PYG{x}{\PYGZsh{} Pfade zu den Ordnern mit den PDF\PYGZhy{}Dateien (Quelle) und den JPG\PYGZhy{}Dateien (Ziel)}
+\PYG{x}{src\PYGZus{}folder = r\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Scan\PYGZus{}Männerchor/Männerchor\PYGZus{}Akten\PYGZus{}1925–1945/Scan\PYGZus{}Männerchor\PYGZus{}PDF\PYGZdq{}}
+\PYG{x}{dest\PYGZus{}folder = r\PYGZdq{}/Users/svenburkhardt/Documents/D\PYGZus{}Murger\PYGZus{}Männer\PYGZus{}Chor\PYGZus{}Forschung/Masterarbeit/JPEG\PYGZus{}Akten\PYGZus{}Scans\PYGZdq{}}
+
+
+\PYG{x}{\PYGZsh{} Funktion aufrufen, um die Konvertierung durchzuführen}
+\PYG{x}{convert\PYGZus{}pdf\PYGZus{}to\PYGZus{}jpg(src\PYGZus{}folder, dest\PYGZus{}folder)}
+
+\end{Verbatim}
