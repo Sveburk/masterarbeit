@@ -55,40 +55,6 @@
       \verb https://www.wikidata.org/wiki/Q125489568
       \endverb
     \endentry
-    \entry{altenburger_lexikon_nodate}{online}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=27a7ec2f787f3a65f551b348db133232}{%
-           family={Altenburger},
-           familyi={A\bibinitperiod},
-           given={Andreas},
-           giveni={A\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{27a7ec2f787f3a65f551b348db133232}
-      \strng{fullhash}{27a7ec2f787f3a65f551b348db133232}
-      \strng{bibnamehash}{27a7ec2f787f3a65f551b348db133232}
-      \strng{authorbibnamehash}{27a7ec2f787f3a65f551b348db133232}
-      \strng{authornamehash}{27a7ec2f787f3a65f551b348db133232}
-      \strng{authorfullhash}{27a7ec2f787f3a65f551b348db133232}
-      \field{sortinit}{A}
-      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Lexikon der Wehrmacht}
-      \field{urlday}{15}
-      \field{urlmonth}{1}
-      \field{urlyear}{2023}
-      \field{urldateera}{ce}
-      \verb{file}
-      \verb Lexikon der Wehrmacht:/Users/svenburkhardt/Zotero/storage/XF9LQM6Z/205ID.html:text/html
-      \endverb
-      \verb{urlraw}
-      \verb https://www.lexikon-der-wehrmacht.de/Gliederungen/Infanteriedivisionen/205ID.htm
-      \endverb
-      \verb{url}
-      \verb https://www.lexikon-der-wehrmacht.de/Gliederungen/Infanteriedivisionen/205ID.htm
-      \endverb
-    \endentry
     \entry{burkhardt_arcgis_2022}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=aa7555ad04e58230fba1f0a5f815dea4}{%
@@ -104,6 +70,7 @@
       \strng{authorbibnamehash}{aa7555ad04e58230fba1f0a5f815dea4}
       \strng{authornamehash}{aa7555ad04e58230fba1f0a5f815dea4}
       \strng{authorfullhash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \field{extraname}{1}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
@@ -129,6 +96,46 @@
       \endverb
       \verb{url}
       \verb https://storymaps.arcgis.com
+      \endverb
+    \endentry
+    \entry{burkhardt_transkribus_2024}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=aa7555ad04e58230fba1f0a5f815dea4}{%
+           family={Burkhardt},
+           familyi={B\bibinitperiod},
+           given={Sven},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{fullhash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{bibnamehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{authorbibnamehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{authornamehash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \strng{authorfullhash}{aa7555ad04e58230fba1f0a5f815dea4}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{{AI}-powered platform for text recognition and document analysis}
+      \field{month}{11}
+      \field{title}{Transkribus}
+      \field{titleaddon}{Transkribus\_Model\_mmma}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2025}
+      \field{year}{2024}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Snapshot:/Users/svenburkhardt/Zotero/storage/VZ5KWTWW/287793.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://app.transkribus.eu
+      \endverb
+      \verb{url}
+      \verb https://app.transkribus.eu
       \endverb
     \endentry
     \entry{reuter_drk_2025}{online}{}
@@ -274,6 +281,25 @@
       \endverb
       \verb{url}
       \verb https://www.murg.de/seite/33378/geschichte.html
+      \endverb
+    \endentry
+    \entry{noauthor_geonames_nodate}{online}{}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labeltitlesource}{title}
+      \field{title}{{GeoNames}}
+      \field{urlday}{5}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb GeoNames:/Users/svenburkhardt/Zotero/storage/42NAYP7T/www.geonames.org.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://www.geonames.org/
+      \endverb
+      \verb{url}
+      \verb https://www.geonames.org/
       \endverb
     \endentry
     \entry{hartmann_wehrmacht_2010}{book}{}
@@ -541,8 +567,401 @@
       \verb https://www.lgln.niedersachsen.de/startseite/wir_uber_uns/hilfe_support/lgln_lexikon/w/wgs84-190576.html
       \endverb
     \endentry
+    \entry{noauthor_wikidata_nodate}{online}{}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labeltitlesource}{title}
+      \field{title}{Wikidata}
+      \field{urlday}{5}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Wikidata:/Users/svenburkhardt/Zotero/storage/PE2QLCTE/WikidataMain_Page.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://www.wikidata.org/wiki/Wikidata:Main_Page
+      \endverb
+      \verb{url}
+      \verb https://www.wikidata.org/wiki/Wikidata:Main_Page
+      \endverb
+    \endentry
+    \entry{wilkinson_fair_2016}{article}{}
+      \name{author}{53}{}{%
+        {{un=0,uniquepart=base,hash=e88185c2eca4405ce11cb8920f485660}{%
+           family={Wilkinson},
+           familyi={W\bibinitperiod},
+           given={Mark\bibnamedelima D.},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=93badcbcd9ff0747849763affb474199}{%
+           family={Dumontier},
+           familyi={D\bibinitperiod},
+           given={Michel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cda28834d0f69262ef00bb56bd87a0c0}{%
+           family={Aalbersberg},
+           familyi={A\bibinitperiod},
+           given={{IJsbrand}\bibnamedelima Jan},
+           giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c8bd3ce56531164a76d2447bea864837}{%
+           family={Appleton},
+           familyi={A\bibinitperiod},
+           given={Gabrielle},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f12336d71cec892ed279b160d6fcd07d}{%
+           family={Axton},
+           familyi={A\bibinitperiod},
+           given={Myles},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=24f9e2bf2d8c89090eef143a51d01653}{%
+           family={Baak},
+           familyi={B\bibinitperiod},
+           given={Arie},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=372112f8c145373974f902b8035baa7f}{%
+           family={Blomberg},
+           familyi={B\bibinitperiod},
+           given={Niklas},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=311117127e85a09450298e1cb378cc6d}{%
+           family={Boiten},
+           familyi={B\bibinitperiod},
+           given={Jan-Willem},
+           giveni={J\bibinithyphendelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bd75fc4b7a3c5f7d6d42f7728f3f7d0c}{%
+           family={Silva\bibnamedelima Santos},
+           familyi={S\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Luiz\bibnamedelima Bonino},
+           giveni={L\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0,
+           prefix={da},
+           prefixi={d\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=e8f011b361a44c99e0b3cd105b7553dc}{%
+           family={Bourne},
+           familyi={B\bibinitperiod},
+           given={Philip\bibnamedelima E.},
+           giveni={P\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f9488da8da5659df63bf99117fa2f9ee}{%
+           family={Bouwman},
+           familyi={B\bibinitperiod},
+           given={Jildau},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4e180982f46493f6cb439a7bbd53f1af}{%
+           family={Brookes},
+           familyi={B\bibinitperiod},
+           given={Anthony\bibnamedelima J.},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4bba4464ec5239427fac65cbdc01ac51}{%
+           family={Clark},
+           familyi={C\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a865493d8d32c6c8389526ac3db1094}{%
+           family={Crosas},
+           familyi={C\bibinitperiod},
+           given={Mercè},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fb366b6058a04fe1ea1c863ef8c4dfad}{%
+           family={Dillo},
+           familyi={D\bibinitperiod},
+           given={Ingrid},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5564ab842d98ada0438556f362c580d0}{%
+           family={Dumon},
+           familyi={D\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=db3d00c1b751ab8f17377a6bf2efaa58}{%
+           family={Edmunds},
+           familyi={E\bibinitperiod},
+           given={Scott},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d6fb79f1c7b2c722d8da4e7a3722ff95}{%
+           family={Evelo},
+           familyi={E\bibinitperiod},
+           given={Chris\bibnamedelima T.},
+           giveni={C\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a453f75d20f5c037ff3fd7b51bfaa4e6}{%
+           family={Finkers},
+           familyi={F\bibinitperiod},
+           given={Richard},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dc4c620883ee689cae65514ada231031}{%
+           family={Gonzalez-Beltran},
+           familyi={G\bibinithyphendelim B\bibinitperiod},
+           given={Alejandra},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=469caa523876395d326def24d8bdac8d}{%
+           family={Gray},
+           familyi={G\bibinitperiod},
+           given={Alasdair\bibnamedelimb J.\bibnamedelimi G.},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b2d7e1f159093aa2ea8379d9b6bc6911}{%
+           family={Groth},
+           familyi={G\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fae216475918e7d5a3fd11e334229e70}{%
+           family={Goble},
+           familyi={G\bibinitperiod},
+           given={Carole},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9925b6a1596ccb7afcbbb01088b03876}{%
+           family={Grethe},
+           familyi={G\bibinitperiod},
+           given={Jeffrey\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a0f707f5c85369ff12d6de8401c06be8}{%
+           family={Heringa},
+           familyi={H\bibinitperiod},
+           given={Jaap},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d9da13ed30e61644812e95642c929f5}{%
+           family={’t\bibnamedelima Hoen},
+           familyi={’\bibinitperiod\bibinitdelim H\bibinitperiod},
+           given={Peter\bibnamedelimb A.\bibnamedelimi C.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9dd97174300b10ac2034b39183863158}{%
+           family={Hooft},
+           familyi={H\bibinitperiod},
+           given={Rob},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=74d3522e91542051f26a4f98e94e2dc2}{%
+           family={Kuhn},
+           familyi={K\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dc80a1a1784786b7fda18de16a5e8ae0}{%
+           family={Kok},
+           familyi={K\bibinitperiod},
+           given={Ruben},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3309ce5cd9060784c66cdc407cda4727}{%
+           family={Kok},
+           familyi={K\bibinitperiod},
+           given={Joost},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b41307e9ec9e7a7330d83c3ada394f22}{%
+           family={Lusher},
+           familyi={L\bibinitperiod},
+           given={Scott\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9981013b5d636d7d01a6c304a9987904}{%
+           family={Martone},
+           familyi={M\bibinitperiod},
+           given={Maryann\bibnamedelima E.},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5428e75345796ac8e0bfe94e02203521}{%
+           family={Mons},
+           familyi={M\bibinitperiod},
+           given={Albert},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0820d0abfb09b8a8d078b1d62c4cbca9}{%
+           family={Packer},
+           familyi={P\bibinitperiod},
+           given={Abel\bibnamedelima L.},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f5e0b4d9215464126ab0ea279dcd42ca}{%
+           family={Persson},
+           familyi={P\bibinitperiod},
+           given={Bengt},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a5b9fa79dbb410a262d0944983ad71df}{%
+           family={Rocca-Serra},
+           familyi={R\bibinithyphendelim S\bibinitperiod},
+           given={Philippe},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2344e24f2e1e899651e65b125b76751e}{%
+           family={Roos},
+           familyi={R\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f9d8fc238610fcb30363164c89676fa6}{%
+           family={Schaik},
+           familyi={S\bibinitperiod},
+           given={Rene},
+           giveni={R\bibinitperiod},
+           givenun=0,
+           prefix={van},
+           prefixi={v\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=1547ffdade7927d77c2e093fa8e4a751}{%
+           family={Sansone},
+           familyi={S\bibinitperiod},
+           given={Susanna-Assunta},
+           giveni={S\bibinithyphendelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=50211e54acbb1f0a8b95712201e8e5c5}{%
+           family={Schultes},
+           familyi={S\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a2c7d4bcdecd1b3de24af9fff656ad59}{%
+           family={Sengstag},
+           familyi={S\bibinitperiod},
+           given={Thierry},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b94dcda5ebae27c0012282aa255271d6}{%
+           family={Slater},
+           familyi={S\bibinitperiod},
+           given={Ted},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b4e243341e196cfc3361dbce9bd32d5e}{%
+           family={Strawn},
+           familyi={S\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=44a68b189975ed6286a098d883dda6ef}{%
+           family={Swertz},
+           familyi={S\bibinitperiod},
+           given={Morris\bibnamedelima A.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d16b02cf7ec69e3e95adecbb4e27cba}{%
+           family={Thompson},
+           familyi={T\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de4d220d5abb86a89a83a5fdc6ac03d5}{%
+           family={Lei},
+           familyi={L\bibinitperiod},
+           given={Johan},
+           giveni={J\bibinitperiod},
+           givenun=0,
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=598e2753c9c6e071736c51e9e779e934}{%
+           family={Mulligen},
+           familyi={M\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod},
+           givenun=0,
+           prefix={van},
+           prefixi={v\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=34ae9ef8db900714e7a946ad3b1e482a}{%
+           family={Velterop},
+           familyi={V\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2cbf23b7864d72cafcd29753f1ffa48d}{%
+           family={Waagmeester},
+           familyi={W\bibinitperiod},
+           given={Andra},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=acf94d0e2887f580cae18ae08141005d}{%
+           family={Wittenburg},
+           familyi={W\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7166c9ffe9aea2997923b3e54f99d253}{%
+           family={Wolstencroft},
+           familyi={W\bibinitperiod},
+           given={Katherine},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3313b0fb30c52802abe615a883198713}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Jun},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=086ef7669a7dc6d647b7a650d7da0a15}{%
+           family={Mons},
+           familyi={M\bibinitperiod},
+           given={Barend},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f324cd0f485d0aaf63321d014f1f638f}
+      \strng{fullhash}{9c313fbfbf53ede1d73315c9ef8507c7}
+      \strng{bibnamehash}{f2e05ad1c86cb32b30e56f2c748b5574}
+      \strng{authorbibnamehash}{f2e05ad1c86cb32b30e56f2c748b5574}
+      \strng{authornamehash}{f324cd0f485d0aaf63321d014f1f638f}
+      \strng{authorfullhash}{9c313fbfbf53ede1d73315c9ef8507c7}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{There is an urgent need to improve the infrastructure supporting the reuse of scholarly data. A diverse set of stakeholders—representing academia, industry, funding agencies, and scholarly publishers—have come together to design and jointly endorse a concise and measureable set of principles that we refer to as the {FAIR} Data Principles. The intent is that these may act as a guideline for those wishing to enhance the reusability of their data holdings. Distinct from peer initiatives that focus on the human scholar, the {FAIR} Principles put specific emphasis on enhancing the ability of machines to automatically find and use the data, in addition to supporting its reuse by individuals. This Comment is the first formal publication of the {FAIR} Principles, and includes the rationale behind them, and some exemplar implementations in the community.}
+      \field{day}{15}
+      \field{issn}{2052-4463}
+      \field{journaltitle}{Sci Data}
+      \field{langid}{english}
+      \field{month}{3}
+      \field{note}{Publisher: Nature Publishing Group}
+      \field{number}{1}
+      \field{title}{The {FAIR} Guiding Principles for scientific data management and stewardship}
+      \field{urlday}{5}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{volume}{3}
+      \field{year}{2016}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{160018}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/sdata.2016.18
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/Users/svenburkhardt/Zotero/storage/FQ9XHXDM/Wilkinson et al. - 2016 - The FAIR Guiding Principles for scientific data management and stewardship.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://www.nature.com/articles/sdata201618
+      \endverb
+      \verb{url}
+      \verb https://www.nature.com/articles/sdata201618
+      \endverb
+      \keyw{Publication characteristics,Research data}
+    \endentry
   \enddatalist
-  \missing{burkhardt_transkribus_nodate}
 \endrefsection
 \endinput
 
