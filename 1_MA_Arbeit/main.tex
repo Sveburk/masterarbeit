@@ -40,8 +40,14 @@
 % \usepackage{placeins}%Für \FloatBarrier
 \usepackage[autostyle, german=quotes]{csquotes}
 \usepackage[notes, backend=biber,language=ngerman, ibidtracker=context, citetracker=context, shorthandibid=true]{biblatex-chicago}
+\DeclareDatamodelFields[type=field,datatype=literal]{software}
+\DeclareDatamodelEntryfields[software]{title,author,date,version,url,urldate}
+\DeclareBibliographyAlias{software}{misc}
+
 \setlength{\skip\footins}{20pt}
-\addbibresource{assets/Literature_Bib/Exportierte Einträge.bib}
+\addbibresource{/Users/svenburkhardt/Developer/masterarbeit/1_MA_Arbeit/assets/Literature_Bib/Exportierte Einträge.bib}
+
+
 % Optional:
 \let\cite\footcite
 
@@ -53,15 +59,15 @@
 
 \usepackage[ngerman]{babel}
 \usepackage{pifont} %Für die Kästchen und Häkchen-Symbole
-\usepackage{minted} %Für Python-Code
 \usepackage[dvipsnames,svgnames,x11names,table]{xcolor}
- %Zum Definieren und Verwenden von Farben
+%Zum Definieren und Verwenden von Farben
 \definecolor{LightGray}{gray}{0.9}
 \definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
 \definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
-\definecolor{LightGray}{gray}{0.9}
 \definecolor{VeryLightGray}{gray}{0.95}%Sehr helles Grau
+\definecolor{OldPaper}{HTML}{f4eade}
+
 
 \definecolor{UniBlue}{HTML}{1F78B4}     %Kräftiges Blau
 \definecolor{UniGold}{HTML}{FFB000}     %Goldgelb
@@ -81,6 +87,7 @@
 \definecolor{vscode-blue}{HTML}{569CD6}            %VSCode Blau für python
 \definecolor{vscode-yellow}{HTML}{DCDCAA}          %VSCode Gelb für python
 \usepackage{array}
+\usepackage{minted}
 \usepackage{wrapfig}
 \usepackage{colortbl}
 \usepackage{booktabs}
@@ -97,22 +104,16 @@
   pdfborder={0 0 0}
 ]{hyperref}
 \usepackage{nameref}
-\usepackage{ifpdf}   % für \ifpdf
-\usepackage{iftex}   % für \ifPDFTeX
-
-\ifpdf
-  % Nur für PDF-Output
-  \usepackage{authblk} % Affiliations
-  \usepackage{orcidlink} % ORCID-Links
-  \usepackage{pdfpages} % PDF einbinden
-\fi
-
-% Engine-spezifisch:
+\usepackage{orcidlink}
+\usepackage{iftex}
 \ifPDFTeX
-  \usepackage{lmodern} % Nur für PDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+  % Authblk, pdfpages etc. hier einbinden
 \else
-  \usepackage{fontspec} % Für XeTeX & LuaTeX
+  \usepackage{fontspec}
 \fi
+
 
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -444,11 +445,23 @@ Ziel ist es, dieses Archiv digital zugänglich, die beteiligten Personen sowie d
 \subsection{Formulierung der Forschungsfrage}
 \subsection{Aufbau der Arbeit}
 \subsection{Geografischer und historischer Kontext}
-Die vorliegende Arbeit stützt sich auf Unterlagen aus dem Archiv des \enquote{Männerchor Murg} dessen Nachfolge im Jahr 2021 durch die \enquote{New Gospelsingers Murg} angetreten wurde. Murg ist eine deutsche Gemeinde am Hochrhein, rund 30 km Luftlinie von Basel entfernt. Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg begünstigte früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs, während der Rhein mit seiner Drahtseil-Fähre eine bedeutende Verkehrs- und Handelsverbindung bot, die bis zum Ersten Weltkrieg privat betrieben wurde.
+Die vorliegende Arbeit stützt sich auf Unterlagen aus dem Archiv des \enquote{Männerchor Murg} dessen Nachfolge im Jahr 2021 
+durch die \enquote{New Gospelsingers Murg} angetreten wurde. Murg ist eine deutsche Gemeinde am Hochrhein, 
+rund 30 km Luftlinie von Basel entfernt. Der Ort liegt am gleichnamigen Fluss Murg, der in den Rhein mündet. 
+Beide Gewässer bildeten über Jahrhunderte hinweg den wirtschaftlichen Motor der Region: Die Wasserkraft der Murg 
+begünstigte früh die Ansiedlung von Mühlen, Hammerwerken und Schmieden entlang des Bachlaufs, während der Rhein mit seiner 
+Drahtseil-Fähre eine bedeutende Verkehrs- und Handelsverbindung bot, die bis zum Ersten Weltkrieg privat betrieben wurde.
 
-Mit dem Ausbau der Landstrasse, der heutigen Bundesstrasse 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz entwickelte sich Murg im 19. Jahrhundert von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und Industriegemeinde. Die Wasserkraft wurde dabei zu einem entscheidenden Standortfaktor: Die Ansiedlung der Schweizer Textilfirma \textit{Hüssy \& Künzli AG} im Jahr 1853\cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug wesentlich zum wirtschaftlichen Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte, auch aus der benachbarten Schweiz, machten Murg zu einem wichtigen Standort der regionalen Textilindustrie.
+Mit dem Ausbau der Landstrasse, der heutigen Bundesstrasse 34, sowie dem Anschluss an die Bahnstrecke Basel–Konstanz 
+entwickelte sich Murg im 19. Jahrhundert von einer landwirtschaftlich geprägten Siedlung zu einer Gewerbe-, Handels- und 
+Industriegemeinde. Die Wasserkraft wurde dabei zu einem entscheidenden Standortfaktor: Die Ansiedlung der Schweizer 
+Textilfirma \textit{Hüssy \& Künzli AG} im Jahr 1853\cite[vgl.][]{gemeinde_murg_geschichte_nodate} trug wesentlich 
+zum wirtschaftlichen Wachstum der Gemeinde bei. Zahlreiche Arbeitskräfte, vor allem aus der benachbarten Schweiz, 
+machten Murg zu einem wichtigen Standort der regionalen Textilindustrie.
 
-Die Gründung des \textit{Männerchor Murg} im Jahr 1861 durch Schweizer Textilarbeiter belegt diesen engen Zusammenhang zwischen wirtschaftlicher Migration, Industrialisierung und lokalem Vereinswesen. Diese historische Verflechtung bildet eine zentrale Grundlage für die vorliegende Untersuchung.
+Die Gründung des \textit{Männerchor Murg} im Jahr 1861 durch Schweizer Textilarbeiter belegt diesen engen Zusammenhang 
+zwischen wirtschaftlicher Migration, Industrialisierung und lokalem Vereinswesen. Diese historische Verflechtung bildet 
+eine zentrale Grundlage für die vorliegende Untersuchung.
 
 
   
@@ -463,13 +476,18 @@ Die Gründung des \textit{Männerchor Murg} im Jahr 1861 durch Schweizer Textila
 \section{Korpus}
 Aus dem Bestand des Ordners \textit{``Männerchor Akten 1925--1944''} werden für diese Arbeit ausschlieslich Akten verwendet, 
 die während des Zweiten Weltkriegs verfasst wurden. Der Analysezeitraum erstreckt sich dementsprchend zwischen dem 01. September 1939 
-und dem \textcolor{red}{8. Mai 1945}\footnote{[vgl.][Finde hier eine Referenz]{keylist}}, dem Tag der bedingungslosen Kapitulation Deutschlands.
+und dem 8. Mai 1945, dem Tag der bedingungslosen Kapitulation Deutschlands.
 
-Diese Begrenzung des zeitlichen Rahmens ist notwendig, um die Funktionaliät der weiter unten beschriebenen Pipeline darstellen zu können. 
-Hieraus ergibt sich in der Folge eine Limitation der Anzahl potetieller Akteurinnen und Akteure, Orte und Organisationen. Notwendig ist das 
-besonders mit hinblick auf die Erstellung einer verlässlichen Groundtruth mit angereicherten
-historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer digital unterstützen Arbeitsweise zu unterstreichen. 
+Die zeitliche Eingrenzung ist notwendig, um die Funktionalität der im Folgenden beschriebenen Pipeline 
+in einem klar definierten historischen Kontext demonstrieren zu können. Gleichzeitig führt diese Auswahl zu einer 
+bewussten Reduzierung der potenziell erfassten Akteurinnen und Akteure, Orte und Organisationen. Diese Fokussierung ist 
+insbesondere im Hinblick auf die Erstellung einer verlässlichen Groundtruth bedeutsam, die durch ergänzende Archivrecherchen 
+mit historischen Metadaten angereichert wird.
 
+Die Kombination aus einer präzise definierten Quellengrundlage und der digitalen Anreicherung dient dazu, das 
+Potenzial der computergestützten Auswertung historischer Dokumente exemplarisch aufzuzeigen. 
+Zugleich unterstreicht sie, dass die Qualität der Ergebnisse wesentlich von der sorgfältigen Eingrenzung 
+des Korpus und der manuellen Validierung und Anreicherung abhängt.
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––              Quellen            ––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
@@ -479,8 +497,8 @@ historischen Daten durch Archivrecherchen. Sie helfen, das Potential solch einer
 In den Lagerräumen der New Gospel Singers Murg, dem Nachfolgeverein des Männerchors Murg, 
 wird im Jahr 2018 mehrere je ca. 800 Seiten umfassende Ordner mit historischen Unterlagen gefunden. 
 Für diese Arbeit wird ein Ordner mit der Aufschrift \textit{\enquote{Männerchor Akten 1925--1944}} gewählt, da er neben dem Ordner 
-\textit{\enquote{Männerchor Akten 1946--1950}} den grössten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, aufschlussreiche Einblicke in das Vereinsleben
-in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
+\textit{\enquote{Männerchor Akten 1946--1950}} den grössten Zeitraum abdeckt. Darüberhinaus bietet er das Potential, 
+aufschlussreiche Einblicke in das Vereinsleben in der Zeit vor und während des Nationalsozialismus, insbesondere des Zweiten Weltkrieges, zu geben.\\ 
 Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als \enquote{Protokoll}, \enquote{Brief}, \enquote{Postkarte}, \enquote{Rechnung}, 
 \enquote{Regierungsdokument}, \enquote{Noten}, \enquote{Zeitungsartikel}, \enquote{Liste}, \enquote{Notizzettel} oder \enquote{Offerte} kategorisiert werden.
 
@@ -541,7 +559,7 @@ da insbesondere Korrosionsspuren ehemaliger Metallklammern die Papierfasern nach
 Anzeichen von Säurefraß, sofern nicht säurefreies Archivmaterial verwendet wurde.
 
 Für die eigentliche Digitalisierung kommt die native \enquote{Dateien}-Applikation von 
-Apple\footnote{Vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} zum Einsatz. 
+Apple\footnote{Vgl.\href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} zum Einsatz. 
 Diese bietet neben einer vergleichsweise hochauflösenden Erfassung die Möglichkeit zur direkten Speicherung in einem Cloud-basierten 
 Speichersystem sowie eine automatische Texterkennung (OCR). Ziel dieser Vorgehensweise ist es, die digitalisierten Inhalte möglichst 
 schnell durchsuchbar zu machen und standortunabhängig für das Projekt zugänglich zu machen.
@@ -555,7 +573,7 @@ gleichbleibend hohe Bildqualität bei gleichzeitig hoher Verarbeitungsgeschwindi
 
 Die initiale Speicherung erfolgt dabei standardmäßig im PDF-Format. Für die anschließende Verarbeitung mit den unten dargestellten 
 Transkriptionswerkzeugen müssen die Dokumente jedoch in das JPEG-Format konvertiert werden. Die Umwandlung erfolgt automatisiert 
-mithilfe eines eigens erstellten Python-Skripts, wie in Anhang~\ref{section:PDF_to_JPEG} beschrieben.\footcite{burkhardt_githubpdf_to_jpegpy_2025}
+mithilfe eines eigens erstellten Python-Skripts, wie in Anhang~\ref{section:PDF_to_JPEG} beschrieben.\cite{burkhardt_githubpdf_to_jpegpy_2025}
 Es extrahiert die Seiten, speichert im geeigneten 
 Format ab und ergänzt die Dateinamen systematisch um eine dreistellige, führend nullengefüllte Seitennummer.
 
@@ -580,9 +598,60 @@ blabla
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 
 \subsection{Forschungsstand und Forschungslücke}\label{subsec:forschungsstand}
-Die oben beschriebenen Quellen wurden vor dieser Arbeit bislang nicht wissenschaftlich bearbeitet.
+Die vorliegende Arbeit knüpft an mehrere Vorarbeiten an, die in den Jahren 2018 und 2022 am Departement Geschichte der Universität Basel durchgeführt
+werden. In zwei Transkribus-Seminaren werden erste Teilbestände der \textit{Männerchor Akten 1925--1944} erschlossen und in einem Korpus
+von 137 Einzeldokumenten zusammengeführt\cite[vgl.][]{burkhardt_feldpost_2022}.
+Sie werden mit Metadaten versehen: Seitenlage im Ordner, Kurztitel und Entstehungsdatum, um die Grundlage für eine systematische Erschließung zu schaffen.
 
-\textcolor{red}{In LOD wird auf Vorprojekte verwiesen. Diese bitte beschreiben (Arcgis und Feldpost)}
+Während in einem frühen Projektschritt vorrangig häufig genannte Personennamen (\enquote{Carl Burger}, \enquote{Fritz Jung})
+dokumentiert werden, richtet sich der Fokus im zweiten Schritt auf die Feldpost. Ziel ist es, über die Auswertung der Feldpostnummern
+Rückschlüsse auf beteiligte Militäreinheiten, deren Stationierungen und Verlagerungen während des Zweiten Weltkriegs zu ziehen.
+
+Für diese Recherchen kommen einschlägige Fachliteratur zu den jeweiligen Fachgebieten zum Einsatz. 
+Hier sind besonders die Bücher von Alex Buchner\footcite[Vgl.][]{buchner_handbuch_1989}, Christian Hartmann\footcite[Vgl.][]{hartmann_wehrmacht_2010}, 
+Werner Haupt\footcite[Vgl.][]{haupt_buch_1982}, Christoph Rass\footcite[Vgl.][]{rass_deutsche_2009}, Georg Tessin\footcite[Vgl.][]{tessin_verbande_1977} 
+und Christian Zentner\footcite[Vgl.][]{zentner_illustrierte_1983} zu nennen.
+
+Darüberhinaus werden eigene Recherchen in den Beständen des \textit{Bundesarchivs -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025} durchgeführt. Ergänzende Recherchen 
+stammen aus den Suchlisten des \textit{Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}. Hinzu kommen philatelistische Übersichts-Websites \cite{noauthor_feldpost_nodate}, 
+die bei der Entzifferung von Briefmarken und Stempeln helfen.
+Absoult essentiell für den Erfolg dieser Recherchen sind Citizen-Science-Foren\footnote{vor Allem werden verwendet: 
+\textit{Forum der Wehrmacht}~\parencite{hermans_forum_nodate} und das \textit{Lexikon der Wehrmacht}~\parencite{altenburger_lexikon_nodate}.}. Sie ergänzen und validieren eigene Forschung.
+
+Parallel zur inhaltlichen Erschließungen entsteht 2022 eine erste digitale Storymap mit \textit{ArcGIS},
+die zentrale Ergebnisse des Projekts öffentlich zugänglich macht. Grundlage bildet die Sichtung, konservatorische Aufbereitung und Digitalisierung
+von zunächst rund 30 der etwa 800 Seiten Vereinsakten. Der Teilkorpus wird entheftet, gescannt und mit Metadaten wie Absender, Datum,
+Feldpostnummer und Einheit versehen. Da jedes Dokument einen anderen Verfasser aufweist, erfolgt die Transkription manuell. Eine automatische Handschriftenerkennung 
+ist aufgrund der heterogenen Schriftbilder nicht praktikabel.
+Am Beispiel einzelner Sänger wie \textit{Emil Durst} lässt sich durch die Rechercheergebnisse mithilfe der Feldpostnummern und ergänzender Kartenmaterialien der Aufenthaltsort
+bis auf Gebäude oder wenige Meter genau rekonstruieren. Diese Erkenntnisse werden mit historischen Karten, Luftbildern und Ortsrecherchen verknüpft
+und in einer interaktiven ArcGIS-Karte visualisiert, die Stationierungen, Märsche und Frontverschiebungen der Chormitglieder anschaulich darstellt. 
+
+Die in diesen Vorprojekten erarbeiteten Listen, Geodaten, Transkriptionen und Visualisierungen fließen in die vorliegende Arbeit ein
+und bilden eine wesentliche Grundlage für die erweiterte, automatisierte Pipeline, die im Folgenden vorgestellt wird. Dazu gehören beispielsweise auch die Verbandsabzeichen, 
+Taktische Zeichen\cite[vgl][S.64-66]{haupt_buch_1982} der jeweiligen Einheiten, die auch in die Groundtruth der vorliegenden Arbeit inkorporiert werden.
+
+Abgesehen von diesen Vorarbeiten ist der Quellenkorpus wissenschaftlich unerschlossen. Mit dieser Arbeit liegt erstmals eine
+umfassendere wissenschaftliche Auswertung vor.
+
+Mit der notwendigen manuellen Recherche in oben dargelegten Datenbankstrukturen wird zugleich sichtbar, wie sehr es an Brücken fehlt, 
+um unterschiedliche Klassifikationen, fachspezifische Ordnungslogiken und semantische Webtechnologien nachhaltig miteinander zu verbinden. Ein verhältnismässig einfaches
+Webscraping nach Informationen zu diesem Korpus ist nahezu unmöglich. Ausgeführt werden diese Probleme beispielsweise bei 
+Smiraglia und Scharnhorst (2021)\cite[vgl.][]{richard_linking_2022}, 
+ die anhand konkreter Fallstudien verdeutlichen, wie fragmentiert semantische Strukturen bislang entwickelt werden 
+ und welche Hürden bei der praktischen Verknüpfung heterogener Wissensorganisationen bestehen. Dabei benennen sie insbesondere die 
+ Herausforderungen bei der Übersetzung historisch gewachsener Klassifikationen in standardisierte semantische Formate, 
+ die Notwendigkeit dauerhafter technischer Wartung und die Abhängigkeit von nachhaltigen Infrastruktur-Partnern\cite[vgl.][Kap.~2 und 5]{richard_linking_2022}.
+
+Für eine Einordnung zu historischen Netzwerkanaylsen sei auf Gamper\&Reschke \cite{gamper_knoten_2015} verwiesen. Der Sammelband
+\textit{Knoten und Kanten III} verdeutlicht, dass die historische Netzwerkanalyse zwar von einem interdisziplinär etablierten Methodenkanon 
+profitiert, jedoch nach wie vor vor erheblichen Herausforderungen steht. Dazu zählen die Fragmentierung historischer Quellen, der hohe manuelle 
+Erfassungsaufwand und methodische Desiderate im Umgang mit zeitlichen und räumlichen Dimensionen. Erschwerende Faktoren einer systematische Erfassung 
+relationaler Strukturen. Dennoch eröffnen netzwerkanalytische Verfahren – besonders im Zusammenspiel mit relationaler Soziologie 
+und Figurationsansätzen – neue Perspektiven auf Macht, Abhängigkeiten und Akteurskonstellationen in historischen Gesellschaften.
+
+
+
 
 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
@@ -675,7 +744,7 @@ auf die Extraktion von Entitäten.
 \vspace{1em}
 
 Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen. Hinzu kommen externe Quellen, und deren Zugänglichkeit. Zuverlässige Quellen für Informationen 
-über militärische Einheiten und deren Feldpostnummern sind das \enquote{Forum der Wehrmacht}\cite[ vgl.][]{altenburger_lexikon_nodate-1} 
+über militärische Einheiten und deren Feldpostnummern sind das \enquote{Forum der Wehrmacht}\cite[ vgl.][]{altenburger_lexikon_nodate} 
 und der \enquote{Suchdienst des DRK}\cite[ vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
 und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit. Ein manuelles Recherchieren dieser Daten scheint zu diesem Zeitpunkt
 den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
@@ -1105,10 +1174,13 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 
+\begingroup
+\small
+\pagecolor{OldPaper}
 \section{ALTER SCHEISS}
 
 In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{\enquote{Männerchor Akten 1925--1944}} bereits 2018 und 2022 ein 
-erster Korpus aus 137 Akten\cite[Weiterführend vgl.][]{burkhardt_arcgis_2022}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
+erster Korpus aus 137 Akten\cite[Weiterführend vgl.][]{burkhardt_feldpost_2022}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
 oder  ihren Inhalt eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasst 96 Seiten, 
 während andere Akten nur aus einer einzelnen Seite bestehen können.  
 Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen \enquote{Carl Burger} und \enquote{Fritz Jung} liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
@@ -1626,12 +1698,13 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
   \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
   \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
   \newpage
-
+\endgroup
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+\pagecolor{white}
 \section{Bibliographie}
 
 
@@ -1766,9 +1839,9 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \end{description}
 
     \subsubsection{Inhaltliche Tags}
-    
-    % Person      
-    \item \textbf{\colorbox{person}{\texttt{person}}}
+    \begin{description}
+    % Person
+    \item\texttt{\textbf{{\colorbox{person}{person}}}}
         
     Mit dem Tag \texttt{\colorbox{person}{person}} sollen alle Strings getaggt, die eine direkte Zuordnung einer Person ermöglichen.
     
@@ -1780,7 +1853,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     
     % Signature    
-    \item \textbf{\colorbox{signature}{\texttt{signature}}}
+    \item\texttt{\textbf{{\colorbox{signature}{signature}}}}
         
     Mit dem Tag \texttt{\colorbox{signature}{signature}} werden alle Strings getaggt, die eine handschriftliche Unterschrift darstellen.  
     Der Tag \texttt{\colorbox{signature}{signature}} ist nahezu deckungsgleich mit dem Tag \texttt{\colorbox{person}{person}}.  
@@ -1808,7 +1881,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} 
     
     % Organization    
-    \item \textbf{\colorbox{organization}{\texttt{organization}}}
+    \item\texttt{\textbf{{\colorbox{organization}{organization}}}}
         
     Mit dem Tag \texttt{\colorbox{organization}{organization}} werden alle Strings getaggt, die eine direkte Zuordnung einer Organisation ermöglichen.  
     
@@ -1818,7 +1891,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
 
     % Place    
-    \item \textbf{\colorbox{place}{\texttt{place}}}
+    \item\texttt{\textbf{{\colorbox{place}{place}}}}
         
     Mit dem Tag \texttt{\colorbox{place}{place}} werden alle Strings getaggt, die sich auf einen geografischen Ort beziehen.  
     
@@ -1830,7 +1903,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     
     % Date    
-    \item \textbf{\colorbox{date}{\texttt{date}}}
+    \item\texttt{\textbf{{\colorbox{date}{date}}}}
         
     Mit dem Tag \texttt{\colorbox{date}{date}} werden alle expliziten und implizierten Datumsangaben markiert.  
     
@@ -1843,7 +1916,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \colorbox{VeryLightGray}{\texttt{\textless date when=\enquote{29.05.1936}\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
 
 % Event
-    \item \textbf{\colorbox{eventTag}{\texttt{event}}}
+    \item\texttt{\textbf{{\colorbox{eventTag}{event}}}}
     
     Mit dem Tag \texttt{\colorbox{eventTag}{event}} werden expliziten und implizierten Ereignisse markiert. Diese Ereignisse haben einen zeitlichen oder räumlichen Bezug, und können benannt werden. Dazu zählen:
 
@@ -1860,7 +1933,8 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \begin{description}
 
     % Abbreviations
-    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+    \item\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}
+    
         
     Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
 
@@ -1874,7 +1948,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiss{\textless /person\textgreater}}
     
     % Unclear    
-    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    \item\texttt{\textbf{{\colorbox{unclear}{unclear}}}}
     
 
     Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
