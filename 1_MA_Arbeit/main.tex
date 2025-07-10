@@ -1083,43 +1083,57 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (json.south) -- (save.north);
 \end{scope}
 
-% Grosses Prozessdiagramm
+%==========================
+% Hauptprogramm Personen
+%==========================
+\begin{scope}
 \node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
 
 \node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
 
 \node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
 
-\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
+\node[process, below=of parse] (swapped)  {\textbf{def correct\_swapped\_name} \\ (Korrigiere vertauschte Name-Felder)};
+
+\node[process, below=of swapped] (exrawrole)  {\textbf{def extract\_role\_from\_raw\_name} \\ (Trenne Rolle direkt aus Namensstring)};
+
+\node[process, below=of exrawrole] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
 
 \node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
 
-\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
+\node[large, right=2.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
 
-\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
+\node[large, above= of orgmatch] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
 
 
 \node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
 
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
 \node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
 
 \draw[arrow] (personsmod.south) -- (split.north);
 \draw[arrow] (split.south) -- (parse.north);
-\draw[arrow] (parse.south) -- (match.north);
+\draw[arrow] (parse.south) -- (swapped.north);
+\draw[arrow] (swapped.south) -- (exrawrole.north);
+\draw[arrow] (exrawrole.south) -- (match.north);
 \draw[arrow] (match.south) -- (roles.north);
+
+\draw[arrow] (exrawrole.east) -| (rolematch.north);
+\draw[arrow] (match.south) -- (roles.north);
+
 \draw[arrow] (roles.south) -- (score.north);
 \draw[arrow] (score.south) -- (dedup.north);
 \draw[arrow] (dedup.south) -- (count.north);
 
 \draw[arrow] 
-  (orgmatch.west) 
-  -- ++(-0.5,0) 
+  (rolematch.west) 
+  -- ++(-1.0,0) 
   |- (roles.east);
 
-\draw[arrow] (rolematch.west) -- (roles.east);
+\draw[arrow] (orgmatch.west) -- (roles.east);
 
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{scope}
 \end{tikzpicture}
   }
   \caption{\small\textit{Detailliertes Prozessdiagramm für Personen\_matcher.py}}
@@ -1129,14 +1143,165 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
   \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Input aus \texttt{role\_matcher.py} und \texttt{organization\_matcher.py}}
 \end{figure}
 
+\newpage
+\subsubsection{Assigned\_Roles\_Module.py}
+blablabalabla
 
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+    \begin{tikzpicture}
+
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0.45)}, yshift=-6cm, node distance=0.3cm]
+
+
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[highlight]    (roles)   at (-1.2, -1.3) {};
+\node[module] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten
+ Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+%==========================
+% Hauptprogramm Assigned_roles_module
+%==========================
+\begin{scope}
+\node[large] (rolesmod) at (0,0) {\textbf{Assigned\_Roles\_Module.py} \\ match, split, enrich};
+
+\node[process, below=1.2cm of rolesmod] (flat)  {\textbf{def is\_flat\_organisation} \\(Check: sind alle Organisationen Dict?)};
+
+\node[process, below=of flat] (builtflat)  {\textbf{def flatten\_organisation\_entry} \\ (baut flaches Dict aus Organisation)};
+
+\node[process, below=of builtflat] (normalize)  {\textbf{def normalize\_and\_match\_role} \\ (Normalisiert Rollen-String)}; %verwendet ROLE_MAPPINGS_DE
+
+\node[source, right=of builtflat] (ROLE)  {\textbf{ROLE\_MAPPINGS\_DE} \\ (Normalisiert Rollen-String)};
+
+\node[process, below=of normalize] (loadknown)  {\textbf{def load\_known\_persons} \\ (läd und normalisiert aus GT-CSV)};
+
+\node[process, below=of loadknown] (map)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Wandelt role-String in Dict um)}; %verweis auf is_flat_org und Flatten_org_entry
+
+\node[process, below=of map] (findindx)  {\textbf{def find\_line\_index\_for\_person} \\ (Sucht in XML linienweise nach Pers-Name-Strings)}; %in assign_roles_to_known_persons
+
+\node[source, right=of roles] (GT)  {\textbf{Nodegoat-Export-Roles} \\ (Groundtruth für Rollen)};
+
+\node[process, below= of findindx] (search) {\textbf{search\_roles\_nearby} \\ (iteriert durch Index nach Treffern in Nodegoat-Export-Roles)};
+
+
+\node[process, below= of search] (rolematch) {\textbf{assign\_roles\_to\_known\_persons} \\ (Liefert normalisierte \\ Rollen)};
+
+
+\node[process, below=of roles] (score)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Scoring basierend auf Kontext im Transkript)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
+
+\draw[arrow] (rolesmod.south) -- (flat.north);
+\draw[arrow] (flat.south) -- (builtflat.north);
+\draw[arrow] (builtflat.south) -- (normalize.north);
+\draw[arrow] (normalize.south) -- (loadknown.north);
+\draw[arrow] (loadknown.south) -- (map.north);
+\draw[arrow] (map.south) -- (findindx.north);
+
+% \draw[arrow] (loadknown.east) -| (rolematch.north);
+\draw[arrow] (match.south) -- (findindx.north);
+
+\draw[arrow] (findindx.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] 
+  (rolematch.west) 
+  -- ++(-1.0,0) 
+  |- (roles.east);
+
+\draw[arrow] (search.west) -- (roles.east);
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(flat)(count)] (group) {};
+\end{scope}
+\end{tikzpicture}%
+}%
+  \caption{\small\textit{Detailliertes Prozessdiagramm für Personen\_matcher.py}}
+  \label{fig:Assigned_roles_module.py}
+
+  \smallskip
+  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Input aus \texttt{role\_matcher.py} und \texttt{organization\_matcher.py}}
+\end{figure}
 
 
 
 \subsubsection{place\_matcher.py}
+
 \subsubsection{organization\_matcher.py}
 
 \subsubsection{letter\_metadata\_matcher.py}
+
 \subsubsection{type\_matcher.py}
 
 \subsubsection{event\_matcher.py}
@@ -1144,14 +1309,11 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 
 \subsubsection{date\_matcher.py}
-\subsubsection{Assigned\_Roles\_Module.py}
 
-
-
-\noindent
 \begin{minipage}[t]{0.52\textwidth}
   \setstretch{1.5}
   \justifying
+
   \subsubsection{unmatched\_logger.py}
 
 Das Modul \texttt{unmatched\_logger.py} dient der systematischen Protokollierung von Entitäten, 
@@ -1249,7 +1411,7 @@ um den Code zu optimieren und alle bislang nicht erfassten Entitäten zuverläss
 % Grosses Prozessdiagramm
 \begin{scope}
 % --- Kopf-Node ---
-\node[large] (logger) at (0,0) {\textbf{log\_unmatched\_entities} \\ (Starte Logging aller Entitätstypen)};
+\node[large] (logger) at (1.5,0) {\textbf{log\_unmatched\_entities} \\ (Starte Logging aller Entitätstypen)};
 
 % --- Schleifen ---
 \node[process, below=1.2cm of logger] (persons)  {\textbf{Personen} \\ (Nicht in mentioned\_persons? → log)};
@@ -1268,14 +1430,11 @@ um den Code zu optimieren und alle bislang nicht erfassten Entitäten zuverläss
 \draw[arrow] (events.south) -- (done.north);
 
 
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(persons)(orgs)(done)] (group) {};
 \end{scope}
-\end{tikzpicture}}
-\captionof{figure}\small{Prozessdiagramm für \texttt{unmatched\_logger.py}}
-\label{fig:unmatched_logger.py}
-\smallskip
-
-\small{Oben rechts: Pipelineübersicht}
+\end{tikzpicture}} % ► Die Caption direkt darunter, blockweise formatiert
+  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{unmatched\_logger.py},\\{\small Oben rechts: Pipelineübersicht}}
+  \label{fig:unmatched_logger.py}
 \end{minipage}
 
 
