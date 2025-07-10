@@ -86,8 +86,11 @@
 \definecolor{oldLetter}{RGB}{246,238,227}          %Beige für Hintergrund  
 \definecolor{vscode-blue}{HTML}{569CD6}            %VSCode Blau für python
 \definecolor{vscode-yellow}{HTML}{DCDCAA}          %VSCode Gelb für python
+\newcommand{\code}[1]{\texttt{#1}}                 %für die darstellung von Code 
+
 \usepackage{array}
 \usepackage{minted}
+\usepackage{capt-of}
 \usepackage{wrapfig}
 \usepackage{colortbl}
 \usepackage{booktabs}
@@ -723,9 +726,12 @@ Im Rahmen dieser Arbeit diente GraphDB als Backend, um die in Protégé entwicke
 und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
 
 
-\paragraph{mmma-Ontologie}\\
 
-\begin{minipage}{0.48\textwidth}% Linke Box = TEXT
+\noindent
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying
+\paragraph{mmma-Ontologie}\\
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
 Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark
 Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe~\nameref{subsec:forschungsstand}) ist 
@@ -733,13 +739,15 @@ zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür er
 auf die Extraktion von Entitäten.
 \end{minipage}%
 \hfill%
-\begin{minipage}{0.48\textwidth}% Rechte Box = BILD
-  \centering
-  \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
-  \captionof{figure}{Ausschnitt der TTL-Ontologie.}\label{fig:ttl-ontologie}
-\end{minipage}
-\footnotetext{Abk.\ mmma; Männerchor Murg MasterArbeit.}
+  % Rechte Minipage = Bild
+  \begin{minipage}[t]{0.43\textwidth}
+    \centering
+    \vspace*{0.3cm} % ► schiebt alles um 0.3cm nach unten
+    \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
+    \captionof{figure}{Ausschnitt der TTL-Ontologie.}\label{fig:ttl-ontologie}
+  \end{minipage}
 
+\footnotetext{Abk.\ mmma; Männerchor Murg Masterarbeit.}
 
 \vspace{1em}
 
@@ -897,10 +905,12 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[module] (dates)  at ($(modcenter) + (13cm, -0.5)$) {Daten \\ combine\_dates(), count};
 \node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
 \node[module, below=1.2cm of persons] (authors) {Autoren \& Empfänger \\ infer, dedup, score};
-\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
-\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
+\node[module] (unmatched) at ($(modcenter) + (0cm, -7.5cm)$) {unmatched\_logger.py};
+\node[module] (json)  at ($(modcenter) + (0cm, -9.5cm)$)  {BaseDocument Build \\ + Rollenpostprocessing};
+\node[coordinate] (joinpoint) at ($(unmatched.north) + (0, 1.5cm)$) {};
 \node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
-\node[module, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
+\node[source, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
+\node[source, right=of save] (unmatchedjson) {unmatched\.json};
 
 % CSV-Quellen
 \node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
@@ -940,6 +950,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
 \draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
 \draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+\draw[arrow] (unmatched.east) -- ($(unmatchedjson.north |- unmatched.east)$) -- (unmatchedjson.north);
 
 \draw[arrow, dashed] (persons.south) -- (authors.north);
 \draw[arrow] (persons.west) -- (roles.east);
@@ -949,7 +960,8 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (persons.east) -- (orgs.west);
 \draw[arrow] (orgs.west)-- (persons.east)  ;      
 \draw[arrow] (orgs.east) -- (places.west);  
-\draw[arrow] (places.west) -- (orgs.east);   
+\draw[arrow] (places.west) -- (orgs.east);  
+
              
 % Doppelte Pfeile mit definiertem Stil
 \draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
@@ -970,7 +982,9 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
 \draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
 
-\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+
+
 \draw[arrow] (json.south) -- (save.north);
 \draw[arrow] 
   (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
@@ -988,7 +1002,6 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 \newpage
 \subsubsection{Person-Matcher}
-
 \begin{figure}[htbp]
   \centering
   \resizebox{0.9\textwidth}{!}{
@@ -998,6 +1011,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 % TikZ styles
 \tikzset{
   module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
   highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
   arrow/.style={-stealth, line width=0.15mm},
   arrowboth/.style={stealth-stealth, line width=0.15mm},
@@ -1008,8 +1022,8 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 % Mini-Diagramm oben rechts
 %==========================
 
-\begin{scope}[shift={(9,0)}]
-\node at (0, -3.7) {\textit{Oben: Gesamtübersicht-Schema}};
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
+
 \node[module] (init) at (0,0) {};
 \node[module] (xml) at (0, -0.5) {};
 \node[module]    (events)  at (-2.0, -1.3) {};
@@ -1019,13 +1033,17 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[module]    (places)  at ( 1.2, -1.3) {};
 \node[module]    (dates)   at ( 2.0, -1.3) {};
 \node[module] (authors)    at (-0.4, -2  ) {};
-\node[module] (json)       at (-0,  -2.8 ) {};
-\node[module] (save)       at (-0, -3.3  ) {};
+
 \node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
 \node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
 
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
 \draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
 \draw[arrow] (json.south) -- (save.north);
 \draw[arrow] (init.south) -- (xml.north);
 \draw[arrowboth] (roles.east) -- (persons.west);
@@ -1060,7 +1078,8 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
 \draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
 
-\draw[arrow] (joinpoint.south) -- (json.north);
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
 \draw[arrow] (json.south) -- (save.north);
 \end{scope}
 
@@ -1085,10 +1104,6 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen)};
 \node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
 
-\node[below=of count, align=center] 
-  {\textit{Oben: Prozess person\_matcher.py}\\\textit{Rechts: Input aus role\_matcher.py} und organization\_matcher.py};
-
-
 \draw[arrow] (personsmod.south) -- (split.north);
 \draw[arrow] (split.south) -- (parse.north);
 \draw[arrow] (parse.south) -- (match.north);
@@ -1107,8 +1122,15 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
 \end{tikzpicture}
   }
-  \caption{Detailliertes Prozessdiagramm: Personen-Matching}\label{fig:person-matcher-prozess}
+  \caption{\small\textit{Detailliertes Prozessdiagramm für Personen\_matcher.py}}
+  \label{fig:person_matcher.py}
+
+  \smallskip
+  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Input aus \texttt{role\_matcher.py} und \texttt{organization\_matcher.py}}
 \end{figure}
+
+
+
 
 
 \subsubsection{place\_matcher.py}
@@ -1126,7 +1148,161 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 
 
-\subsubsection{unmatched\_logger.py}
+\noindent
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying
+  \subsubsection{unmatched\_logger.py}
+
+Das Modul \texttt{unmatched\_logger.py} dient der systematischen Protokollierung von Entitäten, 
+die in der aktuellen Version der Groundtruth noch nicht enthalten sind. 
+Diese Protokolle bilden die Grundlage für weiterführende Recherchen, 
+durch die die Groundtruth schrittweise ergänzt und verbessert werden kann.
+
+\noindent Innerhalb der Verarbeitungs-Pipeline wird das Modul \texttt{unmatched\_logger.py} über die Funktion \texttt{process\_single\_xml()} im Hauptprogramm aufgerufen. 
+
+\noindent Bereits in der Testphase iteriert die Pipeline mehrfach über einzelne Segmente des Korpus, 
+um den Code zu optimieren und alle bislang nicht erfassten Entitäten zuverlässig zu identifizieren.
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.46\textwidth}
+  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+
+% TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+}
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
+
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[module] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[highlight, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten; Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% Grosses Prozessdiagramm
+\begin{scope}
+% --- Kopf-Node ---
+\node[large] (logger) at (0,0) {\textbf{log\_unmatched\_entities} \\ (Starte Logging aller Entitätstypen)};
+
+% --- Schleifen ---
+\node[process, below=1.2cm of logger] (persons)  {\textbf{Personen} \\ (Nicht in mentioned\_persons? → log)};
+\node[process, below=of persons] (places)  {\textbf{Orte} \\ (Nicht in mentioned\_places? → log)};
+\node[process, below=of places] (roles)  {\textbf{Rollen} \\ (Nicht in Personenrollen? → log)};
+\node[process, below=of roles] (orgs)  {\textbf{Organisationen} \\ (Nicht als associated\_organisation? → log)};
+\node[process, below=of orgs] (events)  {\textbf{Events} \\ (Nicht in mentioned\_events? → log)};
+\node[process, below=of events] (done)  {\textbf{Speichern} \\ (save\_json, print)};
+
+% --- Pfeile ---
+\draw[arrow] (logger.south) -- (persons.north);
+\draw[arrow] (persons.south) -- (places.north);
+\draw[arrow] (places.south) -- (roles.north);
+\draw[arrow] (roles.south) -- (orgs.north);
+\draw[arrow] (orgs.south) -- (events.north);
+\draw[arrow] (events.south) -- (done.north);
+
+
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{scope}
+\end{tikzpicture}}
+\captionof{figure}\small{Prozessdiagramm für \texttt{unmatched\_logger.py}}
+\label{fig:unmatched_logger.py}
+\smallskip
+
+\small{Oben rechts: Pipelineübersicht}
+\end{minipage}
+
+
+Im Kern stellt das Modul die Funktion \texttt{log\_unmatched\_entities} bereit. 
+Diese übernimmt die von den zuvor beschriebenen Matcher-Funktionen ermittelten Entitäten 
+und prüft, ob sie in den entsprechenden Groundtruth-CSV-Dateien vorhanden sind. 
+
+Die Suche erfolgt iterativ innerhalb der Listenstrukturen für Personen, Orte, Rollen, Organisationen und Ereignisse. 
+Wird eine Entität über ein XML-Custom-Tag einer dieser Kategorien zugewiesen, ohne dass sie in der Groundtruth verzeichnet ist, 
+wird sie in einer spezifischen JSON-Datei protokolliert.
+
+Die folgenden Dateien werden dabei erzeugt:
+\begin{itemize}
+  \item unmatched\_persons.json
+  \item unmatched\_places.json
+  \item unmatched\_roles.json
+  \item unmatched\_events.json
+  \item unmatched\_organisations.json
+\end{itemize}
+
+Zusätzlich werden alle Einträge in einer zusammengeführten Datei \texttt{unmatched.json} gespeichert, 
+um einen vollständigen Überblick über alle bislang nicht zugeordneten Entitäten zu gewährleisten.
+
+
+Alle Ergebnisse werden zudem in einer Datei \code{unmatched.json} gespeichert, um einen Gesamtüberblick zu erhalten.
+
+
 
 \subsection{KEINE AHNUNG WAS DIE HIER MACHEN}
 \subsubsection{validation\_module.py}
@@ -1394,7 +1570,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 
 
 
-\subsection{Diagram english}
+\subsection{Diagram Pipelineübersicht}
 
 \vspace{6\baselineskip}
 
@@ -1455,7 +1631,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
   (places)(joinpoint), name=flowchartbox] {};
 
 % --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
-\node[group, fit=(main)(flowchartbox)(save),
+\node[group, fit=(main)(flowchartbox)(json),
   label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{ Main Processing of the Pipeline}}] {};
 
 
