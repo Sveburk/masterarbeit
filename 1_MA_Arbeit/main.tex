@@ -1156,7 +1156,7 @@ blablabalabla
 % TikZ styles
 \tikzset{
   module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
-  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm,align=center},
   highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
   arrow/.style={-stealth, line width=0.15mm},
   arrowboth/.style={stealth-stealth, line width=0.15mm},
@@ -1167,9 +1167,7 @@ blablabalabla
 % Mini-Diagramm oben rechts
 %==========================
 
-\begin{scope}[shift={(9,0.45)}, yshift=-6cm, node distance=0.3cm]
-
-
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
 \node[module] (init) at (0,0) {};
 \node[module] (xml) at (0, -0.5) {};
 \node[module]    (events)  at (-2.0, -1.3) {};
@@ -1229,71 +1227,61 @@ blablabalabla
 \draw[arrow] (json.south) -- (save.north);
 \end{scope}
 
+
 %==========================
 % Hauptprogramm Assigned_roles_module
 %==========================
 \begin{scope}
 \node[large] (rolesmod) at (0,0) {\textbf{Assigned\_Roles\_Module.py} \\ match, split, enrich};
 
-\node[process, below=1.2cm of rolesmod] (flat)  {\textbf{def is\_flat\_organisation} \\(Check: sind alle Organisationen Dict?)};
+\node[process, below=1.2cm of rolesmod] (normalize)  {\textbf{def normalize\_and\_match\_role} \\ (Normalisiert Rollen mit Role\_Mappings\_DE)};
 
-\node[process, below=of flat] (builtflat)  {\textbf{def flatten\_organisation\_entry} \\ (baut flaches Dict aus Organisation)};
+\node[source, below= 3.6cm of joinpointxml] (ROLE)  {\textbf{Role\_Mappings\_DE} \\ (interne Lookup-Tabelle)};
 
-\node[process, below=of builtflat] (normalize)  {\textbf{def normalize\_and\_match\_role} \\ (Normalisiert Rollen-String)}; %verwendet ROLE_MAPPINGS_DE
+\node[process, below=of normalize] (loadknown)  {\textbf{def load\_known\_persons} \\ (Lädt bekannte Personen aus GT-CSV)};
 
-\node[source, right=of builtflat] (ROLE)  {\textbf{ROLE\_MAPPINGS\_DE} \\ (Normalisiert Rollen-String)};
+\node[source, below= of ROLE] (PERSONGT)  {\textbf{Nodegoat-Export-Persons} \\ (Groundtruth Personen)};
 
-\node[process, below=of normalize] (loadknown)  {\textbf{def load\_known\_persons} \\ (läd und normalisiert aus GT-CSV)};
+\node[process, below=of loadknown] (maprole)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Wandelt normierte Rolle in Dict um)};
 
-\node[process, below=of loadknown] (map)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Wandelt role-String in Dict um)}; %verweis auf is_flat_org und Flatten_org_entry
+\node[process, below=of maprole] (assign)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen zu bekannten Personen zu)};
 
-\node[process, below=of map] (findindx)  {\textbf{def find\_line\_index\_for\_person} \\ (Sucht in XML linienweise nach Pers-Name-Strings)}; %in assign_roles_to_known_persons
+\node[process, below=of assign] (findindx)  {\textbf{def find\_line\_index\_for\_person} \\ (Findet Person im Text)};
 
-\node[source, right=of roles] (GT)  {\textbf{Nodegoat-Export-Roles} \\ (Groundtruth für Rollen)};
+\node[process, below=of findindx] (search)  {\textbf{def search\_roles\_nearby} \\ (Sucht Rollen im Umkreis)};
 
-\node[process, below= of findindx] (search) {\textbf{search\_roles\_nearby} \\ (iteriert durch Index nach Treffern in Nodegoat-Export-Roles)};
+\node[source, right=3.5cm of search] (ROLEGTSOURCE)  {\textbf{Nodegoat-Export-Roles} \\ (Groundtruth Rollen)};
 
+\node[process, below=of search] (standalone)  {\textbf{def extract\_standalone\_roles} \\ (Findet neue Personen+Rollen-Kombis)};
 
-\node[process, below= of search] (rolematch) {\textbf{assign\_roles\_to\_known\_persons} \\ (Liefert normalisierte \\ Rollen)};
+\node[process, below=of standalone] (intoken)  {\textbf{def extract\_role\_in\_token} \\ (Token-Analyse Rolle+Name)};
 
-
-\node[process, below=of roles] (score)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Scoring basierend auf Kontext im Transkript)};
-
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
-\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
-
-\draw[arrow] (rolesmod.south) -- (flat.north);
-\draw[arrow] (flat.south) -- (builtflat.north);
-\draw[arrow] (builtflat.south) -- (normalize.north);
+% === Pfeile ===
+\draw[arrow] (rolesmod.south) -- (normalize.north);
 \draw[arrow] (normalize.south) -- (loadknown.north);
-\draw[arrow] (loadknown.south) -- (map.north);
-\draw[arrow] (map.south) -- (findindx.north);
+\draw[arrow] (loadknown.south) -- (maprole.north);
+\draw[arrow] (maprole.south) -- (assign.north);
+\draw[arrow] (assign.south) -- (findindx.north);
+\draw[arrow] (findindx.south) -- (search.north);
+\draw[arrow] (search.south) -- (standalone.north);
+\draw[arrow] (standalone.south) -- (intoken.north);
 
-% \draw[arrow] (loadknown.east) -| (rolematch.north);
-\draw[arrow] (match.south) -- (findindx.north);
+% === Ressource-Pfeile ===
+\draw[arrow] (ROLE.west) -- ++(-1.4,0) |- (normalize.east);
+\draw[arrow] (PERSONGT.west) -- ++(-1.5,0) |-  (loadknown.east);
+\draw[arrow] (ROLEGTSOURCE.west) -- (search.east);
 
-\draw[arrow] (findindx.south) -- (score.north);
-\draw[arrow] (score.south) -- (dedup.north);
-\draw[arrow] (dedup.south) -- (count.north);
-
-\draw[arrow] 
-  (rolematch.west) 
-  -- ++(-1.0,0) 
-  |- (roles.east);
-
-\draw[arrow] (search.west) -- (roles.east);
-
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(flat)(count)] (group) {};
+% === Umrandung ===
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(normalize)(intoken)] (group) {};
 \end{scope}
-\end{tikzpicture}%
-}%
-  \caption{\small\textit{Detailliertes Prozessdiagramm für Personen\_matcher.py}}
-  \label{fig:Assigned_roles_module.py}
+\end{tikzpicture}
+  }
+  \caption{\small\textit{Prozessdiagramm für Assigned\_Roles\_Module.py; schematische Funktionsreihenfolge und Ressourcen}}
+  \label{fig:assigned_roles_module}
 
   \smallskip
-  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Input aus \texttt{role\_matcher.py} und \texttt{organization\_matcher.py}}
+  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Ressourcen; Role\_Mappings\_DE, Nodegoat-Export-Persons, Nodegoat-Export-Roles}
 \end{figure}
-
 
 
 \subsubsection{place\_matcher.py}
