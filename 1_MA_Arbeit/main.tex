@@ -3,8 +3,8 @@
 %–––––––––––––––––––––––––––––    S E T T I N G S        ––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-
 \sloppy
+
 
 
 % Options for packages loaded elsewhere
@@ -23,6 +23,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{tcolorbox}
 \usepackage{afterpage}
+\usepackage{multicol}
 \usepackage{graphicx}
 \usepackage{subcaption} %Für die Verwendung von subfigure
 \usepackage{setspace} %Für den Befehl \setstretch
@@ -39,9 +40,15 @@
 % \usepackage{longtable}  %falls nicht schon geladen
 % \usepackage{placeins}%Für \FloatBarrier
 \usepackage[autostyle, german=quotes]{csquotes}
-\usepackage[notes, backend=biber,language=ngerman, ibidtracker=context, citetracker=context, shorthandibid=true]{biblatex-chicago}
-\DeclareDatamodelFields[type=field,datatype=literal]{software}
-\DeclareDatamodelEntryfields[software]{title,author,date,version,url,urldate}
+\usepackage[
+  notes,
+  backend=biber,
+  language=ngerman,
+  ibidtracker=context,
+  citetracker=context,
+  shorthandibid=true
+]{biblatex-chicago}
+
 \DeclareBibliographyAlias{software}{misc}
 
 \setlength{\skip\footins}{20pt}
@@ -60,8 +67,10 @@
 \usepackage[ngerman]{babel}
 \usepackage{pifont} %Für die Kästchen und Häkchen-Symbole
 \usepackage[dvipsnames,svgnames,x11names,table]{xcolor}
+\usepackage[table]{xcolor}
 %Zum Definieren und Verwenden von Farben
 \definecolor{LightGray}{gray}{0.9}
+\definecolor{MediumGray}{gray}{0.7}
 \definecolor{UniRot}{HTML}{D20537}                  %Corperate Design Farben Uni Basel 
 \definecolor{UniAnthrazit}{HTML}{46505A}            %Corperate Design Farben Uni Basel 
 \definecolor{UniMint}{HTML}{A5D7D2}                 %Corperate Design Farben Uni Basel 
@@ -86,7 +95,7 @@
 \definecolor{oldLetter}{RGB}{246,238,227}          %Beige für Hintergrund  
 \definecolor{vscode-blue}{HTML}{569CD6}            %VSCode Blau für python
 \definecolor{vscode-yellow}{HTML}{DCDCAA}          %VSCode Gelb für python
-\newcommand{\code}[1]{\texttt{#1}}                 %für die darstellung von Code 
+\newcommand{\code}[1]{\colorbox{VeryLightGray}{\texttt{#1}}} %für die darstellung von Code 
 
 \usepackage{array}
 \usepackage{minted}
@@ -562,7 +571,7 @@ da insbesondere Korrosionsspuren ehemaliger Metallklammern die Papierfasern nach
 Anzeichen von Säurefraß, sofern nicht säurefreies Archivmaterial verwendet wurde.
 
 Für die eigentliche Digitalisierung kommt die native \enquote{Dateien}-Applikation von 
-Apple\footnote{Vgl.\href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} zum Einsatz. 
+Apple\footnote{vgl.\href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple Support: Dateien-App}} zum Einsatz. 
 Diese bietet neben einer vergleichsweise hochauflösenden Erfassung die Möglichkeit zur direkten Speicherung in einem Cloud-basierten 
 Speichersystem sowie eine automatische Texterkennung (OCR). Ziel dieser Vorgehensweise ist es, die digitalisierten Inhalte möglichst 
 schnell durchsuchbar zu machen und standortunabhängig für das Projekt zugänglich zu machen.
@@ -611,9 +620,9 @@ dokumentiert werden, richtet sich der Fokus im zweiten Schritt auf die Feldpost.
 Rückschlüsse auf beteiligte Militäreinheiten, deren Stationierungen und Verlagerungen während des Zweiten Weltkriegs zu ziehen.
 
 Für diese Recherchen kommen einschlägige Fachliteratur zu den jeweiligen Fachgebieten zum Einsatz. 
-Hier sind besonders die Bücher von Alex Buchner\cite[Vgl.][]{buchner_handbuch_1989}, Christian Hartmann\cite[Vgl.][]{hartmann_wehrmacht_2010}, 
-Werner Haupt\cite[Vgl.][]{haupt_buch_1982}, Christoph Rass\cite[Vgl.][]{rass_deutsche_2009}, Georg Tessin\cite[Vgl.][]{tessin_verbande_1977} 
-und Christian Zentner\cite[Vgl.][]{zentner_illustrierte_1983} zu nennen.
+Hier sind besonders die Bücher von Alex Buchner\cite[vgl.][]{buchner_handbuch_1989}, Christian Hartmann\cite[vgl.][]{hartmann_wehrmacht_2010}, 
+Werner Haupt\cite[vgl.][]{haupt_buch_1982}, Christoph Rass\cite[vgl.][]{rass_deutsche_2009}, Georg Tessin\cite[vgl.][]{tessin_verbande_1977} 
+und Christian Zentner\cite[vgl.][]{zentner_illustrierte_1983} zu nennen.
 
 Darüberhinaus werden eigene Recherchen in den Beständen des \textit{Bundesarchivs – Militärarchiv Freiburg}\cite{hollmann_freiburg_2025} durchgeführt. Ergänzende Recherchen 
 stammen aus den Suchlisten des \textit{Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}. Hinzu kommen philatelistische Übersichts-Websites\cite{noauthor_feldpost_nodate}, 
@@ -731,10 +740,10 @@ und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
 \begin{minipage}[t]{0.52\textwidth}
   \setstretch{1.5}
   \justifying%
-\paragraph{mmma-Ontologie}\\
+\paragraph{LOD-Ontologie}\\
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
-Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark%
-Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe~\nameref{subsec:forschungsstand}) ist 
+Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst.
+Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (vgl.~\hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke}) ist 
 zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross tische Grundlage des Globalund damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
 auf die Extraktion von Entitäten.
 \end{minipage}%
@@ -745,9 +754,7 @@ auf die Extraktion von Entitäten.
     \vspace*{0.3cm} % ► schiebt alles um 0.3cm nach unten
     \includegraphics[width=\linewidth]{assets/Images/Bildschirmfoto_ttl_ontologie_Ausschnitt.png}
     \captionof{figure}{Ausschnitt der TTL-Ontologie.}\label{fig:ttl-ontologie}
-  \end{minipage}
-
-\footnotetext{Abk.\ mmma; Männerchor Murg Masterarbeit.}
+\end{minipage}
 
 \vspace{1em}
 
@@ -781,7 +788,7 @@ Das zeigt einerseits hohe internen Qualitätsanforderungen auf, andererseits wer
 geleisteten Arbeit erheblich begrenzt. 
 Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel.
 
-\subsubsection{GeoNames}
+\subsubsection{GeoNames}\label{subsubsec:geonames}
 
 Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
@@ -882,7 +889,91 @@ Wichtig ist, dass dies kein klassisches Benchmarking auf Basis vergleichbarer Re
 
 \subsubsection{Nodegoat}\label{subsec:Nodegoat_chapter}
 
-Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned in mmma–Ontologie
+Nachdem sich die Implementierung von Linked Open Data (LOD) für das vorliegende Projekt aufgrund des hohen zeitlichen 
+Aufwands als nicht realisierbar erwiesen hat, wird mit \textbf{Nodegoat}\cite{kessels_nodegoat_2013}
+eine praktikable und zugleich forschungsnahe Alternative eingeführt. Im Folgenden soll das Tool näher beschrieben, und ihre Anwendung für das Projekt erläutert werden.
+
+Nodegoat ist eine webbasierte Plattform, die sich besonders in den Digital Humanities etabliert hat. Es unterstützt Forschende in der Modellierung, 
+Verwaltung, Analyse und Visualisierung komplexer Datenbestände. Ein zentrales Merkmal von Nodegoat ist die grafische Benutzeroberfläche, die eine vergleichsweise niedrige Einstiegshürde bietet. 
+Auch Forschenden ohne tiefgehende Programmierkenntnisse wird so die Möglichkeit  eröffnet, eigene Datenmodelle zu definieren, zu pflegen und weiterzuentwickeln. 
+Die Plattform folgt einem modularen Prinzip: Über das UI\footnote{Abk.: User-Interface} können beliebig viele Datenmodelle 
+erstellt werden, die sich flexibel an die spezifischen Forschungsfragen anpassen lassen. Diese hohe Individualisierbarkeit der Datenstrukturen erlaubt es, innerhalb kürzester Zeit projektspezifische 
+Datenbanken zu konzipieren und fortlaufend zu erweitern oder an sich ändernde Bedürfnisse anzupassen.
+
+Die Grundstruktur eines Modells unterscheidet in Nodegoat zwischen sogenannten \code{Object Descriptions} und \code{Sub-Objects}. 
+Erstere legen die grundlegenden Merkmale eines Objekts fest, etwa Zeichenketten, Zahlen oder Verweise auf andere Einträge. 
+So kann eine \code{Person} in diesem Projekt neben einem Feld für Vor- und Nachname auch eine Referenz auf ein \code{Gender}-Objekt enthalten, 
+das eine eindeutige Geschlechtszuordnung ermöglicht.
+
+Für das hier behandelte Forschungsvorhaben übernimmt Nodegoat die zentrale Verwaltung der Groundtruthdaten, die später als CSV-Export in die Pipeline integriert werden. 
+Für die Groundtruth werden folgende Entitäten modelliert:
+
+\begin{table}[h]
+  \renewcommand{\arraystretch}{1.5}
+  \centering
+  \rowcolors{1}{VeryLightGray}{VeryLightGray}
+  \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+    \hline
+    Personen & Orte \\ \hline
+    Organisationen & Ereignisse \\ \hline
+    Dokumente & Rollen \\ \hline
+    Gender & \\ \hline
+  \end{tabular}
+  \caption{\small Übersicht der erfassten Entitäten}
+\end{table}
+
+Die Auflistung ist dabei so geordnet, dass die Entitäten mit der größten Anzahl oder Vielfalt an zugehörigen Sub-Objects zuerst genannt werden. \code{Sub-Objects} erlauben eine
+noch vielfältigere Abbildung abhängiger Informationen. Das können in dieser Arbeit zum Beispiel Quellenbelege, sowie temporale oder lokale Attribute, die einem Hauptobjekt zugeordnet werden. Lokale Attribute 
+werden in Verknüpfung mit \hyperref[subsubsec:geonames]{GeoNames} und für Länder, Flurnamen oder Gewässer im Geojson-Format\cite[Weiterführend:][]{thomson_geographic_2017}. So lassen sich beispielsweise für\code{Persons}
+in den Sub-Objekten \code{Geburt} oder \code{Tod} das Datum und der Ort modelieren, sowie die Todesursache notieren.
+
+Die in den Kapiteln \hyperref[section:Transkriptionen_Methoden]{Transkriptionen und Methoden}, \hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke} 
+sowie \hyperref[subsec:unmatched_logger]{Unmatched Logger} beschriebenen Verarbeitungsschritte bilden die Grundlage für die in Nodegoat hinterlegten Entitäten.
+Die strukturierte Erfassung dient dabei nicht nur der internen Qualitätssicherung, sondern ermöglicht auch eine nachhaltige Referenzierbarkeit durch eindeutig 
+vergebene Identifikatoren, die beispielsweise beim Abgleich von Personendaten genutzt werden, um Textstellen präzise mit den zugehörigen Datenbankeinträgen zu verknüpfen.
+
+Darüber hinaus wird Nodegoat über seine Programmierschnittstelle (API) mit einer eigens entwickelten Webanwendung verknüpft. Diese Webanwendung fungiert als publikumsorientierte 
+Such- und Präsentationsplattform für die erarbeiteten Quellen. Die in den strukturierten JSON-Daten enthaltenen Nodegoat-IDs verknüpfen hier ebenfalls jede identifizierte Named Entity eindeutig mit dem 
+zugehörigen Objekt in der Nodegoat-Datenbank. Dies soll nachfolgend erläutert werden.
+
+Kritisiert werden muss an Nodegoat die fehlende Doukumentation. Viele Informationen finden sich nur über Drittparteien\cite[beispielsweise durch Schulungsunterlagen von Universitäten, 
+hier besonders:\\][]{gubler_nodegoat_nodate} oder, wie unten geschildert, auf konkrete Nachfrage bei den Entwicklern. Der dann geleistete Support 
+ist jedoch ausgesprochen zeitnah und umfassend. 
+
+
+
+\subsubsection{\colorbox{red}{Webtool}}\label{subsec:webtool_chapter}
+Die Planung sieht vor, oben beschriebene Verknüpfung zu nutzen, um aus der Webanwendung heraus bei Bedarf Detailinformationen zu den einzelnen Entitäten abzurufen. 
+Dazu wird über spezifische API-Requests die jeweilige Objektbeschreibung geladen. In einem exemplarischen Anwendungsfall wird etwa eine Abfrage an eine URL der Form
+\begin{figure}
+  \hspace*{-0.6cm}%
+  \centering\code{https://api.nodegoat.dasch.swiss/data/type/\colorbox{MediumGray}{11680}object/ngEL9c68pELQqGVuoFN49t/}
+\end{figure}
+gesendet. Hierbei steht die Type-ID \textit{11680} im Beispiel für den jeweiligen Modelltyp \enquote{Organisation} und die Zeichenkette am Ende für die eindeutige Nodegoat-ID 
+des Objekts\footnote{im Beispiel eine gekürzte Nodegoat-ID}.
+
+Die dabei zurückgelieferte JSON-Antwort enthält die gespeicherten Metadaten (z.B. Namensvarianten, Zugehörigkeiten, Quellenbelege). Um diese Informationen benutzerfreundlich darzustellen, 
+wird angestrebt, den aus Nodegoat bekannten \enquote{Object Detail View} in Form eines iFrames direkt in die Webanwendung einzubetten. Dabei kann über gezielte CSS-Regeln gesteuert werden, dass 
+lediglich der gewünschte Objektbereich angezeigt wird, ohne die übrigen Bestandteile der öffentlichen Nodegoat-Oberfläche zu übernehmen.
+
+In der technischen Umsetzung wurde zudem erörtert, ob die interne Object-ID oder die plattformübergreifende Nodegoat-ID als Referenz verwendet werden sollte. Die Rückmeldung bei den
+Nodegoat-Entwicklern (Kessels und van Bree) legt auf Anfrage nahe, dass beide ID-Typen im Prinzip austauschbar sind: Die Object-ID gewährleistet eine eindeutige Identifikation 
+innerhalb einer spezifischen Nodegoat-Instanz, 
+während die Nodegoat-ID eine konsistente Referenz über mehrere Installationen hinweg ermöglicht — auch im Hinblick auf LOD-Kompatibilität.
+
+Für die Integration in die eigene Webanwendung wird daher ein hybrides Modell verfolgt: In den JSON-Daten der Quelltexte werden Nodegoat-IDs gespeichert, um langfristig eine offene Verknüpfbarkeit sicherzustellen. 
+Gleichzeitig wird über die API der jeweilige Objekttyp (z.B.\enquote{Person}, \enquote{Organisation}) abgefragt, um die semantischen Eigenschaften der Entität zu laden. Diese werden mit dem 
+Model-Endpunkt kombiniert (z.B. \code{https://api.nodegoat.dasch.swiss/model/type/11680}), um etwa Labelstrukturen oder benutzerdefinierte Felder korrekt abzubilden.
+
+Auf diese Weise kann die Webanwendung den Nutzenden nicht nur eine reine Objektliste liefern, sondern auch kontextreiche Detailansichten generieren. Sie sind als iFrame eingebettet oder dynamisch 
+gerendert und visualisieren alle relevanten Informationen direkt aus Nodegoat. Um die Serverlast zu minimieren, wird hierbei eine Caching-Strategie empfohlen, sodass wiederholte API-Abfragen 
+effizient verarbeitet werden können.
+
+Zusammengefasst fungiert Nodegoat somit als zentrales Bindeglied zwischen der internen Datenhaltung und der öffentlichen Präsentation: Es vereinfacht die Pflege konsistenter Groundtruth-Daten, 
+unterstützt deren Ausspielung über standardisierte Schnittstellen und ermöglicht eine modular erweiterbare Verknüpfung mit Webportalen und Suchsystemen.
+
+
+
 \subsection{Netzwerkanalyse als Methode}
   \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
   \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
@@ -1036,308 +1127,13 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 
 \newpage
-
-  \subsubsection{Person\_matcher.py}
-% ================================
-% Person PROZESSDIAGRAMM
-% ================================
-  \hfill
-\begin{figure}[htbp]
-  \centering
-  \resizebox{0.9\textwidth}{!}{
-    \begin{tikzpicture}
-% TikZ styles
-\tikzset{
-  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
-  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
-  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
-  arrow/.style={-stealth, line width=0.15mm},
-  arrowboth/.style={stealth-stealth, line width=0.15mm},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
-  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-};
-%==========================
-% Mini-Diagramm oben rechts
-%==========================
-
-\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
-
-\node[module] (init) at (0,0) {};
-\node[module] (xml) at (0, -0.5) {};
-\node[module]    (events)  at (-2.0, -1.3) {};
-\node[module]    (roles)   at (-1.2, -1.3) {};
-\node[highlight] (persons) at (-0.4, -1.3) {};
-\node[module]    (orgs)    at ( 0.4, -1.3) {};
-\node[module]    (places)  at ( 1.2, -1.3) {};
-\node[module]    (dates)   at ( 2.0, -1.3) {};
-\node[module] (authors)    at (-0.4, -2  ) {};
-
-\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
-
-\node[module, below=of joinpoint] (unmatched) {};
-\node[module, below=of unmatched] (json) {};
-\node[source, below=of json] (save) {};
-\node[source, right=0.5cm of save] (unmatchedjson) {};
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
-
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] (init.south) -- (xml.north);
-\draw[arrowboth] (roles.east) -- (persons.west);
-\draw[arrowboth] (persons.east) -- (orgs.west);
-\draw[arrowboth] (orgs.east) -- (places.west);
-%Pfeile oben
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-%Pfeile unten Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (unmatched.north);
-\draw[arrow] (unmatched.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\end{scope}
-
-%==========================
-% Hauptprogramm Personen
-%==========================
-\begin{scope}
-\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
-
-\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
-
-\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
-
-\node[process, below=of parse] (swapped)  {\textbf{def correct\_swapped\_name} \\ (Korrigiere vertauschte Name-Felder)};
-
-\node[process, below=of swapped] (exrawrole)  {\textbf{def extract\_role\_from\_raw\_name} \\ (Trenne Rolle direkt aus Namensstring)};
-
-\node[process, below=of exrawrole] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
-
-\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
-
-\node[large, left=1.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py}\\(Organisationen normalisieren)};
-
-\node[large, above=1cm of orgmatch] (rolematch) {\textbf{Role-Matcher.py}\\(Rollen normalisieren)};
-
-
-\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
-
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
-\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
-
-\draw[arrow] (personsmod.south) -- (split.north);
-\draw[arrow] (split.south) -- (parse.north);
-\draw[arrow] (parse.south) -- (swapped.north);
-\draw[arrow] (swapped.south) -- (exrawrole.north);
-\draw[arrow] (exrawrole.south) -- (match.north);
-\draw[arrow] (match.south) -- (roles.north);
-
-% \draw[arrow] (exrawrole.east) -| (rolematch.north);
-\draw[arrow] (match.south) -- (roles.north);
-
-\draw[arrow] (roles.south) -- (score.north);
-\draw[arrow] (score.south) -- (dedup.north);
-\draw[arrow] (dedup.south) -- (count.north);
-
-% \draw[arrow] 
-%   (rolematch.west) 
-%   -- ++(-1.0,0) 
-%   |- (roles.east);
-
-% \draw[arrow] (orgmatch.west) -- (roles.east);
-\node[draw=none, inner sep=0.5cm, fit=(split)(orgmatch)(count)] (group) {};
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
-\end{scope}
-\end{tikzpicture}
-  }
-  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
-\end{figure}
-
-
-\newpage
-\begin{minipage}[t]{0.52\textwidth}
+\begin{minipage}[t]{0.35\textwidth}
    \setstretch{1.5}
    \justifying%
 
   \subsubsection{Person\_matcher.py}
 
   Hier steht eine menge schöner Text
-
-  \end{minipage}%
-%================================
-%Person PROZESSDIAGRAMM
-%================================
-  \hfill
-\begin{minipage}[t]{0.4\textwidth}
-  \vspace*{0.7cm} %► schiebt alles um 0.7cm nach unten
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}
-
-
-TikZ styles
-\tikzset{
-  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
-  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
-  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
-  arrow/.style={-stealth, line width=0.15mm},
-  arrowboth/.style={stealth-stealth, line width=0.15mm},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
-  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-};
-%==========================
-% Mini-Diagramm oben rechts
-%==========================
-
-\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
-
-\node[module] (init) at (0,0) {};
-\node[module] (xml) at (0, -0.5) {};
-\node[module]    (events)  at (-2.0, -1.3) {};
-\node[module]    (roles)   at (-1.2, -1.3) {};
-\node[highlight] (persons) at (-0.4, -1.3) {};
-\node[module]    (orgs)    at ( 0.4, -1.3) {};
-\node[module]    (places)  at ( 1.2, -1.3) {};
-\node[module]    (dates)   at ( 2.0, -1.3) {};
-\node[module] (authors)    at (-0.4, -2  ) {};
-
-\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
-
-\node[module, below=of joinpoint] (unmatched) {};
-\node[module, below=of unmatched] (json) {};
-\node[source, below=of json] (save) {};
-\node[source, right=0.5cm of save] (unmatchedjson) {};
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
-
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] (init.south) -- (xml.north);
-\draw[arrowboth] (roles.east) -- (persons.west);
-\draw[arrowboth] (persons.east) -- (orgs.west);
-\draw[arrowboth] (orgs.east) -- (places.west);
-%Pfeile oben
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-%Pfeile unten Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (unmatched.north);
-\draw[arrow] (unmatched.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\end{scope}
-
-%==========================
-%Hauptprogramm Personen
-%==========================
-\begin{scope}
-\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
-
-\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
-
-\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
-
-\node[process, below=of parse] (swapped)  {\textbf{def correct\_swapped\_name} \\ (Korrigiere vertauschte Name-Felder)};
-
-\node[process, below=of swapped] (exrawrole)  {\textbf{def extract\_role\_from\_raw\_name} \\ (Trenne Rolle direkt aus Namensstring)};
-
-\node[process, below=of exrawrole] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
-
-\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
-
-\node[large, left=2.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
-
-\node[large, above= of orgmatch] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
-
-
-\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
-
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
-\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
-
-\draw[arrow] (personsmod.south) -- (split.north);
-\draw[arrow] (split.south) -- (parse.north);
-\draw[arrow] (parse.south) -- (swapped.north);
-\draw[arrow] (swapped.south) -- (exrawrole.north);
-\draw[arrow] (exrawrole.south) -- (match.north);
-\draw[arrow] (match.south) -- (roles.north);
-
-\draw[arrow] (exrawrole.west) -| (rolematch.north);
-\draw[arrow] (match.south) -- (roles.north);
-
-\draw[arrow] (roles.south) -- (score.north);
-\draw[arrow] (score.south) -- (dedup.north);
-\draw[arrow] (dedup.south) -- (count.north);
-
-\draw[arrow] 
-  (rolematch.east) 
-  -- ++(1.0,0) 
-  |- (roles.west);
-
-\draw[arrow] (orgmatch.east) -- (roles.west);
-\node[draw=none, rounded corners, inner sep=0.5cm, fit=(split)(orgmatch)(count)] (group) {};
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
-\end{scope}
-\end{tikzpicture}
-  }
-  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
-\end{minipage}
-
-
-
-\newpage
-\begin{minipage}[t]{0.32\textwidth}
-   \setstretch{1.5}
-   \justifying%
-
-  \subsubsection{person\_matcher.py}
-
-  Das ist n Test wie viel Text ich neben diese Grafik beomme. Wollen wir mal sehen, wa?
 
   \end{minipage}%
 %================================
@@ -1365,7 +1161,7 @@ TikZ styles
 % Mini-Diagramm oben rechts
 %==========================
 
-\begin{scope}[shift={(11.1,0.45)}, node distance=0.3cm]
+\begin{scope}[shift={(10.1,0.45)}, node distance=0.3cm]
 
 \node[module] (init) at (0,0) {};
 \node[module] (xml) at (0, -0.5) {};
@@ -1435,7 +1231,7 @@ TikZ styles
 
 \node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere, verbinde Titel, Kontext-Rolle, Match)}};
 
-\node[process, right=2.5cm of parse] (LoadPers) {\textbf{load\_known\_persons\_from\_csv} \\ Lädt CSV, erzeugt KNOWN\_PERSONS};
+\node[process, below=2.5cm of joinpoint] (LoadPers) {\textbf{load\_known\_persons\_from\_csv} \\ Lädt CSV, erzeugt KNOWN\_PERSONS};
 
 \node[source, below=of LoadPers] (GTPers)  {\textbf{export-person.csv} \\ \textit{(Groundtruth CSV)}};
 
@@ -1468,7 +1264,7 @@ TikZ styles
 \node[process, right=3.5cm of inferrole] (fuzzy) {\textbf{def fuzzy\_match\_name} \\ (Rapidfuzz-Suche)};
 \draw[arrow] (GTPers) -- (LoadPers);
 %\draw[arrow] (LoadPers) -- (split.east);
-\draw[arrow] (LoadPers.west) -- ++(-1.9,0) |- (split.east);
+\draw[arrow] (LoadPers.west) -- ++(-1.1,0) |- (split.east);
 
 
 
@@ -1507,7 +1303,7 @@ TikZ styles
 \end{scope}
 \end{tikzpicture}
   }
-  \captionof{figure}{das is n Test}
+  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
 \end{minipage}
 
 
@@ -1699,7 +1495,7 @@ TikZ styles
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
   large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
   arrow/.style={-stealth, line width=0.15mm},
-  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm}
 };
 %==========================
 % Mini-Diagramm Placematcher
@@ -2037,7 +1833,7 @@ TikZ styles
   \setstretch{1.5}
   \justifying%
 
-  \subsubsection{unmatched\_logger.py}
+  \subsubsection{unmatched\_logger.py}\label{subsec:unmatched_logger}
 
 Das Modul \texttt{unmatched\_logger.py} dient der systematischen Protokollierung von Entitäten, 
 die in der aktuellen Version der Groundtruth noch nicht enthalten sind. 
@@ -2285,7 +2081,6 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
     Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
     
-    \begin{description}
 
 \subsection{Digitalisierungsprozess und Herausforderungen}
 
@@ -2329,7 +2124,7 @@ Die so erstellten 70 Akten ergaben 158 Seiten mit insgesamt 22.155 Wörtern Grou
 
     zu erhalten, wo sie zum Abschied am Aute 
 
-    sängen „auf Wiederschen Owohl ich Frei! 
+    sängen ``auf Wiederschen Owohl ich Frei! 
 
     märke beifügte, keine Aentwarb. Vielleicht 
 
@@ -2424,8 +2219,8 @@ Dein\\
 \end{tcolorbox}
 \caption{Tagging von \autoref{fig:brief-carl-alfons}}\label{fig:Tagging-brief-carl-alfons}
 \end{figure}
-
-
+\begingroup
+\begin{figure}[htbp]
 \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
 \textbf{\colorbox{place}{\texttt{München}}}, \textbf{\colorbox{date}{\texttt{28.V.1941}}} \\
 \\
@@ -2447,329 +2242,22 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 \textbf{\colorbox{place}{\texttt{Laufenburg (Baden)}}}\\
 \textbf{\colorbox{place}{\texttt{Rhina}}}
 \end{tcolorbox}
-
-
-
-
-\subsection{Diagram Pipelineübersicht}
-
-\vspace{6\baselineskip}
-
-
-\begin{center}
-\resizebox{0.9\textwidth}{!}{
-\begin{tikzpicture}[
-  module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
-  source/.style={rectangle, draw=black, fill=green!30!gray!20, thick, minimum width=4.2cm, minimum height=0.7cm, align=center},
-  group/.style={draw=gray, dashed, rounded corners, inner sep=0.5cm},
-  arrow/.style={-Latex, thick}, arrowboth/.style={<Latex>-<Latex>, thick},
-  node distance=0.8cm and 1.6cm
-]
-
-
-% --- Hauptquellen oben ---
-\node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transcription};
-\node[process] (dir) at (0, -3.2) {\textbf{File Directory} \\ with XML-Files};
-\node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
-\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Main Processing};
-
-% ------------------- MODULE (FLOWCHART) ------------------------
-\node[module, below=2cm of main] (init) {Initialization \\ (CSV import, matcher)};
-\node[module, below=of init]    (xml)  {XML \& Custom Tags \\ Parse, extract\_metadata};
-
-
-% Referenzpunkt zentriert unter xml
-\coordinate (modcenter) at ($(xml.south) + (0,-1.8)$);
-\node[module] (roles)   at ($(modcenter) + (-8cm, -0.5)$) {Roles \\ assign, enrich};
-\node[module] (persons) at ($(modcenter) + (-2.7cm, -0.5)$) {Persons \\ match, split, enrich};
-\node[module] (orgs)    at ($(modcenter) + (2.7cm, -0.5)$)  {Organizations \\ extract, deduplicate};
-\node[module] (places)  at ($(modcenter) + (8cm, -0.5)$)  {Places \\ context + combination};
-\node[module] (dates)   at ($(modcenter) + (13cm, -0.5)$) {Dates \\ combine\_dates(), count};
-\node[module] (events)  at ($(modcenter) + (-13.5cm, -0.5)$)  {Events \\ extract\_events\_from\_xml()};
-\node[module, below=1.2cm of persons] (authors) {Authors \& Recipients \\ infer, deduplicate, score};
-\node[module] (json)  at ($(modcenter) + (0cm, -7.5cm)$)  {BaseDocument Build \\ + Role Postprocessing};
-\node[coordinate] (joinpoint) at ($(json.north) + (0, 1.5cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
-\node[module, below=of json] (save) {Saving \\ JSON per page + total\_json};
-
-% CSV-Quellen
-\node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
-\node[source, below=0.6cm of csv1] (csv2) {\textbf{export-place.csv}};
-\node[source, below=0.6cm of csv2] (csv3) {\textbf{export-roles.csv}};
-\node[source, below=0.6cm of csv3] (csv4) {\textbf{export-organisationen.csv}};
-
-\node[group, fit=(csv1)(csv2)(csv3)(csv4), name=nodegoatbox,
-  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{preprocessing: Nodegoat-export}}] {};
-
-\node[group, fit=(transkribus), name=pretranskribusbox,
-  label={[anchor=north west, xshift=-0.5cm, yshift=0.7cm]north west:\texttt{preprocessing: Transkribus}}] {};
-
- %--- Gruppenrahmen für Modulblock ---
-\node[group, fit=
-  (persons)(authors)(roles)
-  (orgs)(dates)(events)
-  (places)(joinpoint), name=flowchartbox] {};
-
-% --- Gruppenrahmen um Hauptverarbeitung + Flowchart ---
-\node[group, fit=(main)(flowchartbox)(json),
-  label={[anchor=north west, xshift=12.5cm, yshift=+0.7cm]north west:\texttt{ Main Processing of the Pipeline}}] {};
-
-
-% Verbindungen
-\draw[arrow] (transkribus.east) -- ++(1.2,0)-- ++(0,-3.2)-- node[pos=0.6, left, font=\small, xshift=-2cm, yshift=1.3cm]{\textit{Export as XML}} (dir.west);  
-\draw[arrow] (dir.east) -- (llmpre.west);
-\draw[arrow] (llmpre.north) -- ++(0,1.2) -| node[pos=0.5, above, font=\small, xshift=3cm] {\textit{Custom-Tags}} (dir.north);
-\draw[arrow] (dir.south) -- (main.north);
-\draw[arrow] (main.south) -- (init.north);
-\draw[arrow] (init.south) -- (xml.north);
-
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (persons.west) -- (roles.east);
-\draw[arrow] (roles.east) -- (persons.west);   
-\draw[arrow] (persons.east) -- (orgs.west);
-\draw[arrow] (orgs.west) -- (persons.east); 
-\draw[arrow] (persons.east) -- (orgs.west);
-\draw[arrow] (orgs.west)-- (persons.east)  ;      
-\draw[arrow] (orgs.east) -- (places.west);  
-\draw[arrow] (places.west) -- (orgs.east);   
-             
-% Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] 
-  (nodegoatbox.south) |- ([xshift=-0.4cm]init.west)
-  node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{delivers Groundtruth}};
-\end{tikzpicture}
-}
-\end{center}
-\vspace{6\baselineskip}
-
-
-\vspace{6\baselineskip}
-
-
-\begin{center}
-\begin{tikzpicture}
-
-% TikZ styles
-\tikzset{
-  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
-  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
-  arrow/.style={-stealth, line width=0.15mm},
-  arrowboth/.style={stealth-stealth, line width=0.15mm},
-  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
-  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-};
-%==========================
-% Mini-Diagramm oben rechts
-%==========================
-
-\begin{scope}[shift={(9,0)}]
-\node at (0, -3.7) {\textit{Above: Overall schema overview}};
-\node[module] (init) at (0,0) {};
-\node[module] (xml) at (0, -0.5) {};
-\node[module]    (events)  at (-2.0, -1.3) {};
-\node[module]    (roles)   at (-1.2, -1.3) {};
-\node[highlight] (persons) at (-0.4, -1.3) {};
-\node[module]    (orgs)    at ( 0.4, -1.3) {};
-\node[module]    (places)  at ( 1.2, -1.3) {};
-\node[module]    (dates)   at ( 2.0, -1.3) {};
-\node[module] (authors)    at (-0.4, -2  ) {};
-\node[module] (json)       at (-0,  -2.8 ) {};
-\node[module] (save)       at (-0, -3.3  ) {};
-\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
-\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
-
-\draw[arrow, dashed] (persons.south) -- (authors.north);
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\draw[arrow] (init.south) -- (xml.north);
-\draw[arrowboth] (roles.east) -- (persons.west);
-\draw[arrowboth] (persons.east) -- (orgs.west);
-\draw[arrowboth] (orgs.east) -- (places.west);
-%Pfeile oben
-\draw[arrow] (xml.south) -- (joinpointxml.south);
-\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
-\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
-\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
-\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
-\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
-\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
-
-%Pfeile unten; Doppelte Pfeile mit definiertem Stil
-\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
-\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
-\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
-\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
-\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
-\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
-\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
-
-\draw[arrow] (joinpoint.south) -- (json.north);
-\draw[arrow] (json.south) -- (save.north);
-\end{scope}
-
-% Large process diagram
-\node[large] (personsmod) at (0,0) {\textbf{Persons} \\ match, split, enrich};
-
-\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extract raw persons from XML or LLM)}};
-
-\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Split names, detect titles \& role expressions)};
-
-\node[process, below=of parse] (match)  {\textbf{def match\_person} \\ (Fuzzy/contextual matching with groundtruth)};
-
-\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Assign roles \& organizations from modules)};
-
-\node[large, right=2.8cm of roles] (rolematch) {\textbf{Role-Matcher.py} \\ (Provides normalized \\ roles)};
-
-\node[large, above=1.3cm of rolematch] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Provides normalized \\ organizations)};
-
-\node[process, below=of roles] (score)  {\textbf{def calculate recipient\_score} \\ (Scoring based on transcript context)};
-
-\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Merge persons with same ID/name)};
-
-\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Count mentions in context, avoid duplicates)};
-
-\node[below=of count, align=center] 
-  {\textit{Top: process in person\_matcher.py}\\\textit{Right: input from role\_matcher.py and organization\_matcher.py}};
-
-\draw[arrow] (personsmod.south) -- (split.north);
-\draw[arrow] (split.south) -- (parse.north);
-\draw[arrow] (parse.south) -- (match.north);
-\draw[arrow] (match.south) -- (roles.north);
-\draw[arrow] (roles.south) -- (score.north);
-\draw[arrow] (score.south) -- (dedup.north);
-\draw[arrow] (dedup.south) -- (count.north);
-
-\draw[arrow] 
-  (orgmatch.west) 
-  -- ++(-0.5,0) 
-  |- (roles.east);
-
-\draw[arrow] (rolematch.west) -- (roles.east);
-
-\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
-\end{tikzpicture}
-\end{center}
-\vspace{6\baselineskip}
-
-
-
-
-
-
-
-
-
-
-
-
-        \subsubsection{Gründe für den Wechsel zu Nodegoat}
-        \subsubsection{Nodegoat Modelierung}
-
-
-  \subsection{Netzwerkanalyse als Methode}
-        \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
-        \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
-        \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
-
-\newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Aufbau der Datenbank          ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-
-     \section{Aufbau der Datenbank}
-    \subsection{Konzeption der Datenmodelieung}
-      \subsubsection{Eigene Ontologie im Vergleich zu bestehenden Standards}
-      \subsubsection{Verknüpfung von Personen, Orten und Ereignissen}
-    
-    \subsection{Implementierung der Datenbank}
-      \subsubsection{Datenbankdesign}
-      \subsubsection{Herausforderungen bei der Datenaufnahme}
-      \subsubsection{Verknüpfung mit externen Quellen (z.B. Wikidata)}
-
-    \newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Analyse der Netzwerke         ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\section{Analyse der Netzwerke}
-  \subsection{Soziale Netzwerke des Vereinslebens}
-    \subsubsection{Verbindungen zwischen Mitgliedern}
-    \subsubsection{ Kooperationen mit anderen Vereinen}
-\subsection{ Politische Netzwerke und deren Veränderungen}
-    \subsubsection{Einfluss der NS-Diktatur auf die Netzwerke}
-    \subsubsection{Feldpostkarten als Quelle für militärische Netzwerke}
-    
- \subsection{ Geografische Ausdehnung der Netzwerke}
-  \subsubsection{Einsatzorte der Chormitglieder während des Krieges}
-  \subsubsection{ Lokale und überregionale Verbindungen}
-  \newpage
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––          Diskussion der Erebnisse      ––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\section{Diskussion der Ergebnisse}
-  \subsection{Sichtbarmachung der Netzwerke durch Nodegoat und Netzwerkanalyse}
-  \subsection{Gibt es Veränderungen der Netzwerke im historischen Kontext?}
-  \newpage
+\end{figure}
 \endgroup
+
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 \pagecolor{white}
-\section{Bibliographie}
-
-
+\newpage
 \begingroup
 \small
 \singlespacing%
 \printbibliography[
 heading=bibintoc,
-title={References}%title of the 'references' section, change this if necessary
+title={Bibliographie}%title of the 'references' section, change this if necessary
 ]
 \endgroup
 
@@ -3036,8 +2524,5 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
 
     \end{description}
-    \end{description}
-
-
     \endgroup
 \end{document}
