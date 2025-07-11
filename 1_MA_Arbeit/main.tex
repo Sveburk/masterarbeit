@@ -1033,27 +1033,19 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \subsubsection{document\_schemas.py}
 \subsubsection{\_\_init\_\_.py}
 
+
+
 \newpage
-\begin{minipage}[t]{0.52\textwidth}
-  \setstretch{1.5}
-  \justifying%
 
   \subsubsection{Person\_matcher.py}
-
-  Hier steht eine menge schöner Text
-
-  \end{minipage}%
 % ================================
 % Person PROZESSDIAGRAMM
 % ================================
   \hfill
-\begin{minipage}[t]{0.4\textwidth}
-  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}
-
-
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+    \begin{tikzpicture}
 % TikZ styles
 \tikzset{
   module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
@@ -1146,7 +1138,159 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 \node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
 
-\node[large, right=2.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
+\node[large, left=1.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py}\\(Organisationen normalisieren)};
+
+\node[large, above=1cm of orgmatch] (rolematch) {\textbf{Role-Matcher.py}\\(Rollen normalisieren)};
+
+
+\node[process, below=of roles] (score)  {\textbf{def Berechne recipient\_score} \\ (Scoring basierend auf Kontext im Transkript)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Fasse Personen mit gleicher ID/Namen zusammen \\ Merge von Scores \& Flags)};
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Zähle Nennungen im Kontext, vermeide Dopplungen)};
+
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (swapped.north);
+\draw[arrow] (swapped.south) -- (exrawrole.north);
+\draw[arrow] (exrawrole.south) -- (match.north);
+\draw[arrow] (match.south) -- (roles.north);
+
+% \draw[arrow] (exrawrole.east) -| (rolematch.north);
+\draw[arrow] (match.south) -- (roles.north);
+
+\draw[arrow] (roles.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+% \draw[arrow] 
+%   (rolematch.west) 
+%   -- ++(-1.0,0) 
+%   |- (roles.east);
+
+% \draw[arrow] (orgmatch.west) -- (roles.east);
+\node[draw=none, inner sep=0.5cm, fit=(split)(orgmatch)(count)] (group) {};
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{scope}
+\end{tikzpicture}
+  }
+  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
+\end{figure}
+
+
+\newpage
+\begin{minipage}[t]{0.52\textwidth}
+   \setstretch{1.5}
+   \justifying%
+
+  \subsubsection{Person\_matcher.py}
+
+  Hier steht eine menge schöner Text
+
+  \end{minipage}%
+%================================
+%Person PROZESSDIAGRAMM
+%================================
+  \hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace*{0.7cm} %► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+
+TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+};
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
+
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+%==========================
+%Hauptprogramm Personen
+%==========================
+\begin{scope}
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere Rohpersonen aus XML oder LLM)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollenformen)};
+
+\node[process, below=of parse] (swapped)  {\textbf{def correct\_swapped\_name} \\ (Korrigiere vertauschte Name-Felder)};
+
+\node[process, below=of swapped] (exrawrole)  {\textbf{def extract\_role\_from\_raw\_name} \\ (Trenne Rolle direkt aus Namensstring)};
+
+\node[process, below=of exrawrole] (match)  {\textbf{def match\_person} \\ (Fuzzy-/Kontext-Matching mit Groundtruth)};
+
+\node[process, below=of match] (roles)  {\textbf{def assign\_roles\_to\_known\_persons} \\ (Weist Rollen \& Organisationen aus Modulen zu)};
+
+\node[large, left=2.5cm of roles] (orgmatch) {\textbf{Organization-Matcher.py} \\ (Liefert normalisierte \\ Organisationen)};
 
 \node[large, above= of orgmatch] (rolematch) {\textbf{Role-Matcher.py} \\ (Liefert normalisierte \\ Rollen)};
 
@@ -1163,7 +1307,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (exrawrole.south) -- (match.north);
 \draw[arrow] (match.south) -- (roles.north);
 
-\draw[arrow] (exrawrole.east) -| (rolematch.north);
+\draw[arrow] (exrawrole.west) -| (rolematch.north);
 \draw[arrow] (match.south) -- (roles.north);
 
 \draw[arrow] (roles.south) -- (score.north);
@@ -1171,18 +1315,209 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (dedup.south) -- (count.north);
 
 \draw[arrow] 
-  (rolematch.west) 
-  -- ++(-1.0,0) 
-  |- (roles.east);
+  (rolematch.east) 
+  -- ++(1.0,0) 
+  |- (roles.west);
 
-\draw[arrow] (orgmatch.west) -- (roles.east);
-
+\draw[arrow] (orgmatch.east) -- (roles.west);
+\node[draw=none, rounded corners, inner sep=0.5cm, fit=(split)(orgmatch)(count)] (group) {};
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
 \end{scope}
 \end{tikzpicture}
   }
   \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
 \end{minipage}
+
+
+
+\newpage
+\begin{minipage}[t]{0.32\textwidth}
+   \setstretch{1.5}
+   \justifying%
+
+  \subsubsection{person\_matcher.py}
+
+  Das ist n Test wie viel Text ich neben diese Grafik beomme. Wollen wir mal sehen, wa?
+
+  \end{minipage}%
+%================================
+%Person PROZESSDIAGRAMM
+%================================
+  \hfill
+\begin{minipage}[t]{0.6\textwidth}
+  \vspace*{0.7cm} %► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+
+%TikZ styles
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm,align=center},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm,align=center},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm,align=center},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
+};
+%==========================
+% Mini-Diagramm oben rechts
+%==========================
+
+\begin{scope}[shift={(11.1,0.45)}, node distance=0.3cm]
+
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[highlight] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[module]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+%==========================
+% Haupt-Diagramm
+%==========================
+
+\begin{scope}
+
+\node[large] (personsmod) at (0,0) {\textbf{Personen} \\ match, split, enrich};
+
+\node[process, below=1.2cm of personsmod] (split)  {\textbf{def split\_and\_enrich\_persons} \\ \textit{(Extrahiere, verbinde Titel, Kontext-Rolle, Match)}};
+
+\node[process, right=2.5cm of parse] (LoadPers) {\textbf{load\_known\_persons\_from\_csv} \\ Lädt CSV, erzeugt KNOWN\_PERSONS};
+
+\node[source, below=of LoadPers] (GTPers)  {\textbf{export-person.csv} \\ \textit{(Groundtruth CSV)}};
+
+\node[process, below=of split] (parse)  {\textbf{def extract\_person\_data} \\ (Zerlege Namen, erkenne Titel \& Rollen)};
+
+\node[process, below=of parse] (swapped)  {\textbf{def correct\_swapped\_name} \\ (Korrigiere Vor-/Nachname vertauscht)};
+
+\node[process, below=of swapped] (exrawrole)  {\textbf{def extract\_role\_from\_raw\_name} \\ (Trenne Rolle aus Namensstring)};
+
+\node[process, below=of exrawrole] (match)  {\textbf{def match\_person} \\ (Vergleiche mit Groundtruth, OCR/Fuzzy)};
+
+\node[process, below=of match] (inferrole)  {\textbf{def infer\_role\_and\_organisation} \\ (Zuweisung Rolle + Organisation aus Kontext)};
+
+\node[large, left=2.5cm of inferrole] (orgmatch) {\textbf{Organization\_Matcher.py} \\ (Normalisiert Organisation)};
+
+\node[large, above= of orgmatch] (rolematch) {\textbf{Assigned\_Roles\_Module.py} \\ (Normalisiert Rollen)};
+
+\node[process, below=of inferrole] (score)  {\textit{recipient\_score-Berechnung} \\ (intern: Score-Kontextlogik)};
+
+\node[process, below=of score] (dedup)  {\textbf{def deduplicate\_and\_group\_persons} \\ (Gruppiere, merge Scores, Rollen)};
+
+\node[process, below=of dedup] (count)  {\textbf{def count\_mentions\_in\_transcript\_contextual} \\ (Kontext-Zählung der Nennungen)};
+
+% ================
+% Mini-Helfer seitlich
+% ================
+\node[process, left=2.3cm of split] (merge) {\textbf{def merge\_title\_tokens} \\ (Titel + Name zusammenführen)};
+\node[process, left=3.1cm of parse] (norm) {\textbf{def normalize\_name\_string} \\ (Namen säubern, Titel trennen)};
+\node[process, right=3.8cm of match] (ocr) {\textbf{def ocr\_error\_match} \\ (OCR-Heuristik für Matches)};
+\node[process, right=3.5cm of inferrole] (fuzzy) {\textbf{def fuzzy\_match\_name} \\ (Rapidfuzz-Suche)};
+\draw[arrow] (GTPers) -- (LoadPers);
+%\draw[arrow] (LoadPers) -- (split.east);
+\draw[arrow] (LoadPers.west) -- ++(-1.9,0) |- (split.east);
+
+
+
+% ================
+% Hauptpfeile
+% ================
+\draw[arrow] (personsmod.south) -- (split.north);
+\draw[arrow] (split.south) -- (parse.north);
+\draw[arrow] (parse.south) -- (swapped.north);
+\draw[arrow] (swapped.south) -- (exrawrole.north);
+\draw[arrow] (exrawrole.south) -- (match.north);
+\draw[arrow] (match.south) -- (inferrole.north);
+
+\draw[arrow] (exrawrole.west) -| (rolematch.north);
+\draw[arrow] (inferrole.west) -- (orgmatch.east);
+
+\draw[arrow] (inferrole.south) -- (score.north);
+\draw[arrow] (score.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (count.north);
+
+\draw[arrow] (rolematch.east) -- ++(1.5,0) |- (inferrole.west);
+
+% ================
+% Helferpfeile
+% ================
+\draw[arrow] (merge.east) -- (split.west);
+\draw[arrow] (norm.east) -- (parse.west);
+\draw[arrow] (ocr.west) -- (match.east);
+\draw[arrow] (match.east) -- ++(1.0,0) |- (fuzzy.west);
+%\draw[arrow] (fuzzy.west) -- (match.east);
+
+% ================
+% Gruppenbox
+% ================
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(split)(count)] (group) {};
+\end{scope}
+\end{tikzpicture}
+  }
+  \captionof{figure}{das is n Test}
+\end{minipage}
+
+
+
+
+
+
+
+
+
 
 \newpage
 \begin{minipage}[t]{0.52\textwidth}
@@ -1289,7 +1624,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 \node[process, below=of normalize] (loadknown)  {\textbf{def load\_known\_persons} \\ (Lädt bekannte Personen aus GT-CSV)};
 
-\node[source, below= of ROLE] (PERSONGT)  {\textbf{Nodegoat-Export-Persons} \\ (Groundtruth Personen)};
+\node[source, below= of ROLE] (PERSONGT)  {\textbf{export-person.csv} \\ (Groundtruth Personen)};
 
 \node[process, below=of loadknown] (maprole)  {\textbf{def map\_role\_to\_schema\_entry} \\ (Wandelt normierte Rolle in Dict um)};
 
@@ -1299,7 +1634,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 
 \node[process, below=of findindx] (search)  {\textbf{def search\_roles\_nearby} \\ (Sucht Rollen im Umkreis)};
 
-\node[source, right=3.5cm of search] (ROLEGTSOURCE)  {\textbf{Nodegoat-Export-Roles} \\ (Groundtruth Rollen)};
+\node[source, right=3.5cm of search] (ROLEGTSOURCE)  {\textbf{export-roles.csv} \\ (Groundtruth Rollen)};
 
 \node[process, below=of search] (standalone)  {\textbf{def extract\_standalone\_roles} \\ (Findet neue Personen+Rollen-Kombis)};
 
@@ -1438,7 +1773,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[large] (placematcher) at (0,0) {\textbf{PlaceMatcher.py} \\ load, match, deduplicate};
 
 % CSV links von init
-\node[source, below=2.5cm of joinpoint] (CSV) {\textbf{Groundtruth CSV} \\ known places};
+\node[source, below=2.5cm of joinpoint] (CSV) {\textbf{export-place.csv} \\ known places};
 
 % Hauptfluss vertikal
 \node[process, below=1.2cm of placematcher] (initp) {\textbf{\_\_init\_\_ + sanitize\_id} \\ (Lädt CSV, alt\_name\_map, known\_name\_map)};
@@ -1609,7 +1944,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \node[large] (orgmatcher) at (0,0) {\textbf{Organization\_matcher.py}\\clean, match, deduplicate};
 
 % Groundtruth CSV links
-\node[source, below= 3.6cm of joinpointxml] (CSV) {\textbf{Groundtruth CSV}\\export-organisationen.csv};
+\node[source, below= 3.6cm of joinpointxml] (CSV) {\textbf{export-organisationen.csv}\\export-organisationen.csv};
 
 % Load
 \node[process, below=1.2cm of orgmatcher] (load) {\textbf{load\_organizations\_from\_csv} \\ (Lädt Orgs + Aliase)};
