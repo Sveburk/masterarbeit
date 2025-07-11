@@ -109,7 +109,7 @@
 \usepackage{nameref}
 \usepackage{orcidlink}
 \usepackage{iftex}
-\ifPDFTeX
+\ifPDFTeX%
   \usepackage[utf8]{inputenc}
   \usepackage{lmodern}
   % Authblk, pdfpages etc. hier einbinden
@@ -482,7 +482,7 @@ die während des Zweiten Weltkriegs verfasst wurden. Der Analysezeitraum erstrec
 und dem 8. Mai 1945, dem Tag der bedingungslosen Kapitulation Deutschlands.
 
 Die zeitliche Eingrenzung ist notwendig, um die Funktionalität der im Folgenden beschriebenen Pipeline 
-in einem klar definierten historischen Kontext demonstrieren zu können. Gleichzeitig führt diese Auswahl zu einer 
+in einem klar definierten historischen Kontext demonstrieren zu können. Gleichzeitig führt TeXshop?diese Auswahl zu einer 
 bewussten Reduzierung der potenziell erfassten Akteurinnen und Akteure, Orte und Organisationen. Diese Fokussierung ist 
 insbesondere im Hinblick auf die Erstellung einer verlässlichen Groundtruth bedeutsam, die durch ergänzende Archivrecherchen 
 mit historischen Metadaten angereichert wird.
@@ -611,12 +611,12 @@ dokumentiert werden, richtet sich der Fokus im zweiten Schritt auf die Feldpost.
 Rückschlüsse auf beteiligte Militäreinheiten, deren Stationierungen und Verlagerungen während des Zweiten Weltkriegs zu ziehen.
 
 Für diese Recherchen kommen einschlägige Fachliteratur zu den jeweiligen Fachgebieten zum Einsatz. 
-Hier sind besonders die Bücher von Alex Buchner\footcite[Vgl.][]{buchner_handbuch_1989}, Christian Hartmann\footcite[Vgl.][]{hartmann_wehrmacht_2010}, 
-Werner Haupt\footcite[Vgl.][]{haupt_buch_1982}, Christoph Rass\footcite[Vgl.][]{rass_deutsche_2009}, Georg Tessin\footcite[Vgl.][]{tessin_verbande_1977} 
-und Christian Zentner\footcite[Vgl.][]{zentner_illustrierte_1983} zu nennen.
+Hier sind besonders die Bücher von Alex Buchner\cite[Vgl.][]{buchner_handbuch_1989}, Christian Hartmann\cite[Vgl.][]{hartmann_wehrmacht_2010}, 
+Werner Haupt\cite[Vgl.][]{haupt_buch_1982}, Christoph Rass\cite[Vgl.][]{rass_deutsche_2009}, Georg Tessin\cite[Vgl.][]{tessin_verbande_1977} 
+und Christian Zentner\cite[Vgl.][]{zentner_illustrierte_1983} zu nennen.
 
-Darüberhinaus werden eigene Recherchen in den Beständen des \textit{Bundesarchivs -- Militärarchiv Freiburg}\cite{hollmann_freiburg_2025} durchgeführt. Ergänzende Recherchen 
-stammen aus den Suchlisten des \textit{Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}. Hinzu kommen philatelistische Übersichts-Websites \cite{noauthor_feldpost_nodate}, 
+Darüberhinaus werden eigene Recherchen in den Beständen des \textit{Bundesarchivs – Militärarchiv Freiburg}\cite{hollmann_freiburg_2025} durchgeführt. Ergänzende Recherchen 
+stammen aus den Suchlisten des \textit{Deutschen Roten Kreuzes (DRK)}\cite{reuter_drk_2025}. Hinzu kommen philatelistische Übersichts-Websites\cite{noauthor_feldpost_nodate}, 
 die bei der Entzifferung von Briefmarken und Stempeln helfen.
 Absoult essentiell für den Erfolg dieser Recherchen sind Citizen-Science-Foren\footnote{vor Allem werden verwendet: 
 \textit{Forum der Wehrmacht}~\parencite{hermans_forum_nodate} und das \textit{Lexikon der Wehrmacht}~\parencite{altenburger_lexikon_nodate}.}. Sie ergänzen und validieren eigene Forschung.
@@ -644,9 +644,9 @@ Smiraglia und Scharnhorst (2021)\cite[vgl.][]{richard_linking_2022},
  die anhand konkreter Fallstudien verdeutlichen, wie fragmentiert semantische Strukturen bislang entwickelt werden 
  und welche Hürden bei der praktischen Verknüpfung heterogener Wissensorganisationen bestehen. Dabei benennen sie insbesondere die 
  Herausforderungen bei der Übersetzung historisch gewachsener Klassifikationen in standardisierte semantische Formate, 
- die Notwendigkeit dauerhafter technischer Wartung und die Abhängigkeit von nachhaltigen Infrastruktur-Partnern\cite[vgl.][Kap.~2 und 5]{richard_linking_2022}.
+ die Notwendigkeit dauerhafter technischer Wartung und die Abhängigkeit von nachhaltigen Infrastruktur-Partnern\cite[vgl.][Kap. 2 und 5]{richard_linking_2022}.
 
-Für eine Einordnung zu historischen Netzwerkanaylsen sei auf Gamper\&Reschke \cite{gamper_knoten_2015} verwiesen. Der Sammelband
+Für eine Einordnung zu historischen Netzwerkanaylsen sei auf Gamper\&Reschke\cite{gamper_knoten_2015} verwiesen. Der Sammelband
 \textit{Knoten und Kanten III} verdeutlicht, dass die historische Netzwerkanalyse zwar von einem interdisziplinär etablierten Methodenkanon 
 profitiert, jedoch nach wie vor vor erheblichen Herausforderungen steht. Dazu zählen die Fragmentierung historischer Quellen, der hohe manuelle 
 Erfassungsaufwand und methodische Desiderate im Umgang mit zeitlichen und räumlichen Dimensionen. Erschwerende Faktoren einer systematische Erfassung 
@@ -715,7 +715,7 @@ Relationserstellung und Instanzverwaltung.
 Mit Hilfe von Plugins können darüber hinaus logische Konsistenzprüfungen durchgeführt und 
 Ontologien direkt im OWL-Format exportiert werden, um sie in LOD-Workflows einzubinden.
 Die initiale Version der Ontologie für dieses Projekt entstand zuerst im Codeeditor \textit{Visual Studio Code} wurde aber schnell vollständig in Protégé überarbeitet.
-Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in SPARQL.
+Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in SPARQL.%
 
 \paragraph{GraphDB} Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
 GraphDB ist eine spezialisierte RDF-Triplestore-Datenbank, die es ermöglicht, 
@@ -730,10 +730,10 @@ und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
 \noindent
 \begin{minipage}[t]{0.52\textwidth}
   \setstretch{1.5}
-  \justifying
+  \justifying%
 \paragraph{mmma-Ontologie}\\
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
-Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark
+Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst\footnotemark%
 Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (siehe~\nameref{subsec:forschungsstand}) ist 
 zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross tische Grundlage des Globalund damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
 auf die Extraktion von Entitäten.
@@ -787,7 +787,7 @@ Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_noda
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
 Alle Einträge sind in neun Feature–Klassen und über 600 spezifische Feature–Codes kategorisiert. Die Plattform integriert Daten zu 
 Ortsnamen in verschiedenen Sprachen, Höhenlagen, Bevölkerungszahlen und weiteren Attributen aus unterschiedlichen nationalen und internationalen Quellen.  
-Sämtliche Geokoordinaten basieren auf dem WGS84–System\footcite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)}; vgl.][]{noauthor_wgs84_nodate}
+Sämtliche Geokoordinaten basieren auf dem WGS84–System\cite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)};vgl.][]{noauthor_wgs84_nodate}
 und können über frei zugängliche Webservices oder eine API abgerufen werden.  
 Darüber hinaus erlaubt GeoNames registrierten Nutzenden, bestehende Datensätze über eine Wiki–Oberfläche zu bearbeiten oder zu ergänzen, wodurch eine 
 kollaborative Qualitätssicherung gewährleistet wird.
@@ -810,25 +810,58 @@ war scheisse und manipulativ
 
 \paragraph{Transkribus}
 
-Transkribus ist eine webbasierte Plattform zur automatisierten Handschrifterkennung (HTR) und Texterkennung (OCR), die sich seit ihrer Entwicklung im EU-Projekt READ (Recognition and Enrichment of Archival Documents)\cite[vgl.][]{noauthor_recognition_nodate} als Standardwerkzeug in den digitalen Geschichtswissenschaften etabliert hat \cite[vgl.][postnote]{muhlberger_transkribus_2019}. Betrieben wird Transkribus durch die READ-COOP SCE, einer europäischen Genossenschaft.
+Transkribus ist eine webbasierte Plattform zur automatisierten Handschrifterkennung (HTR) und Texterkennung (OCR), die sich seit ihrer Entwicklung im EU-Projekt READ 
+(Recognition and Enrichment of Archival Documents)\cite[vgl.][]{noauthor_recognition_nodate} als Standardwerkzeug in den digitalen Geschichtswissenschaften etabliert 
+hat\cite[vgl.][postnote]{muhlberger_transkribus_2019}. Betrieben wird Transkribus durch die READ-COOP SCE, einer europäischen Genossenschaft.
 
-Für die vorliegende Arbeit wird sowohl die Webanwendung \textit{\enquote{Transkribus Lite}} als auch der \textit{Desktop-\enquote{Transkribus Expert Client}} genutzt. Letzterer ist eine Fortführung der ursprünglichen, im Rahmen des READ-Projekts entwickelten Software. Die Verwendung des Expert Clients in Kombination mit \textit{FileZilla Pro} als FTP-Client ermöglicht es, die grosse Zahl an Scanseiten effizienter in das Transkribus-Dateimanagement einzupflegen. Die für das Projekt nötige Scholar-Lizenz wird über RISE der Universität Basel\cite[weitere Informationen:][postnote]{decker_home_nodate} bezogen.
+Für die vorliegende Arbeit wird sowohl die Webanwendung \textit{\enquote{Transkribus Lite}} als auch der \textit{Desktop-\enquote{Transkribus Expert Client}} genutzt. 
+Letzterer ist eine Fortführung der ursprünglichen, im Rahmen des READ-Projekts entwickelten Software. Die Verwendung des Expert Clients in Kombination mit \textit{FileZilla Pro} 
+als FTP-Client ermöglicht es, die grosse Zahl an Scanseiten effizienter in das Transkribus-Dateimanagement einzupflegen. Die für das Projekt nötige Scholar-Lizenz wird über 
+RISE der Universität Basel\cite[weitere Informationen:][postnote]{decker_home_nodate} bezogen.
 
-Neben der eigentlichen Transkription bietet Transkribus die Möglichkeit, Named Entities wie Personen, Orte, Organisationen und Datumsangaben direkt im Dokument zu annotieren. Dies geschieht über eine umfangreiche Tagging-Funktion, die neben struktureller Tags wie Abkürzungen (\enquote{abbrev}) auch individuell erweiterbar sind. Für diese Arbeit wird beispielsweise der Custom-Tag \colorbox{signature}{\texttt{signature}} eingeführt, der dem Anhang entnommen werden können.
+Neben der eigentlichen Transkription bietet Transkribus die Möglichkeit, Named Entities wie Personen, Orte, Organisationen und Datumsangaben direkt im Dokument zu annotieren. 
+Dies geschieht über eine umfangreiche Tagging-Funktion, die neben struktureller Tags wie Abkürzungen (\enquote{abbrev}) auch individuell erweiterbar sind. Für diese Arbeit wird 
+beispielsweise der Custom-Tag \colorbox{signature}{\texttt{signature}} eingeführt, der dem Anhang entnommen werden können.
 
 Nach erfolgter Bearbeitung stellt Transkribus Funktionen zur Verfügung, die Transkriptionen inklusive Tags als strukturiertes Markup im XML-Format zu exportieren.
 
-In der praktischen Anwendung zeigt sich jedoch eine erhebliche Diskrepanz zwischen den vorgesehenen Funktionen und der tatsächlich umgesetzten Exportlogik. Die händisch markierten und ausformulierten Abkürzungen werden im generierten Page-XML nicht ausgegeben, sodass diese Information für eine weitergehende Auswertung verloren geht. 
+In der praktischen Anwendung zeigt sich jedoch eine erhebliche Diskrepanz zwischen den vorgesehenen Funktionen und der tatsächlich umgesetzten Exportlogik. 
+Die händisch markierten und ausformulierten Abkürzungen werden im generierten Page-XML nicht ausgegeben, sodass diese Information 
+für eine weitergehende Auswertung verloren geht. So werden aus Abkürzungen wie \enquote{V.D.A} in XML:
 
-Aus Abkürzungen wie V.D.A soll in XML \colorbox{VeryLightGray}{\textless abbrev expansion=\enquote{Verein für das Deutschtum im Ausland}\textgreater V.D.A.\textless /abbrev\textgreater} werden. Tatsächlich fehlt der Tag komplett, V.D.A wird zum einfachen String. Unter Umständen wird dieser nun von den LLMs nicht mehr als Organisation erkannt. 
+\colorbox{VeryLightGray}{\textless~abbrev expansion=\enquote{Verein für das Deutschtum im Ausland}\textgreater\ \ V.D.A.\textless\ \ /abbrev\textgreater}.\\
+Tatsächlich fehlt solch ein erklärender Tag komplett, V.D.A wird zum einfachen String. Unter Umständen wird die Zeichenkette nun von den LLMs nicht mehr als Organisation erkannt. 
 
-Besonders gravierend ist das Defizit bei der Handhabung von Listen. Zwar können Listenobjekte innerhalb der Benutzeroberfläche manuell angelegt und befüllt werden, beim Export bleibt die zugehörige XML-Struktur jedoch leer. Ein technischer oder benutzerfreundlicher Workaround, um diese Daten maschinenlesbar zu extrahieren, existiert bislang nicht. Um auf die Listeninhalte im XML nicht zu verzichten, müssen sie daher als regulärer Fliesstext markiert werden — mit dem Effekt, dass die logische Gliederung, die etwa für Mitgliederverzeichnisse, Inventarlisten oder Aufstellungen forschungsrelevant ist, systematisch verloren geht. Dies führt zu erheblichem Mehraufwand und stellt eine signifikante methodische Limitation dar, insbesondere für Vorhaben, die auf einer automatisierten Weiterverarbeitung konsistenter Strukturdaten beruhen. Hinzu kommt der grosse Zeitaufwand für die manuelle Listengestaltung, die letztlich nicht zielführend verwertet werden kann.
+Besonders gravierend ist das Defizit bei der Handhabung von Listen. Zwar können Listenobjekte innerhalb der
+ Benutzeroberfläche manuell angelegt und befüllt werden, beim Export bleibt die zugehörige XML-Struktur jedoch leer. 
+ Ein technischer oder benutzerfreundlicher Workaround, um diese Daten maschinenlesbar zu extrahieren, existiert bislang nicht. 
+ Um auf die Listeninhalte im XML nicht zu verzichten, müssen sie daher als regulärer Fliesstext markiert werden — 
+ mit dem Effekt, dass die logische Gliederung, die etwa für Mitgliederverzeichnisse, Inventarlisten oder Aufstellungen 
+ forschungsrelevant ist, systematisch verloren geht. Dies führt zu erheblichem Mehraufwand und stellt eine signifikante methodische 
+ Limitation dar, insbesondere für Vorhaben, die auf einer automatisierten Weiterverarbeitung konsistenter Strukturdaten beruhen. 
+ Hinzu kommt der grosse Zeitaufwand für die manuelle Listengestaltung, die letztlich nicht zielführend verwertet werden kann.
 
-Die Herausforderungen decken sich mit den Beobachtungen von Capurro et al.\cite[][]{capurro_experimenting_2023}, die in ihrem Experiment mit einem mehrsprachigen und multi-autoren Handschriftenkorpus ebenfalls auf erhebliche Grenzen von Transkribus hinweisen: Sowohl die automatische Layout-Erkennung als auch die Handhabung komplexer Dokumentstrukturen erwiesen sich als fehleranfällig und machten umfangreiche manuelle Nachbearbeitung unvermeidbar. Auch der Versuch, HTR-Ergebnisse\footnote{Abk.: \textbf{HTR}, Handwritten Text Recognition} nachträglich automatisch zu verbessern (Postcorrection), brachte keine Verbesserung der Fehlerquote. Damit bestätigt sich der Befund, dass ein projektspezifisch trainiertes Modell – wie es hier mit vier Trainings-Iterationen umgesetzt wurde – zwar die CER senken kann, strukturelle Probleme jedoch ungelöst bleiben.
+Die Herausforderungen decken sich mit den Beobachtungen von Capurro et al.\cite[][]{capurro_experimenting_2023}, die in
+ ihrem Experiment mit einem mehrsprachigen und multi-autoren Handschriftenkorpus ebenfalls auf erhebliche Grenzen von 
+ Transkribus hinweisen: Sowohl die automatische Layout-Erkennung als auch die Handhabung komplexer Dokumentstrukturen erwiesen 
+ sich als fehleranfällig und machten umfangreiche manuelle Nachbearbeitung unvermeidbar. Auch der Versuch, 
+ HTR-Ergebnisse\footnote{Abk.: \textbf{HTR}, Handwritten Text Recognition} nachträglich automatisch zu verbessern (Postcorrection), 
+ brachte keine Verbesserung der Fehlerquote. Damit bestätigt sich der Befund, dass ein projektspezifisch trainiertes Modell – wie es hier mit vier T
+ rainings-Iterationen umgesetzt wurde – zwar die CER senken kann, strukturelle Probleme jedoch ungelöst bleiben.
 
-Der methodische Mehrwert von Transkribus liegt trotz dieser Limitierungen in der Möglichkeit, ein eigenes, auf den spezifischen Handschriftencorpus angepasstes HTR-Modell zu trainieren. Ein generisches Modell \textit{(The German Giant I)} erzielt zu Beginn eine Character Error Rate \textit{(CER)} von 8,3\%. Durch das Training auf einer eigens erstellten Groundtruth mit 149 Seiten lässt sich ein projektspezifisches Modell entwickeln, das die CER auf 6,58\% senkt. Auch für das Tagging selbst wurde eine umfassende Groundtruth für etwaige spätere Anwendungen (und als Vergleich für die LLMs) erstellt. Sie besteht aus insgesamt 100 Seiten händischer Annotation. Diese umfassende manuelle Nachbearbeitung stellt ein möglichst konsistentes, maschinenlesbares XML sicher. Aus diesem Grund werden auch Taggingregeln festgehalten, die später auch an das LLM weitergegeben werden.
+Der methodische Mehrwert von Transkribus liegt trotz dieser Limitierungen in der Möglichkeit, ein eigenes, auf den spezifischen Handschriftencorpus 
+angepasstes HTR-Modell zu trainieren. Ein generisches Modell \textit{(The German Giant I)} erzielt zu Beginn eine Character Error Rate \textit{(CER)} von 8,3\%. 
+Durch das Training auf einer eigens erstellten Groundtruth mit 149 Seiten lässt sich ein projektspezifisches Modell entwickeln, das die CER auf 6,58\% senkt. 
+Auch für das Tagging selbst wurde eine umfassende Groundtruth für etwaige spätere Anwendungen (und als Vergleich für die LLMs) erstellt. Sie besteht aus insgesamt
+ 100 Seiten händischer Annotation. Diese umfassende manuelle Nachbearbeitung stellt ein möglichst konsistentes, maschinenlesbares XML sicher. Aus diesem Grund 
+ werden auch Taggingregeln festgehalten, die später auch an das LLM weitergegeben werden.
 
-Insgesamt zeigt sich, dass Transkribus als Plattform eine sehr hilfreiche Basis für grossvolumige Transkriptionsprojekte bietet. Die automatisierte Erkennung spart erhebliche Zeit, ersetzt jedoch weder editorische Sorgfalt noch eine manuelle Qualitätssicherung. Gerade für Forschungsprojekte, die auf präzisen Strukturdaten beruhen, wie hier für Netzwerkanalysen mit Nodegoat, bleibt eine kritische Reflexion der Tool-Limitierungen unerlässlich. Transkribus unterstützt ausgesprochen bei der initialen Transkription, ermöglicht das verständlichere Lesen einzelner Passagen -- darauf aufbauend ergibt sich ein Kontext, der eine vollständige Transkription mit viel manueller Arbeit möglich macht. Für Netzwerkanalysen relevante Informationen wie Signaturen werden oft falsch transkribiert - und eine Zuordnung per Tag ist daher durch den Menschen effizienter, als für sehr kleine Beispielmengen ein spezialisiertes Neuronales Netzwerk zu trainieren.
+Insgesamt zeigt sich, dass Transkribus als Plattform eine sehr hilfreiche Basis für grossvolumige Transkriptionsprojekte bietet. Die automatisierte Erkennung spart erhebliche Zeit,
+ersetzt jedoch weder editorische Sorgfalt noch eine manuelle Qualitätssicherung. Gerade für Forschungsprojekte, die auf präzisen Strukturdaten beruhen, wie hier für Netzwerkanalysen
+mit Nodegoat, bleibt eine kritische Reflexion der Tool-Limitierungen unerlässlich. Transkribus unterstützt ausgesprochen bei der initialen Transkription, ermöglicht das verständlichere 
+Lesen einzelner Passagen. Darauf aufbauend ergibt sich den Forschenden ein Kontext, der eine vollständige Transkription mit viel manueller Arbeit möglich macht. Für Netzwerkanalysen 
+relevante Informationen wie Signaturen werden durch das Tool oft falsch transkribiert. Eine Zuordnung per Tag ist daher durch den Menschen effektiver, als für sehr kleine Beispielmengen ein 
+spezialisiertes Neuronales Netzwerk zu trainieren.
 
 
 \subsubsection{Large Language Models}  
@@ -1001,11 +1034,24 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \subsubsection{\_\_init\_\_.py}
 
 \newpage
-\subsubsection{Person-Matcher}
-\begin{figure}[htbp]
-  \centering
-  \resizebox{0.9\textwidth}{!}{
-    \begin{tikzpicture}
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying%
+
+  \subsubsection{Person\_matcher.py}
+
+  Hier steht eine menge schöner Text
+
+  \end{minipage}%
+% ================================
+% Person PROZESSDIAGRAMM
+% ================================
+  \hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
 
 
 % TikZ styles
@@ -1017,7 +1063,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
   arrowboth/.style={stealth-stealth, line width=0.15mm},
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
   large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-}
+};
 %==========================
 % Mini-Diagramm oben rechts
 %==========================
@@ -1058,8 +1104,7 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
 \draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
 
-%Pfeile unten
- Doppelte Pfeile mit definiertem Stil
+%Pfeile unten Doppelte Pfeile mit definiertem Stil
 \draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
 \draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
 
@@ -1136,23 +1181,28 @@ Verweis auf Groundtruth in Kombination mit wikidata und geojson, da gementioned 
 \end{scope}
 \end{tikzpicture}
   }
-  \caption{\small\textit{Detailliertes Prozessdiagramm für Personen\_matcher.py}}
-  \label{fig:person_matcher.py}
-
-  \smallskip
-  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Input aus \texttt{role\_matcher.py} und \texttt{organization\_matcher.py}}
-\end{figure}
+  \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \texttt{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
+\end{minipage}
 
 \newpage
-\subsubsection{Assigned\_Roles\_Module.py}
-blablabalabla
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying%
 
-\begin{figure}[htbp]
-  \centering
-  \resizebox{0.9\textwidth}{!}{
-    \begin{tikzpicture}
+  \subsubsection{Assigned\_Roles\_Module.py}
 
+  Hier steht eine menge schöner Text
 
+  \end{minipage}%
+% ================================
+% Roles PROZESSDIAGRAMM
+% ================================
+  \hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
 % TikZ styles
 \tikzset{
   module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
@@ -1162,7 +1212,7 @@ blablabalabla
   arrowboth/.style={stealth-stealth, line width=0.15mm},
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
   large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-}
+};
 %==========================
 % Mini-Diagramm oben rechts
 %==========================
@@ -1202,8 +1252,7 @@ blablabalabla
 \draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
 \draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
 
-%Pfeile unten
- Doppelte Pfeile mit definiertem Stil
+%Pfeile unten Doppelte Pfeile mit definiertem Stil
 \draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
 \draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
 
@@ -1274,19 +1323,370 @@ blablabalabla
 % === Umrandung ===
 \node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(normalize)(intoken)] (group) {};
 \end{scope}
+
 \end{tikzpicture}
-  }
-  \caption{\small\textit{Prozessdiagramm für Assigned\_Roles\_Module.py; schematische Funktionsreihenfolge und Ressourcen}}
-  \label{fig:assigned_roles_module}
-
-  \smallskip
-  \small\textit{Oben rechts: Pipelineübersicht \\ Rechts: Ressourcen; Role\_Mappings\_DE, Nodegoat-Export-Persons, Nodegoat-Export-Roles}
-\end{figure}
+}
+\captionof{figure}{\\\small Links: \small Prozessdiagramm für \texttt{Assigned\_Roles\_Module.py},\\{\small Rechts: Pipelineübersicht}}\label{fig:assigned_roles_module}
+\end{minipage}
 
 
-\subsubsection{place\_matcher.py}
 
-\subsubsection{organization\_matcher.py}
+
+
+\newpage
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying%
+
+  \subsubsection{place\_matcher.py}
+
+  Hier steht eine menge schöner Text
+
+  \end{minipage}%
+% ================================
+% PlaceMatcher PROZESSDIAGRAMM
+% ================================
+  \hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+
+
+% =============================
+% TikZ Styles
+% =============================
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm, align=center},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm},
+};
+%==========================
+% Mini-Diagramm Placematcher
+%==========================
+
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
+
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module]    (events)  at (-2.0, -1.3) {};
+\node[module]    (roles)   at (-1.2, -1.3) {};
+\node[module] (persons) at (-0.4, -1.3) {};
+\node[module]    (orgs)    at ( 0.4, -1.3) {};
+\node[module]    (places)  at ( 1.2, -1.3) {};
+\node[highlight]    (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors)    at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+%Pfeile oben
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+%Pfeile unten Doppelte Pfeile mit definiertem Stil
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+
+% =============================
+% Haupt-Block: PlaceMatcher
+% =============================
+\begin{scope}
+\node[large] (placematcher) at (0,0) {\textbf{PlaceMatcher.py} \\ load, match, deduplicate};
+
+% CSV links von init
+\node[source, below=2.5cm of joinpoint] (CSV) {\textbf{Groundtruth CSV} \\ known places};
+
+% Hauptfluss vertikal
+\node[process, below=1.2cm of placematcher] (initp) {\textbf{\_\_init\_\_ + sanitize\_id} \\ (Lädt CSV, alt\_name\_map, known\_name\_map)};
+
+\node[process, below=of initp] (normalize) {\textbf{\_normalize\_place\_name} \\ (Normiert Ortsnamen)};
+
+\node[process, below=of normalize] (match) {\textbf{match\_place} \\ (Exact, Fuzzy, Kontext, API)};
+
+\node[process, below=of match] (buildres) {\textbf{\_build\_match\_result} \\ (APIs ergänzen, Wikidata enrich)};
+
+\node[process, below=of buildres] (dedup) {\textbf{deduplicate\_places} \\ (Gruppiert nach ID)};
+
+\node[process, below=of dedup] (pipeline) {\textbf{enrich\_and\_deduplicate} \\ (Pipeline Wrapper)};
+
+\node[process, below=of pipeline] (output) {\textbf{mentioned\_places\_from\_custom\_data} \\ (Erzeugt Place-Objekte)};
+
+% Abzweige rechts
+\node[process, left=1.5cm of match] (context) {\textbf{\_generate\_combined\_place\_names} \\ (Kontext-Kombis)};
+
+\node[source, below=4.8cm of joinpoint] (geoapi) {\textbf{Geonames API}};
+\node[source, below=0.8cm of geoapi] (wikiapi) {\textbf{Wikidata SPARQL}};
+
+\node[process, left=1.5cm of buildres] (log) {\textbf{log\_unmatched\_place} \\ (Speichert unmatched)};
+
+% Verbindungen Hauptfluss
+\draw[arrow] (placematcher.south) -- (initp.north);
+\draw[arrow] (initp.south) -- (normalize.north);
+\draw[arrow] (normalize.south) -- (match.north);
+\draw[arrow] (match.south) -- (buildres.north);
+\draw[arrow] (buildres.south) -- (dedup.north);
+\draw[arrow] (dedup.south) -- (pipeline.north);
+\draw[arrow] (pipeline.south) -- (output.north);
+
+% CSV-Input
+\draw[arrow] 
+  (CSV.west)
+  -- ++(-1,0)       % 1 cm rechts
+  |- (initp.east); % dann runter/hoch bis initp.west
+
+% Kontext-Pfeil
+\draw[arrowboth] (match.west) -- (context.east);
+
+% APIs
+
+\draw[arrow]
+  % 1) Verschobener Start um 0,3 cm nach oben
+  ($(buildres.east)+(0cm,0.3cm)$)
+  % 2) von dort 1 cm nach rechts
+  -- ++(1cm,0)
+  % 3) und dann im L-Bogen zur GeoAPI
+  |- (geoapi.west);
+
+% Pfeil zu Wiki
+\coordinate (pivot) at ($(buildres.east)+(0cm,-0.3)$);
+\draw[arrow] 
+  (wikiapi.south)    % wieder am buildres
+  -- ++(0,0)       % dieselbe Hilfsstrecke
+  |- (pivot)
+
+\draw[arrow] (geoapi.south) -- (wikiapi.north);
+
+
+% Logging
+\draw[arrow] (buildres.west) -- ++(0,0) |- (log.east);
+
+% Optional: normalize nutzt context auch
+% \draw[arrow, dashed] (normalize.east) -- ++(0.5,0) |- (context.west);
+
+% Umrandung
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(initp)(output)(log)(context)] {};
+\end{scope}
+
+\end{tikzpicture}
+}
+\captionof{figure}{\\\small Links: \small Prozessdiagramm für \texttt{place\_matcher.py},\\{\small Rechts: Pipelineübersicht}}\label{fig:placematcher_final}
+\end{minipage}
+
+
+\begin{minipage}[t]{0.52\textwidth}
+  \setstretch{1.5}
+  \justifying%
+
+  \subsubsection{organization\_matcher.py}
+
+  Hier steht eine menge schöner Text
+
+  \end{minipage}%
+  \hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+% =============================
+% TikZ Styles
+% =============================
+\tikzset{
+  module/.style={rectangle, draw=black, fill=blue!10, minimum width=0.4cm, minimum height=0.2cm},
+  source/.style={rectangle, draw=black, fill=green!20, minimum width=0.4cm, minimum height=0.2cm, align=center},
+  highlight/.style={rectangle, draw=black, fill=blue!40, minimum width=0.4cm, minimum height=0.2cm},
+  process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
+  large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
+  arrow/.style={-stealth, line width=0.15mm},
+  arrowboth/.style={stealth-stealth, line width=0.15mm}
+};
+
+% =============================
+% Mini-Diagramm oben rechts
+% =============================
+\begin{scope}[shift={(9,0.45)}, node distance=0.3cm]
+\node[module] (init) at (0,0) {};
+\node[module] (xml) at (0, -0.5) {};
+\node[module] (events)  at (-2.0, -1.3) {};
+\node[module] (roles)   at (-1.2, -1.3) {};
+\node[module] (persons) at (-0.4, -1.3) {};
+\node[highlight] (orgs) at ( 0.4, -1.3) {}; % Highlight für Org-Matcher
+\node[module] (places)  at ( 1.2, -1.3) {};
+\node[module] (dates)   at ( 2.0, -1.3) {};
+\node[module] (authors) at (-0.4, -2  ) {};
+
+\node[coordinate] (joinpoint) at ($(xml.south) + (0, -1.8cm)$) {};
+\node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.3cm)$) {};
+
+\node[module, below=of joinpoint] (unmatched) {};
+\node[module, below=of unmatched] (json) {};
+\node[source, below=of json] (save) {};
+\node[source, right=0.5cm of save] (unmatchedjson) {};
+
+\draw[arrow, dashed] (persons.south) -- (authors.north);
+\draw[arrow] (unmatched.east) -| (unmatchedjson.north);
+\draw[arrow] (json.south) -- (save.north);
+\draw[arrow] (init.south) -- (xml.north);
+\draw[arrowboth] (roles.east) -- (persons.west);
+\draw[arrowboth] (persons.east) -- (orgs.west);
+\draw[arrowboth] (orgs.east) -- (places.west);
+\draw[arrowboth] (places.east) -- (dates.west);
+
+\draw[arrow] (xml.south) -- (joinpointxml.south);
+\draw[arrow] (joinpointxml) -- ($(roles.north |- joinpointxml)$) -- (roles.north);
+\draw[arrow] (joinpointxml) -- ($(persons.north |- joinpointxml)$) -- (persons.north);
+\draw[arrow] (joinpointxml) -- ($(orgs.north |- joinpointxml)$) -- (orgs.north);
+\draw[arrow] (joinpointxml) -- ($(places.north |- joinpointxml)$) -- (places.north);
+\draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
+\draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
+
+\draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
+\draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (roles.south) -- ($(roles.south |- joinpoint)$);
+\draw[arrow] ($(roles.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (authors.south) -- ($(authors.south |- joinpoint)$);
+\draw[arrow] ($(authors.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (orgs.south) -- ($(orgs.south |- joinpoint)$);
+\draw[arrow] ($(orgs.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (places.south) -- ($(places.south |- joinpoint)$);
+\draw[arrow] ($(places.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (dates.south) -- ($(dates.south |- joinpoint)$);
+\draw[arrow] ($(dates.south |- joinpoint)$) -- (joinpoint);
+\draw[arrow] (joinpoint.south) -- (unmatched.north);
+\draw[arrow] (unmatched.south) -- (json.north);
+\draw[arrow] (json.south) -- (save.north);
+\end{scope}
+
+% =============================
+% Haupt-Block: Organization Matcher
+% =============================
+
+\begin{scope}
+\node[large] (orgmatcher) at (0,0) {\textbf{Organization\_matcher.py}\\clean, match, deduplicate};
+
+% Groundtruth CSV links
+\node[source, below= 3.6cm of joinpointxml] (CSV) {\textbf{Groundtruth CSV}\\export-organisationen.csv};
+
+% Load
+\node[process, below=1.2cm of orgmatcher] (load) {\textbf{load\_organizations\_from\_csv} \\ (Lädt Orgs + Aliase)};
+
+% Global List
+\node[process, below=of load] (known) {\textbf{KNOWN\_ORGS} \\ (Globale Liste aller Orgs)};
+
+% Cleaning
+\node[process, below=of known] (extract) {\textbf{extract\_organization} \\ (Säubert Name, entfernt Müll)};
+
+% Normalize
+\node[process, below=of extract] (normalize) {\textbf{normalize\_org\_name} \\ (Normiert Name für Fuzzy)};
+
+% Special Case
+\node[process, left=1.5cm of normalize] (acro) {\textbf{match\_acronym} \\ (Akronym-Fall)};
+
+% Main Matcher
+\node[process, below=of normalize] (match) {\textbf{match\_organization} \\ (Exact + Fuzzy Vergleich)};
+
+% Entities Matcher
+\node[process, below=of match] (entities) {\textbf{match\_organization\_entities} \\ (Mehrere Tokens + Kombis)};
+
+% Fulltext
+\node[process, below=of entities] (fulltext) {\textbf{match\_organization\_from\_text} \\ (Ganzer Text auf Orgs prüfen)};
+
+% Direct Lookup
+\node[process, below=of fulltext] (byname) {\textbf{match\_organization\_by\_name} \\ (Direkter Einzelaufruf)};
+
+% Wikidata
+\node[process, left=1.5cm of extract] (wikidata) {\textbf{extract\_wikidata\_id} \\ (Wikidata-ID extrahieren)};
+
+% === Pfeile ===
+\draw[arrow] (orgmatcher.south) -- (load.north);
+\draw[arrow] (load.south) -- (known.north);
+\draw[arrow] (known.south) -- (extract.north);
+\draw[arrow] (extract.south) -- (normalize.north);
+\draw[arrow] (normalize.south) -- (match.north);
+\draw[arrow] (match.south) -- (entities.north);
+\draw[arrow] (entities.south) -- (fulltext.north);
+\draw[arrow] (fulltext.south) -- (byname.north);
+
+% CSV Verbindung
+\draw[arrow]
+  (load.east)       % Start am load-Knoten
+  -- ++(1cm,0)      % 1 cm nach rechts (spiegelt das ursprüngliche -- ++(-1,0))
+  |- ($(CSV.west)+(0cm,0.3cm)$);    % dann im L-Bogen zurück zum CSV-Knoten
+
+\draw[arrow]
+  % Start 0,3 cm unter CSV.west
+  ($(CSV.west)+(0cm,-0.3cm)$)
+  % dann gerade zur known.east
+  -- (known.east);
+
+% Branches
+\draw[arrow] (normalize.west) -- (acro.east);
+\draw[arrow] (extract.west) -- (wikidata.east);
+
+% Acronym-Verbindung zu Main Matcher
+\draw[arrow] (acro.south) |- (match.east);
+
+% Umrandung
+\node[draw=gray, dashed, rounded corners, inner sep=0.5cm, fit=(load)(byname)(wikidata)(acro)] {};
+\end{scope}
+
+\end{tikzpicture}
+}
+\captionof{figure}{
+  \small
+  Links: Prozessdiagramm für \texttt{Organization\_matcher.py},\\
+  Rechts: Pipelineübersicht
+}
+\label{fig:organization_matcher}
+\end{minipage}
+
+
+
+
 
 \subsubsection{letter\_metadata\_matcher.py}
 
@@ -1300,7 +1700,7 @@ blablabalabla
 
 \begin{minipage}[t]{0.52\textwidth}
   \setstretch{1.5}
-  \justifying
+  \justifying%
 
   \subsubsection{unmatched\_logger.py}
 
@@ -1315,7 +1715,7 @@ durch die die Groundtruth schrittweise ergänzt und verbessert werden kann.
 um den Code zu optimieren und alle bislang nicht erfassten Entitäten zuverlässig zu identifizieren.
 \end{minipage}%
 \hfill
-\begin{minipage}[t]{0.46\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
   \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
 \centering
 \resizebox{\textwidth}{!}{
@@ -1331,7 +1731,7 @@ um den Code zu optimieren und alle bislang nicht erfassten Entitäten zuverläss
   arrowboth/.style={stealth-stealth, line width=0.15mm},
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
   large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-}
+};
 %==========================
 % Mini-Diagramm oben rechts
 %==========================
@@ -1512,7 +1912,7 @@ ist.
 \subsection{Forschungsstand zu den Quellen}
 Die vorliegende Arbeit stützt sich auf diese Vorarbeit und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Informationen ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben wurde?}
 
-Hierzu werden Nachschlagetabellen in der Fachliteratur (vgl. \autocites{tessin_verbande_1977}{hartmann_wehrmacht_2010}{rass_deutsche_2009}), die Bestände des \textit{Bundesarchives – Militärarchiv Freiburg} \autocite{hollmann_freiburg_2025}, des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)} \autocite{reuter_drk_2025} sowie Citizen-Science-Projekte\footnote{ vgl. z.B. Wikidata: \autocite{burkhardt_78th_2024}, \autocite{altenburger_lexikon_nodate-1}, \autocite{hermans_forum_nodate}.} herangezogen und letztere teils durch eigene Recherche ergänzt.
+Hierzu werden Nachschlagetabellen in der Fachliteratur (vgl.~\autocites{tessin_verbande_1977}{hartmann_wehrmacht_2010}{rass_deutsche_2009}), die Bestände des \textit{Bundesarchives – Militärarchiv\ } Freiburg \autocite{hollmann_freiburg_2025}, des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)} \autocite{reuter_drk_2025} sowie Citizen-Science-Projekte\footnote{ vgl. z.B\. Wikidata: \autocite{burkhardt_78th_2024}, \autocite{altenburger_lexikon_nodate-1}, \autocite{hermans_forum_nodate}.} herangezogen und letztere teils durch eigene Recherche ergänzt.
 
 
 Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\cite[vgl.][]{burkhardt_githubakten_gesamtubersichtcsv_2025} 
@@ -1537,9 +1937,9 @@ Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seit
     Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
     frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefrass durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
 
-    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl. \href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
+    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl.~\href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
     Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
-    Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im 90\textdegree Winkel über den Seiten positioniert ist. 
+    Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im rechten Winkel (90\textdegree) über den Seiten positioniert ist. 
     Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
   
     \subsubsection{Digitalisierung und Transkription}
@@ -1687,8 +2087,7 @@ Mit herzl. Grüssen \\
 Dein\\
 \textbf{\colorbox{person}{\texttt{Carl}}}\\
 \end{tcolorbox}
-\caption{Tagging von \autoref{fig:brief-carl-alfons}}
-  \label{fig:Tagging-brief-carl-alfons}
+\caption{Tagging von \autoref{fig:brief-carl-alfons}}\label{fig:Tagging-brief-carl-alfons}
 \end{figure}
 
 
@@ -1701,7 +2100,7 @@ Ich wandle traurig her in schwarzer Seide.\\
 Die Sehnsucht brennt, du bist so fern.\\
 Ach lieber \textbf{\colorbox{person}{\texttt{Otto}}}, wie hab ich dich gern.\\
 Ich schnitt es gern in alle Rinden.\\
-Ach \textbf{\colorbox{person}{\texttt{Otto}}}, wann u. wo kann ich dich finden?\\
+Ach \textbf{\colorbox{person}{\texttt{Otto}}}, wann u.\ \ wo kann ich dich finden?\\
 Deine dich nie vergessende\\
 \textbf{\colorbox{person}{\texttt{Lina Fingerdick}}}\\
 \\
@@ -1852,7 +2251,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
   arrowboth/.style={stealth-stealth, line width=0.15mm},
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=6cm, minimum height=1cm, align=center},
   large/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center}
-}
+};
 %==========================
 % Mini-Diagramm oben rechts
 %==========================
@@ -1889,8 +2288,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 \draw[arrow] (joinpointxml) -- ($(dates.north |- joinpointxml)$) -- (dates.north);
 \draw[arrow] (joinpointxml) -- ($(events.north |- joinpointxml)$) -- (events.north);
 
-%Pfeile unten
- Doppelte Pfeile mit definiertem Stil
+%Pfeile unten; Doppelte Pfeile mit definiertem Stil
 \draw[arrow] (events.south) -- ($(events.south |- joinpoint)$);
 \draw[arrow] ($(events.south |- joinpoint)$) -- (joinpoint);
 
@@ -2033,7 +2431,7 @@ z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
 
 \begingroup
 \small
-\singlespacing
+\singlespacing%
 \printbibliography[
 heading=bibintoc,
 title={References}%title of the 'references' section, change this if necessary
@@ -2122,11 +2520,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
     
     \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind: 
-    \colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+    \colorbox{VeryLightGray}{\textless\ \  abbrev\textgreater\ \  V.D.A.\textless\ \  /abbrev\textgreater}.
 
     \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
     
-    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiss{\textless /person\textgreater}}
+    \colorbox{VeryLightGray}{\textless\ \  person\textgreater\ \  \textless\ \  abbrev\textgreater\ \  Dr.\textless\ \  /abbrev\textgreater\ \  Weiss{\textless\ \  /person\textgreater}}
 
     
     % Unclear    
@@ -2138,11 +2536,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
     \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
 
-    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless unclear\textgreater [...]\textless unclear\textgreater}.}
+    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  unclear\textgreater}.}
 
     \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
 
-    \colorbox{VeryLightGray}{\enquote{{\textless place\textgreater Frei\textless unclear\textgreater [...]\textless unclear\textgreater \textless place\textgreater}}.}
+    \colorbox{VeryLightGray}{\enquote{{\textless\ \  place\textgreater\ \  Frei\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  unclear\textgreater\ \  \textless\ \  place\textgreater}}.}
     
 %Sic   
     \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
@@ -2184,24 +2582,26 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
     \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimmermann\textless /signature\textgreater}}. 
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  A. Zimmermann\textless\ \  /signature\textgreater}}. 
 
     \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: 
 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater R. We\textless unclear\textgreater [\ldots]\textless /unclear\textgreater\textless /signature\textgreater}}. 
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  R. We\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  /unclear\textgreater\textless\ \  /signature\textgreater}}. 
 
     
-    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift 
+    vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:\\
 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater \textless unclear\textgreater \textit{etwas unleserliches}\textless /unclear\textgreater \textless /signature\textgreater}.} 
+    \colorbox{VeryLightGray}
+    {\texttt{\textless\ \  signature\textgreater\ \  \textless\ \  unclear\textgreater\ \  \textit{etwas unleserliches}\textless\ \  /unclear\textgreater\ \  \textless\ \  /signature\textgreater}.} 
     
     \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: 
 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater A. Zimm\textless unclear\textgreater [...]\textless /unclear\textgreater\textless /signature\textgreater}.} 
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  A. Zimm\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  /unclear\textgreater\textless\ \  /signature\textgreater}.} 
     
     \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless signature\textgreater Alfons Zimmermann\textless /signature\textgreater}.} 
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  Alfons Zimmermann\textless\ \  /signature\textgreater}.} 
     
     % Organization    
     \item\texttt{\textbf{{\colorbox{organization}{organization}}}}
@@ -2222,7 +2622,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. \enquote{bei Berlin}, \enquote{im Murgtal} werden getaggt:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless place\textgreater im Murgtal\textless /place\textgreater}.} 
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  place\textgreater\ \  im Murgtal\textless\ \  /place\textgreater}.} 
 
     
     % Date    
@@ -2234,9 +2634,9 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     \textbf{\ding{43} Beispiel 2}: 29. Mai 1936
 
-    \textbf{\ding{43} Beispiel 3}: den 29. d. Mts.:
+    \textbf{\ding{43} Beispiel 3}: den 29.\ \  d. Mts.:
 
-    \colorbox{VeryLightGray}{\texttt{\textless date when=\enquote{29.05.1936}\textgreater den 2.\textless /date\textgreater} \texttt{\textless abbrev\textgreater d. Mts.\textless /abbrev\textgreater}}
+    \colorbox{VeryLightGray}{\texttt{\textless\ \  date when=\enquote{29.05.1936}\textgreater\ \  den 2.\textless\ \  /date\textgreater} \texttt{\textless\ \  abbrev\textgreater\ \  d. Mts.\textless\ \  /abbrev\textgreater}}
 
 % Event
     \item\texttt{\textbf{{\colorbox{eventTag}{event}}}}
@@ -2264,11 +2664,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
     \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
 
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless abbrev\textgreater V.D.A.\textless /abbrev\textgreater}.
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless\ \  abbrev\textgreater\ \  V.D.A.\textless\ \  /abbrev\textgreater}.
 
     \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
 
-    \colorbox{VeryLightGray}{\textless person\textgreater \textless abbrev\textgreater Dr.\textless /abbrev\textgreater Weiss{\textless /person\textgreater}}
+    \colorbox{VeryLightGray}{\textless\ \ person\textgreater\ \  \textless\ \  abbrev\textgreater\ \  Dr.\textless\ \  /abbrev\textgreater\ \  Weiss{\textless\ \  /person\textgreater}}
     
     % Unclear    
     \item\texttt{\textbf{{\colorbox{unclear}{unclear}}}}
@@ -2278,11 +2678,11 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
     \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
 
-    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless unclear\textgreater [\ldots]\textless unclear\textgreater}.}
+    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless\ \ unclear\textgreater\ \ [\ldots]\textless\ \ unclear\textgreater}.}
 
     \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
 
-    \colorbox{VeryLightGray}{\enquote{{\textless place\textgreater Frei\textless unclear\textgreater [\ldots]\textless unclear\textgreater \textless place\textgreater}}.}
+    \colorbox{VeryLightGray}{\enquote{{\textless~place\textgreater~Frei\textless~unclear\textgreater~[\ldots]\textless~unclear\textgreater~\textless~place\textgreater}}.}
 
     
 %Sic   
@@ -2301,7 +2701,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
 
     \end{description}
-
+    \end{description}
 
 
     \endgroup
