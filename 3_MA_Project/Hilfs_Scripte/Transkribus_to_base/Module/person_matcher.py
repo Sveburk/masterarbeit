@@ -366,7 +366,7 @@ OCR_ERRORS: Dict[str, List[str]] = {
 # ============================================================================
 
 
-def normalize_name_string(name: str) -> (str, str):
+def normalize_name_string(name: str):
     """
     Trennt Titel-Token am Anfang, normalisiert den Rest.
     Rückgabe: (bereinigter Name, erkannter Titel)
@@ -529,8 +529,8 @@ from typing import Union, Optional, Dict, Tuple, List, Any
 
 def match_person(
     person: dict[str, Union[str, int, bool, None]],
-    candidates: List[Dict[str, str]] = KNOWN_PERSONS,
-) -> Tuple[Optional[Dict[str, Union[str, int, bool, None]]], int]:
+    candidates = KNOWN_PERSONS,
+)
 
     if (
         person.get("role_schema")
