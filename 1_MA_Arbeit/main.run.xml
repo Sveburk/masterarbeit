@@ -53,13 +53,13 @@
       <file>blx-dm.def</file>
       <file>blx-compat.def</file>
       <file>biblatex.def</file>
-      <file>chicago-notes.bbx</file>
-      <file>chicago-notes.cbx</file>
+      <file>standard.bbx</file>
+      <file>authoryear.bbx</file>
+      <file>authoryear-ibid.bbx</file>
+      <file>authoryear-ibid.cbx</file>
       <file>biblatex.cfg</file>
       <file>german.lbx</file>
-      <file>cms-german.lbx</file>
       <file>ngerman.lbx</file>
-      <file>cms-ngerman.lbx</file>
     </requires>
   </internal>
   <external package="biblatex" priority="5" active="1">
