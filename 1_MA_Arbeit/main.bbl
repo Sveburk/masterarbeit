@@ -18,7 +18,7 @@
 
 
 \refsection{0}
-  \datalist[entry]{cms/global//global/global}
+  \datalist[entry]{nyt/global//global/global}
     \entry{burkhardt_78th_2024}{online}{}
       \name{editora}{1}{}{%
         {{hash=aa7555ad04e58230fba1f0a5f815dea4}{%
@@ -32,6 +32,8 @@
       \strng{editorafullhash}{aa7555ad04e58230fba1f0a5f815dea4}
       \field{sortinit}{7}
       \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labeltitlesource}{title}
       \field{abstract}{The 78th Infantry Division was established in 1939 for the Wehrmacht and served on both the Western and Eastern Fronts, including battles in France, Stalingrad, and during Operation Barbarossa.}
       \field{day}{15}
@@ -72,6 +74,8 @@
       \strng{authorfullhash}{27a7ec2f787f3a65f551b348db133232}
       \field{sortinit}{A}
       \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Lexikon der Wehrmacht}
@@ -87,6 +91,89 @@
       \endverb
       \verb{url}
       \verb https://www.lexikon-der-wehrmacht.de/Gliederungen/Infanteriedivisionen/205ID.htm
+      \endverb
+    \endentry
+    \entry{beck_review_2020}{article}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=5b05dfa04b4b93c454478fcca783ee91}{%
+           family={Beck},
+           familyi={B\bibinitperiod},
+           given={Maximilian},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7703d33831c93661ff566a98e9c029d6}{%
+           family={Pöppel},
+           familyi={P\bibinitperiod},
+           given={Korbinian},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8b36fed8f7a0a602139b6d67aaa887e1}{%
+           family={Spanring},
+           familyi={S\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f331b5a584ef0eb7ab62b16ddf9fc0a8}{%
+           family={Auer},
+           familyi={A\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=78da98b2489f2ae99b4d933370b9303f}{%
+           family={Prudnikova},
+           familyi={P\bibinitperiod},
+           given={Oleksandra},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d93f88df1acd17907db2b3033322d2dc}{%
+           family={Kopp},
+           familyi={K\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dd69f2d35665eb16375f92c741a26393}{%
+           family={Klambauer},
+           familyi={K\bibinitperiod},
+           given={Günter},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4954f897f0e2228c69f8903b2e1e25d1}{%
+           family={Brandstetter},
+           familyi={B\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=41b31e29fb2bdbf9f5c9c1b0d5b3e815}{%
+           family={Hochreiter},
+           familyi={H\bibinitperiod},
+           given={Sepp},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a6d048ec4dafc4942083c5a0f5dc041d}
+      \strng{fullhash}{730d85f5a316ff3e7e9525ec78fd769a}
+      \strng{bibnamehash}{a6d048ec4dafc4942083c5a0f5dc041d}
+      \strng{authorbibnamehash}{a6d048ec4dafc4942083c5a0f5dc041d}
+      \strng{authornamehash}{a6d048ec4dafc4942083c5a0f5dc041d}
+      \strng{authorfullhash}{730d85f5a316ff3e7e9525ec78fd769a}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In the 1990s, the constant error carousel and gating were introduced as the central ideas of the Long Short-Term Memory ({LSTM}). Since then, {LSTMs} have stood the test of time and contributed to numerous deep learning success stories, in particular they constituted the first Large Language Models ({LLMs}). However, the advent of the Transformer technology with parallelizable self-attention at its core marked the dawn of a new era, outpacing {LSTMs} at scale. We now raise a simple question: How far do we get in language modeling when scaling {LSTMs} to billions of parameters, leveraging the latest techniques from modern {LLMs}, but mitigating known limitations of {LSTMs}? Firstly, we introduce exponential gating with appropriate normalization and stabilization techniques. Secondly, we modify the {LSTM} memory structure, obtaining: (i) {sLSTM} with a scalar memory, a scalar update, and new memory mixing, (ii) {mLSTM} that is fully parallelizable with a matrix memory and a covariance update rule. Integrating these {LSTM} extensions into residual block backbones yields {xLSTM} blocks that are then residually stacked into {xLSTM} architectures. Exponential gating and modified memory structures boost {xLSTM} capabilities to perform favorably when compared to state-of-the-art Transformers and State Space Models, both in performance and scaling.}
+      \field{journaltitle}{Artificial intelligence review}
+      \field{langid}{english}
+      \field{number}{8}
+      \field{title}{A review on the long short-term memory model. Artificial intelligence review}
+      \field{volume}{53}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{pages}{5929\bibrangedash 5955}
+      \range{pages}{27}
+      \verb{file}
+      \verb PDF:/Users/svenburkhardt/Zotero/storage/KWNTXJVA/Beck et al. - xLSTM Extended Long Short-Term Memory.pdf:application/pdf
       \endverb
     \endentry
     \entry{buchner_handbuch_1989}{book}{}
@@ -112,6 +199,8 @@
       \strng{authorfullhash}{f8ff95e2291c83f2e6ace6cf1a0be94f}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{2}
@@ -139,6 +228,8 @@
       \field{extraname}{1}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Nutzen Sie das Potenzial von Karten, um Storys zu erzählen, die es wert sind. {ArcGIS} {StoryMaps} bietet alles, was Sie zur Erstellung von faszinierenden Storys benötigen, mit denen Sie Ihren Karten Bedeutung verleihen können.}
@@ -182,6 +273,9 @@
       \field{extraname}{2}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Contribute to Sveburk/masterarbeit development by creating an account on {GitHub}.}
@@ -225,6 +319,9 @@
       \field{extraname}{3}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Contribute to Sveburk/masterarbeit development by creating an account on {GitHub}.}
@@ -278,6 +375,8 @@
       \strng{authorfullhash}{39c021d972635cd510f01b8852a125f8}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{This work aims at developing an optimal strategy to automatically transcribe a large quantity of uncategorised, digitised archival documents when resources include handwritten text by multiple authors and in several languages. We present a comparative study to establish the efficiency of a single multilingual handwritten text recognition ({HTR}) model trained on multiple handwriting styles instead of using a separate model for every language. When successful, this approach allows us to automate the transcription of the archive, reducing manual annotation efforts and facilitating information retrieval. To train the model, we used the material from the personal archive of the Dutch glass artist Sybren Valkema (1916–1996), processing it with Transkribus.}
@@ -312,41 +411,6 @@
       \verb https://www.mdpi.com/2571-9408/6/12/392
       \endverb
     \endentry
-    \entry{decker_home_nodate}{online}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=783256edf18717087195d954268e3b1a}{%
-           family={Decker},
-           familyi={D\bibinitperiod},
-           given={Eric},
-           giveni={E\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{783256edf18717087195d954268e3b1a}
-      \strng{fullhash}{783256edf18717087195d954268e3b1a}
-      \strng{bibnamehash}{783256edf18717087195d954268e3b1a}
-      \strng{authorbibnamehash}{783256edf18717087195d954268e3b1a}
-      \strng{authornamehash}{783256edf18717087195d954268e3b1a}
-      \strng{authorfullhash}{783256edf18717087195d954268e3b1a}
-      \field{sortinit}{D}
-      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Home {|} {RISE} {|} Research \& Infrastructure Support {|} Universität Basel}
-      \field{titleaddon}{Research \& Infrastructure Support}
-      \field{urlday}{6}
-      \field{urlmonth}{7}
-      \field{urlyear}{2025}
-      \field{urldateera}{ce}
-      \verb{file}
-      \verb Home | RISE | Research & Infrastructure Support | Universität Basel:/Users/svenburkhardt/Zotero/storage/RSSCG4J3/de.html:text/html
-      \endverb
-      \verb{urlraw}
-      \verb https://rise.unibas.ch/de/
-      \endverb
-      \verb{url}
-      \verb https://rise.unibas.ch/de/
-      \endverb
-    \endentry
     \entry{reuter_drk_2025}{online}{}
       \name{editora}{1}{}{%
         {{hash=74455b9d7ba9ff4e0388b90fa2d990b4}{%
@@ -360,10 +424,12 @@
       \strng{editorafullhash}{74455b9d7ba9ff4e0388b90fa2d990b4}
       \field{sortinit}{D}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labeltitlesource}{title}
       \field{editoratype}{collaborator}
       \field{title}{{DRK} Suchdienst {|} Suche per Feldpostnummer}
-      \field{titleaddon}{{DRK} Suchdienst; Suche per Feldpostnummer}
+      \field{titleaddon}{{DRK} Suchdienst}
       \field{urlday}{12}
       \field{urlmonth}{3}
       \field{urlyear}{2025}
@@ -383,6 +449,8 @@
     \entry{noauthor_feldpost_nodate}{online}{}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{langid}{american}
       \field{title}{Feldpost Number Database {|} {GermanStamps}.net}
@@ -413,6 +481,8 @@
       \strng{editorafullhash}{cfa4a38ab8887402a7432f51dbe27fbe}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{editoratype}{collaborator}
       \field{langid}{german}
@@ -469,6 +539,8 @@
       \strng{editorfullhash}{b35a951d6c1375a2f2bb743423cbdf2d}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Soziale Beziehungen und die daraus entstehenden Netzwerke sind eine Konstante der Menschheitsgeschichte, die sozialen wie auch politischen Wandel ermöglicht. So ist der »Arabische Frühling« ohne die Berücksichtigung von Zusammenschlüssen sozialer Einheiten nicht vorstellbar. Die relationale Wissenschaft legt ihren Fokus auf solche Beziehungsstrukturen. »Knoten und Kanten {III}« zeigt theoretische und methodische Zugänge der Netzwerkanalyse in politischen sowie in historischen Forschungsfeldern. Die Beiträge beleuchten beispielsweise Anwendungen in der Altertumsforschung, neuzeitliche Gläubiger- und Schuldner-Beziehungen, Unterstützungsnetzwerke von Juden im Dritten Reich sowie interne Vernetzungen von Parteien und Koalitionen.}
@@ -527,6 +599,8 @@
       \strng{editorfullhash}{30a8e4bb165f16ed649b3ddc7a5a4d0a}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{editor}
       \field{labeltitlesource}{shorttitle}
       \field{day}{2}
@@ -563,6 +637,8 @@
       \strng{editorfullhash}{da45f1e5bb27d5518ae10858a2a54d1e}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labelnamesource}{editor}
       \field{labeltitlesource}{title}
       \field{title}{Geschichte Gemeinde Murg}
@@ -580,6 +656,8 @@
     \entry{noauthor_geonames_nodate}{online}{}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{title}{{GeoNames}}
       \field{urlday}{5}
@@ -613,6 +691,8 @@
       \strng{authorfullhash}{e5e01b45b6bbb78e4bf2cd30d0b5dd4f}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Wer den einen schnellen Erfolg mit nodegoat sucht, sollte mit Tutorial Nr. 10 (oder Nr. 13) beginnen. Tutorial Nr. 10 zeigt, wie man ein grundlegendes und einfaches Datenmodell erstellt, Forschungsdaten (Schiffspositionen) eines Klimaprojektes importiert und auf einer Karte visualisiert. Ein kurzes Video (kein Ton, keine Kommentare) zeigt von Grund auf, wie es geht. Für das […]}
@@ -655,6 +735,8 @@
       \strng{authorfullhash}{a166a75fc42b189dabfa2eac127362e9}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{edition}{2. Auflage}
@@ -688,6 +770,8 @@
       \strng{authorfullhash}{5bb100be516b284c00929f320c562a79}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{1}
@@ -696,6 +780,35 @@
       \field{title}{Das Buch der Infanterie}
       \field{year}{1982}
       \field{dateera}{ce}
+    \endentry
+    \entry{noauthor_heftstreifen_2023}{inreference}{}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Ein Heftstreifen ist eine meist aus Metall bestehende gebogene Klammer in einem gelochten Papp- oder Kunststoffstreifen, mit der gelochte Blätter zusammengeheftet werden können und die man, anhand des Papp- oder Kunststoffstreifens, anschließend selbst in einen Aktenordner heften kann. Der Aktendulli, so die ursprüngliche Bezeichnung, wurde am 8. Juli 1938 von Georg Heinrich Laufer aus Frankfurt a. M. als Gebrauchsmuster unter der Nummer 1440592 mit dem Titel „Aufreiher für Blattsammlungen, mit federndem Mittelteil“ eingetragen. Bereits am 22. Juli 1938 wurde es auf Kurt Wolff, ebenfalls aus Frankfurt a. M., umgeschrieben. Am 15. Oktober 1941 wurde das Gebrauchsmuster auf das Chemnitzer Unternehmen Fa. Carl Kohl „Dulli Bürotechnik“ in der Langestraße 10 umgeschrieben und von diesem erfolgreich vermarktet. In vielen Publikationen wird fälschlicherweise Paul Richard Carl Kohl als Erfinder bezeichnet. Vor allem im Gebiet der ehemaligen {DDR} ist die ursprüngliche Bezeichnung Aktendulli, kurz Dulli, noch weit verbreitet. Neben weiteren Synonymen wie Abheftstreifen, Ablagestreifen, Einhänge-Heftstreifen, Kösterstreifen oder Heftlasche sind auch diverse umgangssprachliche Bezeichnungen oder andere Schreibweisen wie Brüderchen, Fliege oder Akten-Dulli (siehe Foto) gebräuchlich. Der Firma „Praktikus Gesellschaft für neuzeitliche Büroartikel m.b.H.“ in Meinerzhagen wurde 1956 unter der Nummer {DE}1715626 ein Gebrauchsmuster für „Einhänge-Haftstreifen für Ordner“ erteilt, woraus sich die Bezeichnung „Praktikus“ als Gattungsname ableitet.}
+      \field{booktitle}{Wikipedia}
+      \field{day}{16}
+      \field{langid}{german}
+      \field{month}{1}
+      \field{note}{Page Version {ID}: 229909760}
+      \field{title}{Heftstreifen}
+      \field{urlday}{13}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Snapshot:/Users/svenburkhardt/Zotero/storage/LFBX4F8T/index.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://de.wikipedia.org/w/index.php?title=Heftstreifen&oldid=229909760
+      \endverb
+      \verb{url}
+      \verb https://de.wikipedia.org/w/index.php?title=Heftstreifen&oldid=229909760
+      \endverb
     \endentry
     \entry{hollmann_freiburg_2025}{online}{}
       \name{author}{1}{}{%
@@ -714,6 +827,8 @@
       \strng{authorfullhash}{6ed3fce784e405cb77938369764bf3c5}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Freiburg - Das Bundesarchiv online: Ihre zentrale Anlaufstelle für historische Dokumente, digitale Sammlungen und Informationen zur deutschen Geschichte. Besuchen Sie uns!}
@@ -763,6 +878,8 @@
       \strng{authorfullhash}{dfcde259ca7640c6008fe8fd570729af}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{nodegoat is a web-based data management, network analysis \& visualisation environment. Using nodegoat, you can create and manage any number of datasets by use of a graphic user interface. Your own data model autoconfigures the backbone of nodegoat's core functionalities. Within nodegoat you are able to instantly analyse and visualise datasets. nodegoat allows you to enrich data with relational, geographical and temporal attributes. Therefore, the modes of analysis are inherently diachronic and ready-to-use for interactive maps and extensive trailblazing.}
@@ -799,6 +916,8 @@
       \strng{editorafullhash}{27a7ec2f787f3a65f551b348db133232}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{editoratype}{collaborator}
       \field{langid}{german}
@@ -840,6 +959,7 @@
       \strng{authorfullhash}{7bdd9152f680230096a202a8d34419f6}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labeldatesource}{nodate}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The approach of this work is based on a comparative analysis of several tools used for the management of linked open data. To do this, different sections are shown, initially an introduction to the topic is presented, identifying the importance of open data for people, and showing how the results generated through them can benefit. In addition, special emphasis is placed on the need for tools that facilitate both their interaction and manipulation. A section is also shown with related works on this topic, identifying previous studies that evaluated similar tools. The objective is the presentation of a comparative analysis of tools on the study of a proposed data model, which is used to perform tests with five selected tools: 1) {API}, 2) {SPARQL} in Wikidata Query Service ({WDQS}), 3 ) Pywikibot and 4) {OpenRefine} with the Wikidata plugin. The main task is to identify, for each tool, the evaluation in terms of its ability to integrate and manage Linked Open Data, its ease of use, and its performance in executing specific tasks. Finally, the results obtained in the performance of the analyzed tools are shown, allowing us to know the strengths and weaknesses of each one concerning the proposed data model. On the other hand, the findings of the study are presented that suggest recommendations for the selection of the most appropriate tool according to the specific requirements needed in aspects of data integration in a project.}
@@ -852,6 +972,8 @@
     \entry{noauthor_msty_nodate}{online}{}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{abstract}{{AI} beyond just plain chat. Private, Offline, Split chats, Branching, Concurrent chats, Web Search, {RAG}, Prompts Library, Vapor Mode, and more. Perfect {LM} Studio, Jan {AI}, and Perplexity alternative. Use models from Open {AI}, Deepseek, Claude, Ollama, and {HuggingFace} in a unified interface.}
       \field{title}{Msty - Using {AI} Models made Simple and Easy}
@@ -889,6 +1011,8 @@
       \strng{authorfullhash}{86312b451eec65c5dd001c087aba304d}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{day}{25}
@@ -933,6 +1057,8 @@
       \strng{editorafullhash}{88fd84164e72a5c2243fe79a63430e42}
       \field{sortinit}{O}
       \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labeltitlesource}{shorttitle}
       \field{day}{10}
       \field{editoratype}{collaborator}
@@ -981,6 +1107,8 @@
       \strng{authorfullhash}{704c6814a0e4a5e6f703806386f58e58}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{shorttitle}{eutsche Soldaten 1939-1945}
@@ -991,6 +1119,8 @@
     \entry{noauthor_recognition_nodate}{online}{}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{abstract}{"The overall objective of {READ} is to implement a Virtual Research Environment where archivists, humanities scholars, computer scientists and volunteers are collaborating with the ultimate goal of boosting research, innovation, development and usage of cutting edge technology...}
       \field{langid}{english}
@@ -1036,6 +1166,8 @@
       \strng{authorfullhash}{6f698a5fbd847919b54730b13e44520d}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{The growth and population of the Semantic Web, especially the Linked Open Data ({LOD}) Cloud, has brought to the fore the challenges of ordering knowledge for data mining on an unprecedented scale.The {LOD} Cloud is structured from billions of elements of knowledge and pointers to knowledge organization systems ({KOSs}) such as ontologies, taxonomies, typologies, thesauri, etc. The variant and heterogeneous knowledge areas that comprise the social sciences and humanities ({SSH}), including cultural heritage applications are bringing multi-dimensional richness to the {LOD} Cloud. Each such application arrives with its own challenges regarding {KOSs} in the Cloud. With contributions by Sören Auer, Gerard Coen, Kathleen Gregory, Mohamad Yaser Jaradeh, Daniel Martínez Ávila, Philipp Mayr, Allard Oelen, Cristina Pattuelli, Tobias Renwick, Andrea Scharnhorst, Ronald Siebes, Aida Slavic, Richard P Smiraglia, Markus Stocker, Rick Szostak, Marnix van Berchum, Charles van den Heuvel, J. Bradford Young, Veruska Zamborlini and Marcia Zeng.}
@@ -1087,6 +1219,8 @@
       \strng{authorfullhash}{df53f039d4739ff0fc9819447cf5d13c}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{shorttitle}{Verbände und Truppen}
@@ -1124,6 +1258,8 @@
       \strng{authorfullhash}{da9a734ff56fad4e107fbdd0d96b0891}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{7}
@@ -1158,6 +1294,8 @@
       \strng{editorafullhash}{aa7555ad04e58230fba1f0a5f815dea4}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labeltitlesource}{title}
       \field{abstract}{{AI}-powered platform for text recognition and document analysis}
       \field{editoratype}{collaborator}
@@ -1180,9 +1318,66 @@
       \verb https://app.transkribus.eu
       \endverb
     \endentry
+    \entry{weil_tesseract-ocrtesseract_2025}{software}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=0c3e2991578c5e021a94bd687b914b97}{%
+           family={Weil},
+           familyi={W\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e25c0bfcc8f28108b67652b438867995}{%
+           family={Pugin},
+           familyi={P\bibinitperiod},
+           given={Egor},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=41a1293f68d428dee36845bb36c3a9b8}{%
+           family={Dovev},
+           familyi={D\bibinitperiod},
+           given={Amit},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {tesseract-ocr}%
+      }
+      \strng{namehash}{6c5ab92fd4c41480091c761b48f167be}
+      \strng{fullhash}{6c5ab92fd4c41480091c761b48f167be}
+      \strng{bibnamehash}{6c5ab92fd4c41480091c761b48f167be}
+      \strng{authorbibnamehash}{6c5ab92fd4c41480091c761b48f167be}
+      \strng{authornamehash}{6c5ab92fd4c41480091c761b48f167be}
+      \strng{authorfullhash}{6c5ab92fd4c41480091c761b48f167be}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Tesseract Open Source {OCR} Engine (main repository)}
+      \field{day}{12}
+      \field{month}{7}
+      \field{note}{original-date: 2014-08-12T18:04:59Z}
+      \field{title}{tesseract-ocr/tesseract}
+      \field{urlday}{12}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/tesseract-ocr/tesseract
+      \endverb
+      \verb{url}
+      \verb https://github.com/tesseract-ocr/tesseract
+      \endverb
+      \keyw{hacktoberfest,lstm,machine-learning,ocr,ocr-engine,tesseract,tesseract-ocr}
+    \endentry
     \entry{noauthor_wgs84_nodate}{online}{}
       \field{sortinit}{W}
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{title}{{WGS}84 {|} Landesamt für Geoinformation und Landesvermessung Niedersachsen}
       \field{titleaddon}{Landesamt für Geoinformation und Landesvermessung Niedersachsen}
@@ -1203,6 +1398,8 @@
     \entry{noauthor_wikidata_nodate}{online}{}
       \field{sortinit}{W}
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{url}
       \field{labeltitlesource}{title}
       \field{title}{Wikidata}
       \field{urlday}{5}
@@ -1554,12 +1751,14 @@
       }
       \strng{namehash}{f324cd0f485d0aaf63321d014f1f638f}
       \strng{fullhash}{9c313fbfbf53ede1d73315c9ef8507c7}
-      \strng{bibnamehash}{f2e05ad1c86cb32b30e56f2c748b5574}
-      \strng{authorbibnamehash}{f2e05ad1c86cb32b30e56f2c748b5574}
+      \strng{bibnamehash}{f324cd0f485d0aaf63321d014f1f638f}
+      \strng{authorbibnamehash}{f324cd0f485d0aaf63321d014f1f638f}
       \strng{authornamehash}{f324cd0f485d0aaf63321d014f1f638f}
       \strng{authorfullhash}{9c313fbfbf53ede1d73315c9ef8507c7}
       \field{sortinit}{W}
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{There is an urgent need to improve the infrastructure supporting the reuse of scholarly data. A diverse set of stakeholders—representing academia, industry, funding agencies, and scholarly publishers—have come together to design and jointly endorse a concise and measureable set of principles that we refer to as the {FAIR} Data Principles. The intent is that these may act as a guideline for those wishing to enhance the reusability of their data holdings. Distinct from peer initiatives that focus on the human scholar, the {FAIR} Principles put specific emphasis on enhancing the ability of machines to automatically find and use the data, in addition to supporting its reuse by individuals. This Comment is the first formal publication of the {FAIR} Principles, and includes the rationale behind them, and some exemplar implementations in the community.}
@@ -1618,6 +1817,8 @@
       \strng{authorfullhash}{70bb76d80860e2229289d7da52feef06}
       \field{sortinit}{Z}
       \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{langid}{german}

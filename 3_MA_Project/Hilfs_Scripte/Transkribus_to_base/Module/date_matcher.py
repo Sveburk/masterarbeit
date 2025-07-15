@@ -24,13 +24,16 @@ def normalize_to_ddmmyyyy(date_str: str) -> Union[str, None]:
         year, month, day = date_str.split("-")
     elif re.match(r"^\d{1,2}\.\d{1,2}\.\d{2}$", date_str):
         day, month, year = date_str.split(".")
-        year = "19" + year if int(year) >= 30 else "20" + year
+        year = "19" + year  # Immer 1900er-Jahrhundert
     else:
         return None
+
     return f"{int(day):02d}.{int(month):02d}.{year}"
 
 
-def extract_date_from_custom(custom_attr: str) -> List[Dict[str, Union[str, Dict[str, str]]]]:
+def extract_date_from_custom(
+    custom_attr: str,
+) -> List[Dict[str, Union[str, Dict[str, str]]]]:
     dates = []
     for pattern in [r"date\s+\{([^}]+)\}", r"date\s*{([^}]+)}"]:
         for match in re.finditer(pattern, custom_attr):
@@ -44,10 +47,12 @@ def extract_date_from_custom(custom_attr: str) -> List[Dict[str, Union[str, Dict
                     tag2, month, year = rest.split(".")
                     from_date = f"{int(tag1):02d}.{int(month):02d}.{year}"
                     to_date = f"{int(tag2):02d}.{int(month):02d}.{year}"
-                    dates.append({
-                        "date_range": {"from": from_date, "to": to_date},
-                        "original": date_str
-                    })
+                    dates.append(
+                        {
+                            "date_range": {"from": from_date, "to": to_date},
+                            "original": date_str,
+                        }
+                    )
                 else:
                     normalized = normalize_to_ddmmyyyy(date_str)
                     if normalized:
@@ -65,12 +70,15 @@ def extract_custom_date(root: ET.Element, ns: Dict[str, str]) -> List[str]:
 
     for line in root.findall(".//ns:TextLine", ns):
         custom = line.get("custom", "").strip()
-        norm_custom = re.sub(r"\s+", "", custom.strip())  # Alle Leerzeichen entfernen
+        norm_custom = re.sub(
+            r"\s+", "", custom.strip()
+        )  # Alle Leerzeichen entfernen
         if "date" in norm_custom and norm_custom not in seen:
             seen.add(norm_custom)
             custom_attrs.append(norm_custom)
 
     return custom_attrs
+
 
 def combine_dates(all_custom_attrs: List[str]) -> List[Dict[str, object]]:
     single_counter = defaultdict(int)
@@ -85,7 +93,7 @@ def combine_dates(all_custom_attrs: List[str]) -> List[Dict[str, object]]:
                 key = (
                     entry["date_range"]["from"],
                     entry["date_range"]["to"],
-                    entry["original"]
+                    entry["original"],
                 )
                 range_counter[key] += 1
 
@@ -93,9 +101,11 @@ def combine_dates(all_custom_attrs: List[str]) -> List[Dict[str, object]]:
     for date, count in sorted(single_counter.items()):
         result.append({"date": date, "count": count})
     for (from_d, to_d, orig), count in sorted(range_counter.items()):
-        result.append({
-            "date_range": {"from": from_d, "to": to_d},
-            "original": orig,
-            "count": count
-        })
+        result.append(
+            {
+                "date_range": {"from": from_d, "to": to_d},
+                "original": orig,
+                "count": count,
+            }
+        )
     return result

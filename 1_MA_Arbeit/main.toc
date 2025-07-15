@@ -4,82 +4,80 @@
 \contentsline {subsection}{Formulierung der Forschungsfrage}{2}{section*.6}%
 \contentsline {subsection}{Aufbau der Arbeit}{2}{section*.7}%
 \contentsline {subsection}{Geografischer und historischer Kontext}{2}{section*.8}%
-\contentsline {section}{Korpus}{3}{section*.9}%
-\contentsline {subsection}{Quellen}{3}{section*.10}%
-\contentsline {subsubsection}{Quellentradierung}{3}{section*.11}%
-\contentsline {subsubsection}{Quellenbeschrieb}{4}{section*.12}%
-\contentsline {subsubsection}{Datierung der Quelle}{4}{section*.13}%
-\contentsline {subsubsection}{Dokumententyp}{4}{section*.14}%
-\contentsline {subsubsection}{Sichtung \& Kategorisierung in Akten}{4}{section*.16}%
-\contentsline {subsection}{Digitalisierung der Quellen}{4}{section*.17}%
-\contentsline {subsection}{Transkription}{5}{section*.18}%
-\contentsline {subsection}{Tagging}{5}{section*.19}%
-\contentsline {subsubsection}{Tagging mit Transkribus}{6}{section*.20}%
-\contentsline {subsubsection}{Tagging mit LLM}{6}{section*.21}%
-\contentsline {subsection}{Export}{6}{section*.22}%
-\contentsline {subsection}{Forschungsstand und Forschungslücke}{6}{section*.23}%
-\contentsline {section}{Methodisches Vorgehen}{9}{section*.24}%
-\contentsline {subsection}{Genutze Tools}{9}{section*.25}%
-\contentsline {subsubsection}{LOD – Linked Open Data}{9}{section*.26}%
-\contentsline {paragraph}{Protégé}{11}{section*.27}%
-\contentsline {paragraph}{GraphDB}{11}{section*.28}%
-\contentsline {paragraph}{LOD-Ontologie}{12}{section*.29}%
-\contentsline {subsubsection}{Wikidata}{13}{section*.30}%
-\contentsline {subsubsection}{GeoNames}{14}{section*.31}%
-\contentsline {subsubsection}{Transkriptionen (Methodenvergleich)}{14}{section*.32}%
-\contentsline {paragraph}{Tesseract}{14}{section*.33}%
-\contentsline {paragraph}{LLM}{14}{section*.34}%
-\contentsline {paragraph}{Transkribus}{15}{section*.35}%
-\contentsline {subsubsection}{Large Language Models}{17}{section*.36}%
-\contentsline {paragraph}{Msty}{17}{section*.37}%
-\contentsline {paragraph}{Alphabet – Gemini}{18}{section*.38}%
-\contentsline {paragraph}{Anthopic – Claude}{18}{section*.39}%
-\contentsline {paragraph}{OpenAI – ChatGPT}{18}{section*.40}%
-\contentsline {subsubsection}{Nodegoat}{18}{section*.41}%
-\contentsline {subsubsection}{\colorbox {red}{Webtool}}{20}{section*.43}%
-\contentsline {subsection}{Netzwerkanalyse als Methode}{22}{section*.45}%
-\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{22}{section*.46}%
-\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{22}{section*.47}%
-\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{22}{section*.48}%
-\contentsline {section}{Pipeline}{22}{section*.49}%
-\contentsline {subsection}{Aufbau XML to JSON Pipeline}{22}{section*.50}%
-\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{22}{section*.51}%
-\contentsline {subsection}{Module im Detail}{22}{section*.53}%
-\contentsline {subsubsection}{document\_schemas.py}{22}{section*.54}%
-\contentsline {subsubsection}{\_\_init\_\_.py}{22}{section*.55}%
-\contentsline {subsubsection}{Person\_matcher.py}{24}{section*.56}%
-\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{25}{section*.57}%
-\contentsline {subsubsection}{place\_matcher.py}{26}{section*.58}%
-\contentsline {subsubsection}{organization\_matcher.py}{26}{section*.59}%
-\contentsline {subsubsection}{letter\_metadata\_matcher.py}{27}{section*.60}%
-\contentsline {subsubsection}{type\_matcher.py}{27}{section*.61}%
-\contentsline {subsubsection}{event\_matcher.py}{27}{section*.62}%
-\contentsline {subsubsection}{date\_matcher.py}{27}{section*.63}%
-\contentsline {subsubsection}{unmatched\_logger.py}{27}{section*.64}%
-\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{28}{section*.65}%
-\contentsline {subsubsection}{validation\_module.py}{28}{section*.66}%
-\contentsline {subsubsection}{validation\_module.py}{28}{section*.67}%
-\contentsline {subsubsection}{test\_role\_schema.py}{28}{section*.68}%
-\contentsline {subsubsection}{llm\_enricher.py}{28}{section*.69}%
-\contentsline {subsubsection}{enrich\_pipeline.py}{28}{section*.70}%
-\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{28}{section*.71}%
-\contentsline {subsection}{Visualisierung auf der VM}{28}{section*.72}%
-\contentsline {section}{Fazit und Ausblick}{28}{section*.73}%
-\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{28}{section*.74}%
-\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{28}{section*.75}%
-\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{28}{section*.76}%
-\contentsline {section}{ALTER SCHEISS}{29}{section*.77}%
-\contentsline {subsection}{Forschungsstand zu den Quellen}{29}{section*.78}%
-\contentsline {subsection}{Beschreibung des Archivbestands}{29}{section*.79}%
-\contentsline {section}{Methodischer Zugang}{30}{section*.80}%
-\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{30}{section*.81}%
-\contentsline {subsubsection}{Gliederung in Akten}{30}{section*.82}%
-\contentsline {subsubsection}{Digitalisierung und Transkription}{30}{section*.83}%
-\contentsline {subsection}{Tagging in Transkribus}{30}{section*.84}%
-\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{31}{section*.85}%
-\contentsline {section}{Bibliographie}{35}{section*.90}%
-\contentsline {section}{Anhang}{39}{section*.91}%
-\contentsline {subsection}{PDF\_to\_JPEG.py}{39}{section*.92}%
-\contentsline {subsection}{Tagging in Transkribus}{40}{section*.93}%
-\contentsline {subsubsection}{Inhaltliche Tags}{41}{section*.94}%
-\contentsline {subsubsection}{Strukturelle Tags}{43}{section*.95}%
+\contentsline {section}{Forschungsstand und Forschungslücke}{3}{section*.9}%
+\contentsline {section}{Korpus}{5}{section*.10}%
+\contentsline {subsection}{Quellen}{6}{section*.11}%
+\contentsline {subsubsection}{Quellentradierung}{6}{section*.12}%
+\contentsline {subsubsection}{Quellenbeschrieb}{7}{section*.13}%
+\contentsline {subsubsection}{Sichtung \& Kategorisierung in Akten}{8}{section*.14}%
+\contentsline {subsection}{Digitalisierung der Quellen}{9}{section*.15}%
+\contentsline {subsection}{Transkription}{10}{section*.16}%
+\contentsline {subsubsection}{Tagging mit Transkribus und LLM}{12}{section*.17}%
+\contentsline {section}{Methodisches Vorgehen}{14}{section*.18}%
+\contentsline {subsection}{Genutze Tools}{14}{section*.19}%
+\contentsline {subsubsection}{LOD – Linked Open Data}{14}{section*.20}%
+\contentsline {paragraph}{Protégé}{15}{section*.21}%
+\contentsline {paragraph}{GraphDB}{15}{section*.22}%
+\contentsline {paragraph}{LOD-Ontologie}{16}{section*.23}%
+\contentsline {subsubsection}{Wikidata}{17}{section*.24}%
+\contentsline {subsubsection}{GeoNames}{18}{section*.25}%
+\contentsline {subsubsection}{Transkriptionen (Methodenvergleich)}{18}{section*.26}%
+\contentsline {paragraph}{Tesseract}{18}{section*.27}%
+\contentsline {paragraph}{LLM}{19}{section*.28}%
+\contentsline {paragraph}{Transkribus}{20}{section*.29}%
+\contentsline {subsubsection}{Large Language Models}{22}{section*.30}%
+\contentsline {paragraph}{Msty}{22}{section*.31}%
+\contentsline {paragraph}{Alphabet – Gemini}{23}{section*.32}%
+\contentsline {paragraph}{Anthopic – Claude}{23}{section*.33}%
+\contentsline {paragraph}{OpenAI – ChatGPT}{23}{section*.34}%
+\contentsline {subsubsection}{Nodegoat}{23}{section*.35}%
+\contentsline {subsubsection}{\colorbox {red}{Webtool}}{25}{section*.37}%
+\contentsline {subsection}{Netzwerkanalyse als Methode}{28}{section*.39}%
+\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{28}{section*.40}%
+\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{28}{section*.41}%
+\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{28}{section*.42}%
+\contentsline {section}{Pipeline}{28}{section*.43}%
+\contentsline {subsection}{Aufbau XML to JSON Pipeline}{28}{section*.44}%
+\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{28}{section*.45}%
+\contentsline {subsection}{Module im Detail}{28}{section*.47}%
+\contentsline {subsubsection}{document\_schemas.py}{28}{section*.48}%
+\contentsline {paragraph}{Person}{29}{section*.49}%
+\contentsline {paragraph}{Organization}{29}{section*.50}%
+\contentsline {paragraph}{Place}{30}{section*.51}%
+\contentsline {paragraph}{Event}{30}{section*.52}%
+\contentsline {paragraph}{Documenttype}{31}{section*.53}%
+\contentsline {subsubsection}{\_\_init\_\_.py}{31}{section*.54}%
+\contentsline {subsubsection}{Person\_matcher.py}{32}{section*.55}%
+\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{33}{section*.56}%
+\contentsline {subsubsection}{place\_matcher.py}{34}{section*.57}%
+\contentsline {subsubsection}{organization\_matcher.py}{34}{section*.58}%
+\contentsline {subsubsection}{letter\_metadata\_matcher.py}{34}{section*.59}%
+\contentsline {subsubsection}{type\_matcher.py}{34}{section*.60}%
+\contentsline {subsubsection}{unmatched\_logger.py}{38}{section*.63}%
+\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{39}{section*.64}%
+\contentsline {subsubsection}{validation\_module.py}{39}{section*.65}%
+\contentsline {subsubsection}{validation\_module.py}{39}{section*.66}%
+\contentsline {subsubsection}{test\_role\_schema.py}{39}{section*.67}%
+\contentsline {subsubsection}{llm\_enricher.py}{39}{section*.68}%
+\contentsline {subsubsection}{enrich\_pipeline.py}{39}{section*.69}%
+\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{39}{section*.70}%
+\contentsline {subsection}{Visualisierung auf der VM}{39}{section*.71}%
+\contentsline {section}{Fazit und Ausblick}{39}{section*.72}%
+\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{39}{section*.73}%
+\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{39}{section*.74}%
+\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{39}{section*.75}%
+\contentsline {section}{ALTER SCHEISS}{40}{section*.76}%
+\contentsline {subsection}{Forschungsstand zu den Quellen}{40}{section*.77}%
+\contentsline {subsection}{Beschreibung des Archivbestands}{40}{section*.78}%
+\contentsline {section}{Methodischer Zugang}{41}{section*.79}%
+\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{41}{section*.80}%
+\contentsline {subsubsection}{Gliederung in Akten}{41}{section*.81}%
+\contentsline {subsubsection}{Digitalisierung und Transkription}{41}{section*.82}%
+\contentsline {subsection}{Tagging in Transkribus}{41}{section*.83}%
+\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{42}{section*.84}%
+\contentsline {section}{Bibliographie}{46}{section*.89}%
+\contentsline {section}{Anhang}{49}{section*.90}%
+\contentsline {subsection}{PDF\_to\_JPEG.py}{49}{section*.91}%
+\contentsline {subsection}{Tagging in Transkribus}{50}{section*.92}%
+\contentsline {subsubsection}{Inhaltliche Tags}{51}{section*.93}%
+\contentsline {subsubsection}{Strukturelle Tags}{53}{section*.94}%
