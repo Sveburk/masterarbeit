@@ -71,6 +71,12 @@ from Module import (
     normalize_name_string,
     merge_title_tokens,
     correct_swapped_name,
+    match_person_from_text,
+    fuzzy_match_name,
+    fuzzy_person_match,
+    save_new_person_to_csv,
+    person_exists_in_known_list,
+    extract_name_with_spacy,
     # letter-metadata-matcher
     match_authors,
     match_recipients,
@@ -248,7 +254,6 @@ if not OPENAI_API_KEY:
         "Warnung: Kein API-Schlüssel gesetzt. Enrichment wird am Ende übersprungen."
     )
 
-
 def save_new_csv(df: pd.DataFrame):
     try:
         # Erstelle das Output-Verzeichnis, wenn es nicht existiert
@@ -260,219 +265,16 @@ def save_new_csv(df: pd.DataFrame):
     except Exception as e:
         print(f"Fehler beim Speichern der neuen CSV: {e}")
 
+#############################################################################
+####                    Ende Initialisierung                             ####
+#############################################################################
+
 
 # Funktion zum Speichern der neuen Personen in CSV
-def save_new_person_to_csv(forename: str, familyname: str, csv_path: str):
-    """
-    Speichert eine neue Person in der CSV-Datei, wenn sie noch nicht vorhanden ist.
-
-    Args:
-        forename (str): Vorname der Person
-        familyname (str): Nachname der Person
-        csv_path (str): Pfad zur CSV-Datei
-    """
-    # Prüfe, ob die Person bereits existiert
-    if person_exists_in_known_list(forename, familyname, known_persons_list):
-        print(f"{forename} {familyname} existiert bereits in der CSV.")
-        return
-
-        # Wenn nicht, füge die Person hinzu
-    #     # Wenn nicht, füge die Person hinzu
-    #     new_row = {
-    #         "forename": forename,
-    #         "familyname": familyname,
-    #         "Alternativer Vorname": "",
-    #         "[Wohnort] Location Reference": "",
-    #         "[Geburt] Date Start": "",
-    #         "[Tod] Date Start": "",
-    #         "db:deathPlace": "",
-    #         "Lfd_No.": f"{len(known_persons_df) 1:05d}"  # Neue ID mit führenden Nullen
-
-    # }
-    known_persons_df = pd.concat(
-        [known_persons_df, pd.DataFrame([new_row])], ignore_index=True
-    )
-
-    # Speichern der aktualisierten CSV
-    known_persons_df.to_csv(csv_path, sep=";", index=False)
-
-    # Aktualisieren der Liste bekannter Personen
-    known_persons_list.append(
-        {
-            "forename": forename,
-            "familyname": familyname,
-            "alternate_name": "",
-            "title": "",
-            "nodegoat_id": "",
-        }
-    )
-    print(f"Neue Person hinzugefügt: {forename} {familyname}")
 
 
-def person_exists_in_known_list(
-    forename: str, familyname: str, known_list: List[tuple]
-) -> bool:
-    """
-    Prüft, ob die Person in der bekannten Liste von Personen existiert, entweder exakt oder mit ähnlicher Schreibweise.
-    Verwendet jetzt vorzugsweise die person_matcher.py Funktionen für bessere Konsistenz.
-
-    Args:
-        forename (str): Vorname der Person
-        familyname (str): Nachname der Person
-        known_list (list): Liste der bekannten Personen (Vorname, Nachname)
-
-    Returns:
-        bool: True, wenn die Person existiert, ansonsten False
-    """
-    # Erstelle temporäres Person-Dictionary für das Matching
-    temp_person = {"forename": forename, "familyname": familyname}
-
-    # Verwende die match_person Funktion aus person_matcher.py
-    # und konvertiere known_list-Tupel in das erforderliche Format, falls nötig
-    if not isinstance(known_list[0], dict) if known_list else False:
-        # Konvertiere Tupel-Liste zu Dictionary-Liste
-        known_persons_dicts = [
-            {"forename": kf, "familyname": kl} for kf, kl in known_list
-        ]
-        matched_person, score = match_person(
-            temp_person, candidates=known_persons_dicts
-        )
-    else:
-        # Verwende direkt die known_persons_list aus person_matcher
-        matched_person, score = match_person(
-            temp_person, candidates=known_persons_list
-        )
-
-    # Person existiert, wenn das Matching einen Score über 70 ergeben hat
-    return matched_person is not None and score >= 70
 
 
-def fuzzy_match_name(
-    name: str, candidates: List[str], threshold: int
-) -> Tuple[Optional[str], int]:
-    """
-    Vergleicht einen Namen mit einer Liste möglicher Kandidaten und liefert den besten Match über Threshold.
-    Verwendet Rapidfuzz mit vorheriger Namensnormalisierung.
-    """
-    
-    best_match, best_score = None, 0
-    normalized_name = normalize_name_string(
-        name
-    )  # <- String-basierte Normalisierung
-
-    for candidate in candidates:
-        score = fuzz.ratio(normalize_name_string(candidate), normalized_name)
-        if score > best_score:
-            best_score, best_match = score, candidate
-
-    return (best_match, best_score) if best_score >= threshold else (None, 0)
-
-
-def match_person_from_text(person_name: str) -> Optional[Dict[str, str]]:
-    """
-    Sucht eine Person anhand eines Namenstextes in der Liste bekannter Personen.
-    Berücksichtigt dabei auch extrahierte Titel wie "Dr." oder "Herr".
-
-    Args:
-        person_name: Der zu suchende Personenname
-
-    Returns:
-        Matched person dictionary oder None, wenn keine Übereinstimmung gefunden wurde
-    """
-    if not person_name:
-        return None
-
-    # Titel und Name bereinigen (z. B. "Herr Dr. Emil Hosp")
-    # Funktion ist bereits über das Module-Paket importiert
-
-    cleaned_name, extracted_title = normalize_name(person_name)
-
-    # Extrahiere Vor- und Nachname
-    forename, familyname = extract_name_with_spacy(cleaned_name)
-
-    # Erstelle Person-Dictionary
-    person_dict = {
-        "forename": forename,
-        "familyname": familyname,
-        "title": extracted_title,
-    }
-
-    # Match mit bekannter Liste
-    matched_person, score = match_person(person_dict)
-
-    if matched_person and score >= 70:
-        # Titel auch im Rückgabeobjekt setzen (wenn original nicht gesetzt)
-        if "title" not in matched_person or not matched_person["title"]:
-            matched_person["title"] = extracted_title
-        return matched_person
-
-    return None
-
-
-def extract_name_with_spacy(name_text: str) -> tuple:
-    """
-    Verwendet spaCy, um einen Namen in Vor- und Nachnamen zu trennen.
-    Berücksichtigt auch mittlere Namen.
-
-    Args:
-        name_text: Der zu analysierende Namenstext
-
-    Returns:
-        Tuple aus (Vorname, Nachname)
-    """
-    # Fallback-Werte
-    forename = ""
-    familyname = name_text
-
-    # Leerzeichen am Anfang und Ende entfernen
-    name_text = name_text.strip()
-
-    # Wenn kein Name oder leerer String übergeben wurde
-    if not name_text:
-        return forename, familyname
-
-    # Standard-Methode zur Namenstrennung ohne spaCy
-    def split_name_standard(text):
-        name_parts = text.split()
-        if len(name_parts) > 1:
-            # Erster Teil ist Vorname, letzter Teil ist Nachname
-            forename = name_parts[0]
-            # Falls mittlere Namen vorhanden sind, füge sie zum Vornamen hinzu
-            if len(name_parts) > 2:
-                forename += " " " ".join(name_parts[1:-1])
-            familyname = name_parts[-1]
-            return forename, familyname
-        return "", text  # Wenn nur ein Wort, behandle es als Nachnamen
-
-    # Wenn spaCy nicht geladen werden konnte, verwende die Standardmethode
-    if nlp is None:
-        return split_name_standard(name_text)
-
-    # Analysiere den Text mit spaCy
-    doc = nlp(name_text)
-
-    # Sammle alle gefundenen Personenentitäten
-    person_entities = [ent for ent in doc.ents if ent.label_ == "PER"]
-
-    # Wenn keine Personenentitäten gefunden wurden, versuche es mit der herkömmlichen Methode
-    if not person_entities:
-        return split_name_standard(name_text)
-
-    # Versuche, den Namen aus den gefundenen Entitäten zu extrahieren
-    person_entity = person_entities[0]  # Nehme die erste gefundene Person
-
-    # Prüfe, ob es mehrere Tokens im Namen gibt
-    if len(person_entity) > 1:
-        # Alle Tokens außer dem letzten sind Teil des Vornamens (einschließlich mittlerer Namen)
-        forename = " ".join([token.text for token in person_entity[:-1]])
-        # Letzter Token ist der Nachname
-        familyname = person_entity[-1].text
-
-    # Wenn die Aufteilung nicht funktioniert hat, versuche es mit der Standardmethode
-    if not forename:
-        return split_name_standard(name_text)
-
-    return forename, familyname
 
 
 # XML-Namespace (für Transkribus-Dateien)
@@ -524,8 +326,6 @@ def extract_text_from_xml(root: ET.Element) -> str:
     return transcript_text.strip()
 
 
-# Diese Funktion wird nicht mehr benötigt, da wir das Dokument direkt in process_transkribus_file erstellen
-# und die BaseDocument-Klasse verwenden
 
 
 def fuzzy_person_match(

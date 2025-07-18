@@ -29,7 +29,13 @@ from .person_matcher import (
     infer_gender_for_person,
     normalize_name_string,
     merge_title_tokens,
-    correct_swapped_name
+    correct_swapped_name,
+    match_person_from_text,
+    fuzzy_match_name,
+    fuzzy_person_match,
+    save_new_person_to_csv,
+    person_exists_in_known_list,
+    extract_name_with_spacy,
 )
 
 # --- Letter‑Metadata Matcher ---
@@ -123,6 +129,12 @@ __all__ = [
     "normalize_name_string",
     "merge_title_tokens",
     "correct_swapped_name",
+    "match_person_from_text",
+    "fuzzy_match_name",
+    "fuzzy_person_match",
+    "save_new_person_to_csv",
+    "person_exists_in_known_list",
+    "extract_name_with_spacy",
 
     # Letter‑Metadata Matcher
     "match_authors",
