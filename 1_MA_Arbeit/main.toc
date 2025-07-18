@@ -32,52 +32,53 @@
 \contentsline {paragraph}{OpenAI – ChatGPT}{23}{section*.34}%
 \contentsline {subsubsection}{Nodegoat}{23}{section*.35}%
 \contentsline {subsubsection}{\colorbox {red}{Webtool}}{25}{section*.37}%
-\contentsline {subsection}{Netzwerkanalyse als Methode}{28}{section*.39}%
-\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{28}{section*.40}%
-\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{28}{section*.41}%
-\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{28}{section*.42}%
-\contentsline {section}{Pipeline}{28}{section*.43}%
-\contentsline {subsection}{Aufbau XML to JSON Pipeline}{28}{section*.44}%
-\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{28}{section*.45}%
-\contentsline {subsection}{Module im Detail}{28}{section*.47}%
-\contentsline {subsubsection}{document\_schemas.py}{28}{section*.48}%
-\contentsline {paragraph}{Person}{29}{section*.49}%
-\contentsline {paragraph}{Organization}{29}{section*.50}%
-\contentsline {paragraph}{Place}{30}{section*.51}%
-\contentsline {paragraph}{Event}{30}{section*.52}%
-\contentsline {paragraph}{Documenttype}{31}{section*.53}%
-\contentsline {subsubsection}{\_\_init\_\_.py}{31}{section*.54}%
-\contentsline {subsubsection}{Person\_matcher.py}{32}{section*.55}%
-\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{33}{section*.56}%
-\contentsline {subsubsection}{place\_matcher.py}{34}{section*.57}%
-\contentsline {subsubsection}{organization\_matcher.py}{34}{section*.58}%
-\contentsline {subsubsection}{letter\_metadata\_matcher.py}{34}{section*.59}%
-\contentsline {subsubsection}{type\_matcher.py}{34}{section*.60}%
-\contentsline {subsubsection}{unmatched\_logger.py}{38}{section*.63}%
-\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{39}{section*.64}%
-\contentsline {subsubsection}{validation\_module.py}{39}{section*.65}%
-\contentsline {subsubsection}{validation\_module.py}{39}{section*.66}%
-\contentsline {subsubsection}{test\_role\_schema.py}{39}{section*.67}%
-\contentsline {subsubsection}{llm\_enricher.py}{39}{section*.68}%
-\contentsline {subsubsection}{enrich\_pipeline.py}{39}{section*.69}%
-\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{39}{section*.70}%
-\contentsline {subsection}{Visualisierung auf der VM}{39}{section*.71}%
-\contentsline {section}{Fazit und Ausblick}{39}{section*.72}%
-\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{39}{section*.73}%
-\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{39}{section*.74}%
-\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{39}{section*.75}%
-\contentsline {section}{ALTER SCHEISS}{40}{section*.76}%
-\contentsline {subsection}{Forschungsstand zu den Quellen}{40}{section*.77}%
-\contentsline {subsection}{Beschreibung des Archivbestands}{40}{section*.78}%
-\contentsline {section}{Methodischer Zugang}{41}{section*.79}%
-\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{41}{section*.80}%
-\contentsline {subsubsection}{Gliederung in Akten}{41}{section*.81}%
-\contentsline {subsubsection}{Digitalisierung und Transkription}{41}{section*.82}%
-\contentsline {subsection}{Tagging in Transkribus}{41}{section*.83}%
-\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{42}{section*.84}%
-\contentsline {section}{Bibliographie}{46}{section*.89}%
-\contentsline {section}{Anhang}{49}{section*.90}%
-\contentsline {subsection}{PDF\_to\_JPEG.py}{49}{section*.91}%
-\contentsline {subsection}{Tagging in Transkribus}{50}{section*.92}%
-\contentsline {subsubsection}{Inhaltliche Tags}{51}{section*.93}%
-\contentsline {subsubsection}{Strukturelle Tags}{53}{section*.94}%
+\contentsline {subsection}{Netzwerkanalyse als Methode}{26}{section*.39}%
+\contentsline {subsubsection}{Theoretischer Hintergrund der Netzwerkanalyse}{26}{section*.40}%
+\contentsline {subsubsection}{Ziele der Netzwerkanalyse im Kontext der Quellen}{26}{section*.41}%
+\contentsline {subsubsection}{Technische Umsetzung (Tools, Datenbankstruktur)}{26}{section*.42}%
+\contentsline {section}{Pipeline}{26}{section*.43}%
+\contentsline {subsection}{Vorverarbeitung}{26}{section*.44}%
+\contentsline {subsection}{Aufbau XML to JSON Pipeline}{30}{section*.45}%
+\contentsline {subsubsection}{Übersichtsgrafik der Pipeline}{30}{section*.46}%
+\contentsline {subsection}{Hauptmodul -- transkribus\_to\_base}{30}{section*.48}%
+\contentsline {subsection}{Module im Detail}{36}{section*.55}%
+\contentsline {subsubsection}{document\_schemas.py}{36}{section*.56}%
+\contentsline {paragraph}{Person}{36}{section*.57}%
+\contentsline {paragraph}{Organization}{37}{section*.58}%
+\contentsline {paragraph}{Place}{38}{section*.59}%
+\contentsline {paragraph}{Event}{38}{section*.60}%
+\contentsline {paragraph}{Documenttype}{39}{section*.61}%
+\contentsline {subsubsection}{\_\_init\_\_.py}{39}{section*.62}%
+\contentsline {subsubsection}{Person\_matcher.py}{40}{section*.63}%
+\contentsline {subsubsection}{Assigned\_Roles\_Module.py}{41}{section*.64}%
+\contentsline {subsubsection}{place\_matcher.py}{42}{section*.65}%
+\contentsline {subsubsection}{organization\_matcher.py}{42}{section*.66}%
+\contentsline {subsubsection}{letter\_metadata\_matcher.py}{42}{section*.67}%
+\contentsline {subsubsection}{type\_matcher.py}{42}{section*.68}%
+\contentsline {subsubsection}{unmatched\_logger.py}{46}{section*.71}%
+\contentsline {subsection}{KEINE AHNUNG WAS DIE HIER MACHEN}{47}{section*.72}%
+\contentsline {subsubsection}{validation\_module.py}{47}{section*.73}%
+\contentsline {subsubsection}{validation\_module.py}{47}{section*.74}%
+\contentsline {subsubsection}{test\_role\_schema.py}{47}{section*.75}%
+\contentsline {subsubsection}{llm\_enricher.py}{47}{section*.76}%
+\contentsline {subsubsection}{enrich\_pipeline.py}{47}{section*.77}%
+\contentsline {section}{Analyse \& Diskussion der Ergebnisse}{47}{section*.78}%
+\contentsline {subsection}{Visualisierung auf der VM}{47}{section*.79}%
+\contentsline {section}{Fazit und Ausblick}{47}{section*.80}%
+\contentsline {subsection}{Zusammenfassung der zentralen Erkenntnisse}{47}{section*.81}%
+\contentsline {subsection}{Methodische Herausforderungen und Lösungen}{47}{section*.82}%
+\contentsline {subsection}{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{47}{section*.83}%
+\contentsline {section}{ALTER SCHEISS}{48}{section*.84}%
+\contentsline {subsection}{Forschungsstand zu den Quellen}{48}{section*.85}%
+\contentsline {subsection}{Beschreibung des Archivbestands}{48}{section*.86}%
+\contentsline {section}{Methodischer Zugang}{49}{section*.87}%
+\contentsline {subsection}{Digitale Erfassung und Strukturierung der Quellen}{49}{section*.88}%
+\contentsline {subsubsection}{Gliederung in Akten}{49}{section*.89}%
+\contentsline {subsubsection}{Digitalisierung und Transkription}{49}{section*.90}%
+\contentsline {subsection}{Tagging in Transkribus}{49}{section*.91}%
+\contentsline {subsection}{Digitalisierungsprozess und Herausforderungen}{50}{section*.92}%
+\contentsline {section}{Anhang}{54}{section*.97}%
+\contentsline {subsection}{PDF\_to\_JPEG.py}{54}{section*.98}%
+\contentsline {subsection}{Tagging in Transkribus}{55}{section*.99}%
+\contentsline {subsubsection}{Inhaltliche Tags}{56}{section*.100}%
+\contentsline {subsubsection}{Strukturelle Tags}{58}{section*.101}%

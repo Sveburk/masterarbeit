@@ -1144,7 +1144,8 @@ Die Software basiert seit Version 4 auf einem LSTM-basierten\cite[Abk.: \textbf{
 hohe Genauigkeit bietet. Tesseract unterstützt neben modernen Schrifttypen auch historische Schriftsätze wie Fraktur, was es besonders geeignet 
 für den Einsatz in digitalisierten Archiven macht.\cite[vgl.][]{weil_tesseract-ocrtesseract_2025}
 
-Im praktischen Einsatz scheiterte die Integration jedoch an der Heterogenität des Korpus: uneinheitliche Layouts, wechselnde 
+Vorbereitend für den Einsatz von Tesseract müssen alle gescannten PDF in das JPEG Format umgewandelt werden, wofür ein kurzes Python-Script verwendet wird\cite[vgl.][]{burkhardt_githubpdf_to_jpegpy_2025}. 
+Im praktischen Einsatz scheiterte die Integration von TEsseract jedoch an der Heterogenität des Korpus: uneinheitliche Layouts, wechselnde 
 Schrifttypen, maschinen- und handschriftliche Texte sowie komplexe Textverläufe. Beispielhaft sollen hier überlagerte oder mehrspaltig angeordnete 
 Passagen auf Postkarten und Zeitungsartikeln genannt werden, die zu massiven Erkennungsfehlern führten. Auch mit angepassten Segmentierungsparametern (--psm) 
 konnte keine zufriedenstellende Texterkennung erzielt werden.
@@ -1152,13 +1153,13 @@ konnte keine zufriedenstellende Texterkennung erzielt werden.
 Tesseract wurde daher nicht weiterverwendet.
 
 \paragraph{LLM}\label{paragraph:LLM_transcript}
-Analog zum Einsatz des OCR-Systems Tesseract\parref{paragraph:Tesseract} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
+Analog zum Einsatz des OCR-Systems Tesseract\footnote{siehe Abschnitt \nameref{paragraph:Tesseract}} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
 Aus diesem Grund wird in einer frühen Phase auch der Einsatz von LLMs, spezifisch ChatGPT, bei der Transkription der Unterlagen erprobt.
 
 Der Einsatz von LLMs wie ChatGPT für die Transkription historischer Quellen erweist sich als ambivalent. Während die Modelle nach gezielter 
 Anleitung eine erstaunlich präzise Rekonstruktion von Layoutstrukturen und maschinell erfassten Textdaten leisten, bestehen erhebliche Einschränkungen. Im Detail sind das
 erhebliche Probleme bei der semantischen Genauigkeit. Das LLM beginnt sehr schnell mit sinnverändernden Haluzinationen, die unklare Textpassagen aus dem gelernten Kontext stimmig auffüllt.
-Eine genaue Transkription, mit forcierter Notation von unklaren Stellen\footnote{Beispielsweise durch das Einfügen von[\ldot]} gelingt in der Regel nicht. 
+Eine genaue Transkription, mit forcierter Notation von unklaren Stellen\footnote{Beispielsweise durch das Einfügen von \enquote{[\dots]}} gelingt in der Regel nicht. 
 Die Verarbeitung handschriftlicher Dokumente scheitert weitgehend und führt zu stark spekulativen oder fehlerhaften Inhalten.
 
 Hinzu kommen zu Projektbeginn technische Begrenzungen: Da ein API-Zugang zu OpenAI noch nicht verfügbar ist, erfolgt der Zugriff 
@@ -1177,7 +1178,7 @@ Eine Kombination aus Ground-Truth-gestützter Anleitung und manuellem Review ist
 
 Aus den genannten Gründen kommt auch eine Transkription mittels generativem LLM nicht zum Einsatz.
 
-\paragraph{Transkribus}
+\paragraph{Transkribus}\label{Transkribus}
 Transkribus ist eine webbasierte Plattform zur automatisierten Handschrifterkennung (HTR) und Texterkennung (OCR), die sich seit ihrer Entwicklung im EU-Projekt READ 
 (Recognition and Enrichment of Archival Documents)\cite[vgl.][]{noauthor_recognition_nodate} als Standardwerkzeug in den digitalen Geschichtswissenschaften etabliert 
 hat\cite[vgl.][]{muhlberger_transkribus_2019}. Betrieben wird Transkribus durch die READ-COOP SCE, einer europäischen Genossenschaft.
@@ -1331,6 +1332,53 @@ unterstützt deren Ausspielung über standardisierte Schnittstellen und ermögli
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Pipeline}
+\subsection{Vorverarbeitung}
+Neben Transkribus, das bei der Transkription einen elementaren Schritt in der Vorverarbeitung aller Dokumente darstellt,
+müssen die Seiten noch weiter vorbereitet werden, um detaillierte Ergebnisse zu gewinnen. Die Kernherausforderung der vorliegenden Arbeit ist die Named Entity Recognition. Wie bereits 
+im Abschnitt \nameref{Transkribus} ausgeführt, werden viele Inhalte bereits während des Transkriptionsprozesses manuell getaggt. 
+Aufgrund der Menge
+an Unterlagen und des begrenzten zur Verfügung stehenden Zeitrahmens wird für das Projekt auch eine zweite Verarbeitungsform gewählt.
+
+Im Zentrum des Vorverarbeitungsskripts steht eine strukturierte Anbindung an die OpenAI-API, um ausgewählte 
+PAGE-XML-Dateien aus dem Transkribus-Export automatisiert mit Annotationen anzureichern. Das Skript ist modular
+ aufgebaut und folgt einer klar definierten Abfolge von Verarbeitungsschritten, die im Folgenden näher erläutert werden.
+
+Zunächst wird mit der Funktion \code{get\_api\_client()} eine Verbindung zur OpenAI-Programmierschnittstelle 
+aufgebaut. Dabei wird der API-Schlüssel über eine Umgebungsvariable geladen und für spätere Anfragen bereitgestellt.
+Die zentrale Annotation erfolgt in der Funktion \code{annotate\_with\_llm()}, die den vollständigen Unicode-Text der XML-Datei
+verarbeitet und an das Modell GPT-4o übergibt. Grundlage ist ein präzise formulierter Prompt, der die Struktur des zu erwartenden
+Outputs definiert. Der Prompt spezifiziert, dass ausschliesslich \code{<TextLine>}-Elemente bearbeitet und mit einem \code{custom}-Attribut
+versehen werden dürfen. Innerhalb dieses Attributs werden ausschliesslich tatsächlich erkannte Entitäten in standardisiertem Format codiert, 
+darunter Personen (\code{person}), Rollen (\code{role}), Orte (\code{place}), Organisationen (\code{organization}), Daten (\code{date}) 
+sowie autoren- und empfängerbezogene Markierungen (\code{author}, \code{recipient}, \code{creation\_place}). Für jedes einzelne Tag gibt es genaue Anweisungen
+an das Modell. Auch ein Beispielresultat der Anotation wird jedes mal mitgeliefert, um möglichst wenig Varianz in den Antworten zu erhalten. Gleichzeitig liefert
+das Beispielresultat auch Informationen über Abkürzungen, die nicht von dem Modell als Organisationen erkannt werden. Das \enquote{WhW - das Winterhilfswerk} ist eine
+abkürzung, die offenbar nicht in den Trainingsdaten des Modells vorkommt. Dieses Vorgehen stellt den Versuch dar, ein nicht domänenspezifisch trainiertes Modell 
+auf eine historische Quellenlage zu adaptieren. Es ist jedoch davon auszugehen, dass ein speziell auf den historischen Korpus abgestimmtes Sprachmodell 
+deutlich präzisere Ergebnisse liefern würde.
+
+Die Antwort des Sprachmodels ist eine vollständige XML-Datei, die sämtliche bestehenden Strukturinformationen beibehalten soll. 
+Der Rückgabewert wird zunächst in der Funktion \code{clean\_llm\_output()} auf mögliche Formatierungen überprüft. Diese Funktion 
+extrahiert den tatsächlichen XML-Inhalt aus dem Rückgabestring, etwa wenn dieser durch Markdown-Wrapper wie \code{\texttt{\char\`{}\`{}xml-content\'{}\'{}\'{}}
+} eingefasst wurde. 
+
+Die konkrete Verarbeitung einzelner Dateien erfolgt über die Funktion \code{process\_file()}, die eine originale Transkribus-XML-Datei einliest,
+an das Modell übergibt, das Ergebnis prüft und anschliessend unter verändertem Dateinamen (Suffix \code{\_preprocessed}) abspeichert. Vor dem 
+Schreiben erfolgt eine strukturelle Validierung mittels XML-Parser, um syntaktische Fehler oder unvollständige Rückgaben zu 
+erkennen. Fehlermeldungen werden protokolliert, fehlerhafte Dateien übersprungen.
+
+Die eigentliche Ausführung der Batch-Verarbeitung wird durch die \code{main()}-Funktion gesteuert. Diese durchläuft das in 
+\code{TRANSKRIBUS\_DIR} konfigurierte Arbeitsverzeichnis, wobei alle Unterordner der Form \code{<7-stelliger Ordner>/Akte\_<Nummer>/page/} 
+rekursiv analysiert werden. XML-Dateien, die bereits mit \code{\_preprocessed} enden, werden übersprungen. Zusätzlich wird ein Verzeichnis 
+ignoriert, wenn bereits mehr als fünfzig Prozent der Dateien annotiert wurden. Die verbleibenden Dateien werden schrittweise mit dem Modell 
+verarbeitet. Hintergrund ist eine kosteneffiziente Verarbeitung, die verhindern soll, dass Datein mehrfach durch die API bearbeitet werden. Die Funktion 
+\code{annotate\_with\_llm()} berechnet darüber hinaus die Anzahl der vom Modell verarbeiteten Eingabe- und Ausgabetokens. Auf Basis dieser Werte wird für 
+jede Datei eine Schätzung der anfallenden API-Kosten vorgenommen. Diese Informationen werden für jede Anfrage protokolliert, um eine transparente 
+Kostenkontrolle sicherzustellen.
+
+Am Ende dieses Prozesses entsteht pro annotierter Seite eine neue, syntaktisch validierte XML-Datei, 
+die alle Annotationen als \code{custom}-Attribute enthält. Diese dienen in den nachfolgenden Modulen der 
+ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die strukturierte Extraktion und Validierung von Entitäten.
 
 \subsection{Aufbau XML to JSON Pipeline}
 \subsubsection{Übersichtsgrafik der Pipeline}
@@ -1373,7 +1421,7 @@ unterstützt deren Ausspielung über standardisierte Schnittstellen und ermögli
 \node[coordinate] (joinpoint) at ($(unmatched.north) + (0, 1.5cm)$) {};
 \node[coordinate] (joinpointxml) at ($(xml.south) + (0, -0.5cm)$) {};
 \node[source, below=of json] (save) {Speicherung \\ JSON pro Seite + total\_json};
-\node[source, right=of save] (unmatchedjson) {unmatched\.json};
+\node[source, right=of save] (unmatchedjson) {unmatched.json};
 
 % CSV-Quellen
 \node[source] (csv1) at ($(transkribus.south) + (0.5, -4.5)$) {\textbf{export-person.csv}};
@@ -1459,9 +1507,207 @@ unterstützt deren Ausspielung über standardisierte Schnittstellen und ermögli
 \vspace{6\baselineskip}
 
 
+\subsection{Hauptmodul -- transkribus\_to\_base}\label{sec:transkribus_to_base}
+\subsubsection*{1. Initialisierung und Pfadlogik}
+
+Die Initialisierungsphase des Skripts\footnote{bis ca. Line 250} dient der Einrichtung sämtlicher Systempfade, Datenquellen, 
+Modulabhängigkeiten und Ressourcen. Im Zentrum steht dabei die Festlegung der Projektstruktur sowie die dynamische Integration 
+aller untergeordneten Module und Datenbestände.
+
+Zu Beginn werden die Python-Standardbibliotheken sowie externe Abhängigkeiten geladen, darunter \code{pandas} für 
+Tabellenverarbeitung, \code{spacy} für die linguistische Analyse und \code{rapidfuzz} für den Vergleich von ähnlichen Strings. Zusätzlich 
+wird das aktuelle Datum mit Zeitstempel generiert und als Konsolenoutput ausgegeben. Das unterstützt die Nachvollziehbarkeit von
+Verarbeitungsläufen und das Debugging in größeren Verarbeitungsszenarien.
+
+Das Verzeichnis der Skriptdatei wird mithilfe des \code{pathlib}-Moduls identifiziert. Anschließend wird von dort ausgehend das 
+Projektwurzelverzeichnis nachvollzogen. Diese dynamisch bestimmte Wurzel fungiert als zentraler Referenzpunkt für die Auflösung 
+aller nachfolgenden Verzeichnispfade, absolute Pfadangaben werden vollständig vermieden.  
+Das Projekt ist so organisiert, dass sämtliche zentralen Datenverzeichnisse, Ressourcen und Modulstrukturen relativ
+zur Wurzel definiert und im Code programmatisch zugänglich gemacht sind. Dazu gehören beispielsweise die 
+Unterverzeichnisse \code{Data} für CSV-basierte Groundtruth-Informationen, \code{Module} für modulare 
+Verarbeitungsfunktionen sowie \code{Transkribus\_test\_In} und \code{Transkribus\_test\_Out} als standardisierte 
+Ein- und Ausgabeverzeichnisse für XML-Dateien und strukturierte JSON-Outputs.
+
+Zur Gewährleistung der Modulverfügbarkeit wird dem globalen Importpfad das Verzeichnis \code{Module} über \code{sys.path.insert} hinzugefügt. 
+Dadurch lassen sich alle enthaltenen Funktions- und Klassendefinitionen zentral importieren. Die einzelnen Komponenten sind in 
+modularisierten Unterdateien wie \nameref{subsec:person_matcher.py}, \nameref{subsec:place_matcher_chapter} und \nameref{subsec:document_schema} abgelegt. 
+Diese Struktur fördert die klare Trennung thematischer Verantwortlichkeiten innerhalb des Codes.
+
+Darüber hinaus erfolgt die Definition aller relevanten Ein- und Ausgabepfade. Der 
+Pfad \code{TRANSKRIBUS\_DIR} verweist auf das Eingabeverzeichnis für XML-Dateien, während 
+\code{OUTPUT\_DIR} die Ausgabe der JSON-Dateien sowie untergeordnete Strukturen für nicht 
+gematchte Entitäten, Logdateien und CSV-Dumps aufnimmt.
+
+Die Initialisierungslogik umfasst ferner das standardisierte Einlesen der Groundtruth-Dateien aus den 
+jeweiligen Nodegoat-Exporten, die Zentral im Ordner \code{/Data/Nodegoat\_Export} gespeichert sind. 
+Dabei werden die dort hinterlegten Informationen aus den 
+CSV-Dateien geladen, in \code{pandas.DataFrames} überführt und durch Fehlerbehandlung in Form von
+\code{try\-exept}-Blöcken abgesichert. 
+Eine Konsolenausgabe informiert über Anzahl und Status der geladenen Einträge.
+
+Im Anschluss daran wird überprüft, ob das deutsche Sprachmodell 
+\code{de\_core\_news\_sm} von \code{spaCy} verfügbar ist und gegebenenfalls auf ein Fehlen hingewiesen. 
+Wichtig ist die Abfrage eines gültigen 
+API-Schlüssels für das OpenAI-Modul. Ist dies nicht der Fall wird der nachgelagerte Enrichment-Prozess 
+automatisch deaktiviert.
+
+Die standardisierte Datenstruktur für Personen wird unmittelbar nach dem Einlesen der 
+Groundtruth-Dateien erzeugt. Hierzu werden die relevanten Felder aus der CSV-Datei 
+\code{export-person.csv} extrahiert und als strukturierte Python-Dictionaries gespeichert. 
+Diese beinhalten Attribute wie \code{forename}, \code{familyname}, \code{alternate\_name}, 
+\code{title} sowie die eindeutige \code{nodegoat\_id}. Die Struktur orientiert sich an der in 
+\code{document\_schemas.py} definierten Klasse \code{Person}, bildet jedoch in dieser Phase noch 
+keine Instanzen davon. Sie dient als Referenz für alle nachfolgenden Matching- und 
+Deduplikationsvorgänge.
+
+
+Abschließend stehen zwei Hilfsfunktionen bereit, um neu erkannte Personen in die bestehende 
+CSV-Struktur zu überführen. Eine Duplikatsprüfung auf Basis unscharfer Namensähnlichkeit wird 
+durch \code{Rapidfuzz} realisiert und stellt sicher, dass nur bisher unbekannte Einträge ergänzt werden.
+
+Die Initialisierungs- und Pfadlogik legt damit den Grundstein für eine skalierbare, 
+reproduzierbare und systematisch strukturierte Weiterverarbeitung aller Eingabedaten.
+
+
+\subsubsection*{2. Extraktion von Struktur und Fließtext}
+Zweck: Parsen der XML-Datei und strukturierte Extraktion von Text, Metadaten und Custom-Tags.
+\begin{itemize}
+\item extract\_metadata\_from\_xml(\dots)
+\item get\_document\_type(\dots)
+\item extract\_text\_from_xml(\dots)
+\item extract\_custom\_attributes(\dots)
+  \begin{itemize}
+  mit:
+  \item extract\_person\_from\_custom(\dots)
+  \item extract\_place\_from\_custom(\dots)
+  \item extract\_organization\_from\_custom(\dots)
+  \item extract\_date\_from\_custom(\dots)
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{3. Named Entity Recognition}
+Zweck: Erkennung, Anreicherung und Zuordnung von Personen, Rollen, Orten, Organisationen und Ereignissen.
+\begin{itemize}
+\item \texttt{mentioned\_places\_from\_custom\_data(\dots)}
+\item \texttt{extract\_and\_prepare\_persons(\dots)}
+\item \texttt{assign\_roles\_to\_known\_persons(\dots)}
+\item \texttt{match\_organization\_entities(\dots)}
+\item \texttt{extract\_events\_from\_xml(\dots)}
+\item \texttt{combine\_dates(\dots)}
+\item \texttt{assign\_sender\_and\_recipient\_place(\dots)}
+\end{itemize}
+
+
+\subsubsection*{4. Deduplikation und Validierung}
+Zweck: Zusammenführung mehrfach erkannter Entitäten und finale Konsistenzprüfung.
+\begin{itemize}
+\item \texttt{deduplicate\_and\_group\_persons(\dots)}
+\item \texttt{ensure\_author\_recipient\_in\_mentions(\dots)}
+\item \texttt{count\_mentions\_in\_transcript\_contextual(\dots)}
+\item \texttt{postprocess\_roles(\dots)}
+\item \texttt{mark\_unmatched\_persons(\dots)}
+\item \texttt{validate\_extended(\dots)}
+\end{itemize}
+
+\subsubsection*{5. JSON-Export und Logging}
+Zweck: Erstellung der finalen JSON-Dateien im gewünschten Basisschema und Protokollierung von problematischen Einträgen.
+\begin{itemize}
+\item Erstellung von \texttt{BaseDocument(\dots)}
+\item \texttt{doc.to\_json(\dots)}
+\item \texttt{update\_total\_json(\dots)}
+\item \texttt{log\_unmatched\_entities(\dots)}
+\item Terminalausgabe bei Validierungsfehlern
+\end{itemize}
+
+JSon Export weil menschenlesbar und leichte Abwandelbarkeit in andere Formate.
+
+\subsubsection*{6. Review-Prozess}
+Zweck: Markierung und Protokollierung unsicherer, unvollständiger oder nicht eindeutig gematchter Entitäten für eine spätere manuelle Überprüfung.
+
+\begin{itemize}
+\item \texttt{mark\_unmatched\_persons(\dots)} – Kennzeichnung von Personen ohne ID, mit niedrigem Score, unklarem Namen
+\item \texttt{needs\_review = true} bei allen problematischen Einträgen
+\item \texttt{review\_reason} zur Beschreibung der Ursache (z.\,B. „nur Vorname“, „nicht in Groundtruth“)
+\item \texttt{log\_unmatched\_entities(\dots)} – Protokollierung in den Dateien:
+  \begin{itemize}
+  \item \texttt{unmatched\_persons.json}
+  \item \texttt{unmatched\_places.json}
+  \item \texttt{unmatched\_roles.json}
+  \item \texttt{unmatched\_events.json}
+  \end{itemize}
+\item Kontextbasierte Filterung durch Zeilenumfeld (z.\,B. keine Dopplung bei Rolle+Name in direkter Nachbarschaft)
+\end{itemize}
+
+
+------------------------------------
+Die wesentliche Verarbeitung der durch ChatGPT verarbeiteten XML-Files für jede einzelne Seite wird im 
+Hauptmodul \code{Transkribus\_to\_base.py} gesteuert. Es ist das umfangreichste
+Modul für dieses Projekt, dessen Funktionsweise im Folgenden beschrieben werden soll.
+
+Nach Abschluss der Vorverarbeitung und der Anreicherung mit Annotationen werden die XML-Dateien mithilfe des 
+Moduls \texttt{transkribus\_to\_base.py} in eine strukturierte JSON-Repräsentation überführt. Diese stellt das 
+im Projekt definierte Basisschema dar und dient als Grundlage für die nachfolgenden Analyseschritte. Ziel ist es, 
+aus dem strukturierten und annotierten XML-Dokument ein validiertes JSON-Objekt zu erzeugen, das alle im Dokument 
+erkannten Entitäten eindeutig, formal konsistent und datenmodellkonform beschreibt.
+
+Das Modul \code{transkribus\_to\_base.py} ist als zentraler Verarbeitungsknoten konzipiert. Es verarbeitet die Inhalte 
+der zuvor erzeugten XML-Dateien schrittweise, prüft und transformiert sie und strukturiert sie in einer einheitlichen Objektklasse 
+(\code{BaseDocument}). Die Verarbeitung beginnt mit dem Einlesen der XML-Datei. In einem ersten Schritt werden aus dem XML-Header 
+Informationen wie \code{docId}, \code{pageId}, \code{tsid} sowie Referenzen zu Bild- und Quelldateien extrahiert. Diese Metadaten 
+bilden die Basis für die eindeutige Identifikation jeder Seite. Zusätzlich wird aus dem Dateinamen das Dokumentformat (z.\,B. Brief, 
+Postkarte, Protokoll) abgeleitet. Dieses wird später im Feld \code{document\_type} gespeichert und dient der Klassifikation innerhalb 
+der Datenstruktur.
+
+Parallel dazu wird der vollständige Transkriptionstext aus den \code{<TextEquiv>} bzw. \code{<Unicode>}-Blöcken extrahiert. Dieser 
+Text bildet die Grundlage für alle heuristischen, regelbasierten und modellgestützten Erkennungsverfahren. Die im vorherigen Schritt von 
+ChatGPT annotierten \code{custom}-Attribute werden nun systematisch ausgelesen und auf ihre Struktur analysiert. Dabei werden Personen, 
+Rollen, Orte, Organisationen und Daten extrahiert. Jede dieser Kategorien wird durch eine eigene Funktionsgruppe behandelt, die intern auf 
+vorab geladene Groundtruth-Daten zurückgreift. Die Groundtruth-Dateien stammen aus \textit{Nodegoat} und werden projektweit als 
+CSV-Dateien verwaltet.
+
+Die Extraktion von Personen erfolgt über die Funktion \code{extract\_person\_from\_custom()}, die für jeden in der XML-Datei 
+annotierten \code{person}-Tag eine initiale Zerlegung vornimmt. In einem mehrstufigen Matchingverfahren wird versucht, die 
+extrahierten Namen mit bekannten Personen zu verknüpfen. Dabei kommen Fuzzy-Matching-Techniken zum Einsatz, die über die Funktion 
+\code{match\_person()} gesteuert werden. Zusätzlich werden Titel wie \enquote{Herr}, \enquote{Frau}, \enquote{Sängerbruder} oder 
+\enquote{Witwe} als Geschlechtsindikatoren erkannt und gespeichert. Für jede identifizierte Person wird ein Eintrag erzeugt, der sowohl 
+die extrahierten als auch die gematchten Informationen enthält. Bei fehlender Übereinstimmung wird der Eintrag mit dem Vermerk 
+\code{needs\_review} gekennzeichnet.
+
+Die Ortsverarbeitung basiert auf einem spezialisierten \code{PlaceMatcher}-Objekt, das die extrahierten Ortsnamen mit bekannten 
+Ortsbezeichnungen aus der Groundtruth sowie mit externen Ressourcen wie Geonames oder Wikidata abgleicht. Bei unklaren oder 
+mehrdeutigen Ortsangaben kann der Matcher mehrere Kandidaten zurückgeben. In diesem Fall erfolgt eine Gewichtung anhand von 
+Konfidenz- und Ähnlichkeitswerten. Die Funktion \code{extract\_place\_from\_custom()} ist dabei für die Initialextraktion 
+zuständig, während die Funktion \code{deduplicate\_places()} eine Zusammenführung ähnlicher Ortsangaben durchführt.
+
+Zusätzlich zu den durch das Sprachmodell erzeugten Custom-Tags werden weitere Entitäten heuristisch aus dem Fließtext erkannt. 
+Besonders betrifft dies Rollenbezeichnungen, die in unmittelbarer Nähe zu Personennamen vorkommen. Eine regelbasierte Extraktion 
+dieser Kontexte wird durch die Funktion \code{assign\_roles\_to\_known\_persons()} realisiert. Auch hier wird das Ergebnis validiert 
+und – sofern die Rolle einer standardisierten Ontologie entspricht – in das Feld \code{role\_schema} überführt.
+
+Die Kombination der verschiedenen Erkennungsmethoden kann zu Duplikaten führen. Um konsistente und eindeutige Entitäten zu erzeugen, 
+erfolgt ein deduplizierender Abgleich über die Funktion \code{deduplicate\_and\_group\_persons()}. Diese vergleicht alle Personen 
+aus den Kategorien \code{authors}, \code{recipients} und \code{mentioned\_persons} untereinander. Dabei werden vorhandene Scores 
+(wie \code{match\_score}, \code{recipient\_score} und \code{confidence}) zusammengeführt und priorisiert.
+
+Das so angereicherte Dokument wird in ein Objekt der Klasse \code{BaseDocument} überführt. Dieses enthält strukturierte Felder für 
+Metadaten, Volltext, Autoren, Empfänger, erwähnte Personen, Orte, Organisationen, Datumsangaben und Ereignisse. Jede Entität wird gemäß 
+den Typdefinitionen in \code{document\_schemas.py} validiert. Ein abschließender Validierungsschritt erfolgt über 
+\code{validate\_extended()}, das auf Fehler in der Struktur, Inkonsistenzen oder fehlende Pflichtfelder prüft.
+
+Abschließend wird das Dokument im JSON-Format gespeichert. Neben der Einzelseite wird auch eine aggregierte Datei 
+\code{total\_json.json} fortgeschrieben, in der alle Seiten einer Akte gesammelt werden. Zusätzlich wird für jede Seite 
+eine Prüfung auf nicht zuordenbare Entitäten durchgeführt. Diese werden in der Datei \code{unmatched.json} gespeichert, 
+um eine spätere manuelle Nachbearbeitung zu ermöglichen. Das Ergebnis dieser Konvertierung bildet die Grundlage für die weitere 
+Verarbeitung in \code{Nodegoat} sowie für die explorative Analyse der Akteursnetzwerke.
+
+------------------------------------
+
+
 \subsection{Module im Detail}
 \subsubsection{document\_schemas.py}\label{subsec:document_schema}
-Das Modul \texttt{document\_schemas.py} definiert die zentrale Schema- und Datenstruktur zur Modellierung aller extrahierten Inhalte aus den Transkribus-Dokumenten des Projekts. Es gewährleistet die einheitliche Repräsentation, Serialisierung und Validierung der im Projekt verarbeiteten Entitäten und ihrer Relationen. Die definierten Klassen bilden die Grundlage für die JSON-Ausgabe der angereicherten Dokumente und dienen zugleich der Nachvollziehbarkeit und strukturierten Weiterverarbeitung in externen Anwendungen wie Nodegoat.
+Das Modul \code{document\_schemas.py} definiert die zentrale Schema- und Datenstruktur 
+zur Modellierung aller extrahierten Inhalte aus den Transkribus-Dokumenten des Projekts. Es gewährleistet die einheitliche Repräsentation, 
+Serialisierung und Validierung der im Projekt verarbeiteten Entitäten und ihrer Relationen. Die definierten Klassen bilden die Grundlage für die JSON-Ausgabe der angereicherten Dokumente und dienen zugleich der Nachvollziehbarkeit und strukturierten Weiterverarbeitung in externen Anwendungen wie Nodegoat.
 
 \paragraph{Person}\\
 Die Klasse \code{Person} bildet Einzelpersonen ab, wie sie in den Briefen, Postkarten oder Protokollen erscheinen. 
