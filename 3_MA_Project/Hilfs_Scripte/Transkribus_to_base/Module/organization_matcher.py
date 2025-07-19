@@ -14,7 +14,7 @@ _ENCLOSING_BRACKETS = re.compile(r"^[\(\[\{]\s*(.*?)\s*[\)\]\}]$")
 # removes any stray parentheses, brackets, or colons inside
 _CLEAN_INSIDE = re.compile(r"[()\[\]\{\}\.:]")
 # blacklist of tokens to drop
-NON_ORG_TOKENS = {"verein", "partei", "amt", "lokal", "hotel", "süd", "krone"}
+NON_ORG_TOKENS = {"verein", "amt", "lokal", "hotel", "süd", "krone"}
 
 
 def extract_organization(org_raw: str) -> Optional[str]:
