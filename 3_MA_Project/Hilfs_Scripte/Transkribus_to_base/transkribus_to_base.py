@@ -270,13 +270,6 @@ def save_new_csv(df: pd.DataFrame):
 #############################################################################
 
 
-# Funktion zum Speichern der neuen Personen in CSV
-
-
-
-
-
-
 # XML-Namespace (für Transkribus-Dateien)
 NS = {"ns": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"}
 

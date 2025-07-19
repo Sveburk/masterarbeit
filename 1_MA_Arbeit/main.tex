@@ -1,9 +1,20 @@
+\sloppy
+% cd /Users/svenburkhardt/Developer/masterarbeit/1_MA_Arbeit/
+% source /Users/svenburkhardt/Developer/masterarbeit/.venv311/bin/activate
+% pdflatex -shell-escape main.tex
+% biber main
+% pdflatex -shell-escape main.tex
+% pdflatex -shell-escape main.tex
+
+
+
+
+
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %–––––––––––––––––––––––––––––    S E T T I N G S        ––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-\sloppy
 
 
 
@@ -17,6 +28,7 @@
 %–––––––––––––––––––––––––––––      P A K E T E        ––––––––––––––––––––––––––––––%
 %–––––––––––––––––––––––––––––
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+\def\langde{}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[fixed]{fontawesome5} %Fontawesome für Icons und Symbole; siehe https://mirrors.ibiblio.org/CTAN/fonts/fontawesome5/doc/fontawesome5.pdf
@@ -27,6 +39,7 @@
 \usepackage{graphicx}
 \usepackage{subcaption} %Für die Verwendung von subfigure
 \usepackage{setspace} %Für den Befehl \setstretch
+\setlength{\parindent}{0pt}
 \usepackage{transparent}
 \usepackage{tikz}
   \usetikzlibrary{shapes.geometric, arrows.meta,fit, backgrounds, calc, positioning}
@@ -47,7 +60,6 @@
   language=ngerman,
   citetracker,
   ibidtracker,
-  shorthandibid=true,
   backref=true,
   backrefstyle=three+
 ]{biblatex}
@@ -63,7 +75,6 @@
   urlseen = {Zugriff am}
 }
 \DeclareFieldFormat{urldate}{\addspace#1}
-
 \renewbibmacro*{url+urldate}{%
   \printfield{url}%
   \setunit*{\addspace}%
@@ -73,13 +84,11 @@
 }
 
 \setlength{\skip\footins}{20pt}
-\addbibresource{/Users/svenburkhardt/Developer/masterarbeit/1_MA_Arbeit/assets/Literature_Bib/Exportierte Einträge.bib}
+\addbibresource{assets/Literature_Bib/Masterarbeit.bib}
 
 \renewbibmacro*{date}{% 
-    \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
-        \printtext[parens]{Zugriff am \usebibmacro{urldate}}}{\printdate}
-    
-}
+     \ifentrytype{online}{% Falls der Eintrag @online ist, nimm das urldate
+         \printtext[parens]{Zugriff am \usebibmacro{urldate}}}{\printdate}}
 
 \usepackage[ngerman]{babel}
 \usepackage{pifont} %Für die Kästchen und Häkchen-Symbole
@@ -164,7 +173,7 @@
 
 \usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2cm,bmargin=2cm]{geometry}
 \setlength{\emergencystretch}{3em}%prevent overfull lines
-\setcounter{secnumdepth}{-\maxdimen}%remove section numbering
+% \setcounter{secnumdepth}{-\maxdimen}%remove section numbering %Kapitel Zahl Nummer
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -285,7 +294,6 @@
 \makeatletter
 \makeatother
 \makeatletter
-\@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 
@@ -593,7 +601,7 @@ Der Ordner umfasst insgesamt 780 Seiten und deren Inhalt kann als \enquote{Proto
 \enquote{Regierungsdokument}, \enquote{Noten}, \enquote{Zeitungsartikel}, \enquote{Liste}, \enquote{Notizzettel} oder \enquote{Offerte} kategorisiert werden.
 
 Die Unterlagen könnten bereits direkt nach ihrer Entstehung in die Ordner eingelegt worden sein. Einzelne Akten sind mit einem 
-\enquote{Heftstreifen}, auch \enqute{Aktendulli} genannt, zusammengefehtet. In der Plastikversion, wie er in diesen Akten vorliegt, wurde er bereits 1938 patentiert\cite[vgl.][]{noauthor_heftstreifen_2023}.
+\enquote{Heftstreifen}, auch \enquote{Aktendulli} genannt, zusammengefehtet. In der Plastikversion, wie er in diesen Akten vorliegt, wurde er bereits 1938 patentiert\cite[vgl.][]{noauthor_heftstreifen_2023}.
 Wer die Akten so archiviert hat lässt sich nicht mehr sagen. 
 Der sogenannte \enquote{Archival-Bias} des Archivars, also die Grundeinstellung, weshalb etwas aufbewahrt oder
 vernichtet wurde, lässt sich damit nicht mehr feststellen. 
@@ -640,9 +648,7 @@ vernichtet wurde, lässt sich damit nicht mehr feststellen.
       };
     \end{axis}
   \end{tikzpicture}
-
-  \captionof{figure}{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten – 381 Seiten).}
-  \label{fig:dokumententypen-bar}
+  \captionof{figure}{Verteilung der Dokumententypen im untersuchten Bestand (150 Akten – 381 Seiten).}\label{fig:dokumententypen-bar}
 \end{minipage}
 
 \noindent
@@ -851,7 +857,7 @@ bei dem Maschine und Mensch sich wechselseitig ergänzen. Die automatische Trans
 
     Carl} 
   \end{tcolorbox}
-  \captionof{figure}{LLM-Version von \autoref{fig:Carl-Transkribus}\label{fig:Carl-LLM}}
+  \captionof{figure}{LLM-Version von \autoref{fig:Carl-handschrift}\label{fig:Carl-Transkribus}}
 \end{minipage}
 \hfill%
 
@@ -922,7 +928,6 @@ Hier werden etwa \texttt{Murg} und \texttt{Wien} als Orte, \texttt{Alfons}, \tex
 \texttt{Deutsch. Sängerb. Fest} als Ereignis markiert. Auch der Liedtitel \enquote{Das alte Lied von Wien} wird in seinen Bestandteilen 
 zwischen Person, Ort und kulturellem Kontext aufgeschlüsselt. Für unklare oder unleserliche Textstellen, wie etwa das Fragment \texttt{auf Wiederschen}, 
 kommt das Tag \texttt{unclear} zum Einsatz – häufig auf Grundlage einer Vorschlagsformulierung durch ChatGPT.
-\end{minipage}
 
 Zusätzlich zur semantischen Markierung ermöglicht Transkribus auch die Kennzeichnung struktureller Eigenschaften. 
 So wird beispielsweise die Abkürzung \texttt{V.D.A.} – für \textit{Verein für das Deutschtum im Ausland} – mit dem Tag \texttt{abbrev} versehen, 
@@ -997,7 +1002,7 @@ Quellenarbeit und automatisierter Weiterverarbeitung.
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Methodisches Vorgehen}
-\subsection{Genutze Tools}
+
 Digitale Methoden spielen für die Durchführung dieser Arbeit eine zentrale Rolle. Von der Digitalisierung der Quellen
 über die Transkription bis hin zur Auswertung durchlaufen die Daten zahlreiche Prozessschritte, die mithilfe von Large 
 Language Models, Deep-Learning-Modellen und anderen digitalen Werkzeugen verarbeitet und visualisiert werden. 
@@ -1011,12 +1016,12 @@ Methodik entwickelte sich erst im Forschungsprozess selbst. Da sich Large Langua
 ist nicht immer von Beginn an klar, ob ein Tool für den eigenen Anwendungsfall geeignet ist.
 Um diese Unsicherheiten zu dokumentieren, werden hier auch gescheiterte Versuche dargestellt.
 
-\subsubsection{LOD – Linked Open Data}
+\subsection{LOD – Linked Open Data}\label{subsec:LOD}
 
 Linked Open Data (LOD) bezeichnet einen dezentral organisierten Ansatz zur Veröffentlichung und 
 Verknüpfung strukturierter Daten im Web. Ziel ist es, Datensätze verschiedener Institutionen und Akteure 
 maschinenlesbar zugänglich zu machen und über standardisierte Formate wie RDF und SPARQL miteinander zu 
-verbinden\cite[ vgl.][Preface S. VI \& S. 13f]{garoufallou_metadata_2020}. 
+verbinden\cite[vgl.][S.~VI und 13f]{garoufallou_metadata_2020}.
 Wesentliches Merkmal der LOD-Cloud ist dabei die Nutzung semantischer Beziehungen, insbesondere Äquivalenzen einzelner Daten. 
 Hierfür wird häufig das Prädikat \texttt{owl:sameAs} genutzt, um z.B. mit \colorbox{VeryLightGray}{\textit{:Choir owl:sameAs wd:Q131186}} eine eigene 
 Instanz als identisch mit der Wikidata-Entität für einen Chor zu deklarieren.
@@ -1042,7 +1047,7 @@ Trotz ihres Potenzials wird diese Form der Datenverknüpfung bislang jedoch nich
 umgesetzt.\cite[ vgl.][S. 14]{garoufallou_metadata_2020}. Für die technische 
 Umsetzung für diese Arbeit werden zwei zentrale Werkzeuge genutzt: Protégé zur Modellierung der Ontologie und GraphDB für deren Verwaltung und Abfrage.
 
-\paragraph{Protégé} Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
+\subsubsection{Protégé} Zur praktischen Modellierung der Ontologie kam \textit{Protégé} zum Einsatz. 
 Protégé ist eine weit verbreitete Open-Source-Software zur Erstellung, Visualisierung und Verwaltung von Ontologien.
 Die grafische Oberfläche unterstützt eine intuitive Klassendefinition, 
 Relationserstellung und Instanzverwaltung. 
@@ -1051,7 +1056,7 @@ Ontologien direkt im OWL-Format exportiert werden, um sie in LOD-Workflows einzu
 Die initiale Version der Ontologie für dieses Projekt entstand zuerst im Codeeditor \textit{Visual Studio Code} wurde aber schnell vollständig in Protégé überarbeitet.
 Damit bildet das Programm die Grundlage für erste Experimente mit Abfragen in SPARQL.%
 
-\paragraph{GraphDB} Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
+\subsubsection{GraphDB} Für die Speicherung und Abfrage der Ontologie wurde \textit{GraphDB} verwendet. 
 GraphDB ist eine spezialisierte RDF-Triplestore-Datenbank, die es ermöglicht, 
 grosse Mengen an semantisch verknüpften Daten effizient zu verwalten. 
 Mit der integrierten SPARQL-Schnittstelle können Benutzer gezielt nach Instanzen, Klassen und Relationen suchen 
@@ -1065,7 +1070,7 @@ und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
 \begin{minipage}[t]{0.52\textwidth}
   \setstretch{1.5}
   \justifying%
-\paragraph{LOD-Ontologie}\\
+\subsubsection{LOD-Ontologie}
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
 Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst.
 Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (vgl.~\hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke}) ist 
@@ -1090,7 +1095,7 @@ und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Reco
 den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
 wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Abschnitt~\hyperref[subsec:Nodegoat_chapter]{Nodegoat}}.
 
-\subsubsection{Wikidata}
+\subsection{Wikidata}
 
 \textit{Wikidata}\cite[vgl.][]{noauthor_wikidata_nodate} ist eines der zentralen Repositorien für Linked Open Data, und bietet eine hohe Interoperabilität durch standardisierte
 URIs, SPARQL-Endpunkte und offene APIs zu den Entitäten.
@@ -1113,7 +1118,7 @@ Das zeigt einerseits hohe internen Qualitätsanforderungen auf, andererseits wer
 geleisteten Arbeit erheblich begrenzt. 
 Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel.
 
-\subsubsection{GeoNames}\label{subsubsec:geonames}
+\subsection{GeoNames}\label{subsec:geonames}
 
 Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
@@ -1131,8 +1136,8 @@ den klar kommunizierten Community–Guidelines und andererseits daran, dass der 
 Historische Gebäude wie Gaststätten oder Spitäler fehlen folgerichtig in der GeoNames–Datenbank. Diese Lücke ist erwartbar, aber erwähnenswert, da GeoNames 
 ansonsten eine nahezu vollständige und ausgesprochen detaillierte Datengrundlage bietet.
 
-\subsubsection{Transkriptionen (Methodenvergleich)}\label{section:Transkriptionen_Methoden}
-\paragraph{Tesseract}\label{paragraph:Tesseract}
+\subsection{Transkriptionen (Methodenvergleich)}\label{section:Transkriptionen_Methoden}
+\subsubsection{Tesseract}\label{subsubsection:Tesseract}
 
 Da bereits zu Beginn des Projekts klar ist, dass ein Grossteil der Datenverarbeitung mit Python-Code erfolgen soll, wird gezielt 
 nach Werkzeugen gesucht, die eine automatische Transkription von gescannten Dokumenten ermöglichen. 
@@ -1152,8 +1157,8 @@ konnte keine zufriedenstellende Texterkennung erzielt werden.
 
 Tesseract wurde daher nicht weiterverwendet.
 
-\paragraph{LLM}\label{paragraph:LLM_transcript}
-Analog zum Einsatz des OCR-Systems Tesseract\footnote{siehe Abschnitt \nameref{paragraph:Tesseract}} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
+\subsubsection{LLM}\label{subsubsec:LLM_transcript}
+Analog zum Einsatz des OCR-Systems Tesseract\footnote{siehe Abschnitt \nameref{subsubsec:Tesseract}} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
 Aus diesem Grund wird in einer frühen Phase auch der Einsatz von LLMs, spezifisch ChatGPT, bei der Transkription der Unterlagen erprobt.
 
 Der Einsatz von LLMs wie ChatGPT für die Transkription historischer Quellen erweist sich als ambivalent. Während die Modelle nach gezielter 
@@ -1178,7 +1183,7 @@ Eine Kombination aus Ground-Truth-gestützter Anleitung und manuellem Review ist
 
 Aus den genannten Gründen kommt auch eine Transkription mittels generativem LLM nicht zum Einsatz.
 
-\paragraph{Transkribus}\label{Transkribus}
+\subsubsection{Transkribus}\label{subsubsec:Transkribus}
 Transkribus ist eine webbasierte Plattform zur automatisierten Handschrifterkennung (HTR) und Texterkennung (OCR), die sich seit ihrer Entwicklung im EU-Projekt READ 
 (Recognition and Enrichment of Archival Documents)\cite[vgl.][]{noauthor_recognition_nodate} als Standardwerkzeug in den digitalen Geschichtswissenschaften etabliert 
 hat\cite[vgl.][]{muhlberger_transkribus_2019}. Betrieben wird Transkribus durch die READ-COOP SCE, einer europäischen Genossenschaft.
@@ -1215,10 +1220,10 @@ Insgesamt stellt Transkribus eine leistungsfähige Plattform zur initialen Bearb
 Die automatisierte Erkennung unterstützt den Einstieg in umfangreiche Korpora, ersetzt jedoch nicht die editorische Kontrolle und Nachbearbeitung. 
 Gerade für forschungsorientierte Projekte mit Fokus auf strukturierte, semantisch angereicherte Daten bleibt eine kritische Auseinandersetzung mit den technischen Grenzen unerlässlich.
 
-\subsubsection{Large Language Models} \label{subsubsec:LLM_use}
+\subsection{Large Language Models} \label{subsubsec:LLM_use}
 Ein zentrales Werkzeug bei der Verarbeitung der historischen Quellen ist die weiter unten näher beschriebene Python-Pipeline, die auf der Verarbeitung von XML-Dateien basiert. Vorgreifend sei erwähnt, dass diese XML-Verarbeitung ein Large Language Model (LLM) zum Custom-Tagging nutzt. Nebst dem Tagging stellt das Programmieren dieser Pipeline eine der Kernherausforderungen dieses Forschungsprojekts dar. 
 Für das Tagging und die Entwicklung der Pipeline werden verschiedene Large Language Models intensiv getestet und eingesetzt.
-\paragraph{Msty}
+\subsection{Msty}
 Um ein dafür geeignetes LLM zu evaluieren, werden zu Beginn des Projektes beispielhafte Prompts erstellt und deren Ergebnisse systematisch verglichen. Um diesen Vergleich zu erleichtern, wird die Desktop-Anwendung Msty\cite[vgl][]{noauthor_msty_nodate} eingesetzt. Zu den zentralen Funktionen gehören parallele Chatinterfaces (\enquote{Parallel Multiverse Chats}),
 eine flexible Verwaltung lokaler Wissensbestände (\enquote{Knowledge Stacks})\cite[vgl][]{noauthor_msty_nodate}, sowie eine vollständige Offline-Nutzung ohne externe Datenübertragung. Msty dient dazu, verschiedene Modelle zu testen, durch die Parallel Multiverse Chats Antworten zu vergleichen und Konversationen strukturiert zu verzweigen und auszuwerten.
 
@@ -1226,12 +1231,12 @@ Wichtig ist, dass dies kein klassisches Benchmarking auf Basis vergleichbarer Re
 
 
 
-\paragraph{Alphabet – Gemini}
-\paragraph{Anthopic – Claude}
-\paragraph{OpenAI – ChatGPT}
+\subsection{Alphabet – Gemini}
+\subsection{Anthopic – Claude}
+\subsection{OpenAI – ChatGPT}
 
 
-\subsubsection{Nodegoat}\label{subsec:Nodegoat_chapter}
+\subsection{Nodegoat}\label{subsec:Nodegoat_chapter}
 
 Nachdem sich die Implementierung von Linked Open Data (LOD) für das vorliegende Projekt aufgrund des hohen zeitlichen 
 Aufwands als nicht realisierbar erwiesen hat, wird mit \textbf{Nodegoat}\cite{kessels_nodegoat_2013}
@@ -1268,7 +1273,7 @@ Für die Groundtruth werden folgende Entitäten modelliert:
 
 Die Auflistung ist dabei so geordnet, dass die Entitäten mit der grössten Anzahl oder Vielfalt an zugehörigen Sub-Objects zuerst genannt werden. \code{Sub-Objects} erlauben eine
 noch vielfältigere Abbildung abhängiger Informationen. Das können in dieser Arbeit zum Beispiel Quellenbelege, sowie temporale oder lokale Attribute, die einem Hauptobjekt zugeordnet werden. Lokale Attribute 
-werden in Verknüpfung mit \hyperref[subsubsec:geonames]{GeoNames} und für Länder, Flurnamen oder Gewässer im Geojson-Format\cite[Weiterführend:][]{thomson_geographic_2017}. So lassen sich beispielsweise für\code{Persons}
+werden in Verknüpfung mit \hyperref[subsec:geonames]{GeoNames} und für Länder, Flurnamen oder Gewässer im Geojson-Format\cite[Weiterführend:][]{thomson_geographic_2017}. So lassen sich beispielsweise für\code{Persons}
 in den Sub-Objekten \code{Geburt} oder \code{Tod} das Datum und der Ort modelieren, sowie die Todesursache notieren.
 
 Die in den Kapiteln \hyperref[section:Transkriptionen_Methoden]{Transkriptionen und Methoden}, \hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke} 
@@ -1286,7 +1291,7 @@ ist jedoch ausgesprochen zeitnah und umfassend.
 
 
 
-\subsubsection{\colorbox{red}{Webtool}}\label{subsec:webtool_chapter}
+\subsection{\colorbox{red}{Webtool}}\label{subsec:webtool_chapter}
 Die Planung sieht vor, oben beschriebene Verknüpfung zu nutzen, um aus der Webanwendung heraus bei Bedarf Detailinformationen zu den einzelnen Entitäten abzurufen. 
 Dazu wird über spezifische API-Requests die jeweilige Objektbeschreibung geladen. In einem exemplarischen Anwendungsfall wird etwa eine Abfrage an eine URL der Form
 \begin{figure}
@@ -1318,10 +1323,10 @@ unterstützt deren Ausspielung über standardisierte Schnittstellen und ermögli
 
 
 
-\subsection{Netzwerkanalyse als Methode}
-  \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
-  \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
-  \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
+% \subsection{Netzwerkanalyse als Methode}
+%   \subsubsection{Theoretischer Hintergrund der Netzwerkanalyse}
+%   \subsubsection{Ziele der Netzwerkanalyse im Kontext der Quellen}
+%   \subsubsection{Technische Umsetzung (Tools, Datenbankstruktur)}
 
 
 
@@ -1332,60 +1337,35 @@ unterstützt deren Ausspielung über standardisierte Schnittstellen und ermögli
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Pipeline}
-\subsection{Vorverarbeitung}
-Neben Transkribus, das bei der Transkription einen elementaren Schritt in der Vorverarbeitung aller Dokumente darstellt,
-müssen die Seiten noch weiter vorbereitet werden, um detaillierte Ergebnisse zu gewinnen. Die Kernherausforderung der vorliegenden Arbeit ist die Named Entity Recognition. Wie bereits 
-im Abschnitt \nameref{Transkribus} ausgeführt, werden viele Inhalte bereits während des Transkriptionsprozesses manuell getaggt. 
-Aufgrund der Menge
-an Unterlagen und des begrenzten zur Verfügung stehenden Zeitrahmens wird für das Projekt auch eine zweite Verarbeitungsform gewählt.
 
-Im Zentrum des Vorverarbeitungsskripts steht eine strukturierte Anbindung an die OpenAI-API, um ausgewählte 
-PAGE-XML-Dateien aus dem Transkribus-Export automatisiert mit Annotationen anzureichern. Das Skript ist modular
- aufgebaut und folgt einer klar definierten Abfolge von Verarbeitungsschritten, die im Folgenden näher erläutert werden.
-
-Zunächst wird mit der Funktion \code{get\_api\_client()} eine Verbindung zur OpenAI-Programmierschnittstelle 
-aufgebaut. Dabei wird der API-Schlüssel über eine Umgebungsvariable geladen und für spätere Anfragen bereitgestellt.
-Die zentrale Annotation erfolgt in der Funktion \code{annotate\_with\_llm()}, die den vollständigen Unicode-Text der XML-Datei
-verarbeitet und an das Modell GPT-4o übergibt. Grundlage ist ein präzise formulierter Prompt, der die Struktur des zu erwartenden
-Outputs definiert. Der Prompt spezifiziert, dass ausschliesslich \code{<TextLine>}-Elemente bearbeitet und mit einem \code{custom}-Attribut
-versehen werden dürfen. Innerhalb dieses Attributs werden ausschliesslich tatsächlich erkannte Entitäten in standardisiertem Format codiert, 
-darunter Personen (\code{person}), Rollen (\code{role}), Orte (\code{place}), Organisationen (\code{organization}), Daten (\code{date}) 
-sowie autoren- und empfängerbezogene Markierungen (\code{author}, \code{recipient}, \code{creation\_place}). Für jedes einzelne Tag gibt es genaue Anweisungen
-an das Modell. Auch ein Beispielresultat der Anotation wird jedes mal mitgeliefert, um möglichst wenig Varianz in den Antworten zu erhalten. Gleichzeitig liefert
-das Beispielresultat auch Informationen über Abkürzungen, die nicht von dem Modell als Organisationen erkannt werden. Das \enquote{WhW - das Winterhilfswerk} ist eine
-abkürzung, die offenbar nicht in den Trainingsdaten des Modells vorkommt. Dieses Vorgehen stellt den Versuch dar, ein nicht domänenspezifisch trainiertes Modell 
-auf eine historische Quellenlage zu adaptieren. Es ist jedoch davon auszugehen, dass ein speziell auf den historischen Korpus abgestimmtes Sprachmodell 
-deutlich präzisere Ergebnisse liefern würde.
-
-Die Antwort des Sprachmodels ist eine vollständige XML-Datei, die sämtliche bestehenden Strukturinformationen beibehalten soll. 
-Der Rückgabewert wird zunächst in der Funktion \code{clean\_llm\_output()} auf mögliche Formatierungen überprüft. Diese Funktion 
-extrahiert den tatsächlichen XML-Inhalt aus dem Rückgabestring, etwa wenn dieser durch Markdown-Wrapper wie \code{\texttt{\char\`{}\`{}xml-content\'{}\'{}\'{}}
-} eingefasst wurde. 
-
-Die konkrete Verarbeitung einzelner Dateien erfolgt über die Funktion \code{process\_file()}, die eine originale Transkribus-XML-Datei einliest,
-an das Modell übergibt, das Ergebnis prüft und anschliessend unter verändertem Dateinamen (Suffix \code{\_preprocessed}) abspeichert. Vor dem 
-Schreiben erfolgt eine strukturelle Validierung mittels XML-Parser, um syntaktische Fehler oder unvollständige Rückgaben zu 
-erkennen. Fehlermeldungen werden protokolliert, fehlerhafte Dateien übersprungen.
-
-Die eigentliche Ausführung der Batch-Verarbeitung wird durch die \code{main()}-Funktion gesteuert. Diese durchläuft das in 
-\code{TRANSKRIBUS\_DIR} konfigurierte Arbeitsverzeichnis, wobei alle Unterordner der Form \code{<7-stelliger Ordner>/Akte\_<Nummer>/page/} 
-rekursiv analysiert werden. XML-Dateien, die bereits mit \code{\_preprocessed} enden, werden übersprungen. Zusätzlich wird ein Verzeichnis 
-ignoriert, wenn bereits mehr als fünfzig Prozent der Dateien annotiert wurden. Die verbleibenden Dateien werden schrittweise mit dem Modell 
-verarbeitet. Hintergrund ist eine kosteneffiziente Verarbeitung, die verhindern soll, dass Datein mehrfach durch die API bearbeitet werden. Die Funktion 
-\code{annotate\_with\_llm()} berechnet darüber hinaus die Anzahl der vom Modell verarbeiteten Eingabe- und Ausgabetokens. Auf Basis dieser Werte wird für 
-jede Datei eine Schätzung der anfallenden API-Kosten vorgenommen. Diese Informationen werden für jede Anfrage protokolliert, um eine transparente 
-Kostenkontrolle sicherzustellen.
-
-Am Ende dieses Prozesses entsteht pro annotierter Seite eine neue, syntaktisch validierte XML-Datei, 
-die alle Annotationen als \code{custom}-Attribute enthält. Diese dienen in den nachfolgenden Modulen der 
-ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die strukturierte Extraktion und Validierung von Entitäten.
-
-\subsection{Aufbau XML to JSON Pipeline}
 \subsubsection{Übersichtsgrafik der Pipeline}
-\vspace{6\baselineskip}
-\begin{figure}[htbp]
+
+Die untenstehende Grafik soll im Folgenden als visuelle Orientierung dienen, 
+indem sie die logische Gliederung der Pipeline abbildet, wie sie im weiteren Verlauf des 
+Kapitels analysiert wird. Sie dient als Referenz für nachfolgende Module, wo sie als schematische Zeichnung bei der Einordnung
+der verschiedenen Verarbeitungsschritte und Modulabhängigkeiten zum Einsatz kommt. 
+Als zentrale Übersicht gliedert sich diese Darstellung in drei farblich differenzierte Ebenen, die im Folgenden erläutert werden.
+
+Grün markiert sind externe Ressourcen, die die Grundlage der Verarbeitung bilden. Dazu zählen 
+zum einen XML-Dateien, die aus dem Transkriptionsprogramm Transkribus stammen, und zum anderen 
+strukturierte Groundtruth-Daten im CSV-Format, die zuvor aus der Forschungsumgebung Nodegoat exportiert 
+wurden. Dieser Prozess ist im Kapitel \nameref{section:Transkriptionen_Methoden} und \nameref{subsec:Nodegoat_chapter} dargestellt.
+
+Orange steht für die zentralen Verarbeitungsschritte der Pipeline. Dazu gehört insbesondere das 
+Preprocessing durch ein LLM, wie im Abschnitt \nameref{subsec:preprocessing} 
+ausgeführt, sowie das Hauptmodul \code{transkribus\_to\_base.py}. Dieses Modul koordiniert den 
+gesamten Verarbeitungsablauf und wird im nachfolgenden Kapitel \nameref{sec:transkribus_to_base} ausführlich behandelt.
+
+Blau gekennzeichnet sind die einzelnen Funktionsmodule, in die sich \code{transkribus\_to\_base.py} 
+unterteilt. Diese übernehmen spezialisierte Aufgaben, etwa die Erkennung und Anreicherung von Personen, 
+Orten, Organisationen oder Ereignissen. Eine detaillierte Beschreibung der jeweiligen Module erfolgt im 
+Abschnitt \nameref{subsec:Module_im_Detail}.
+
+
+
+\vspace{0.9\baselineskip}
   \centering
-  \resizebox{0.9\textwidth}{!}{
+  \resizebox{0.99\textwidth}{!}{
     \begin{tikzpicture}[
   module/.style={rectangle, draw=black, fill=blue!10, thick, minimum width=4.5cm, minimum height=1.2cm, align=center},
   process/.style={rectangle, draw=black, fill=orange!20, thick, minimum width=4.8cm, minimum height=1.2cm, align=center},
@@ -1400,7 +1380,7 @@ ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die st
 \node[source] (transkribus) at (-14.5, 0) {\textbf{app.transkribus.org} \\ Transkription};
 \node[process] (dir) at (0, -3.2) {\textbf{Dateiverzeichnis} \\ mit XML-Dateien};
 \node[process] (llmpre) at (6, -3.2) {\textbf{llm\_XML\_preprocessing.py}};
-\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_II\_Test.py} \\ Hauptverarbeitung};
+\node[process, below=7.5cm of dir] (main) {\textbf{Transkribus\_to\_base.py} \\ Hauptverarbeitung};
 
 % ------------------- MODULE (FLOWCHART) ------------------------
 \node[module, below=2cm of main] (init) {Initialisierung \\ (CSV-Import, Matcher)};
@@ -1469,7 +1449,7 @@ ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die st
 \draw[arrow] (persons.east) -- (orgs.west);
 \draw[arrow] (orgs.west) -- (persons.east); 
 \draw[arrow] (persons.east) -- (orgs.west);
-\draw[arrow] (orgs.west)-- (persons.east)  ;      
+\draw[arrow] (orgs.west) -- (persons.east);      
 \draw[arrow] (orgs.east) -- (places.west);  
 \draw[arrow] (places.west) -- (orgs.east);  
 
@@ -1502,12 +1482,61 @@ ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die st
   node[pos=0.6, left, font=\small, xshift=2.6cm, yshift=2.8cm]{\textit{liefert Groundtruth}};
 \end{tikzpicture}
   }
-  \caption{Übersicht der gesamten XML-to-JSON-Pipeline}\label{fig:pipeline-uebersicht}
-\end{figure}
-\vspace{6\baselineskip}
+  \captionof{figure}{Übersicht der gesamten XML-to-JSON-Pipeline}\label{fig:pipeline-uebersicht}
+\vspace{\baselineskip}
+\justifying. %Blocksatz nach Grafik
+
+\subsection{Vorverarbeitung}\label{subsec:preprocessing}
+Neben Transkribus, das bei der Transkription einen elementaren Schritt in der Vorverarbeitung aller Dokumente darstellt,
+müssen die Seiten noch weiter vorbereitet werden, um detaillierte Ergebnisse zu gewinnen. Die Kernherausforderung der vorliegenden Arbeit ist die Named Entity Recognition. Wie bereits 
+im Abschnitt \nameref{Transkribus} ausgeführt, werden viele Inhalte bereits während des Transkriptionsprozesses manuell getaggt. 
+Aufgrund der Menge
+an Unterlagen und des begrenzten zur Verfügung stehenden Zeitrahmens wird für das Projekt auch eine zweite Verarbeitungsform gewählt.
+
+Im Zentrum des Vorverarbeitungsskripts steht eine strukturierte Anbindung an die OpenAI-API, um ausgewählte 
+PAGE-XML-Dateien aus dem Transkribus-Export automatisiert mit Annotationen anzureichern. Das Skript ist modular
+ aufgebaut und folgt einer klar definierten Abfolge von Verarbeitungsschritten, die im Folgenden näher erläutert werden.
+
+Zunächst wird mit der Funktion \code{get\_api\_client()} eine Verbindung zur OpenAI-Programmierschnittstelle 
+aufgebaut. Dabei wird der API-Schlüssel über eine Umgebungsvariable geladen und für spätere Anfragen bereitgestellt.
+Die zentrale Annotation erfolgt in der Funktion \code{annotate\_with\_llm()}, die den vollständigen Unicode-Text der XML-Datei
+verarbeitet und an das Modell GPT-4o übergibt. Grundlage ist ein präzise formulierter Prompt, der die Struktur des zu erwartenden
+Outputs definiert. Der Prompt spezifiziert, dass ausschliesslich \code{<TextLine>}-Elemente bearbeitet und mit einem \code{custom}-Attribut
+versehen werden dürfen. Innerhalb dieses Attributs werden ausschliesslich tatsächlich erkannte Entitäten in standardisiertem Format codiert, 
+darunter Personen (\code{person}), Rollen (\code{role}), Orte (\code{place}), Organisationen (\code{organization}), Daten (\code{date}) 
+sowie autoren- und empfängerbezogene Markierungen (\code{author}, \code{recipient}, \code{creation\_place}). Für jedes einzelne Tag gibt es genaue Anweisungen
+an das Modell. Auch ein Beispielresultat der Anotation wird jedes mal mitgeliefert, um möglichst wenig Varianz in den Antworten zu erhalten. Gleichzeitig liefert
+das Beispielresultat auch Informationen über Abkürzungen, die nicht von dem Modell als Organisationen erkannt werden. Das \enquote{WhW - das Winterhilfswerk} ist eine
+abkürzung, die offenbar nicht in den Trainingsdaten des Modells vorkommt. Dieses Vorgehen stellt den Versuch dar, ein nicht domänenspezifisch trainiertes Modell 
+auf eine historische Quellenlage zu adaptieren. Es ist jedoch davon auszugehen, dass ein speziell auf den historischen Korpus abgestimmtes Sprachmodell 
+deutlich präzisere Ergebnisse liefern würde.
+
+Die Antwort des Sprachmodels ist eine vollständige XML-Datei, die sämtliche bestehenden Strukturinformationen beibehalten soll. 
+Der Rückgabewert wird zunächst in der Funktion \code{clean\_llm\_output()} auf mögliche Formatierungen überprüft. Diese Funktion 
+extrahiert den tatsächlichen XML-Inhalt aus dem Rückgabestring, etwa wenn dieser durch Markdown-Wrapper 
+wie \code{\textasciigrave\textasciigrave\textasciigrave xml-content\textquotesingle\textquotesingle\textquotesingle} eingefasst wurde.
 
 
-\subsection{Hauptmodul -- transkribus\_to\_base}\label{sec:transkribus_to_base}
+Die konkrete Verarbeitung einzelner Dateien erfolgt über die Funktion \code{process\_file()}, die eine originale Transkribus-XML-Datei einliest,
+an das Modell übergibt, das Ergebnis prüft und anschliessend unter verändertem Dateinamen (Suffix \code{\_preprocessed}) abspeichert. Vor dem 
+Schreiben erfolgt eine strukturelle Validierung mittels XML-Parser, um syntaktische Fehler oder unvollständige Rückgaben zu 
+erkennen. Fehlermeldungen werden protokolliert, fehlerhafte Dateien übersprungen.
+
+Die eigentliche Ausführung der Batch-Verarbeitung wird durch die \code{main()}-Funktion gesteuert. Diese durchläuft das in 
+\code{TRANSKRIBUS\_DIR} konfigurierte Arbeitsverzeichnis, wobei alle Unterordner der Form \code{<7-stelliger Ordner>/Akte\_<Nummer>/page/} 
+rekursiv analysiert werden. XML-Dateien, die bereits mit \code{\_preprocessed} enden, werden übersprungen. Zusätzlich wird ein Verzeichnis 
+ignoriert, wenn bereits mehr als fünfzig Prozent der Dateien annotiert wurden. Die verbleibenden Dateien werden schrittweise mit dem Modell 
+verarbeitet. Hintergrund ist eine kosteneffiziente Verarbeitung, die verhindern soll, dass Datein mehrfach durch die API bearbeitet werden. Die Funktion 
+\code{annotate\_with\_llm()} berechnet darüber hinaus die Anzahl der vom Modell verarbeiteten Eingabe- und Ausgabetokens. Auf Basis dieser Werte wird für 
+jede Datei eine Schätzung der anfallenden API-Kosten vorgenommen. Diese Informationen werden für jede Anfrage protokolliert, um eine transparente 
+Kostenkontrolle sicherzustellen.
+
+Am Ende dieses Prozesses entsteht pro annotierter Seite eine neue, syntaktisch validierte XML-Datei, 
+die alle Annotationen als \code{custom}-Attribute enthält. Diese dienen in den nachfolgenden Modulen der 
+ipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die strukturierte Extraktion und Validierung von Entitäten.
+
+
+\subsection{Hauptmodul -- Transkribus\_to\_base}\label{sec:transkribus_to_base}
 \subsubsection*{1. Initialisierung und Pfadlogik}
 
 Die Initialisierungsphase des Skripts\footnote{bis ca. Line 250} dient der Einrichtung sämtlicher Systempfade, Datenquellen, 
@@ -1517,9 +1546,9 @@ aller untergeordneten Module und Datenbestände.
 Zu Beginn werden die Python-Standardbibliotheken sowie externe Abhängigkeiten geladen, darunter \code{pandas} für 
 Tabellenverarbeitung, \code{spacy} für die linguistische Analyse und \code{rapidfuzz} für den Vergleich von ähnlichen Strings. Zusätzlich 
 wird das aktuelle Datum mit Zeitstempel generiert und als Konsolenoutput ausgegeben. Das unterstützt die Nachvollziehbarkeit von
-Verarbeitungsläufen und das Debugging in größeren Verarbeitungsszenarien.
+Verarbeitungsläufen und das Debugging in grösseren Verarbeitungsszenarien.
 
-Das Verzeichnis der Skriptdatei wird mithilfe des \code{pathlib}-Moduls identifiziert. Anschließend wird von dort ausgehend das 
+Das Verzeichnis der Skriptdatei wird mithilfe des \code{pathlib}-Moduls identifiziert. Anschliessend wird von dort ausgehend das 
 Projektwurzelverzeichnis nachvollzogen. Diese dynamisch bestimmte Wurzel fungiert als zentraler Referenzpunkt für die Auflösung 
 aller nachfolgenden Verzeichnispfade, absolute Pfadangaben werden vollständig vermieden.  
 Das Projekt ist so organisiert, dass sämtliche zentralen Datenverzeichnisse, Ressourcen und Modulstrukturen relativ
@@ -1527,6 +1556,7 @@ zur Wurzel definiert und im Code programmatisch zugänglich gemacht sind. Dazu g
 Unterverzeichnisse \code{Data} für CSV-basierte Groundtruth-Informationen, \code{Module} für modulare 
 Verarbeitungsfunktionen sowie \code{Transkribus\_test\_In} und \code{Transkribus\_test\_Out} als standardisierte 
 Ein- und Ausgabeverzeichnisse für XML-Dateien und strukturierte JSON-Outputs.
+
 
 Zur Gewährleistung der Modulverfügbarkeit wird dem globalen Importpfad das Verzeichnis \code{Module} über \code{sys.path.insert} hinzugefügt. 
 Dadurch lassen sich alle enthaltenen Funktions- und Klassendefinitionen zentral importieren. Die einzelnen Komponenten sind in 
@@ -1561,7 +1591,7 @@ keine Instanzen davon. Sie dient als Referenz für alle nachfolgenden Matching- 
 Deduplikationsvorgänge.
 
 
-Abschließend stehen zwei Hilfsfunktionen bereit, um neu erkannte Personen in die bestehende 
+Abschliessend stehen zwei Hilfsfunktionen bereit, um neu erkannte Personen in die bestehende 
 CSV-Struktur zu überführen. Eine Duplikatsprüfung auf Basis unscharfer Namensähnlichkeit wird 
 durch \code{Rapidfuzz} realisiert und stellt sicher, dass nur bisher unbekannte Einträge ergänzt werden.
 
@@ -1569,53 +1599,97 @@ Die Initialisierungs- und Pfadlogik legt damit den Grundstein für eine skalierb
 reproduzierbare und systematisch strukturierte Weiterverarbeitung aller Eingabedaten.
 
 
-\subsubsection*{2. Extraktion von Struktur und Fließtext}
+\subsubsection*{2. Extraktion von Struktur und Fliesstext}
+
+Die Verarbeitung einer einzelnen Transkribus-Seite beginnt mit der systematischen Analyse der zugrundeliegenden XML-Datei. 
+Ziel dieses Abschnitts ist die strukturierte Extraktion zentraler Informationen, die als Grundlage für die weitere Anreicherung 
+und Validierung dienen. Dabei wird zwischen technischen Metadaten, transkribiertem Fliesstext und semantisch annotierten Entitäten 
+(in sogenannten \code{custom}-Tags) unterschieden. Die nachfolgend beschriebenen Funktionen sind für die Extraktion dieser drei 
+Bereiche zuständig.
+
+\paragraph{extract\_metadata\_from\_xml~(\dots)} Diese Funktion extrahiert maschinenlesbare Metadaten aus dem 
+\code{< TranskribusMetadata>}-Block der XML-Datei. Dazu gehören die eindeutige Dokumenten-ID (\code{docId}), die Seiten-ID 
+(\code{pageId}), die Transkriptions-ID (\code{tsid}), sowie die zugehörige Bildreferenz und die XML-Quelldatei. Diese Informationen 
+werden zentral in einem Metadaten-Dictionary gespeichert, das später in das Attributfeld des JSON-Objekts übernommen wird. 
+Sie bilden die technische Grundlage für die spätere Identifikation und Reproduzierbarkeit jeder Seite.
+
+\paragraph{get\_document\_type~(\dots)} Anhand des Dateinamens und optionaler Muster im Text wird eine heuristische Klassifikation 
+des Dokumenttyps vorgenommen. Typische Kategorien sind etwa \enquote{Brief}, \enquote{Postkarte}, \enquote{Protokoll} oder 
+\enquote{Zeitungsartikel}. Die Funktion verwendet reguläre Ausdrücke oder Schlüsselwörter zur Erkennung und überführt das Ergebnis 
+in das Feld \code{document\_type}. Diese Klassifikation ist insbesondere für die spätere Netzwerk- und Objektanalyse im Backend von 
+Bedeutung, da sie das Dokument strukturell verortet.
+
+\paragraph{extract\_text\_from\_xml~(\dots)} Der transkribierte Fliesstext wird aus den Elementen \code{<TextEquiv>} bzw. 
+\code{<Unicode>} extrahiert. Dabei werden alle Textinhalte zeilenweise aus den \code{TextLine}-Knoten der XML-Datei gelesen und zu 
+einem zusammenhängenden String zusammengefügt. Jede Zeile wird durch einen Zeilenumbruch (\code{\textbackslash n}) getrennt, um den 
+späteren kontextuellen Zugriff auf Zeilenpositionen (z.B. bei der Erwähnung von Personen oder Rollen) zu ermöglichen. Der extrahierte 
+Text dient als Grundlage für regelbasierte Erkennungsverfahren sowie für LLM-gestützte Analysen in späteren Verarbeitungsschritten.
+
+\paragraph{extract\_custom\_attributes~(\dots)} Die semantische Annotation in den Transkribus-Dokumenten erfolgt über \code{custom}-
+Attribute, die bestimmten Textbereichen zugeordnet sind (z.B. \code{person\{offset:42; length:14\}}). Die Funktion 
+\code{extract\_custom\_attributes()} iteriert über alle \code{TextLine}-Elemente und prüft, ob ein solches Attribut vorhanden ist. 
+Ist dies der Fall, wird der betroffene Textabschnitt anhand der Offset-Angaben extrahiert und weiterverarbeitet. Die Extraktion 
+erfolgt kategoriebezogen, wobei für jede Entitätstyp eigene Subfunktionen aufgerufen werden:
+
+\begin{itemize}
+  \item \textbf{extract\_person\_from\_custom~(\dots)}: Diese Funktion extrahiert Personennamen, gegebenenfalls Titel (z.B. \enquote{Herr}, \enquote{Frau}) und mögliche Rollenbezeichnungen. Sie bereitet die Einträge für ein späteres Matching gegen die bekannte Personenliste vor. Neben Vor- und Nachnamen werden auch unvollständige Angaben übernommen und mit dem Attribut \code{needs\_review=true} markiert, wenn kein eindeutiger Abgleich möglich ist.
+  
+  \item \textbf{extract\_place\_from\_custom~(\dots)}: Analog zur Personenerkennung werden Ortsnamen anhand der Offset-Daten aus dem Text extrahiert. Die Funktion übergibt die Einträge an eine vorbereitete \code{PlaceMatcher}-Instanz, die auf Basis von Groundtruth-Daten sowie ggf. externer APIs (GeoNames, Wikidata) einen Abgleich durchführt. Unsichere Orte werden ebenfalls mit \code{needs\_review} versehen.
+  
+  \item \textbf{extract\_organization\_from\_custom~(\dots)}: Diese Funktion erkennt Organisationen (z.B. \enquote{Männerchor Murg}) in den XML-Anmerkungen. Sie liefert zunächst einen Roh-String, der in späteren Verarbeitungsschritten mit bekannten Organisationen abgeglichen wird. 
+  
+  \item \textbf{extract\_date\_from\_custom~(\dots)}: Die Funktion erkennt Datumsangaben (z.B. \enquote{1. Januar 1943}) und normalisiert sie bei Bedarf. In einem späteren Schritt werden identische Daten zusammengeführt und gezählt (\code{combine\_dates()}), um Mehrfachnennungen zu erfassen.
+\end{itemize}
+
+Alle extrahierten Custom-Tags werden in einem strukturierten Dictionary gesammelt, das unter anderem folgende Schlüssel enthält: \code{"persons"}, \code{"roles"}, \code{"places"}, \code{"organizations"}, \code{"dates"}. Diese Struktur dient als zentrale Datenquelle für die nachfolgende Entitätenanreicherung, Deduplikation und Netzwerkanalyse.
+
+
+
 Zweck: Parsen der XML-Datei und strukturierte Extraktion von Text, Metadaten und Custom-Tags.
 \begin{itemize}
-\item extract\_metadata\_from\_xml(\dots)
-\item get\_document\_type(\dots)
-\item extract\_text\_from_xml(\dots)
-\item extract\_custom\_attributes(\dots)
+\item \texttt{extract\_metadata\_from\_xml~(\dots)}
+\item \texttt{get\_document\_type~(\dots)}
+\item \texttt{extract\_text\_from\_xml~(\dots)}
+\item \texttt{extract\_custom\_attributes~(\dots)} mit:
   \begin{itemize}
-  mit:
-  \item extract\_person\_from\_custom(\dots)
-  \item extract\_place\_from\_custom(\dots)
-  \item extract\_organization\_from\_custom(\dots)
-  \item extract\_date\_from\_custom(\dots)
+  \item \texttt{extract\_person\_from\_custom~(\dots)}
+  \item \texttt{extract\_place\_from\_custom~(\dots)}
+  \item \texttt{extract\_organization\_from\_custom~(\dots)}
+  \item \texttt{extract\_date\_from\_custom~(\dots)}
   \end{itemize}
 \end{itemize}
 
 \subsubsection*{3. Named Entity Recognition}
 Zweck: Erkennung, Anreicherung und Zuordnung von Personen, Rollen, Orten, Organisationen und Ereignissen.
 \begin{itemize}
-\item \texttt{mentioned\_places\_from\_custom\_data(\dots)}
-\item \texttt{extract\_and\_prepare\_persons(\dots)}
-\item \texttt{assign\_roles\_to\_known\_persons(\dots)}
-\item \texttt{match\_organization\_entities(\dots)}
-\item \texttt{extract\_events\_from\_xml(\dots)}
-\item \texttt{combine\_dates(\dots)}
-\item \texttt{assign\_sender\_and\_recipient\_place(\dots)}
+\item \texttt{mentioned\_places\_from\_custom\_data~(\dots)}
+\item \texttt{extract\_and\_prepare\_persons~(\dots)}
+\item \texttt{assign\_roles\_to\_known\_persons~(\dots)}
+\item \texttt{match\_organization\_entities~(\dots)}
+\item \texttt{extract\_events\_from\_xml~(\dots)}
+\item \texttt{combine\_dates~(\dots)}
+\item \texttt{assign\_sender\_and\_recipient\_place~(\dots)}
 \end{itemize}
 
 
 \subsubsection*{4. Deduplikation und Validierung}
 Zweck: Zusammenführung mehrfach erkannter Entitäten und finale Konsistenzprüfung.
 \begin{itemize}
-\item \texttt{deduplicate\_and\_group\_persons(\dots)}
-\item \texttt{ensure\_author\_recipient\_in\_mentions(\dots)}
-\item \texttt{count\_mentions\_in\_transcript\_contextual(\dots)}
-\item \texttt{postprocess\_roles(\dots)}
-\item \texttt{mark\_unmatched\_persons(\dots)}
-\item \texttt{validate\_extended(\dots)}
+\item \texttt{deduplicate\_and\_group\_persons~(\dots)}
+\item \texttt{ensure\_author\_recipient\_in\_mentions~(\dots)}
+\item \texttt{count\_mentions\_in\_transcript\_contextual~(\dots)}
+\item \texttt{postprocess\_roles~(\dots)}
+\item \texttt{mark\_unmatched\_persons~(\dots)}
+\item \texttt{validate\_extended~(\dots)}
 \end{itemize}
 
 \subsubsection*{5. JSON-Export und Logging}
 Zweck: Erstellung der finalen JSON-Dateien im gewünschten Basisschema und Protokollierung von problematischen Einträgen.
 \begin{itemize}
-\item Erstellung von \texttt{BaseDocument(\dots)}
-\item \texttt{doc.to\_json(\dots)}
-\item \texttt{update\_total\_json(\dots)}
-\item \texttt{log\_unmatched\_entities(\dots)}
+\item Erstellung von \texttt{BaseDocument~(\dots)}
+\item \texttt{doc.to\_json~(\dots)}
+\item \texttt{update\_total\_json~(\dots)}
+\item \texttt{log\_unmatched\_entities~(\dots)}
 \item Terminalausgabe bei Validierungsfehlern
 \end{itemize}
 
@@ -1625,21 +1699,22 @@ JSon Export weil menschenlesbar und leichte Abwandelbarkeit in andere Formate.
 Zweck: Markierung und Protokollierung unsicherer, unvollständiger oder nicht eindeutig gematchter Entitäten für eine spätere manuelle Überprüfung.
 
 \begin{itemize}
-\item \texttt{mark\_unmatched\_persons(\dots)} – Kennzeichnung von Personen ohne ID, mit niedrigem Score, unklarem Namen
+\item \texttt{mark\_unmatched\_persons~(\dots)} – Kennzeichnung von Personen ohne ID, mit niedrigem Score, unklarem Namen
 \item \texttt{needs\_review = true} bei allen problematischen Einträgen
-\item \texttt{review\_reason} zur Beschreibung der Ursache (z.\,B. „nur Vorname“, „nicht in Groundtruth“)
-\item \texttt{log\_unmatched\_entities(\dots)} – Protokollierung in den Dateien:
+\item \texttt{review\_reason} zur Beschreibung der Ursache (z.B. „nur Vorname“, „nicht in Groundtruth“)
+\item \texttt{log\_unmatched\_entities~(\dots)} – Protokollierung in den Dateien:
   \begin{itemize}
   \item \texttt{unmatched\_persons.json}
   \item \texttt{unmatched\_places.json}
   \item \texttt{unmatched\_roles.json}
   \item \texttt{unmatched\_events.json}
   \end{itemize}
-\item Kontextbasierte Filterung durch Zeilenumfeld (z.\,B. keine Dopplung bei Rolle+Name in direkter Nachbarschaft)
+\item Kontextbasierte Filterung durch Zeilenumfeld (z.B. keine Dopplung bei Rolle+Name in direkter Nachbarschaft)
 \end{itemize}
 
 
-------------------------------------
+\vspace{1em}\textbf{DAS HIER IST EIN ALTER ABSCHNITT, DER FÜR DIE OBEN ZU ERGÄNZENDEN KAPITEL VERWENDET WERDEN SOLL}\\
+------------------------------------\\
 Die wesentliche Verarbeitung der durch ChatGPT verarbeiteten XML-Files für jede einzelne Seite wird im 
 Hauptmodul \code{Transkribus\_to\_base.py} gesteuert. Es ist das umfangreichste
 Modul für dieses Projekt, dessen Funktionsweise im Folgenden beschrieben werden soll.
@@ -1654,7 +1729,7 @@ Das Modul \code{transkribus\_to\_base.py} ist als zentraler Verarbeitungsknoten 
 der zuvor erzeugten XML-Dateien schrittweise, prüft und transformiert sie und strukturiert sie in einer einheitlichen Objektklasse 
 (\code{BaseDocument}). Die Verarbeitung beginnt mit dem Einlesen der XML-Datei. In einem ersten Schritt werden aus dem XML-Header 
 Informationen wie \code{docId}, \code{pageId}, \code{tsid} sowie Referenzen zu Bild- und Quelldateien extrahiert. Diese Metadaten 
-bilden die Basis für die eindeutige Identifikation jeder Seite. Zusätzlich wird aus dem Dateinamen das Dokumentformat (z.\,B. Brief, 
+bilden die Basis für die eindeutige Identifikation jeder Seite. Zusätzlich wird aus dem Dateinamen das Dokumentformat (z.B. Brief, 
 Postkarte, Protokoll) abgeleitet. Dieses wird später im Feld \code{document\_type} gespeichert und dient der Klassifikation innerhalb 
 der Datenstruktur.
 
@@ -1679,7 +1754,7 @@ mehrdeutigen Ortsangaben kann der Matcher mehrere Kandidaten zurückgeben. In di
 Konfidenz- und Ähnlichkeitswerten. Die Funktion \code{extract\_place\_from\_custom()} ist dabei für die Initialextraktion 
 zuständig, während die Funktion \code{deduplicate\_places()} eine Zusammenführung ähnlicher Ortsangaben durchführt.
 
-Zusätzlich zu den durch das Sprachmodell erzeugten Custom-Tags werden weitere Entitäten heuristisch aus dem Fließtext erkannt. 
+Zusätzlich zu den durch das Sprachmodell erzeugten Custom-Tags werden weitere Entitäten heuristisch aus dem Fliesstext erkannt. 
 Besonders betrifft dies Rollenbezeichnungen, die in unmittelbarer Nähe zu Personennamen vorkommen. Eine regelbasierte Extraktion 
 dieser Kontexte wird durch die Funktion \code{assign\_roles\_to\_known\_persons()} realisiert. Auch hier wird das Ergebnis validiert 
 und – sofern die Rolle einer standardisierten Ontologie entspricht – in das Feld \code{role\_schema} überführt.
@@ -1690,11 +1765,11 @@ aus den Kategorien \code{authors}, \code{recipients} und \code{mentioned\_person
 (wie \code{match\_score}, \code{recipient\_score} und \code{confidence}) zusammengeführt und priorisiert.
 
 Das so angereicherte Dokument wird in ein Objekt der Klasse \code{BaseDocument} überführt. Dieses enthält strukturierte Felder für 
-Metadaten, Volltext, Autoren, Empfänger, erwähnte Personen, Orte, Organisationen, Datumsangaben und Ereignisse. Jede Entität wird gemäß 
-den Typdefinitionen in \code{document\_schemas.py} validiert. Ein abschließender Validierungsschritt erfolgt über 
+Metadaten, Volltext, Autoren, Empfänger, erwähnte Personen, Orte, Organisationen, Datumsangaben und Ereignisse. Jede Entität wird gemäss 
+den Typdefinitionen in \code{document\_schemas.py} validiert. Ein abschliessender Validierungsschritt erfolgt über 
 \code{validate\_extended()}, das auf Fehler in der Struktur, Inkonsistenzen oder fehlende Pflichtfelder prüft.
 
-Abschließend wird das Dokument im JSON-Format gespeichert. Neben der Einzelseite wird auch eine aggregierte Datei 
+Abschliessend wird das Dokument im JSON-Format gespeichert. Neben der Einzelseite wird auch eine aggregierte Datei 
 \code{total\_json.json} fortgeschrieben, in der alle Seiten einer Akte gesammelt werden. Zusätzlich wird für jede Seite 
 eine Prüfung auf nicht zuordenbare Entitäten durchgeführt. Diese werden in der Datei \code{unmatched.json} gespeichert, 
 um eine spätere manuelle Nachbearbeitung zu ermöglichen. Das Ergebnis dieser Konvertierung bildet die Grundlage für die weitere 
@@ -1703,7 +1778,7 @@ Verarbeitung in \code{Nodegoat} sowie für die explorative Analyse der Akteursne
 ------------------------------------
 
 
-\subsection{Module im Detail}
+\subsection{Module im Detail}\label{subsec:Module_im_Detail}
 \subsubsection{document\_schemas.py}\label{subsec:document_schema}
 Das Modul \code{document\_schemas.py} definiert die zentrale Schema- und Datenstruktur 
 zur Modellierung aller extrahierten Inhalte aus den Transkribus-Dokumenten des Projekts. Es gewährleistet die einheitliche Repräsentation, 
@@ -1757,7 +1832,7 @@ Wie bei Personen, kann auch bei Orten
 Ereignisse werden über die Klasse \code{Event} abgebildet. Diese enthält einen Namen, eine optionale Beschreibung, 
 Datumsangaben und Referenzen auf beteiligte Personen, Orte und Organisationen. Über das Feld \code{inferred} wird angegeben, 
 ob das Ereignis direkt im Text genannt oder aus dem Kontext erschlossen wurde. Die genaue Event-Extraktion findet sich 
-in \nameref{subsection:event\_matcher}.
+in \nameref{subsection:event_matcher}.
 
 \paragraph{BaseDocument}\\
 Alle genannten Entitäten werden im zentralen Objekttyp \code{BaseDocument} zusammengeführt. Diese Klasse bildet 
@@ -1781,7 +1856,7 @@ Diese spezialisierten Erkennungstypen stehen aktuell lediglich für eine später
 Alle Ergebnisse werden anschliessend in strukturierter Form in eine JSON-Datei geschrieben, wobei jeder Eintrag dem oben definierten Schema 
 entspricht. 
 \subsubsection{\_\_init\_\_.py}\label{subsec:init_module}
-Das Modul \code{\_\_init\_\_.py} fungiert als zentrale Importschnittstelle für alle Funktionalitäten der Projektpipeline. Es aggregiert sämtliche zentralen Komponenten aus den verschiedenen Teilmodulen (z.B. \code{person\_matcher.py}, \code{document\_schemas.py}, \code{place\_matcher.py}) und stellt sie über das \code{\_\_all\_\_}-Array einheitlich zur Verfügung. Dadurch wird eine übersichtliche, modulübergreifende Nutzung der wichtigsten Funktionen und Klassen in anderen Programmteilen (z.\,B. in \code{transkribus\_to\_base.py}) ermöglicht.
+Das Modul \code{\_\_init\_\_.py} fungiert als zentrale Importschnittstelle für alle Funktionalitäten der Projektpipeline. Es aggregiert sämtliche zentralen Komponenten aus den verschiedenen Teilmodulen (z.B. \code{person\_matcher.py}, \code{document\_schemas.py}, \code{place\_matcher.py}) und stellt sie über das \code{\_\_all\_\_}-Array einheitlich zur Verfügung. Dadurch wird eine übersichtliche, modulübergreifende Nutzung der wichtigsten Funktionen und Klassen in anderen Programmteilen (z.B. in \code{transkribus\_to\_base.py}) ermöglicht.
 Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle notwendigen Komponenten mit einem einzigen Importbefehl zugreifen, ohne die internen Modulpfade kennen zu müssen. Die Datei übernimmt damit die Funktion einer projektinternen API und gewährleistet eine saubere Trennung zwischen interner Modulstruktur und externer Nutzung. 
 
 \newpage
@@ -1978,7 +2053,7 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
   \setstretch{1.5}
   \justifying%
 
-  \subsubsection{Assigned\_Roles\_Module.py}\label{subsection:assigned\_roles\_module}
+  \subsubsection{Assigned\_Roles\_Module.py}\label{subsection:assigned_roles_module}
 
   Hier steht eine menge schöner Text
 
@@ -2285,7 +2360,7 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
 \draw[arrow] 
   (wikiapi.south)    % wieder am buildres
   -- ++(0,0)       % dieselbe Hilfsstrecke
-  |- (pivot)
+  |- (pivot);
 
 \draw[arrow] (geoapi.south) -- (wikiapi.north);
 
@@ -2306,17 +2381,18 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
 \end{minipage}
 
 
-\begin{minipage}[t]{0.52\textwidth}
+\begin{minipage}[t]{0.38\textwidth}
   \setstretch{1.5}
   \justifying%
 
-  \subsubsection{organization\_matcher.py}\label{subsection:organization\_matcher}
+  \subsubsection{organization\_matcher.py}\label{subsection:organization_matcher}
 
-  Hier steht eine menge schöner Text
+  \code{organization\_matcher.py} dient der Erkennung und Normalisierung von Organisationen in historischen Transkripten. Es kombiniert reguläre Ausdrücke mit unscharfem Vergleich (fuzzy matching), um eingegebene Strings mit bekannten Organisationen aus der Groundtruth-Datei \texttt{export-organisationen.csv} abzugleichen.
 
-  \end{minipage}%
-  \hfill
-\begin{minipage}[t]{0.4\textwidth}
+  \noindent \code{extract\_organization(\{\})} bereinigt im nächsten Schritt die Eingabestrings zunächst, indem 
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.55\textwidth}
   \vspace*{0.7cm} % ► schiebt alles um 0.7cm nach unten
 \centering
 \resizebox{\textwidth}{!}{
@@ -2472,17 +2548,21 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
 }
 \label{fig:organization_matcher}
 \end{minipage}
+\vspace{1em}
+\justifying
+
+sie umschließende Klammern entfernt, innere Satzzeichen säubert und führende bzw. abschließende Interpunktion streicht. Darüber hinaus wird eine Blacklist abgeglichen, um etwa Einträge wie \enquote{Verein} als alleinstehende Organisation auszuschließen - ein klares Match kann hier algorithmisch vorerst nicht gewährleistet werden.
+
+Die bekannten Organisationen werden über die Funktion \code{load\_organizations\_from\_csv()} eingelesen. Dabei entsteht eine strukturierte Liste von Dictionaries, die mit den Anforderungen aus \code{document\_schemas.py} kompatibel ist und Hauptnamen, alternative Bezeichnungen sowie Identifier enthält.
 
 
 
+\subsubsection{letter\_metadata\_matcher.py}\label{subsection:letter_metadata_matcher}
+
+\subsubsection{type\_matcher.py}\label{subsection:type_matcher}
 
 
-\subsubsection{letter\_metadata\_matcher.py}\label{subsection:letter\_metadata\_matcher}
-
-\subsubsection{type\_matcher.py}\label{subsection:type\_matcher}
-
-
-\subsubsection*{event\_matcher.py}\label{subsection:event\_matcher}
+\subsubsection*{event\_matcher.py}\label{subsection:event_matcher}
 
 Das Modul \texttt{event\_matcher.py} dient der Erkennung, Strukturierung und Anreicherung von 
 Ereignistags aus den Transkribus-Dokumenten. Die zugrundeliegende Funktion \texttt{extract\_events\_from\_xml()} 
@@ -2520,13 +2600,14 @@ im finalen JSON unter dem Attribut \texttt{events} gespeichert. Da Events ein eh
 Fokus der Pipeline weniger auf diesem Modul, das zu einem späteren Zeitpunkt beispielsweise durch präziseres Prompten für das
 Eventtagging optimiert werden soll. 
 
-\subsubsection*{date\_matcher.py}\label{subsection:date\_matcher}
+\subsubsection*{date\_matcher.py}\label{subsection:date_matcher}
 Das Modul \texttt{date\_matcher.py} dient der systematischen Extraktion, Normalisierung und 
 Zählung von Datumsangaben in den Transkribus-Dokumenten. Es basiert auf der 
 Auswertung strukturierter Angaben, die im Rahmen der Transkription über XML-Custom-Tags im 
 \texttt{custom}-Attribut einzelner \texttt{<TextLine>}-Elemente eingebettet wurden. Diese 
 Daten gelten innerhalb des Korpus als zuverlässig, da sie während der manuellen Korrekturprozesse
 in Transkribus einheitlich normiert und im Format \texttt{dd.mm.yyyy} ergänzt wurden.
+
 
 Treten im historischen Text verkürzte Datumsangaben wie \textit{\enquote{1.~d.~Mts}} auf, so handelt
 es sich um Abkürzungen, die bei der Transkription mit einem entsprechenden \texttt{abbreviation}-Tag
@@ -2536,17 +2617,17 @@ Kontext\footnote{Zum Beispiel durch Hinweise im Seiteninhalt oder durch übergeo
 ein vollständiges Datum erschliessen, kann dieses anschliessend in strukturierter Form übernommen und im JSON als 
 normiertes Datum gespeichert werden.
 
+
 Innerhalb der Verarbeitungspipeline wird das Modul über die Funktionen \texttt{extract\_custom\_date()} und 
 \texttt{combine\_dates()} aufgerufen. Zunächst durchläuft \texttt{extract\_custom\_date()} das XML-Dokument 
 und extrahiert alle \texttt{custom}-Attribute, die ein \texttt{date\{…\}}-Muster enthalten. Die Inhalte dieser 
-Attribute werden bereinigt und zur weiteren Analyse an die Funktion \texttt{extract\_date\_from\_custom()} übergeben.
-
+Attribute werden bereinigt und zur weiteren Analyse an die Funktion \texttt{extract\_date\_from\_custom()} übergeben.\\
 Diese Funktion überprüft mithilfe regulärer Ausdrücke, ob der String tatsächlich eine gültige Datumsangabe enthält. 
 Dabei wird insbesondere nach einem \texttt{when}-Feld gesucht, das im Inneren des \texttt{date}-Blocks enthalten ist. 
 Die in diesem Feld hinterlegten Daten werden anschliessend mit der Funktion \texttt{parse\_custom\_attributes()} als 
 Key-Value-Paare interpretiert. Liegt ein gültiges Datum vor, wird dessen Format mit \texttt{normalize\_to\_ddmmyyyy()} 
 überprüft und gegebenenfalls vereinheitlicht.
-
+\\
 Unterstützt werden mehrere Eingabeformate, darunter standardisierte Formen wie \texttt{dd.mm.yyyy}, ISO-Formate 
 wie \texttt{yyyy-mm-dd} oder zweistellige Jahresangaben, die automatisch in vierstellige Jahre des 20.
 Jahrhunderts umgewandelt werden. Zusätzlich erkennt die Funktion auch Intervallangaben wie \texttt{01/03.04.1944}, 
@@ -2745,240 +2826,6 @@ Alle Ergebnisse werden zudem in einer Datei \code{unmatched.json} gespeichert, u
 \subsection{Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}
 \newpage
 
-
-
-
-
-
-
-
-
-
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––                                 ––––––––––––––––––––––% 
-%––––––––––––––––––––––––           ALTER SCHEISS         ––––––––––––––––––––––%
-%––––––––––––––––––––––––                                 ––––––––––––––––––––––% 
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
-
-\begingroup
-\small
-\pagecolor{OldPaper}
-\section{ALTER SCHEISS}
-
-In Transkribus-Seminaren am Departement Geschichte der Universität Basel wird aus \textit{\enquote{Männerchor Akten 1925--1944}} bereits 2018 und 2022 ein 
-erster Korpus aus 137 Akten\cite[Weiterführend vgl.][]{burkhardt_feldpost_2022}. Es entsteht eine Liste, die die Seiten mit deren Lage im Ordner, einem Kurztitel und einem Entstehungsdatum versieht. Als Akte werden im Folgenden Schriftstücke bezeichnet, die entweder durch die Fundsituation, 
-oder  ihren Inhalt eindeutig als zusammengehörig betrachtet werden können. So liegt Akte\_001 beispielsweise in einer separaten Mappe und umfasst 96 Seiten, 
-während andere Akten nur aus einer einzelnen Seite bestehen können.  
-Während der Fokus 2028 auf den augenscheinlich häufig auftretenden Personennamen \enquote{Carl Burger} und \enquote{Fritz Jung} liegt, wird 2022 im Rahmen eines zweiten Seminars spezifischer die Feldpost untersucht.
-Zu diesem Zeitpunkt erfolgt die Transkription mit einem generischen Modell, das nicht auf die unterschiedlichen Handschriften trainiert 
-ist.
-\subsection{Forschungsstand zu den Quellen}
-Die vorliegende Arbeit stützt sich auf diese Vorarbeit und die darin gesammelten Daten. Beispielsweise werden die Feldpostbriefe um weitere Informationen ergänzt. Kernfragen hierfür sind: \textit{Welche Einheiten verbergen sich hinter den Feldpostnummern? Wo waren die Einheiten, als der Brief geschrieben wurde?}
-
-Hierzu werden Nachschlagetabellen in der Fachliteratur (vgl.~\autocites{tessin_verbande_1977}{hartmann_wehrmacht_2010}{rass_deutsche_2009}), die Bestände des \textit{Bundesarchives – Militärarchiv\ } Freiburg \autocite{hollmann_freiburg_2025}, des \textit{Suchdienstes des Deutschen Roten Kreuzes (DRK)} \autocite{reuter_drk_2025} sowie Citizen-Science-Projekte\footnote{ vgl. z.B\. Wikidata: \autocite{burkhardt_78th_2024}, \autocite{altenburger_lexikon_nodate-1}, \autocite{hermans_forum_nodate}.} herangezogen und letztere teils durch eigene Recherche ergänzt.
-
-
-Für diese Arbeit wird die Kategorisierung von 2018 übernommen und auf den Seiten im Ordner erweitert.\cite[vgl.][]{burkhardt_githubakten_gesamtubersichtcsv_2025} 
-
-\subsection{Beschreibung des Archivbestands}
-\newpage
-
-\href{https://free.iiifhosting.com/iiif/959173f8d808ab12ad7847917f79e0e4bc974ebce0040a07afd4b8be3f10c234/}{Feldpost Beispiel}
-
-    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-    %––––––––––––––––––––––––          Methodik       ––––––––––––––––––––––%
-    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
-    %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
-    
-\section{Methodischer Zugang}
-    
-    \subsection{Digitale Erfassung und Strukturierung der Quellen}
-    \subsubsection{Gliederung in Akten}
-
-    Die analogen Akten müssen zuerst für die Digitalisierung vorbereitet werden. Sie werden aus den Ordnern genommen und vorsichtig von Heftklammern, 
-    Gummibändern und Büroklammern befreit. Dies dient der Konservierung des Papiers – gerade an Stellen, an denen sich vorher Büroklammern befunden haben, 
-    frisst sich Rost in das Papier und beschädigt es stark. Auch sonstiger Säurefrass durch nicht-säurefreies Papier, das sich im Ordner befand, zeigt sich an einigen Stellen.\\
-
-    Um schnell und dennoch in guter Auflösung zu digitalisieren, wird die \enquote{Dateien}-App\footnote{vgl.~\href{https://support.apple.com/de-de/guide/preview/prvw28034/mac}{Apple-Finder}} von 
-    Apple benutzt, da sie gleichzeitig einen grossen Cloud-Speicher und eine OCR-Erkennung bietet. Die Intention dahinter sind schnell durchsuch- und auffindbare Texte.
-    Um die Geschwindigkeit der Digitalisierung zu erhöhen, und eine vergleichbare Qualität zu erhalten, wird ein Ipad mit einem Stativ verwendet, das im rechten Winkel (90\textdegree) über den Seiten positioniert ist. 
-    Die Dateien werden entsprechend der bereits erwähnten Akten\_Gesamtübersicht benannt. Sind mehrere Blätter zusammengeheftet, so ergeben sie eine Akte. Sind sie einzeln, werden sie ebenfalls als einzelne Akte geführt. Die Archivierung findet sowohl analog wie digital auf Seiten-Ebene statt.\\
-  
-    \subsubsection{Digitalisierung und Transkription}
-    
-    \subsection{Tagging in Transkribus}\label{subsec:TaggingKapitel} 
-
-    Transkribus und seine Modelle unterstützen nicht nur beim Transkribieren der Texte, sondern erlauben auch das Taggen von \textit{Named Entities}.  
-    Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
-    Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
-    
-
-\subsection{Digitalisierungsprozess und Herausforderungen}
-
-Hier gehört dringend dazu, dass die Quellen über einen längeren Zeitraum digitalisiert wurden. 
-Das bedeutet, dass sich die Kameras geändert haben.Verwendet wurden primär ein iPad Pro 2nd Generation (2017) und ein iPad Air 4th Generation (2022). 
-Die verwendete Software ist die Scan-Funktion von Apple iCloud. 
-Die Auswahl der Software war aus rein ökonomischen Gründen. Da das Digitalisierungsprojekt bereits 2018 begonnen wurde, fehlten weitestgehend Grundlagenkenntnisse, 
-die im Digital Humanities Studium vermittelt wurden. Berücksichtigt wurden jedoch einige Richtlinien, wie sie in den Archivkursen des Bachelor-Geschichtsstudiums vermittelt wurden 
-(gleichbleibende Beleuchtung, Hintergrund). Die Scanqualität ist daher oft nicht optimal, was zu Problemen bei der OCR-Erkennung mit OCR-Software (Apple OCR, Adobe etc.) führte. 
-Aus diesem Grund wurden 75 Akten zunächst mit dem Modell \enquote{The German Giant I} mit einer CER von 8,30\,\% transkribiert. Mit insgesamt vier Iterationen wurde eine Groundtruth 
-für ein eigenes Modell erstellt und gleichzeitig Personen, Orte, Daten und Organisationen getaggt. Hierzu wurde auch manuell OpenAIs ChatGPT-4o-Modell verwendet, 
-das für die Rechtschreibprüfung genutzt wurde. Tauchte ein Rechtschreibfehler im Text auf, wurde dieser manuell überprüft. War der Fehler bereits im Ursprungstext, 
-so wurde der Tag \texttt{sic} verwendet und eine Korrektur beigefügt.\\
-
-Die so erstellten 70 Akten ergaben 158 Seiten mit insgesamt 22.155 Wörtern Groundtruth, womit dann ein eigenes Transkribus-Modell \cite{burkhardt_transkribus_2024}
-(\href{https://app.transkribus.org/models/public/287793}{ModelID: 287793}) erstellt wurde. Es erreichte eine Accuracy (CER) von 6,58\,\%. Später wurden die verbleibenden 
-80 Akten nur noch mit diesem Modell transkribiert.\\
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{./assets/Images/Akte_076_S001.jpg}
-  \caption{Beispiel für handschriftlichen Text in Akte\_076 erkannt mit Transkribus}\label{}
-\end{figure}
-
-  \begin{figure}[htbp]
-  \centering
-  \begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-    Murg. 15. Aug 41 
-
-    
-    Mein lieber Alfons! 
-
-    Sehen lunge Lreitt es mich dem Männer- 
-
-    chor wieder einmal ein Liedehen zu stehten. 
-
-    und kam mir die gestege Gelegenheit gussend. 
-
-    Männechor Venstad um den Title das Liedchen 
-
-    zu erhalten, wo sie zum Abschied am Aute 
-
-    sängen ``auf Wiederschen Owohl ich Frei! 
-
-    märke beifügte, keine Aentwarb. Vielleicht 
-
-    gelingt es Dir diesen Iitel zu erhalten. 
-    
-    Weiterhin sänge ich fal Lied nur 
-    
-    ``Bas alte Lied'' von being. Rerohl 
-
-    Es wurde 1928 am 10. Dachub. Sängerb. Frst 
-
-    von Begrüssungsabend in Dien gesungen. 
-
-    und erntete überaus grossen Reifall. 
-
-    Es ich schwer das Richtige zu finden. 
-
-    Aler Alfon, werst das Vemsladler Liedchen. 
-
-    alsdann das Biener Lidchen und wenn 
-
-    Leides unmöglich, dann freu Nall. 
-
-    Mit herzl. Grüsse 
-
-    Dein 
-
-    Carl 
-  \end{tcolorbox}
-  \caption{Transkription von \autoref{fig:Carl-handschrift}}
-  \label{fig:Carl-Transkribus}
-
-\end{figure}
-
-ChatGPT produziert daraus:
-
-\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-Murg, 15. Aug. 41
-
-Mein lieber Alfons!
-
-Schon lange treibt es mich, dem Männerchor wieder einmal ein Liedchen zu stiften, und kam mir die günstige Gelegenheit gelegen.
-
-Ich schrieb vergangenes Jahr an den Männerchor Venstad, um den Titel des Liedchens zu erhalten, das sie zum Abschied am Auto sangen: \enquote{Auf Wiedersehen, o wohl ich frei!}
-
-Ich fügte eine Frankierung bei, erhielt jedoch keine Antwort. Vielleicht gelingt es Dir, diesen Titel zu erhalten.
-
-Weiterhin sang ich das Lied nur \enquote{Das alte Lied von Wien}. Obwohl es am 10. Dezember 1928 beim Sängerbund-Fest von Begrüssungsabend in Wien gesungen wurde und überaus grossen Beifall erntete, ist es schwer, das Richtige zu finden.
-
-Aber Alfons, zuerst das Venstadler Liedchen, dann das Wiener Liedchen und wenn beides unmöglich, dann Fröhlichsein.
-
-Mit herzlichen Grüssen
-
-Dein
-
-Carl
-\end{tcolorbox}
-\captionof{figure}{Transkription durch ChatGPT von \autoref{fig:Carl-Transkribus}}
-\label{fig:Carl-LLM}
-
-Durch ChatGPT verliert der Text zwar seine ursprüngliche Formatierung und Zeilenumbrüche, aber wird nun nahezu fehlerfrei lesbar. Nur das \enquote{Venstadler Liedchen} ist eigendlich eines aus \enquote{Neustadt}. Eine anschliessende menschliche Korrektur ermöglicht also den Abgeleich mit dem nun lesbaren Text, und die Korrektur der Transkription.
-
-Korrigiert und getagt lautet der Brief nun:
-  \begin{figure}[htbp]
-  \centering
-\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-  \textbf{\colorbox{place}{\texttt{Murg}}}.  \textbf{\colorbox{date}{\texttt{15. Aug 41}}} \\
-\\
-Mein lieber  \textbf{\colorbox{person}{\texttt{Alfons}}}!\\
-Seit langem treibt es mich dem  \textbf{\colorbox{organization}{\texttt{Männer-}}}\\
-\textbf{\colorbox{organization}{\texttt{chor}}} wieder einmal ein Liedchen zu stiften.\\
-und kam mir die günstige Gelegenheit passend.\\
-Ich schrieb vergangenes Jahr an den\\
-Männechor Vorstand um den Titel das Liedchen\\
-zu erhalten, wo sie zum Abschied am Auto \\
-sangen \enquote{auf Wiederschen} Obwohl ich  \textbf{\colorbox{unclear}{\texttt{Frank-}}}\\
-marke beifügte, keine Antwort. Vielleicht\\
-gelingt es Dir diesen Titel zu erhalten.\\
-Weiterhin sänge ich das Lied nur\\
-\enquote{Das alte Lied} von  \textbf{\colorbox{abbrev}{\texttt{Komp.}}}\textbf{\colorbox{person}{\texttt{ Kirchl}}}\\
-Es wurde \textbf{\colorbox{date}{\texttt{1928}}} am \textbf{\colorbox{eventTag}{\texttt{10. Deutsch. Sängerb. Fest}}}\\
-am Begrüssungsabend in \textbf{\colorbox{place}{\texttt{Wien}}} gesungen.\\
-und erntete überaus grossen Beifall.\\
-Es ich schwer das Richtige zu finden.\\
-Also \textbf{\colorbox{person}{\texttt{Alfons}}}! zuerst das \textbf{\colorbox{place}{\texttt{Neustadter}}} Liedchen.\\
-alsdann das \textbf{\colorbox{place}{\texttt{Wiener}}} Liedchen und wenn\\
-Beides unmöglich, dann freie Wahl.\\
-Mit herzl. Grüssen \\
-Dein\\
-\textbf{\colorbox{person}{\texttt{Carl}}}\\
-\end{tcolorbox}
-\caption{Tagging von \autoref{fig:Carl-LLM}}\label{fig:Tagging-Carl-LLM}
-\end{figure}
-\begingroup
-\begin{figure}[htbp]
-\begin{tcolorbox}[colback=oldLetter, colframe=black, sharp corners, width=\textwidth]
-\textbf{\colorbox{place}{\texttt{München}}}, \textbf{\colorbox{date}{\texttt{28.V.1941}}} \\
-\\
-Lieber \textbf{\colorbox{person}{\texttt{Otto}}}!\\
-Nur wer die Sehnsucht kennt weiss was ich leide\\
-Ich wandle traurig her in schwarzer Seide.\\
-Die Sehnsucht brennt, du bist so fern.\\
-Ach lieber \textbf{\colorbox{person}{\texttt{Otto}}}, wie hab ich dich gern.\\
-Ich schnitt es gern in alle Rinden.\\
-Ach \textbf{\colorbox{person}{\texttt{Otto}}}, wann u.\ \ wo kann ich dich finden?\\
-Deine dich nie vergessende\\
-\textbf{\colorbox{person}{\texttt{Lina Fingerdick}}}\\
-\\
-An\\
-\textbf{\colorbox{person}{\texttt{Herrn Otto Bollinger}}}\\
-z.Hd. \textbf{\colorbox{person}{\texttt{Herrn Alfons Zimmermann}}}\\
-\textbf{\colorbox{organization}{\texttt{Vereinsführer des Männerchor}}}\\
-\textbf{\colorbox{place}{\texttt{Murg}}}\\
-\textbf{\colorbox{place}{\texttt{Laufenburg (Baden)}}}\\
-\textbf{\colorbox{place}{\texttt{Rhina}}}
-\end{tcolorbox}
-\end{figure}
-\endgroup
-
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––           Bibliographie         –––––––––––––––––––––––––––––%
@@ -2994,6 +2841,16 @@ heading=bibintoc,
 title={Bibliographie}%title of the 'references' section, change this if necessary
 ]%
 \endgroup
+
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––                                        ––––––––––––––––––––––% 
+%––––––––––––––––––––––––           Anhang                       ––––––––––––––––––––––%
+%––––––––––––––––––––––––                                        ––––––––––––––––––––––% 
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
+%––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 
 \newpage
 \appendix
@@ -3060,61 +2917,65 @@ dest_folder = r"/Users/svenburkhardt/Documents/D_Murger_Männer_Chor_Forschung/M
 convert_pdf_to_jpg(src_folder, dest_folder)
 
 \end{minted}
+
 \subsection{Tagging in Transkribus}
 
 
     Transkribus und seine Modelle unterstützen nicht nur beim Transkribieren der Texte, sondern erlauben auch das Taggen von \textit{Named Entities}.  
     Für die vorliegende Arbeit sind dabei besonders Personen, Orte, Organisationen und Daten relevant.  
     Um hierfür ein stringentes Verfahren zu entwickeln, wurden die Tags wie folgt definiert:
-    
+  
+\subsubsection{Strukturelle Tags}
     \begin{description}
 
     % Abbreviations
-    \item \textbf{\colorbox{abbrev}{\texttt{abbrev}}}
+    \item\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}
+    
         
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen. 
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
+
     
     \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
-    
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind: 
-    \colorbox{VeryLightGray}{\textless\ \  abbrev\textgreater\ \  V.D.A.\textless\ \  /abbrev\textgreater}.
+
+    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\code{<abbrev>~V.D.A.~</abbrev>}.
 
     \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
-    
-    \colorbox{VeryLightGray}{\textless\ \  person\textgreater\ \  \textless\ \  abbrev\textgreater\ \  Dr.\textless\ \  /abbrev\textgreater\ \  Weiss{\textless\ \  /person\textgreater}}
 
+    \code{<person>~<abbrev>~Dr.~</abbrev>~Weiss~</person>}
     
     % Unclear    
-    \item \textbf{\colorbox{unclear}{\texttt{unclear}}}
+    \item\texttt{\textbf{{\colorbox{unclear}{unclear}}}}
     
 
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert. 
-
+    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
     
     \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
 
-    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  unclear\textgreater}.}
+    \code{Er wohnte in~<unclear>~[\ldots]~<unclear>}.
 
     \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
 
-    \colorbox{VeryLightGray}{\enquote{{\textless\ \  place\textgreater\ \  Frei\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  unclear\textgreater\ \  \textless\ \  place\textgreater}}.}
+    \code{<place>~Frei~<unclear>~[\ldots]~<unclear>~<place>}.
+
     
 %Sic   
     \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
 
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden. 
-    
+    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.
+
     \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
 
-    \colorbox{VeryLightGray}{\enquote{{<sic>dass</sic>}} für dass.}
+    \code{<sic>~daß~</sic>} für dass mit tz.
 
     \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
 
-    \colorbox{VeryLightGray}{\enquote{Wir haben {<sic>einen</sic>} grosse Freude.}}
+    \code{Wir haben {<sic>~einen~</sic>} grosse Freude.}
 
     \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
 
     \end{description}
+    \endgroup
+
 
     \subsubsection{Inhaltliche Tags}
     \begin{description}
@@ -3139,26 +3000,23 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     
     \noindent \textbf{\ding{43} Beispiel 1}: Eindeutig lesbare Signaturen werden direkt getaggt:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  A. Zimmermann\textless\ \  /signature\textgreater}}. 
+    \code{<signature>~A. Zimmermann~</signature>}. 
 
     \textbf{\ding{43} Beispiel 2}: Teilweise unleserliche Signaturen werden mit dem Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} markiert: 
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  R. We\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  /unclear\textgreater\textless\ \  /signature\textgreater}}. 
-
+    \code{<signature>~R. We~<unclear>~[\ldots]~</unclear>~</signature>}. \\
     
-    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift 
-    vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:\\
+    \textbf{\ding{43} Beispiel 3}: Wenn nur ein Teil des Namens lesbar ist, aber eine Identifikation unsicher bleibt, sollte die Unterschrift vollständig im Tag \texttt{\colorbox{unclear}{unclear}} innerhalb von \texttt{\colorbox{signature}{signature}} stehen:\\
 
-    \colorbox{VeryLightGray}
-    {\texttt{\textless\ \  signature\textgreater\ \  \textless\ \  unclear\textgreater\ \  \textit{etwas unleserliches}\textless\ \  /unclear\textgreater\ \  \textless\ \  /signature\textgreater}.} 
+    \code{<signature>~<unclear>~\textit{etwas unleserliches}~</unclear>~</signature>}.
     
     \textbf{\ding{43} Beispiel 4}: Wenn eine Signatur einer bekannten Person zugeordnet werden kann, aber nicht vollständig lesbar ist, bleibt die Signatur erhalten und wird \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden: 
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  A. Zimm\textless\ \  unclear\textgreater\ \  [\ldots]\textless\ \  /unclear\textgreater\textless\ \  /signature\textgreater}.} 
+    \code{<signature>~A. Zimm~<unclear>~[\ldots]~</unclear>~</signature>}.
     
     \textbf{\ding{43} Beispiel 5}: Wenn eine Unterschrift vollständig transkribiert wurde und die Person bekannt ist, wird sie nur mit \texttt{\colorbox{signature}{signature}} getaggt, \textbf{ohne} den Tag \texttt{\colorbox{person}{person}} zu verwenden:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  signature\textgreater\ \  Alfons Zimmermann\textless\ \  /signature\textgreater}.} 
+    \code{<signature>~Alfons Zimmermann~</signature>}.
     
     % Organization    
     \item\texttt{\textbf{{\colorbox{organization}{organization}}}}
@@ -3179,7 +3037,7 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     \textbf{\ding{43} Beispiel 2}: Orte mit näherer Bestimmung, z.B. \enquote{bei Berlin}, \enquote{im Murgtal} werden getaggt:  
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  place\textgreater\ \  im Murgtal\textless\ \  /place\textgreater}.} 
+    \code{<place>~im Murgtal</place>}.
 
     
     % Date    
@@ -3193,7 +3051,8 @@ convert_pdf_to_jpg(src_folder, dest_folder)
 
     \textbf{\ding{43} Beispiel 3}: den 29.\ \  d. Mts.:
 
-    \colorbox{VeryLightGray}{\texttt{\textless\ \  date when=\enquote{29.05.1936}\textgreater\ \  den 2.\textless\ \  /date\textgreater} \texttt{\textless\ \  abbrev\textgreater\ \  d. Mts.\textless\ \  /abbrev\textgreater}}
+    \code{\string<date when=\enquote{29.05.1936}>~den 2.~<abbrev>\ \ d. Mts.~</abbrev> </date>}
+
 
 % Event
     \item\texttt{\textbf{{\colorbox{eventTag}{event}}}}
@@ -3209,54 +3068,4 @@ convert_pdf_to_jpg(src_folder, dest_folder)
     Konzepte, die nicht klar in den Texten benannt werden, wie beispielsweise die Suche nach einem Dirigenten, können nicht immer Ereignis getaggt werden. Sie sollen später aber in der Datenbank implementiert werden.
     \end{description}
     
-    \subsubsection{Strukturelle Tags}
-    \begin{description}
-
-    % Abbreviations
-    \item\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}
-    
-        
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{abbrev}{abbrev}}}}} werden alle Abkürzungen getaggt, die für eine eindeutige Entität stehen.
-
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Dr., Prof., St., Hr., Frl., Dipl.-Ing., etc.
-
-    \textbf{\ding{43} Beispiel 2}: Organisationskürzel, wenn sie eindeutig sind:\\\colorbox{VeryLightGray}{\textless\ \  abbrev\textgreater\ \  V.D.A.\textless\ \  /abbrev\textgreater}.
-
-    \textbf{\textbf{\ding{43} Beispiel 3}}: Falls eine dazugehörige Entität vorhanden ist, wird die Abkürzung getaggt und wird gleichzeitig als zugehörige Entität getaggt:
-
-    \colorbox{VeryLightGray}{\textless\ \ person\textgreater\ \  \textless\ \  abbrev\textgreater\ \  Dr.\textless\ \  /abbrev\textgreater\ \  Weiss{\textless\ \  /person\textgreater}}
-    
-    % Unclear    
-    \item\texttt{\textbf{{\colorbox{unclear}{unclear}}}}
-    
-
-    Mit dem Tag \texttt{\texttt{\textbf{{\colorbox{unclear}{unclear}}}}} werden unleserliche oder schwer entzifferbare Textstellen markiert.
-    
-    \noindent\textbf{\ding{43} Beispiel 1}: Unklare Zeichen oder fehlende Buchstaben: 
-
-    \colorbox{VeryLightGray}{\enquote{Er wohnte in\textless\ \ unclear\textgreater\ \ [\ldots]\textless\ \ unclear\textgreater}.}
-
-    \textbf{\ding{43} Beispiel 2}: Teilweise lesbare Wörter:
-
-    \colorbox{VeryLightGray}{\enquote{{\textless~place\textgreater~Frei\textless~unclear\textgreater~[\ldots]\textless~unclear\textgreater~\textless~place\textgreater}}.}
-
-    
-%Sic   
-    \item\texttt{\textbf{{\colorbox{sic}{sic}}}} 
-
-    Mit dem Tag \texttt{sic} werden Wörter markiert, die im Originaltext in einer falschen oder ungewöhnlichen Schreibweise geschrieben wurden.
-
-    \noindent\ding{43} Beispiel 1: Veraltete oder falsche Schreibweisen: 
-
-    \colorbox{VeryLightGray}{\enquote{{<sic>dass</sic>}} für dass.}
-
-    \ding{43} Beispiel 2: Offensichtliche Tippfehler, wenn sie im Originaltext so vorkommen: 
-
-    \colorbox{VeryLightGray}{\enquote{Wir haben {<sic>einen</sic>} grosse Freude.}}
-
-    \ding{43} Beispiel 3: Falls eine Korrektur notwendig ist, kann sie als Kommentar ergänzt werden. 
-
-    \end{description}
-    \endgroup
-\end{document}
+   \end{document}
