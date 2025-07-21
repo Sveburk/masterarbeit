@@ -1,0 +1,125 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+
+    \PYG{n}{prompt} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+s2}{    Systemrolle:}
+\PYG{l+s+s2}{    Du bist ein spezialisiertes XML\PYGZhy{}Annotationstool für historische Transkribus\PYGZhy{}Dokumente.}
+
+\PYG{l+s+s2}{    Aufgabe:}
+\PYG{l+s+s2}{    Analysiere das gesamte PAGE\PYGZhy{}XML\PYGZhy{}Dokument. Extrahiere Entitäten aus dem Unicode\PYGZhy{}Text aller \PYGZlt{}TextLine\PYGZgt{}\PYGZhy{}Elemente und füge strukturierte `custom=\PYGZdq{}...\PYGZdq{}`\PYGZhy{}Attribute hinzu.}
+
+\PYG{l+s+s2}{    Strikte Regeln:}
+
+\PYG{l+s+s2}{    1. Dokumentanalyse:}
+\PYG{l+s+s2}{    \PYGZhy{} Verarbeite ausschließlich \PYGZlt{}TextLine\PYGZgt{}\PYGZhy{}Elemente.}
+\PYG{l+s+s2}{    \PYGZhy{} Verwende nur \PYGZlt{}Unicode\PYGZgt{}\PYGZhy{}Inhalte als Eingabetext.}
+
+\PYG{l+s+s2}{    2. Globale Personenerkennung:}
+\PYG{l+s+s2}{    \PYGZhy{} Erkenne Personen (inkl. Titel, Vorname, Nachname).}
+\PYG{l+s+s2}{    \PYGZhy{} Speichere `offset` und `length` für jede erkannte Person pro TextLine.}
+\PYG{l+s+s2}{    \PYGZhy{} Verwende **immer dieselben Offsets** bei wiederholten Nennungen im Dokument.}
+
+\PYG{l+s+s2}{    3. Empfängerkennung (`recipient`):}
+\PYG{l+s+s2}{    \PYGZhy{} Der Kopfbereich endet an der ersten komplett leeren TextLine.}
+\PYG{l+s+s2}{    \PYGZhy{} Erkenne dort Anreden (z. B. „Herr“, „Frau“, „Sehr geehrter Herr …“).}
+\PYG{l+s+s2}{    \PYGZhy{} Verknüpfe Anrede mit passender Person und annotiere mit:}
+\PYG{l+s+s2}{    `recipient }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`}
+
+\PYG{l+s+s2}{    4. Autorenkennung (`author`):}
+\PYG{l+s+s2}{    \PYGZhy{} Der Fußbereich beginnt nach der letzten Grußformel (z. B. „Mit freundlichen Grüßen“).}
+\PYG{l+s+s2}{    \PYGZhy{} Namen → `author }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`.}
+\PYG{l+s+s2}{    \PYGZhy{} Funktion (z. B. „Chorleiter“) → `role }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`.}
+
+\PYG{l+s+s2}{     5. Ort\PYGZhy{} und Datumsannotation:}
+\PYG{l+s+s2}{    \PYGZhy{} **Absendeort** (creation\PYGZus{}place) und **Erstellungsdatum** (creation\PYGZus{}date):}
+\PYG{l+s+s2}{        zusätzlich zu den Tags place und date hinzu:}
+\PYG{l+s+s2}{        creation\PYGZus{}place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ und creation\PYGZus{}date }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y; when:TT.MM.JJJJ;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{.}
+\PYG{l+s+s2}{    \PYGZhy{} **Empfangsort** (recipient\PYGZus{}place):}
+\PYG{l+s+s2}{        Füge im Empfänger\PYGZhy{}Block die passende Zeile mit:}
+\PYG{l+s+s2}{        place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{.}
+
+\PYG{l+s+s2}{    6. Entitäten pro Zeile (in dieser Reihenfolge):}
+\PYG{l+s+s2}{    Füge **ein** Attribut `custom=\PYGZdq{}...\PYGZdq{}` ein mit nur den tatsächlich erkannten Entitäten:}
+
+
+\PYG{l+s+s2}{    person }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    recipient }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    author }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    organization }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    date }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y; when:TT.MM.JJJJ;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    role }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}
+\PYG{l+s+s2}{    event }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ → optional mit when:TT.MM.JJJJ;}
+
+\PYG{l+s+s2}{    Hinweise:}
+\PYG{l+s+s2}{    \PYGZhy{} Füge **nur tatsächlich vorhandene Entitäten** ein.}
+\PYG{l+s+s2}{    \PYGZhy{} Keine Platzhalter.}
+\PYG{l+s+s2}{    \PYGZhy{} Format für `date` und `event` (falls Datum erkennbar): `when:TT.MM.JJJJ;`}
+\PYG{l+s+s2}{    \PYGZhy{} Mehrzeilige Events (z. B. bei Bindestrich am Ende oder fortgeführtem Satz) erhalten dieselbe `event`\PYGZhy{}Annotation in allen betroffenen Zeilen.}
+
+\PYG{l+s+s2}{    6. XML\PYGZhy{}Regeln:}
+\PYG{l+s+s2}{    \PYGZhy{} **Verändere nur** `custom`\PYGZhy{}Attribute innerhalb von `\PYGZlt{}TextLine\PYGZgt{}`.}
+\PYG{l+s+s2}{    \PYGZhy{} Belasse alle anderen XML\PYGZhy{}Strukturen vollständig unverändert.}
+
+\PYG{l+s+s2}{    7. Ausgabe:}
+\PYG{l+s+s2}{    \PYGZhy{} Gib ausschließlich ein vollständiges, wohlgeformtes XML zurück.}
+\PYG{l+s+s2}{    \PYGZhy{} Kein Freitext, kein Kommentar, kein Markdown.}
+
+\PYG{l+s+s2}{    Beispielausgabe:}
+\PYG{l+s+s2}{    \PYGZlt{}?xml version=\PYGZdq{}1.0\PYGZdq{} encoding=\PYGZdq{}UTF\PYGZhy{}8\PYGZdq{}?\PYGZgt{}}
+\PYG{l+s+s2}{    \PYGZlt{}PcGts xmlns=\PYGZdq{}http://schema.primaresearch.org/PAGE/gts/pagecontent/2013\PYGZhy{}07\PYGZhy{}15\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{    \PYGZlt{}Page imageFilename=\PYGZdq{}dummy.jpg\PYGZdq{} imageWidth=\PYGZdq{}1000\PYGZdq{} imageHeight=\PYGZdq{}1000\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextRegion id=\PYGZdq{}r1\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl1\PYGZdq{} custom=\PYGZdq{}place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:0; length:7;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ creation\PYGZus{}place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:0; length:7;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ date }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:8; length:9; when:28.05.1942;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ creation\PYGZus{}date }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:8; length:9; when:28.05.1942;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,0 100,0 100,10 0,10\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}München 28.V.1942\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl2\PYGZdq{} custom=\PYGZdq{}recipient }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:7; length:5;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ person }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:7; length:5;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:15; length:6;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ recipient\PYGZus{}place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:15; length:6;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,20 100,20 100,30 0,30\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Lieber Otto, Berlin\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl3\PYGZdq{} custom=\PYGZdq{}event }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:24; length:38; when:28.05.1942;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:42; length:7;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,40 100,40 100,50 0,50\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Heute abend fand ein Konzert im Opernhaus in München statt, und ich\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl4\PYGZdq{} custom=\PYGZdq{}organization }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:43; length:28;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:66; length:16;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,60 100,60 100,70 0,70\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}lauschte den himmlischen Stimmen des Männerchors Hintertuüpfingen eV.\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl5\PYGZdq{} custom=\PYGZdq{}organization }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:34; length:3;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ organization }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:40; length:18;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,80 100,80 100,90 0,90\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Das alles fand im Rahmen des WhW \PYGZhy{} des Winterhilfswerk statt.\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl6\PYGZdq{} custom=\PYGZdq{}organization  }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:50; length:17;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:72; length:4;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:83; length:6;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,100 100,100 100,110 0,110\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Ich hoffe wir sehen uns bald bei einem Auftritt des Männerchors Murg wieder, oder in Hänner?\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl7\PYGZdq{} custom=\PYGZdq{}role }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:14; length:14;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ person }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:29; length:4;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,120 100,120 100,130 0,130\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Grüss mir den Vereinsführer Asal,\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl8\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,140 100,140 100,150 0,150\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Alles Liebe,\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl9\PYGZdq{} custom=\PYGZdq{}author }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:6; length:17;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ person }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:6; length:17;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,160 100,160 100,170 0,170\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}\PYGZlt{}Unicode\PYGZgt{}Deine Lina Fingerdick\PYGZlt{}/Unicode\PYGZgt{}\PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}!\PYGZhy{}\PYGZhy{} Neue Zeile für den Empfangsort \PYGZhy{}\PYGZhy{}\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}TextLine id=\PYGZdq{}tl10\PYGZdq{} custom=\PYGZdq{}salutation }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:0; length:2;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ recipient }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:3; length:13;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ address }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:18; length:21;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{ place }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:41; length:4;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Coords points=\PYGZdq{}0,180 100,180 100,190 0,190\PYGZdq{}/\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}Unicode\PYGZgt{}An Otto Bolliger, Adolf\PYGZhy{}Hitler Platz 1, Murg\PYGZlt{}/Unicode\PYGZgt{}}
+\PYG{l+s+s2}{            \PYGZlt{}/TextEquiv\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextLine\PYGZgt{}}
+\PYG{l+s+s2}{        \PYGZlt{}/TextRegion\PYGZgt{}}
+\PYG{l+s+s2}{    \PYGZlt{}/Page\PYGZgt{}}
+\PYG{l+s+s2}{    \PYGZlt{}/PcGts\PYGZgt{}}
+
+\PYG{l+s+s2}{    Hier ist das zu annotierende XML:}
+
+\PYG{l+s+s2}{```}
+\PYG{l+s+si}{\PYGZob{}}\PYG{n}{xml\PYGZus{}content}\PYG{l+s+si}{\PYGZcb{}}
+\PYG{l+s+s2}{```}
+\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\end{Verbatim}

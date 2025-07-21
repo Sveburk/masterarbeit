@@ -1,0 +1,76 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\numberline {1}Einleitung}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Ziel und Relevanz der Arbeit}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Formulierung der Forschungsfrage}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Aufbau der Arbeit}{2}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Geografischer und historischer Kontext}{2}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Forschungsstand und Forschungslücke}{3}{section.2}%
+\contentsline {section}{\numberline {3}Korpus}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Quellen}{6}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Quellentradierung}{6}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Quellenbeschrieb}{7}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Sichtung \& Kategorisierung in Akten}{8}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Digitalisierung der Quellen}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Transkription}{10}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Tagging mit Transkribus und LLM}{12}{subsubsection.3.3.1}%
+\contentsline {section}{\numberline {4}Methodisches Vorgehen}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}LOD – Linked Open Data}{14}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Protégé}{15}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}GraphDB}{16}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}LOD-Ontologie}{16}{subsubsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.2}Wikidata}{17}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}GeoNames}{18}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Transkriptionen (Methodenvergleich)}{19}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Tesseract}{19}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}LLM}{19}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Transkribus}{21}{subsubsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.5}Large Language Models}{22}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Msty}{23}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Alphabet – Gemini}{23}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Anthopic – Claude}{23}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}OpenAI – ChatGPT}{23}{subsection.4.9}%
+\contentsline {subsection}{\numberline {4.10}Nodegoat}{23}{subsection.4.10}%
+\contentsline {subsection}{\numberline {4.11}\colorbox {red}{Webtool}}{25}{subsection.4.11}%
+\contentsline {section}{\numberline {5}Pipeline}{27}{section.5}%
+\contentsline {subsubsection}{\numberline {5.0.1}Übersichtsgrafik der Pipeline}{27}{subsubsection.5.0.1}%
+\contentsline {subsection}{\numberline {5.1}Vorverarbeitung}{28}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Hauptmodul -- Transkribus\_to\_base}{30}{subsection.5.2}%
+\contentsline {paragraph}{extract\_metadata\_from\_xml~(~)}{32}{section*.8}%
+\contentsline {paragraph}{get\_document\_type~(~)}{33}{section*.9}%
+\contentsline {paragraph}{extract\_text\_from\_xml~(~)}{33}{section*.10}%
+\contentsline {paragraph}{extract\_custom\_attributes~(~)}{33}{section*.11}%
+\contentsline {subsection}{\numberline {5.3}Module im Detail}{38}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}document\_schemas.py}{38}{subsubsection.5.3.1}%
+\contentsline {paragraph}{Person}{38}{section*.16}%
+\contentsline {paragraph}{Organization}{39}{section*.17}%
+\contentsline {paragraph}{Place}{39}{section*.18}%
+\contentsline {paragraph}{Event}{40}{section*.19}%
+\contentsline {paragraph}{BaseDocument}{40}{section*.20}%
+\contentsline {paragraph}{Documenttype}{40}{section*.21}%
+\contentsline {subsubsection}{\numberline {5.3.2}\_\_init\_\_.py}{41}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Person\_matcher.py}{42}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Assigned\_Roles\_Module.py}{43}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}place\_matcher.py}{44}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}organization\_matcher.py}{44}{subsubsection.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.3.7}letter\_metadata\_matcher.py}{46}{subsubsection.5.3.7}%
+\contentsline {subsubsection}{\numberline {5.3.8}type\_matcher.py}{46}{subsubsection.5.3.8}%
+\contentsline {subsubsection}{\numberline {5.3.9}unmatched\_logger.py}{49}{subsubsection.5.3.9}%
+\contentsline {subsection}{\numberline {5.4}KEINE AHNUNG WAS DIE HIER MACHEN}{50}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}validation\_module.py}{50}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}validation\_module.py}{50}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}test\_role\_schema.py}{50}{subsubsection.5.4.3}%
+\contentsline {subsubsection}{\numberline {5.4.4}llm\_enricher.py}{50}{subsubsection.5.4.4}%
+\contentsline {subsubsection}{\numberline {5.4.5}enrich\_pipeline.py}{50}{subsubsection.5.4.5}%
+\contentsline {section}{\numberline {6}Analyse \& Diskussion der Ergebnisse}{50}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Visualisierung auf der VM}{50}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Fazit und Ausblick}{50}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Zusammenfassung der zentralen Erkenntnisse}{50}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Methodische Herausforderungen und Lösungen}{50}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{50}{subsection.7.3}%
+\contentsline {section}{Bibliographie}{51}{section*.24}%
+\contentsline {section}{\numberline {A}Anhang}{55}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}PDF\_to\_JPEG.py}{55}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Tagging in Transkribus}{56}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Strukturelle Tags}{56}{subsubsection.A.2.1}%
+\contentsline {subsubsection}{\numberline {A.2.2}Inhaltliche Tags}{57}{subsubsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.3}Prompt der LLM Vorverarbeitung}{59}{subsection.A.3}%
