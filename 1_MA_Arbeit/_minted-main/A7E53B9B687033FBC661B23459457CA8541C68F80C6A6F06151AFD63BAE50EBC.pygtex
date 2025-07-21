@@ -10,7 +10,7 @@
 \PYG{l+s+s2}{    Strikte Regeln:}
 
 \PYG{l+s+s2}{    1. Dokumentanalyse:}
-\PYG{l+s+s2}{    \PYGZhy{} Verarbeite ausschließlich \PYGZlt{}TextLine\PYGZgt{}\PYGZhy{}Elemente.}
+\PYG{l+s+s2}{    \PYGZhy{} Verarbeite ausschliesslich \PYGZlt{}TextLine\PYGZgt{}\PYGZhy{}Elemente.}
 \PYG{l+s+s2}{    \PYGZhy{} Verwende nur \PYGZlt{}Unicode\PYGZgt{}\PYGZhy{}Inhalte als Eingabetext.}
 
 \PYG{l+s+s2}{    2. Globale Personenerkennung:}
@@ -25,7 +25,7 @@
 \PYG{l+s+s2}{    `recipient }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`}
 
 \PYG{l+s+s2}{    4. Autorenkennung (`author`):}
-\PYG{l+s+s2}{    \PYGZhy{} Der Fußbereich beginnt nach der letzten Grußformel (z. B. „Mit freundlichen Grüßen“).}
+\PYG{l+s+s2}{    \PYGZhy{} Der Fussbereich beginnt nach der letzten Grussformel (z. B. „Mit freundlichen Grüssen“).}
 \PYG{l+s+s2}{    \PYGZhy{} Namen → `author }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`.}
 \PYG{l+s+s2}{    \PYGZhy{} Funktion (z. B. „Chorleiter“) → `role }\PYG{l+s+se}{\PYGZob{}\PYGZob{}}\PYG{l+s+s2}{offset:X; length:Y;}\PYG{l+s+se}{\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{`.}
 
@@ -61,7 +61,7 @@
 \PYG{l+s+s2}{    \PYGZhy{} Belasse alle anderen XML\PYGZhy{}Strukturen vollständig unverändert.}
 
 \PYG{l+s+s2}{    7. Ausgabe:}
-\PYG{l+s+s2}{    \PYGZhy{} Gib ausschließlich ein vollständiges, wohlgeformtes XML zurück.}
+\PYG{l+s+s2}{    \PYGZhy{} Gib ausschliesslich ein vollständiges, wohlgeformtes XML zurück.}
 \PYG{l+s+s2}{    \PYGZhy{} Kein Freitext, kein Kommentar, kein Markdown.}
 
 \PYG{l+s+s2}{    Beispielausgabe:}

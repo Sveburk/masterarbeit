@@ -1581,7 +1581,7 @@ keine Instanzen davon.\footnote{Dies ist ein Relikt des dynamisch entstandenen C
 Deduplikationsvorgänge.
 
 Abschliessend stehen zwei Hilfsfunktionen bereit, um neu erkannte Personen in die bestehende 
-CSV-Struktur zu überführen. Eine Duplikatsprüfung auf Basis des \enquote{fuzzy stringmatchings} wird 
+CSV-Struktur zu überführen. Auf Basis des \enquote{fuzzy stringmatchings} mit der sogenannten Levensthein-Distanz\cite[\textbf{Levensthein-Distanz:} Die minimale Anzahl von elementaren Editieroperationen (Einfügen, Löschen, Ersetzen), die notwendig sind, um ein Wort a in ein anderes Wort b zu überführen. vgl:][]{levenshtein_binary_nodate} wird eine Duplikatsprüfung 
 durch \code{Rapidfuzz} realisiert und stellt sicher, dass nur bisher unbekannte Einträge ergänzt werden.
 
 Die Initialisierungs- und Pfadlogik legt damit den Grundstein für eine skalierbare, 
@@ -1602,11 +1602,7 @@ Bereiche zuständig.
 werden zentral in einem Metadaten-Dictionary gespeichert, das später in das Attributfeld des JSON-Objekts übernommen wird. 
 Sie bilden die technische Grundlage für die spätere Identifikation und Reproduzierbarkeit jeder Seite.
 
-\paragraph{get\_document\_type~(~)} Anhand des Dateinamens und optionaler Muster im Text wird eine heuristische Klassifikation 
-des Dokumenttyps vorgenommen. Typische Kategorien sind etwa \enquote{Brief}, \enquote{Postkarte}, \enquote{Protokoll} oder 
-\enquote{Zeitungsartikel}. Die Funktion verwendet reguläre Ausdrücke oder Schlüsselwörter zur Erkennung und überführt das Ergebnis 
-in das Feld \code{document\_type}. Diese Klassifikation ist insbesondere für die spätere Netzwerk- und Objektanalyse im Backend von 
-Bedeutung, da sie das Dokument strukturell verortet.
+\paragraph{get\_document\_type~(~)} ist in \nameref{subsection:type_matcher} genau erklärt. Es liefert Informationen, ob ein Dokument beispielsweise ein Brief, eine Postkarte oder Protokoll ist.
 
 \paragraph{extract\_text\_from\_xml~(~)} Der transkribierte Fliesstext wird aus den Elementen \code{<TextEquiv>} bzw. 
 \code{<Unicode>} extrahiert. Dabei werden alle Textinhalte zeilenweise aus den \code{TextLine}-Knoten der XML-Datei gelesen und zu 
@@ -1621,11 +1617,11 @@ Ist dies der Fall, wird der betroffene Textabschnitt anhand der Offset-Angaben e
 erfolgt kategoriebezogen, wobei für jede Entitätstyp eigene Subfunktionen aufgerufen werden:
 
 \begin{itemize}
-  \item \textbf{extract\_person\_from\_custom~(~)}: Diese Funktion extrahiert Personennamen, gegebenenfalls Titel (z.B. \enquote{Herr}, \enquote{Frau}) und mögliche Rollenbezeichnungen. Sie bereitet die Einträge für ein späteres Matching gegen die bekannte Personenliste vor. Neben Vor- und Nachnamen werden auch unvollständige Angaben übernommen und mit dem Attribut \code{needs\_review=true} markiert, wenn kein eindeutiger Abgleich möglich ist.
+    \item \textbf{extract\_person\_from\_custom~(~)}: Diese Funktion extrahiert Personennamen, gegebenenfalls Titel (z.B. \enquote{Herr}, \enquote{Frau}) und mögliche Rollenbezeichnungen aus den XML-Tags. Sie bereitet die Einträge für ein späteres Matching gegen die bekannte Personenliste vor. Hier werden Vor- und Nachnamen aus den Tags abgeleitet. Unvollständige Angaben erhalten das Attribut \code{needs\_review=true}, wenn kein eindeutiger Abgleich möglich ist. Die Extraktion erfolgt entweder direkt über im Tag hinterlegte Informationen (\code{firstname}, \code{lastname}) oder – falls diese fehlen – anhand der im Attribut gespeicherten \code{offset}- und \code{length}-Werte im zugehörigen Textabschnitt. Zusätzlich werden bei Bedarf das Geschlecht sowie ein möglicher Titel heuristisch aus dem Textkontext abgeleitet. Die Funktion gibt eine Liste von Dictionaries zurück, die jeweils eine potenziell relevante Person beschreiben. Es handelt sich hierbei um einen vorbereitenden Zwischenschritt; die Daten sind noch nicht dedupliziert oder strukturell validiert.
   
+  \item \textbf{extract\_organization\_from\_custom~(~)}: Diese Funktion erkennt Organisationen (z.B. \enquote{Männerchor Murg}) in den XML-Anmerkungen. Sie produziert die Variable \code{raw-string}, die in späteren Verarbeitungsschritten mit bekannten Organisationen abgeglichen wird. 
+
   \item \textbf{extract\_place\_from\_custom~(~)}: Analog zur Personenerkennung werden Ortsnamen anhand der Offset-Daten aus dem Text extrahiert. Die Funktion übergibt die Einträge an eine vorbereitete \code{PlaceMatcher}-Instanz, die auf Basis von Groundtruth-Daten sowie ggf. externer APIs (GeoNames, Wikidata) einen Abgleich durchführt. Unsichere Orte werden ebenfalls mit \code{needs\_review} versehen.
-  
-  \item \textbf{extract\_organization\_from\_custom~(~)}: Diese Funktion erkennt Organisationen (z.B. \enquote{Männerchor Murg}) in den XML-Anmerkungen. Sie liefert zunächst einen Roh-String, der in späteren Verarbeitungsschritten mit bekannten Organisationen abgeglichen wird. 
   
   \item \textbf{extract\_date\_from\_custom~(~)}: Die Funktion erkennt Datumsangaben (z.B. \enquote{1. Januar 1943}) und normalisiert sie bei Bedarf. In einem späteren Schritt werden identische Daten zusammengeführt und gezählt (\code{combine\_dates()}), um Mehrfachnennungen zu erfassen.
 \end{itemize}
@@ -1641,7 +1637,8 @@ Zweck: Parsen der XML-Datei und strukturierte Extraktion von Text, Metadaten und
 \item \texttt{extract\_text\_from\_xml~(~)}
 \item \texttt{extract\_custom\_attributes~(~)} mit:
   \begin{itemize}
-  \item \texttt{extract\_person\_from\_custom~(~)}
+  \item \textbf{extract\_and\_prepare\_persons~(~)}: Diese Funktion bildet das zentrale Anreicherungsmodul für alle zuvor extrahierten Personeninformationen. Sie übernimmt die von \code{extract\_person\_from\_custom()} zurückgegebenen Rohdaten (\code{raw\_persons}) und führt eine mehrstufige Weiterverarbeitung durch. Zunächst werden mit Hilfe von \code{split\_and\_enrich\_persons()} die Namen tokenisiert, normalisiert und durch Fuzzy-Matching mit den bekannten Personen aus der Groundtruth abgeglichen. In einem zweiten Schritt ergänzt die Funktion \code{assign\_roles\_to\_known\_persons()} passende Rolleninformationen aus dem Fließtextkontext. Anschliessend werden diese Informationen zusammengeführt, Dubletten entfernt und gleichnamige Personen gruppiert. Die bereinigte Personenliste wird dann auf potenzielle Autor:innen und Empfänger:innen hin analysiert. Dabei erfolgt die Zuweisung auf Basis textueller Heuristiken und Rollenkennzeichnungen. Das Ergebnis dieser Funktion ist eine dreiteilige Rückgabe: \code{mentioned\_persons}, \code{authors} und \code{recipients} – jeweils als strukturierte Liste von validierten Personenobjekten. Diese bilden die Grundlage für die finale JSON-Ausgabe.
+
   \item \texttt{extract\_place\_from\_custom~(~)}
   \item \texttt{extract\_organization\_from\_custom~(~)}
   \item \texttt{extract\_date\_from\_custom~(~)}
@@ -2540,16 +2537,16 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
 \vspace{1em}
 \justifying
 
-sie umschließende Klammern entfernt, innere Satzzeichen säubert und führende bzw. abschließende Interpunktion streicht. Darüber hinaus wird eine Blacklist abgeglichen, um etwa Einträge wie \enquote{Verein} als alleinstehende Organisation auszuschließen - ein klares Match kann hier algorithmisch vorerst nicht gewährleistet werden.
+sie umschliessende Klammern entfernt, innere Satzzeichen säubert und führende bzw. abschliessende Interpunktion streicht. Darüber hinaus wird eine Blacklist abgeglichen, um etwa Einträge wie \enquote{Verein} als alleinstehende Organisation auszuschliessen - ein klares Match kann hier algorithmisch vorerst nicht gewährleistet werden.
 
 Die bekannten Organisationen werden über die Funktion \code{load\_organizations\_from\_csv()} eingelesen. Dabei entsteht eine strukturierte Liste von Dictionaries, die mit den Anforderungen aus \code{document\_schemas.py} kompatibel ist und Hauptnamen, alternative Bezeichnungen sowie Identifier enthält.
 
 Um die Organisationen vergleichbar zu machen wird in \code{def normalize\_org\_name ( )} in drei schritten normalisiert.
 
-Zunächst werden mithilfe einer RegEX\footnote{\textbf{Abk.:} Regular Expression} sämtliche Zeichen entfernt, die nicht alphanumerisch sind. Erlaubt bleiben dabei Gross- und Kleinbuchstaben (einschließlich deutscher Umlaute), Ziffern sowie Leerzeichen. So wird beispielsweise aus dem Ausdruck \enquote{Männerchor Murg e.V.} der bereinigte String \enquote{Männerchor Murg eV}.
+Zunächst werden mithilfe einer RegEx\footnote{\textbf{Abk.:} Regular Expression} sämtliche Zeichen entfernt, die nicht alphanumerisch sind. Erlaubt bleiben dabei Gross- und Kleinbuchstaben (einschliesslich deutscher Umlaute), Ziffern sowie Leerzeichen. So wird beispielsweise aus dem Ausdruck \enquote{Männerchor Murg e.V.} der bereinigte String \enquote{Männerchor Murg eV}.
 
 Im zweiten Schritt wird der bereinigte String durch \code{.lower()} vollständig in Kleinbuchstaben transformiert.
-Abschließend werden mit \code{.strip()} etwaige führende oder nachfolgende Leerzeichen entfernt, sodass der Rückgabewert für weitere Vergleichsoperationen normiert vorliegt. Verdeutlichend wird aus:
+Abschliessend werden mit \code{.strip()} etwaige führende oder nachfolgende Leerzeichen entfernt, sodass der Rückgabewert für weitere Vergleichsoperationen normiert vorliegt. Verdeutlichend wird aus:
 \begin{verbatim}
 Input:  "  (Männerchor Murg e.V.)  "
 Output: "männerchor murg ev"
@@ -2562,11 +2559,95 @@ Die Funktion \code{match\_organization()} bildet dabei den Kern des Vergleichspr
 
 Die Funktion \code{match\_organization\_from\_text()} erweitert diesen Vergleich auf vollständige Transkriptionstexte. Dabei wird zunächst überprüft, ob ein bekannter Organisationsname direkt im Text vorkommt. Falls dies nicht der Fall ist, wird ein fuzzy-Teilvergleich durchgeführt (\code{fuzz.partial\_ratio}), um auch unvollständige oder abweichende Schreibweisen zu erkennen.
 
-\code{match\_organization\_entities()} verarbeitet eine Liste roher Organisationseinträge aus der Extraktion und bereinigt sie mit \code{extract\_organization()}. Zudem werden aufeinanderfolgende Namen wie \enquote{Männerchor} und \enquote{Murg} zu einem kombinierten Eintrag zusammengeführt. Anschließend wird für jeden dieser bereinigten Namen ein fuzzy-Matching gegen die Groundtruth durchgeführt, wobei Treffer mit Score und \code{confidence = "fuzzy"} zurückgegeben werden.
+\code{match\_organization\_entities()} verarbeitet eine Liste roher Organisationseinträge aus der Extraktion und bereinigt sie mit \code{extract\_organization()}. Zudem werden aufeinanderfolgende Namen wie \enquote{Männerchor} und \enquote{Murg} zu einem kombinierten Eintrag zusammengeführt. Anschliessend wird für jeden dieser bereinigten Namen ein fuzzy-Matching gegen die Groundtruth durchgeführt, wobei Treffer mit Score und \code{confidence = "fuzzy"} zurückgegeben werden.
 
 \subsubsection{letter\_metadata\_matcher.py}\label{subsection:letter_metadata_matcher}
 
+Der letter\_metadata\_matcher widmet sich auf der inhaltlichen Metadaten Briefen und Postkarten. Da diese Dokumententypen sehr ähnlich strukturiert sind, liegt der Fokus dieses Moduls auf der Extraktion ihrer Daten. Vornehmlich hier Informationen über die Autorenschaft, den Empfängern und Empfängerinnen sowie deren Rollen. Darüber hinaus sollen auch Daten und Orte nachvollzogen werden, mit einem Fokus auf den Absende- und Empfangsort. 
+
+\paragraph{Pattern Matching in Briefen und Postkarten}
+Die zentrale Annahme ist, dass diese Metadaten meist im Textkörper selbst enthalten sind und anhand wiederkehrender sprachlicher Muster bzw. Indikatoren erkannt werden können. Ein Autor oder eine Autorin beendet einen Brief beispielsweise in der Regel mit einer Grussformel. Die Pipeline macht sich das zunutze, indem diese Patterns als Marker in einem String dienen, und zusätzlich zu den Custom-Tags im XML File auf eine Autorenschaft hinweisen können. Diese Marker sind in fünf Listen auf RegEx-Basis notiert.
+\begin{itemize}
+    \item \code{GREETING\_PATTERNS} als Schlussformel in einem Brief zeigt die Autorenschaft an. \\Beispiel: \texttt{mit freundlichen Grüßen} oder \texttt{Heil Hitler}.
+    \item \code{RECIPIENT\_PATTERNS} Erkennt direkte Anreden von Empfänger:innen im Text. \\Beispiel: \texttt{An Herrn/Frau} oder \texttt{Lieber Fritz}
+    \item \code{direct\_patterns} zeigen die unmittelbaren Empfänger eines Briefes an.
+    \item \code{INDIRECT\_RECIPIENT\_PATTERNS} zeigen an, dass ein Brief oder Postkarte an einen Zwischenempfänger geht. \\Beispiel: \texttt{zu Händen von}
+    \item \code{SIGNATURE\_PATTERNS} ist eine auf das nachfolgende ROLE\_PATTERNS stützende RegEx, die reine Rollenzeilen am Ende eines Briefes erkennt. Beispiel:\\
+    \texttt{der Vereinsführer\\Alfons Zimmermann}. \\ 
+    \item \code{ROLE\_PATTERNS} ist eine dynamisch generierte RegEx, die auf der Rolle basierende Signaturen überprüft. Grundlage ist eine aus \code{export-roles.csv} geladene Liste bekannter Rollenbegriffe.
+\end{itemize}
+
+\paragraph{Extraktion von Autorinnen und Autoren}
+Die konkrete Anwendung dieser Patterns erfolgt in den jeweiligen Funktionen, deren Grundlage eine Verarbeitung der raw strings ist. Die Funktion \code{extract\_authors\_raw} analysiert hierfür zu Beginn alle Textzeilen innerhalb des Transkription, ohne dabei auf strukturierte XML-Tags angewiesen zu sein. Stattdessen orientiert sich die Funktion an den oben erläuterten typischen linguistischen Mustern. Somit kann die Funktion auch dann Ergebnisse liefern, wenn strukturierte XML-Tags wie \code{<author>} fehlen oder unvollständig sind, was als Backup-Lösung die LLM-Annotation komplettiert. Ziel ist es, möglichst frühzeitig Hinweise auf Autor:innen zu erkennen und diese mit einem einfachen Scoring-System zu bewerten. Das erkannte Scoring wird in einem separaten Feld \code{author\_score} festgehalten und dient als Bewertungsgrundlage für die spätere Auswahl der wahrscheinlichsten Autor:innen.
+
+Da Autoren in der Regel am Briefende unterschreiben, werden die Zeilen des Transkripts von unten nach oben analysiert. Dabei wird zunächst geprüft, ob eine typische Rollensignatur wie \texttt{Der Vereinsführer} alleine am Dokumentende steht. Wird eine solche erkannt, wird unmittelbar eine entsprechende Rolle extrahiert, ohne dass ein Name erforderlich ist.
+
+Findet sich keine Rollenzeile, durchsucht die Funktion den Text nach einer Schlussformel basierend auf den in \code{GREETING\_PATTERNS} definierten Mustern. Der Textabschnitt, der auf diese Grussformel folgt, wird im nächsten Schritt nach Signaturen durchsucht. Die Auswertung erfolgt dabei in mehreren aufeinanderfolgenden Prüfungen.
+
+Zunächst wird versucht, eine Kombination aus Rolle und Nachname zu identifizieren\footnote{z.B. \texttt{Der Vereinsführer Zimmermann}}.
+Alternativ wird geprüft, ob Rolle und Name in zwei aufeinanderfolgenden Zeilen vorkommen.
+Weitere Varianten umfassen typische Signaturformate wie \texttt{\enquote{Max Ganter, Schriftführer}} oder Namensinitialen wie \texttt{\endquote{M. Ganter}}.
+Auch vollständige Namen (Vorname + Nachname) oder einzelne Namen (z.B. nur \texttt{\enquote{Fritz}}) werden erkannt und mit Platzhaltern übernommen.
+
+Wird kein valides Format erkannt, liefert die Funktion ein leeres Dictionary mit einem Eintrag für \code{closing}, der die gefundene Grussformel dokumentiert.
+
+Neben der heuristischen Pattern-Suche durch \code{extract\_authors\_raw()} stützt sich die Pipeline auch auf strukturierte Annotationen aus dem XML. Die Funktion \code{extract\_author\_from\_custom\_tag()} sucht gezielt nach \code{<author>}-Tags und übernimmt diese, sofern sie vollständig sind. Im Anschluss wird jeder Kandidateneintrag durch \code{resolve\_llm\_custom\_authors\_recipients()} validiert und bewertet. Insbesondere dann, wenn er von einem LLM vorgeschlagen oder aus unstrukturiertem Text extrahiert wurde kommt die Bewertung zum tragen. Abschliessend übernimmt \code{letter\_match\_and\_enrich()} die Anreicherung durch bekannte Personen aus der Groundtruth-Liste. Hierbei werden unvollständige Einträge (z.B. nur ein Vorname) durch vollständigere bereits in \code{mentioned\_persons} aufgenommene Personen ersetzt, sofern möglich. 
+
+Die Pipeline deckt jedoch nicht nur einzelne Autoren ab. \code{match\_authors~(~)} kombiniert die Roh-Extraktion der Autor:in (\code{extract\_authors\_raw}) mit der Anreicherung durch \code{letter\_match\_and\_enrich}. Ist das Ergebnis leer, prüft sie, ob zumindest eine Rolle ohne Namensangabe vorliegt. In diesem Sonderfall wird ein Eintrag mit leerem Namen, aber übernommener Rolle erstellt. Die Rolle wird normalisiert (\code{normalize\_and\_match\_role}) und in ein \code{role\_schema} überführt. Der Rückgabewert enthält \code{needs\_review = True} sowie eine niedrige \code{match\_score} (10), um auf die Unsicherheit der reinen Rollenangabe hinzuweisen.
+
+
+\paragraph{Extraktion von Empfängerinnen und Empfängern}
+
+Die Extraktion potenzieller Empfänger:innen erfolgt analog zur Autorenerkennung über eine Kombination aus regulären Ausdrücken, strukturierten XML-Tags und nachgelagerter Anreicherung. Im Gegensatz zur Autorenschaft, die typischerweise am Ende eines Dokuments steht, werden Empfänger:innen meist im Briefkopf genannt. Die Funktion \code{extract\_recipients\_raw()} konzentriert sich daher auf die ersten fünf Zeilen des Transkripts. Dieser Abschnitt enthält häufig Adressierungen wie \texttt{\enquote{An Herrn Otto Bollinger}} oder zeilenweise strukturierte Formate, die auf eine Empfängeradresse hindeuten. Die Funktion arbeitet unabhängig von expliziten XML-Tags wie \code{<recipient>}, wodurch sie auch bei unvollständig annotierten Dokumenten Ergebnisse liefern kann.
+
+Die Erkennung erfolgt in drei heuristischen Stufen, abhängig von der Länge und Struktur der jeweiligen Adressierung. Einzeilige Formulierungen wie \texttt{\enquote{An Herrn Otto Bollinger}} werden als besonders zuverlässig bewertet (\code{recipient\_score = 90}, \code{confidence = "header-inline"}). Dreizeilige Strukturen wie 
+\\ \begin{center}
+\texttt{An\\Herrn\\Otto Bollinger}
+\end{center}
+\justifying werden als semistrukturiert interpretiert und mit einem Score von 80 markiert (\code{confidence = "header-3line"}). Bei zweizeiligen Konstruktionen – etwa \texttt{Herrn} in einer Zeile und ein Name in der nächsten – wird aus methodischer Vorsicht ein niedrigerer Score (70) vergeben, da diese auch als Fliesstextnennung interpretiert werden könnten (\code{confidence = "header-2line"}). Diese Liste von Empfängerkandidaten wird anschliessend in mehreren Schritten angereichert und validiert.
+
+In einem weiteren Schritt werden \code{<recipient>}-Tags aus dem XML durch \code{extract\_recipient\_from\_custom\_tag()} übernommen, sofern vorhanden. Wie bei den Authoren durchlaufen Rezipienten danach die Funktion \code{resolve\_llm\_custom\_authors\_recipients()}. So werden die Rohdaten zusammengeführt, und anschliessen eine Validierung vorgenommen. Insbesondere unvollständige oder generische Einträge wie \texttt{\enquote{Herrn}} oder häufig vorkommende Namen wie \texttt{\enquote{Otto}}\footnote{die Groundtruth kennt 11 verschiedene Otto} werden entweder mit dem Vermerk \code{needs\_review = true} versehen oder durch bereits \code{mentioned\_persons} ersetzt. Diese Ersetzung erfolgt abschliessend in \code{letter\_match\_and\_enrich()}, wo wie bei den Autor:innen unvollständige Einträge – etwa nur der Vorname – durch vollständigere Einträge aus \code{mentioned\_persons} ersetzt werden, sofern diese zuvor im Text erkannt wurden. Mit \code{extract\_multiple\_recipients\_raw()} können darüber hinaus potenzielle Empfänger:innen aus dem Transkripttext anhand direkter und indirekter Anredeformen aus den jeweiligen Patternlisten extrahiert werden. Direkte Formulierungen wie \texttt{Lieber Otto} werden mit \code{recipient\_score = 100} als besonders zuverlässig bewertet. Indirekte Anreden wie \texttt{zu Händen des Herrn Alfons Zimmermann} werden mit Score 70 erfasst. Die Ergebnisse enthalten Vorname, Nachname (falls vorhanden), Rolle (leer), Score und Confidence-Label. Durch die unterschiedlichen Ratings im Recipient-Scores können so Staffelungen dargestellt werden.
+
+
+\paragraph{Extraktion des Absendeort und Empfangsort}
+
+Die Extraktion des Absendeorts (\code{creation\_place}) und des Empfangsorts (\code{recipient\_place}) erfolgt in einem mehrstufigen Verfahren, das strukturierte XML-Informationen, heuristische Pattern-Erkennung und ein darauf aufbauendes Groundtruth-Matching kombiniert. Ziel ist es, auch in unvollständig annotierten oder uneinheitlich formulierten Briefen möglichst präzise Ortsinformationen zu identifizieren und anzureichern. Die Verarbeitung ist dabei modular aufgebaut und erfolgt durch vier aufeinander abgestimmte Funktionen.
+
+Die Funktion \code{extract\_places\_and\_date()} bildet den Einstiegspunkt für die Ortserkennung. Sie durchsucht alle Zeilen im XML-Dokument (\code{<TextLine>}) nach Attributen vom Typ \texttt{custom}, in denen strukturierte Angaben zu \code{creation\_place}, \code{recipient\_place} und \code{creation\_date} hinterlegt sein können. Wird ein solches Attribut gefunden, wird der zugehörige Ort mittels RegEx aus dem Text extrahiert. Grundlage hierfür sind die LLM-ergänzten, im Transkribus-Export enthaltenen Offset- und Length-Parameter, die den Ortstext innerhalb der Zeile markieren. Die Funktion liefert drei \code{raw-strings} zurück: den vermuteten Absendeort (\code{raw\_creation\_place}), den Empfangsort (\code{raw\_recipient\_place}) sowie das Datum der Entstehung (\code{creation\_date})\footnote{dazu mehr im nächsten Abschnitt}. Sind keine Custom-Tags vorhanden, aktiviert die Funktion ein Fallback-Verfahren, das den Briefkopf anhand typischer Formate mit regulären Ausdrücken analysiert. Erkannt werden insbesondere Muster wie \texttt{Ort, den dd.mm.yyyy} oder \texttt{An ... in Ort}.
+
+Die so ermittelten Raw-Strings werden in \code{assign\_sender\_and\_recipient\_place(...)} weiterverarbeitet. Diese Hauptfunktion ruft zunächst \code{extract\_places\_and\_date()} auf, um die Rohdaten zu extrahieren, und analysiert dann alle Zeilen des Transkripts, um auch Kontexte für zusammengesetzte Ortsbezeichnungen\footnote{z.B. Laufenburg-Rhina} zu erfassen. Anschliessend wird das Orts-Matching über die Hilfsfunktion \code{enrich\_place\_candidate()} durchgeführt. Diese Funktion gleicht den erkannten Komposit-Ortsnamen mit einer Groundtruth-Liste ab, in der alle bekannten Orte und ihre Varianten hinterlegt sind. Neben exakten Treffern erlaubt das Matching auch Fuzzy Matching über die Levenshtein-Distanz. Ergibt sich dabei ein Treffer, wird ein Score berechnet und mit weiteren Metadaten \footnote{z.B. \code{nodegoat\_id}} angereichert. Im Kontext von Empfängeradressen wird zusätzlich geprüft, ob im unmittelbaren Umfeld ein Vereins- oder Organisationsname vorkommt. In diesem Fall wird ein Score-Malus vergeben, da  das ein Hinweis auf eine mögliche Verwechslung zwischen Ort und Organisation sein kann.
+
+Eine besondere Stärke der Pipeline liegt in der Erkennung zusammengesetzter Ortsnamen. Die Funktion \code{find\_combined\_place()} durchsucht benachbarte Zeilen nach Kombinationen wie \texttt{Laufenburg} und \texttt{Rhina}, die zusammen in einem Eintrag der Groundtruth-Liste vorkommen (\texttt{Laufenburg-Rhina}). Wird eine solche Kombination erkannt, wird sie bevorzugt, erhält einen Bonus im Matching-Score und ersetzt die Einzeltreffer. Weil so auch Teilorte oder Stadtteile abgebildet werden können, wird die Ortserkennung deutlich präziser.
+
+Abschliessend wird durch \code{finalize\_recipient\_places()} der am besten bewertete Empfängerort ausgewählt. Die Funktion sortiert alle erkannten Ortskandidaten nach Score und übernimmt den besten Eintrag als \code{recipient\_place}. Weitere valide, aber weniger eindeutige Orte werden ebenfalls gespeichert, jedoch mit dem Attribut \code{needs\_review = true} gekennzeichnet, um eine manuelle Prüfung zu ermöglichen.
+
+Die finale Ausgabe enthält für beide Ortsangaben strukturierte Einträge mit Namen, Score, falls vorhanden externe IDs aus der Groundtruth, Kontextinformationen und ggf. die Flag \code{needs\_review}. Durch das modulare Zusammenspiel der vier Funktionen können auch in schwierig strukturierten oder unvollständig annotierten Dokumenten präzise Ortsangaben extrahiert werden.
+
+\paragraph{Extraktion des Erstellungsdatum}
+
+Die Erkennung von Entstehungsdaten (\code{creation\_date}) erfolgt im Modul \code{letter\_metadata\_matcher.py} primär über die von oben bereits bekannte Funktion \code{extract\_places\_and\_date( )}. Im Zentrum steht die Auswertung strukturierter Custom-Tags im PAGE-XML sowie ein regulärer Fallback-Mechanismus zur heuristischen Analyse des Briefkopfs.
+
+Im ersten Schritt durchsucht die Funktion alle \code{<TextLine>}-Elemente nach dem Attribut \code{custom}, das von Transkribus für semantische Annotationen verwendet wird. Wird ein Eintrag vom Typ \texttt{creation\_date} oder \texttt{date} erkannt, wird mittels RegEx nach einem \texttt{when}-Feld gesucht. Dieser Wert wird direkt übernommen und als \code{creation\_date} gespeichert. Da bei dem manuellen Tagging besonders auf die korrekten Daten geachtet, und diese händisch mit \code{when\=} immer ergänzt wurden, sind diese Angaben in jedem Fall vorhanden.
+
+Wird jedoch kein Custom-Tag erkannt, greift ein Fallback-Verfahren: Die Funktion analysiert hierfür die ersten fünf Zeilen des Dokuments – typischerweise der Briefkopf – auf typische Orts-Datumskombinationen. Dazu zählt insbesondere das Muster
+
+\begin{center}
+\texttt{Ort, den dd.mm.yyyy}
+\end{center}
+
+\noindent Die RegEx erfasst dabei sowohl den Ort (als möglichen Absendeort) als auch das Datum. Sie sind daher auch gemeinsam in dieser Funktion aufgenommen. Wird ein solches Datum gefunden, wird es als \code{creation\_date} übernommen, selbst wenn kein zugehöriger Ort erkannt werden konnte. Die Erkennung erfolgt dabei tolerant gegenüber optionalem \enquote{den} und erlaubt sowohl zwei- als auch vierstellige Jahresangaben\footnote{erkannt werden also sowohl beispielsweise 1939, als auch nur 39}. Ist kein solcher Eintrag vorhanden, bleibt \code{creation\_date = None}.
+
+In Kombination mit \code{assign\_sender\_and\_recipient\_place()} wird das erkannte Datum anschliessend gemeinsam mit den Ortseinträgen an die Hauptverarbeitung zurückgegeben und in den Metadaten des Dokuments gespeichert.
+
+
 \subsubsection{type\_matcher.py}\label{subsection:type_matcher}
+Dieses Modul besteht aus nur einer einzigen Funktion: \code{def get\_document\_type~(~)}. Diese zerlegt den Namen der zu verarbeitenden Datei und extrahiert daraus die siebenstellige Transkribus-ID und die Seitennummer. Es folgt ein Vergleich in der Akten\_Gesamtübersich.csv, die als Groundtruth alle Dateien im Korpus listet.
+
+Da während der Transkription in dieser Tabelle auch die Dokumententypen festgehalten wurden, kann über einen einfachen Lookup für jede Seite der zugehörige Typ extrahiert werden. Mögliche Kategorien sind unter anderem \enquote{Brief}, \enquote{Postkarte}, \enquote{Protokoll}.\footnote{siehe Kapitel \nameref{Dokumententypen}} 
+
+Falls kein passender Eintrag in der Groundtruth gefunden wird, bietet die Funktion ein optionales Fallback: Wird zusätzlich ein \code{xml\_path} übergeben, so wird versucht, den Dokumenttyp direkt aus einem \code{<Dokumententyp>}-Tag innerhalb der zugehörigen XML-Datei auszulesen. Auf diese Weise wird sichergestellt, dass jede Seite im JSON-Output einen Typ zugewiesen erhält – entweder verlässlich aus der CSV oder über das XML-Fallback.
+
+Die extrahierte Typinformation wird im Attributblock des finalen JSON unter \code{attributes["document\_type"]} gespeichert. So kann später seitengenau nach Dokumententypen gefiltert und eine differenzierte Verteilung der Typen innerhalb einer Akte nachvollzogen werden.
 
 
 \subsubsection*{event\_matcher.py}\label{subsection:event_matcher}
@@ -2603,7 +2684,7 @@ Satz aller so erkannten Ereignisse wird am Ende als Liste von \texttt{Event}-Obj
 Das Modul arbeitet vollständig dateibasiert und benötigt als einzige Eingabe den Pfad zur Transkribus-XML-Datei 
 sowie eine initialisierte Instanz des \texttt{PlaceMatcher}. Es greift auf zentrale Komponenten der Projektarchitektur 
 zurück, darunter die Groundtruth-Listen für Orte, Personen und Organisationen. Die extrahierten Ereignisse werden 
-im finalen JSON unter dem Attribut \texttt{events} gespeichert. Da Events ein eher abstraktes Konstruct sind, liegt der
+im finalen JSON unter dem Attribut \texttt{events} gespeichert. Da ein Event ein eher abstraktes Konstrukt ist, liegt der
 Fokus der Pipeline weniger auf diesem Modul, das zu einem späteren Zeitpunkt beispielsweise durch präziseres Prompten für das
 Eventtagging optimiert werden soll. 
 
@@ -2624,12 +2705,11 @@ Kontext\footnote{Zum Beispiel durch Hinweise im Seiteninhalt oder durch übergeo
 ein vollständiges Datum erschliessen, kann dieses anschliessend in strukturierter Form übernommen und im JSON als 
 normiertes Datum gespeichert werden.
 
-
 Innerhalb der Verarbeitungspipeline wird das Modul über die Funktionen \texttt{extract\_custom\_date()} und 
 \texttt{combine\_dates()} aufgerufen. Zunächst durchläuft \texttt{extract\_custom\_date()} das XML-Dokument 
 und extrahiert alle \texttt{custom}-Attribute, die ein \texttt{date\{…\}}-Muster enthalten. Die Inhalte dieser 
 Attribute werden bereinigt und zur weiteren Analyse an die Funktion \texttt{extract\_date\_from\_custom()} übergeben.\\
-Diese Funktion überprüft mithilfe regulärer Ausdrücke, ob der String tatsächlich eine gültige Datumsangabe enthält. 
+Diese Funktion überprüft mithilfe RegEx, ob der String tatsächlich eine gültige Datumsangabe enthält. 
 Dabei wird insbesondere nach einem \texttt{when}-Feld gesucht, das im Inneren des \texttt{date}-Blocks enthalten ist. 
 Die in diesem Feld hinterlegten Daten werden anschliessend mit der Funktion \texttt{parse\_custom\_attributes()} als 
 Key-Value-Paare interpretiert. Liegt ein gültiges Datum vor, wird dessen Format mit \texttt{normalize\_to\_ddmmyyyy()} 
@@ -3099,7 +3179,7 @@ breakanywhere=true % Minted darf überall umbrechen (optional)
     Strikte Regeln:
 
     1. Dokumentanalyse:
-    - Verarbeite ausschließlich <TextLine>-Elemente.
+    - Verarbeite ausschliesslich <TextLine>-Elemente.
     - Verwende nur <Unicode>-Inhalte als Eingabetext.
 
     2. Globale Personenerkennung:
@@ -3114,7 +3194,7 @@ breakanywhere=true % Minted darf überall umbrechen (optional)
     `recipient {{offset:X; length:Y;}}`
     
     4. Autorenkennung (`author`):
-    - Der Fußbereich beginnt nach der letzten Grußformel (z. B. „Mit freundlichen Grüßen“).
+    - Der Fussbereich beginnt nach der letzten Grussformel (z. B. „Mit freundlichen Grüssen“).
     - Namen → `author {{offset:X; length:Y;}}`.
     - Funktion (z. B. „Chorleiter“) → `role {{offset:X; length:Y;}}`.
 
@@ -3150,7 +3230,7 @@ breakanywhere=true % Minted darf überall umbrechen (optional)
     - Belasse alle anderen XML-Strukturen vollständig unverändert.
 
     7. Ausgabe:
-    - Gib ausschließlich ein vollständiges, wohlgeformtes XML zurück.
+    - Gib ausschliesslich ein vollständiges, wohlgeformtes XML zurück.
     - Kein Freitext, kein Kommentar, kein Markdown.
 
     Beispielausgabe:
