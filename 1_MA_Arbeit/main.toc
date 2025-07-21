@@ -39,38 +39,43 @@
 \contentsline {paragraph}{get\_document\_type~(~)}{33}{section*.9}%
 \contentsline {paragraph}{extract\_text\_from\_xml~(~)}{33}{section*.10}%
 \contentsline {paragraph}{extract\_custom\_attributes~(~)}{33}{section*.11}%
-\contentsline {subsection}{\numberline {5.3}Module im Detail}{38}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}document\_schemas.py}{38}{subsubsection.5.3.1}%
-\contentsline {paragraph}{Person}{38}{section*.16}%
-\contentsline {paragraph}{Organization}{39}{section*.17}%
-\contentsline {paragraph}{Place}{39}{section*.18}%
+\contentsline {subsection}{\numberline {5.3}Module im Detail}{39}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}document\_schemas.py}{39}{subsubsection.5.3.1}%
+\contentsline {paragraph}{Person}{39}{section*.16}%
+\contentsline {paragraph}{Organization}{40}{section*.17}%
+\contentsline {paragraph}{Place}{40}{section*.18}%
 \contentsline {paragraph}{Event}{40}{section*.19}%
-\contentsline {paragraph}{BaseDocument}{40}{section*.20}%
-\contentsline {paragraph}{Documenttype}{40}{section*.21}%
+\contentsline {paragraph}{BaseDocument}{41}{section*.20}%
+\contentsline {paragraph}{Documenttype}{41}{section*.21}%
 \contentsline {subsubsection}{\numberline {5.3.2}\_\_init\_\_.py}{41}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}Person\_matcher.py}{42}{subsubsection.5.3.3}%
-\contentsline {subsubsection}{\numberline {5.3.4}Assigned\_Roles\_Module.py}{43}{subsubsection.5.3.4}%
-\contentsline {subsubsection}{\numberline {5.3.5}place\_matcher.py}{44}{subsubsection.5.3.5}%
-\contentsline {subsubsection}{\numberline {5.3.6}organization\_matcher.py}{44}{subsubsection.5.3.6}%
-\contentsline {subsubsection}{\numberline {5.3.7}letter\_metadata\_matcher.py}{46}{subsubsection.5.3.7}%
-\contentsline {subsubsection}{\numberline {5.3.8}type\_matcher.py}{46}{subsubsection.5.3.8}%
-\contentsline {subsubsection}{\numberline {5.3.9}unmatched\_logger.py}{49}{subsubsection.5.3.9}%
-\contentsline {subsection}{\numberline {5.4}KEINE AHNUNG WAS DIE HIER MACHEN}{50}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}validation\_module.py}{50}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}validation\_module.py}{50}{subsubsection.5.4.2}%
-\contentsline {subsubsection}{\numberline {5.4.3}test\_role\_schema.py}{50}{subsubsection.5.4.3}%
-\contentsline {subsubsection}{\numberline {5.4.4}llm\_enricher.py}{50}{subsubsection.5.4.4}%
-\contentsline {subsubsection}{\numberline {5.4.5}enrich\_pipeline.py}{50}{subsubsection.5.4.5}%
-\contentsline {section}{\numberline {6}Analyse \& Diskussion der Ergebnisse}{50}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Visualisierung auf der VM}{50}{subsection.6.1}%
-\contentsline {section}{\numberline {7}Fazit und Ausblick}{50}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Zusammenfassung der zentralen Erkenntnisse}{50}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Methodische Herausforderungen und Lösungen}{50}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{50}{subsection.7.3}%
-\contentsline {section}{Bibliographie}{51}{section*.24}%
-\contentsline {section}{\numberline {A}Anhang}{55}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}PDF\_to\_JPEG.py}{55}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Tagging in Transkribus}{56}{subsection.A.2}%
-\contentsline {subsubsection}{\numberline {A.2.1}Strukturelle Tags}{56}{subsubsection.A.2.1}%
-\contentsline {subsubsection}{\numberline {A.2.2}Inhaltliche Tags}{57}{subsubsection.A.2.2}%
-\contentsline {subsection}{\numberline {A.3}Prompt der LLM Vorverarbeitung}{59}{subsection.A.3}%
+\contentsline {subsubsection}{\numberline {5.3.3}Person\_matcher.py}{43}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Assigned\_Roles\_Module.py}{44}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}place\_matcher.py}{45}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}organization\_matcher.py}{45}{subsubsection.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.3.7}letter\_metadata\_matcher.py}{47}{subsubsection.5.3.7}%
+\contentsline {paragraph}{Pattern Matching in Briefen und Postkarten}{47}{section*.22}%
+\contentsline {paragraph}{Extraktion von Autorinnen und Autoren}{48}{section*.23}%
+\contentsline {paragraph}{Extraktion von Empfängerinnen und Empfängern}{49}{section*.24}%
+\contentsline {paragraph}{Extraktion des Absendeort und Empfangsort}{50}{section*.25}%
+\contentsline {paragraph}{Extraktion des Erstellungsdatum}{52}{section*.26}%
+\contentsline {subsubsection}{\numberline {5.3.8}type\_matcher.py}{53}{subsubsection.5.3.8}%
+\contentsline {subsubsection}{\numberline {5.3.9}unmatched\_logger.py}{57}{subsubsection.5.3.9}%
+\contentsline {subsection}{\numberline {5.4}KEINE AHNUNG WAS DIE HIER MACHEN}{58}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}validation\_module.py}{58}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}validation\_module.py}{58}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}test\_role\_schema.py}{58}{subsubsection.5.4.3}%
+\contentsline {subsubsection}{\numberline {5.4.4}llm\_enricher.py}{58}{subsubsection.5.4.4}%
+\contentsline {subsubsection}{\numberline {5.4.5}enrich\_pipeline.py}{58}{subsubsection.5.4.5}%
+\contentsline {section}{\numberline {6}Analyse \& Diskussion der Ergebnisse}{58}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Visualisierung auf der VM}{58}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Fazit und Ausblick}{58}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Zusammenfassung der zentralen Erkenntnisse}{58}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Methodische Herausforderungen und Lösungen}{58}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{58}{subsection.7.3}%
+\contentsline {section}{Bibliographie}{59}{section*.29}%
+\contentsline {section}{\numberline {A}Anhang}{63}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}PDF\_to\_JPEG.py}{63}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Tagging in Transkribus}{64}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Strukturelle Tags}{64}{subsubsection.A.2.1}%
+\contentsline {subsubsection}{\numberline {A.2.2}Inhaltliche Tags}{65}{subsubsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.3}Prompt der LLM Vorverarbeitung}{67}{subsection.A.3}%
