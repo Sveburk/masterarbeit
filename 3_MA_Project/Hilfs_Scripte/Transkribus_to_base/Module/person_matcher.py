@@ -19,6 +19,7 @@ from Module.Assigned_Roles_Module import (
     map_role_to_schema_entry,
     ROLE_MAPPINGS_DE,
     extract_role_from_raw_name,
+    normalize_and_match_role,
 )
 from Module.letter_metadata_matcher import (
     _RECIPIENT_RE,
@@ -122,8 +123,120 @@ NON_PERSON_TOKENS = ROLE_TOKENS.union(
 UNMATCHABLE_SINGLE_NAMES = {"otto", "döbele", "doebele"}
 
 
+# ----- Nickname-Map -------
+# Nickname-Map ist generiert mit ChatGPT
+NICKNAME_MAP = {
+    # First names
+    "albert": ["al", "bert"],
+    "alexander": ["alex", "sasha", "sascha"],
+    "alfred": ["fred", "freddy"],
+    "andreas": ["andy", "andré"],
+    "anton": ["toni", "tony"],
+    "bernard": ["bernd", "bernie"],
+    "christian": ["chris", "christl"],
+    "daniel": ["dan", "danny"],
+    "dieter": ["didi"],
+    "eduard": ["edi", "eddy", "edy"],
+    "ernst": ["erni"],
+    "ferdinand": ["ferdi", "fred"],
+    "franz": ["franzi", "franzl"],
+    "friedrich": ["fritz", "fredi", "freddy"],
+    "georg": ["jörg", "schorsch"],
+    "gerhard": ["gerd", "gerdi", "hardy"],
+    "gottfried": ["friedl", "gottfr"],
+    "günther": ["günter", "gunter", "gunther"],
+    "heinrich": ["heiner", "heinz", "henry"],
+    "helmut": ["helm", "helmi"],
+    "herbert": ["herb", "herbi", "herbie", "herby"],
+    "hermann": ["hermi"],
+    "johannes": ["hans", "hansi", "johann", "hannes"],
+    "josef": ["joseph", "jupp", "sepp", "seppl"],
+    "karl": ["carl", "kalli", "charly", "charlie"],
+    "konrad": ["conrad", "conny", "konny"],
+    "kurt": ["curt"],
+    "ludwig": ["lutz"],
+    "manfred": ["manni", "manny", "fred"],
+    "max": ["maxi", "maximilian"],
+    "michael": ["michi", "michel", "mike", "michl"],
+    "nikolaus": ["klaus", "niko", "nico", "nicolas", "nikolai"],
+    "norbert": ["norbi"],
+    "otto": ["otti"],
+    "paul": ["paula", "pauli"],
+    "peter": ["pete", "petri", "piet"],
+    "philipp": ["phil", "phillip", "filip"],
+    "rainer": ["reiner", "reinhard", "reinhardt"],
+    "richard": ["rick", "richi", "richie", "richy"],
+    "robert": ["rob", "robby", "robin"],
+    "rudolf": ["rolf", "rudi", "rudolph"],
+    "siegfried": ["sigi", "siggi"],
+    "stefan": ["stephan", "steffen", "steff"],
+    "theodor": ["theo"],
+    "thomas": ["tom", "tommy", "thom"],
+    "walter": ["wolfi", "walti", "waldi"],
+    "werner": ["weiner", "werni"],
+    "wilhelm": ["willi", "willy", "will"],
+    "wolfgang": ["wolf", "wolfi", "wolfy"],
+    # Female names
+    "adelheid": ["adel", "adele", "heidi"],
+    "angela": ["angie", "angelika"],
+    "anna": ["anni", "anny", "anneli", "anneliese"],
+    "barbara": ["bärbel", "babsi", "barbi"],
+    "brigitte": ["gitta", "gitti", "birgit"],
+    "charlotte": ["lotte", "lottie", "charlie"],
+    "christine": ["christina", "christl", "tina"],
+    "dorothea": ["dora", "doris", "dörte"],
+    "elisabeth": ["elise", "lisa", "lisbeth", "liesl"],
+    "eleonore": ["eleanor", "lenore", "elli"],
+    "elfriede": ["elfi", "elfie"],
+    "emma": ["emmi", "emi"],
+    "franziska": ["fanni", "franzi", "sissi"],
+    "gabriele": ["gabi", "gabriela"],
+    "gertrude": ["gerti", "gertrud", "trude", "trudi"],
+    "gisela": ["gisi"],
+    "hanna": ["hannah", "johanna"],
+    "hedwig": ["hedy"],
+    "helene": ["helena", "leni", "leny"],
+    "henriette": ["henny", "jette"],
+    "hildegard": ["hilde", "hildi"],
+    "ilse": ["ilsa"],
+    "ingeborg": ["inge", "ingrid"],
+    "irene": ["irina", "reni"],
+    "johanna": ["hanna", "hannah", "johanne"],
+    "juliane": ["julia", "julie"],
+    "karoline": ["caroline", "carola", "karolina"],
+    "katharina": ["katarina", "kathrin", "kathi", "katrin", "kati", "katja"],
+    "klara": ["clara", "klärchen"],
+    "magdalena": ["magda", "lena", "lenchen"],
+    "margarethe": ["margareta", "greta", "gretchen", "gretel", "meta"],
+    "maria": ["marie", "mary", "mariechen", "mia"],
+    "marianne": ["marion", "miriam"],
+    "martha": ["marta"],
+    "mathilde": ["matilda", "tilda", "hilde"],
+    "monika": ["moni", "monica"],
+    "renate": ["renata", "reni"],
+    "rosemarie": ["rosi", "rosie"],
+    "sabine": ["bine", "sabina"],
+    "sophie": ["sofia", "sofie"],
+    "stefanie": ["stephani", "steffi", "steffy"],
+    "susanne": ["susi", "susanna", "suse"],
+    "ursula": ["ursel", "uschi"],
+    "veronika": ["vroni", "vera", "nika"],
+    "waltraud": ["traudl", "waltraut"],
+}
+EXPANDED_NICKNAME_MAP: Dict[str, str] = {
+    nick: canon for canon, nicks in NICKNAME_MAP.items() for nick in nicks
+}
+OCR_ERRORS: Dict[str, List[str]] = {
+    "ü": ["u", "ue"],
+    "ä": ["a", "ae"],
+    "ö": ["o", "oe"],
+    "ß": ["ss"],
+}
+
+
 # ============================================================================
 # ============================================================================
+# ---          Thresholds, CSV-Laden und Groundtruth-Erstellung            ---
 # ============================================================================
 # ============================================================================
 
@@ -251,118 +364,10 @@ def appears_in_groundtruth(name: str) -> bool:
     return n in GROUNDTRUTH_SURNAMES or n in GROUNDTRUTH_FORENAMES
 
 
-# Nickname-Map wie ursprünglich definiert (kann angepasst werden)
-NICKNAME_MAP = {
-    # First names
-    "albert": ["al", "bert"],
-    "alexander": ["alex", "sasha", "sascha"],
-    "alfred": ["fred", "freddy"],
-    "andreas": ["andy", "andré"],
-    "anton": ["toni", "tony"],
-    "bernard": ["bernd", "bernie"],
-    "christian": ["chris", "christl"],
-    "daniel": ["dan", "danny"],
-    "dieter": ["didi"],
-    "eduard": ["edi", "eddy", "edy"],
-    "ernst": ["erni"],
-    "ferdinand": ["ferdi", "fred"],
-    "franz": ["franzi", "franzl"],
-    "friedrich": ["fritz", "fredi", "freddy"],
-    "georg": ["jörg", "schorsch"],
-    "gerhard": ["gerd", "gerdi", "hardy"],
-    "gottfried": ["friedl", "gottfr"],
-    "günther": ["günter", "gunter", "gunther"],
-    "heinrich": ["heiner", "heinz", "henry"],
-    "helmut": ["helm", "helmi"],
-    "herbert": ["herb", "herbi", "herbie", "herby"],
-    "hermann": ["hermi"],
-    "johannes": ["hans", "hansi", "johann", "hannes"],
-    "josef": ["joseph", "jupp", "sepp", "seppl"],
-    "karl": ["carl", "kalli", "charly", "charlie"],
-    "konrad": ["conrad", "conny", "konny"],
-    "kurt": ["curt"],
-    "ludwig": ["lutz"],
-    "manfred": ["manni", "manny", "fred"],
-    "max": ["maxi", "maximilian"],
-    "michael": ["michi", "michel", "mike", "michl"],
-    "nikolaus": ["klaus", "niko", "nico", "nicolas", "nikolai"],
-    "norbert": ["norbi"],
-    "otto": ["otti"],
-    "paul": ["paula", "pauli"],
-    "peter": ["pete", "petri", "piet"],
-    "philipp": ["phil", "phillip", "filip"],
-    "rainer": ["reiner", "reinhard", "reinhardt"],
-    "richard": ["rick", "richi", "richie", "richy"],
-    "robert": ["rob", "robby", "robin"],
-    "rudolf": ["rolf", "rudi", "rudolph"],
-    "siegfried": ["sigi", "siggi"],
-    "stefan": ["stephan", "steffen", "steff"],
-    "theodor": ["theo"],
-    "thomas": ["tom", "tommy", "thom"],
-    "walter": ["wolfi", "walti", "waldi"],
-    "werner": ["weiner", "werni"],
-    "wilhelm": ["willi", "willy", "will"],
-    "wolfgang": ["wolf", "wolfi", "wolfy"],
-    # Female names
-    "adelheid": ["adel", "adele", "heidi"],
-    "angela": ["angie", "angelika"],
-    "anna": ["anni", "anny", "anneli", "anneliese"],
-    "barbara": ["bärbel", "babsi", "barbi"],
-    "brigitte": ["gitta", "gitti", "birgit"],
-    "charlotte": ["lotte", "lottie", "charlie"],
-    "christine": ["christina", "christl", "tina"],
-    "dorothea": ["dora", "doris", "dörte"],
-    "elisabeth": ["elise", "lisa", "lisbeth", "liesl"],
-    "eleonore": ["eleanor", "lenore", "elli"],
-    "elfriede": ["elfi", "elfie"],
-    "emma": ["emmi", "emi"],
-    "franziska": ["fanni", "franzi", "sissi"],
-    "gabriele": ["gabi", "gabriela"],
-    "gertrude": ["gerti", "gertrud", "trude", "trudi"],
-    "gisela": ["gisi"],
-    "hanna": ["hannah", "johanna"],
-    "hedwig": ["hedy"],
-    "helene": ["helena", "leni", "leny"],
-    "henriette": ["henny", "jette"],
-    "hildegard": ["hilde", "hildi"],
-    "ilse": ["ilsa"],
-    "ingeborg": ["inge", "ingrid"],
-    "irene": ["irina", "reni"],
-    "johanna": ["hanna", "hannah", "johanne"],
-    "juliane": ["julia", "julie"],
-    "karoline": ["caroline", "carola", "karolina"],
-    "katharina": ["katarina", "kathrin", "kathi", "katrin", "kati", "katja"],
-    "klara": ["clara", "klärchen"],
-    "magdalena": ["magda", "lena", "lenchen"],
-    "margarethe": ["margareta", "greta", "gretchen", "gretel", "meta"],
-    "maria": ["marie", "mary", "mariechen", "mia"],
-    "marianne": ["marion", "miriam"],
-    "martha": ["marta"],
-    "mathilde": ["matilda", "tilda", "hilde"],
-    "monika": ["moni", "monica"],
-    "renate": ["renata", "reni"],
-    "rosemarie": ["rosi", "rosie"],
-    "sabine": ["bine", "sabina"],
-    "sophie": ["sofia", "sofie"],
-    "stefanie": ["stephani", "steffi", "steffy"],
-    "susanne": ["susi", "susanna", "suse"],
-    "ursula": ["ursel", "uschi"],
-    "veronika": ["vroni", "vera", "nika"],
-    "waltraud": ["traudl", "waltraut"],
-}
-EXPANDED_NICKNAME_MAP: Dict[str, str] = {
-    nick: canon for canon, nicks in NICKNAME_MAP.items() for nick in nicks
-}
-OCR_ERRORS: Dict[str, List[str]] = {
-    "ü": ["u", "ue"],
-    "ä": ["a", "ae"],
-    "ö": ["o", "oe"],
-    "ß": ["ss"],
-}
 
 
 # ============================================================================
-#   NORMALISIERUNG
+#   Namensnormalisierung und Titelerkennung
 # ============================================================================
 
 
@@ -458,7 +463,7 @@ def ocr_error_match(
     name: str, candidates: List[str]
 ) -> Tuple[Optional[str], int, float]:
     """
-    Versucht, name gegen Kandidaten rein per Levenshtein zu matchen.
+    Versucht, name gegen Kandidaten aus GT rein per Levenshtein zu matchen.
     """
     name_lower = name.lower().strip()
     best_match = None
@@ -526,12 +531,17 @@ def fuzzy_match_name(
 
 from typing import Union, Optional, Dict, Tuple, List, Any
 
+# ----------------------------------------------------------------------------
+# Matching
+# ----------------------------------------------------------------------------
+
 
 def match_person(
     person: dict[str, Union[str, int, bool, None]],
-    candidates = KNOWN_PERSONS,
-)
-
+    candidates = KNOWN_PERSONS):
+    
+    #nur Rolle, keine Namen --> niederiger Score
+    
     if (
         person.get("role_schema")
         and not person.get("familyname")
@@ -574,9 +584,9 @@ def match_person(
     tokens = [t.lower() for t in fn.split()]
     if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
         return None, 0
-    # -------------------------
+    #===========================================
     #  UNIQUE-NAME HEURISTIK
-    # -------------------------
+    #===========================================
     # Wenn nur Vorname da ist und dieser in der Groundtruth genau einmal vorkommt,
     # dann ist es definitiv diese Person.
     if fn and not ln:
@@ -614,12 +624,19 @@ def match_person(
                 }
             )
             return result, result["match_score"]
+        
+#===========================================
+#Blacklist Checks
+#===========================================
+
+    # Kontextbasierte Filter für unzuordenbare Singlenames
 
     tokens = [w.strip(",:;.").lower() for w in fn.split()]
 
     context = str(person.get("content_transcription") or "")
     fn_in_unmatchable = fn.lower() in UNMATCHABLE_SINGLE_NAMES
     ln_in_unmatchable = ln.lower() in UNMATCHABLE_SINGLE_NAMES
+
 
     if (fn_in_unmatchable and not ln) or (ln_in_unmatchable and not fn):
         full = f"{fn} {ln}".strip()
@@ -631,6 +648,8 @@ def match_person(
                 f"[DEBUG] Kontext rettet '{fn}'/'{ln}' durch Fund von '{full}' oder '{inv}' im Text"
             )
         return None, 0
+
+    # Blacklist-Matching für Namen mit verdächtigen Tokens
 
     if any(t in NON_PERSON_TOKENS for t in tokens) and not ln:
         reason = f"Dropping because token in blacklist: fn='{fn}', ln='{ln}'"
@@ -674,7 +693,10 @@ def match_person(
 
     thr = get_matching_thresholds()
     norm_fn, norm_ln = normalize_name_string(fn), normalize_name_string(ln)
-
+ 
+    #===========================================
+    #Initalen-check
+    #===========================================
     if is_initial(fn):
         init = fn[0].upper()
         fam_norm = normalize_name_string(ln)
@@ -698,11 +720,11 @@ def match_person(
             ):
                 return dict(c), 89
 
-            # NEU: Reverse-Prüfung
-            # Prüfe: lieferte dein fn vielleicht den Nachnamen?
+            #Reverse-Prüfung
+            # Prüfe: liefert fn vielleicht den Nachnamen?
             norm_fn = normalize_name_string(fn)
             ln_lower = ln.lower()
-            # Neue REVERSE-Prüfung – robust:
+            
             if (
                 c["forename"]
                 and c["familyname"]
@@ -711,7 +733,7 @@ def match_person(
                 and normalize_name_string(c["familyname"])[:4]
                 == norm_fn[:4]  # dein fn gegen c[familyname]
                 and
-                # NEU: nur tauschen, wenn es nicht eh schon normal ist
+                # nur tauschen, wenn es nicht eh schon normalisiert ist
                 not (
                     normalize_name_string(c["forename"]) == norm_fn
                     and normalize_name_string(c["familyname"]) == norm_ln
@@ -725,6 +747,11 @@ def match_person(
                 return swapped, 88
 
     best, best_score = None, 0
+
+    #===========================================
+    #Fuzzy Matching über Vornamen und Nachnamen 
+    #===========================================
+    
     for c in candidates:
         fn_score = (
             100
@@ -770,7 +797,10 @@ def match_person(
             )  # Notlösung: heuristisch ableiten
         )
         return result, int(best_score)
-
+    
+    #===========================================
+    #Levenshtein-Fallback bei Namensvertauschung
+    #===========================================
     for c in candidates:
         if normalize_name_string(fn) == normalize_name_string(c["forename"]):
             if Levenshtein.distance(ln.lower(), c["familyname"].lower()) <= 1:
@@ -780,7 +810,9 @@ def match_person(
         if normalize_name_string(ln) == normalize_name_string(c["forename"]):
             if Levenshtein.distance(fn.lower(), c["familyname"].lower()) <= 1:
                 return dict(c), 90
-
+    #===========================================
+    #Matching über Einzelkomponenten
+    #===========================================
     if not fn and ln:
         for c in candidates:
             ln_score = fuzzy_match_name(
@@ -816,6 +848,10 @@ def match_person(
         if matched and dist <= 2:
             c = next(x for x in candidates if x["familyname"] == matched)
             return dict(c), 85
+        
+    #===========================================
+    # Matching über Nachname und Gender
+    #===========================================
     if not person.get("gender") and person.get("title") in FEMALE_TITLE_TOKENS:
         person["gender"] = "female"
     elif not person.get("gender") and person.get("title") in MALE_TITLE_TOKENS:
@@ -854,6 +890,9 @@ def match_person(
             result["gender"] = person.get("gender") or result.get("gender", "")
             return result, 95
 
+    #===========================================
+    # Last Fallback - Aufnahme mit Review
+    #===========================================
     if any([fn, ln, role_raw]):
         review_reason_parts = []
         if not fn:
@@ -904,22 +943,24 @@ KNOWN_FORENAMES = {
 print(f"[DEBUG] KNOWN_FORENAMES count: {len(KNOWN_FORENAMES)}")
 
 
-def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
-    from Module.person_matcher import extract_role_from_raw_name
+def extract_person_data(row: Dict[str, Any]) -> Dict[str, Any]:
     from Module.Assigned_Roles_Module import (
         normalize_and_match_role,
+        extract_role_from_raw_name,
         map_role_to_schema_entry,
     )
 
     raw = row.get("name", "").strip()
-    m = re.match(
-        r"^(Herrn?|Frau|Fräulein|Dr\.?|Prof\.?)\s+(.+)$",
-        raw,
-        flags=re.IGNORECASE,
-    )
+
+    # Erstelle einen Regex-Ausdruck aus TITLE_TOKENS (Escape falls nötig)
+    title_pattern = r"^(" + "|".join(re.escape(t) for t in TITLE_TOKENS) + r")\s+(.+)$"
+
+    m: re.Match[str] | None = re.match(title_pattern, raw, flags=re.IGNORECASE)
+
     title = m.group(1).capitalize() if m else ""
     if m:
         raw = m.group(2).strip()
+
 
     clean, roles = extract_role_from_raw_name(raw)
     parts = clean.split()
@@ -1615,6 +1656,8 @@ def infer_role_and_organisation(
         return role, ""
 
     return "", ""
+
+
 
 
 # ----------------------------------------------------------------------------

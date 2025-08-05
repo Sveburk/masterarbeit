@@ -1,42 +1,66 @@
-
 import re
 from typing import Dict, List
 from .document_schemas import BaseDocument, Person, Place
+
 
 def validate_extended(doc: BaseDocument) -> Dict[str, List[str]]:
     errors = {}
 
     # Pflichtfelder prüfen
-    if not doc.creation_date or not re.match(r"^\d{4}\.\d{2}\.\d{2}$", doc.creation_date):
-        errors.setdefault("creation_date", []).append("Fehlend oder ungültiges Format (YYYY.MM.DD)")
+    if not doc.creation_date or not re.match(
+        r"^\d{4}\.\d{2}\.\d{2}$", doc.creation_date
+    ):
+        errors.setdefault("creation_date", []).append(
+            "Fehlend oder ungültiges Format (YYYY.MM.DD)"
+        )
 
     if not doc.creation_place.strip():
-        errors.setdefault("creation_place", []).append("Fehlender Entstehungsort")
+        errors.setdefault("creation_place", []).append(
+            "Fehlender Entstehungsort"
+        )
 
     if not doc.document_type:
-        errors.setdefault("document_type", []).append("Kein Dokumenttyp angegeben")
+        errors.setdefault("document_type", []).append(
+            "Kein Dokumenttyp angegeben"
+        )
 
     # Strukturprüfungen
     if doc.document_type in ["Brief", "Postkarte"]:
-        if not doc.recipient or (not doc.recipient.forename.strip() and not doc.recipient.familyname.strip()):
-            errors.setdefault("recipient", []).append("Empfänger fehlt oder ist leer")
-
+        if not any(p.is_valid() for p in doc.recipients):
+            errors.setdefault("recipients", []).append(
+                "Empfänger fehlt oder ist ungültig"
+            )
     if not doc.mentioned_places:
-        errors.setdefault("mentioned_places", []).append("Keine Orte angegeben")
+        errors.setdefault("mentioned_places", []).append(
+            "Keine Orte angegeben"
+        )
 
     for i, place in enumerate(doc.mentioned_places):
         if not place.geonames_id:
-            errors.setdefault(f"mentioned_places[{i}]", []).append("Geonames-ID fehlt")
+            errors.setdefault(f"mentioned_places[{i}]", []).append(
+                "Geonames-ID fehlt"
+            )
         if not place.nodegoat_id:
-            errors.setdefault(f"mentioned_places[{i}]", []).append("Nodegoat-ID fehlt")
+            errors.setdefault(f"mentioned_places[{i}]", []).append(
+                "Nodegoat-ID fehlt"
+            )
 
     for i, person in enumerate(doc.mentioned_persons):
-        if person.forename.lower() in ["des", "herrn", "frau", "vereinsführer"] or person.familyname.lower() in ["des", "herrn"]:
-            errors.setdefault(f"mentioned_persons[{i}]", []).append(f"Möglicher Fehlname: {person.forename} {person.familyname}")
+        if person.forename.lower() in [
+            "des",
+            "herrn",
+            "frau",
+            "vereinsführer",
+        ] or person.familyname.lower() in ["des", "herrn"]:
+            errors.setdefault(f"mentioned_persons[{i}]", []).append(
+                f"Möglicher Fehlname: {person.forename} {person.familyname}"
+            )
 
     return errors
 
+
 from collections import Counter
+
 
 def generate_validation_summary(validation_error_list):
     total = len(validation_error_list)
@@ -52,8 +76,8 @@ def generate_validation_summary(validation_error_list):
     # for entry in validation_error_list:
     #     for field, messages in entry["errors"].items():
     #         for msg in messages:
-    #             if "recipient" in field:
-    #                 error_counter["recipient fehlt"] += 1
+    #             if "recipients" in field:
+    #                 error_counter["recipients fehlt"] += 1
     #             elif "creation_date" in field:
     #                 error_counter["creation_date ungültig"] += 1
     #             elif "geonames_id" in field:
@@ -74,31 +98,31 @@ def generate_validation_summary(validation_error_list):
 
 
 # ==== Beispiel-Testfälle ====
-if __name__ == "__main__":
-    doc = BaseDocument(
-        object_type="Dokument",
-        attributes={},
-        content_transcription="Test",
-        mentioned_persons=[
-            Person(forename="des", familyname=""),
-            Person(forename="Otto", familyname="Bollinger")
-        ],
-        mentioned_organizations=[],
-        mentioned_places=[
-            Place(name="Murg", geonames_id="", nodegoat_id="", type="", country=""),
-            Place(name="Laufenburg", geonames_id="6555918", nodegoat_id="ng123", type="", country="")
-        ],
-        mentioned_dates=["1941.05.28"],
-        content_tags_in_german=[],
-        author=Person(),
-        recipient=Person(),
-        creation_date="1941.5.28",  # falsch formatiert
-        creation_place="",
-        document_type="Brief",
-        document_format=""
-    )
+# if __name__ == "__main__":
+#     doc = BaseDocument(
+#         object_type="Dokument",
+#         attributes={},
+#         content_transcription="Test",
+#         mentioned_persons=[
+#             Person(forename="des", familyname=""),
+#             Person(forename="Otto", familyname="Bollinger")
+#         ],
+#         mentioned_organizations=[],
+#         mentioned_places=[
+#             Place(name="Murg", geonames_id="", nodegoat_id="", type=""),
+#             Place(name="Laufenburg", geonames_id="6555918", nodegoat_id="ng123", type="")
+#         ],
+#         mentioned_dates=["1941.05.28"],
+#         content_tags_in_german=[],
+#         author=Person(),
+#         recipients=Person(),
+#         creation_date="1941.5.28",  # falsch formatiert
+#         creation_place="",
+#         document_type="Brief",
+#         document_format=""
+#     )
 
-    errors = validate_extended(doc)
-    for field, issues in errors.items():
-        for issue in issues:
-            print(f"[{field}] {issue}")
+#     errors = validate_extended(doc)
+#     for field, issues in errors.items():
+#         for issue in issues:
+#             print(f"[{field}] {issue}")

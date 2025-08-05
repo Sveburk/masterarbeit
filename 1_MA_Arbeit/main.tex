@@ -74,6 +74,11 @@
 \DefineBibliographyStrings{ngerman}{
   urlseen = {Zugriff am}
 }
+\DefineBibliographyStrings{ngerman}{
+  backrefpage = {zit. auf S\adddot},
+  backrefpages = {zit. auf S\adddot}
+}
+
 \DeclareFieldFormat{urldate}{\addspace#1}
 \renewbibmacro*{url+urldate}{%
   \printfield{url}%
@@ -198,6 +203,21 @@
   \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 \makeatother
+\makeatletter
+% Neue Definition für \paragraph
+\renewcommand\paragraph{\@startsection{paragraph}{4}{0em}%
+  {1.5ex \@plus1ex \@minus.2ex}% Abstand davor
+  {0.5ex \@plus.2ex}% Abstand danach
+  {\normalfont\normalsize\bfseries\itshape}}
+
+% Neue Definition für \subparagraph (optional)
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{0em}%
+  {0ex \@plus 0ex}% kein Abstand davor
+  {0.5ex \@plus.2ex}% Abstand danach
+  {\normalfont\normalsize\itshape\underline}}
+
+\makeatother
+
 
 
 \providecommand{\tightlist}{%
@@ -450,9 +470,9 @@
 
 
 \newpage 
-Diese Arbeit befasst sich mit dem Archiv des Männerchor Murg in den Jahren des Zweiten Weltkrieges. 
-Hierfür wird eine automatisierte Pipline auf Basis von LLMs und Patternmatching vorgestellt, mit deren Hilfe Named Entities extrahiert und weiterverarbeitet werden. 
-Ziel ist es, dieses Archiv digital zugänglich, die beteiligten Personen sowie deren Netzwerke und dessen geographische Ausdehnung sichtbar zu machen.
+Diese Arbeit befasst sich mit dem Archiv des \textit{Männerchor Murg} in den Jahren des Zweiten Weltkrieges. 
+Hierfür wird eine automatisierte Pipeline auf Basis von LLMs und Patternmatching vorgestellt, mit deren Hilfe Named Entities extrahiert und weiterverarbeitet werden. Der Hauptfokus der Weiterverarbeitung liegt auf der Ausgestaltung des Entity Matching, um erkannte Entitäten mit einer Groundtruth-Tabelle abzugleichen. 
+Ziel ist es, dieses Archiv digital zugänglich und die beteiligten Personen sowie deren Netzwerke sowie die geographische Ausdehnung sichtbar zu machen.
 
 
 
@@ -468,7 +488,7 @@ Ziel ist es, dieses Archiv digital zugänglich, die beteiligten Personen sowie d
 \renewcommand*\contentsname{Inhaltsverzeichnis}%This controls the title of your table of contents.
 {
 \hypersetup{linkcolor=}
-\setcounter{tocdepth}{5}%Sets the maximum sublevel to be displayed within the table of contents.
+\setcounter{tocdepth}{4}%Sets the maximum sublevel to be displayed within the table of contents.
 \tableofcontents
 }
 \pagenumbering{arabic}\setstretch{1.5}%Overwrites the previous command, pages are counted as normal from this point.
@@ -509,8 +529,8 @@ eine zentrale Grundlage für die vorliegende Untersuchung.
 \newpage
 \section{Forschungsstand und Forschungslücke}\label{subsec:forschungsstand}
 
-Die vorliegende Arbeit knüpft an zwei Vorarbeiten an, die in den Jahren 2018 und 2022 am Departement Geschichte der Universität Basel durchgeführt
-werden. In zwei Transkribus-Seminaren werden erste Teilbestände der \enquote{Männerchor Akten 1925--1944} erschlossen und in einem Korpus
+Die vorliegende Arbeit knüpft hauptsächlich an zwei Vorarbeiten an, die in den Jahren 2019 und 2022 am Departement Geschichte der Universität Basel durchgeführt
+werden. In drei Digital History-Seminaren\cite[vgl.][]{hodel_machine_2019, serif_digital_2019, serif_von_2022} mit Fokus auf Transkribus werden erste Teilbestände der \enquote{Männerchor Akten 1925--1944} erschlossen und in einem Korpus
 von 137 Einzeldokumenten zusammengeführt.\cite[vgl.][]{burkhardt_feldpost_2022}
 Ein kleinerer Korpus von rund 50 Dokumenten wird mit Metadaten versehen. Erfasst werden unter anderem die genaue Position im Ordner auf Seitenebene, 
 Kurztitel und Entstehungsdatum. Diese Metadaten bilden die Grundlage für eine erstmalige systematische Erschliessung.
@@ -541,7 +561,7 @@ und in einer interaktiven ArcGIS-Karte visualisiert, die Stationierungen, Märsc
 
 Die in diesen Vorprojekten erarbeiteten Listen, Geodaten, Transkriptionen und Visualisierungen fliessen in die vorliegende Arbeit ein
 und bilden eine wesentliche Grundlage für die erweiterte, automatisierte Pipeline, die im Folgenden vorgestellt wird. Dazu gehören beispielsweise auch die Verbandsabzeichen, 
-Taktische Zeichen\cite[vgl][S.64-66]{haupt_buch_1982} der jeweiligen Einheiten, die auch in die Groundtruth der vorliegenden Arbeit inkorporiert werden.
+Taktische Zeichen\cite[vgl.][S.64-66]{haupt_buch_1982} der jeweiligen Einheiten, die auch in die Groundtruth der vorliegenden Arbeit inkorporiert werden.
 
 Abgesehen von diesen Vorarbeiten ist der Quellenkorpus wissenschaftlich unerschlossen. Mit dieser Arbeit liegt erstmals eine
 umfassendere wissenschaftliche Auswertung vor.
@@ -1073,10 +1093,9 @@ und mit realen Entitäten aus den untersuchten Quellen abzugleichen.
   \justifying%
 \subsubsection{LOD-Ontologie}
 Ein wichtiger Aspekt dieser Arbeit ist die Unstrukturiertheit relevanter Informationen. 
-Aus diesem Grund wurde auf der Basis der Oben beschrieben Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst.
+Aus diesem Grund wurde auf der Basis der oben beschriebenen Semantik begonnen, eine eigene Ontologie zu entwickeln, die die identifizierten Entitäten systematisch erfasst.
 Beim Schreiben dieser initialen Ontologie aus rund 2000 Zeilen Code erweist sich schnell ein neues Problem. Die Datengrundlage aus den geschilderten Vorprojekten (vgl.~\hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke}) ist 
-zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross tische Grundlage des Globalund damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung 
-auf die Extraktion von Entitäten.
+zu klein, um daraus eine aussagekräftige Netzwerkanalyse zu machen. Hierfür erweisen sich die Unterschiede der Daten zusätzlich als zu gross und damit aufwendig. Der Fokus der Arbeit verschiebt sich dementsprechend von der Ontologieentwicklung auf die Extraktion von Entitäten.
 \end{minipage}%
 \hfill%
   % Rechte Minipage = Bild
@@ -1089,14 +1108,13 @@ auf die Extraktion von Entitäten.
 
 \vspace{1em}
 
-Der bestehende Datensatz ist zu klein, um eine umfangreiche Ontologie lohnend zu machen. Hinzu kommen externe Quellen, und deren Zugänglichkeit. Zuverlässige Quellen für Informationen 
+Hinzu kommen externe Quellen, und deren Zugänglichkeit. Die Hauptquellen für Informationen 
 über militärische Einheiten und deren Feldpostnummern sind das \enquote{Forum der Wehrmacht}\cite[ vgl.][]{altenburger_lexikon_nodate} 
 und der \enquote{Suchdienst des DRK}\cite[ vgl.][]{reuter_drk_2025}. In beiden Fällen liegen die Daten jedoch nicht als LOD vor, sondern im Forum als einfache Strings 
 und beim Deutschen Roten Kreuz als OCR-PDF\footnote{OCR = Optical Character Recognition} historischer Suchlisten aus der Nachkriegszeit. Ein manuelles Recherchieren dieser Daten scheint zu diesem Zeitpunkt
-den Rahmen der Arbeit zu sprengen. Die in diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, besonders in Verknüpfung mit selbst erstellten Wikidata-Klassen 
-wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Abschnitt~\hyperref[subsec:Nodegoat_chapter]{Nodegoat}}.
+den Rahmen der Arbeit zu sprengen. Daher wird im Januar 2025 entschieden, den Aufbau einer LOD Datenbank in dieser Form abzubrechen, und einen Fokus auf die Extraktion von Named Entites und das Entity Matching zu legen. Die bis zu diesem Schritt geleistete Vorarbeit beim Sortieren und Klassifizieren von Entitäten, wird in späteren Prozessschritten wieder aufgegriffen\footnote{siehe Abschnitt~\hyperref[subsec:Nodegoat_chapter]{Nodegoat}}. Auch die Recherche der IDs in Wikidata und Geonames, wie im Folgenden beschrieben, wird weiterverwendet. 
 
-\subsection{Wikidata}
+\subsection{Wikidata}\label{subsec:wikidata}
 
 \textit{Wikidata}\cite[vgl.][]{noauthor_wikidata_nodate} ist eines der zentralen Repositorien für Linked Open Data, und bietet eine hohe Interoperabilität durch standardisierte
 URIs, SPARQL-Endpunkte und offene APIs zu den Entitäten.
@@ -1117,13 +1135,13 @@ Die praktische Umsetzung zeigt jedoch eine strukturelle Einschränkung. Für die
 trotz systematischer Verknüpfung mit anderen dort verwalteten Entitäten, etwa mit Armeen, Militäreinheiten, Orten und Personen, entfernt die Community–Moderation etwa 70\% dieser Einträge. 
 Das zeigt einerseits hohe internen Qualitätsanforderungen auf, andererseits werden diese jedoch nicht klar kommuniziert. Mit regidem Löschen neuer Einträge wird die Verlässlichkeit und den Nutzen der 
 geleisteten Arbeit erheblich begrenzt. 
-Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel.
+Aufwand und Unsicherheit über die Persistenz der Einträge machen den ursprünglich vorgesehenen LOD–Ansatz in dieser Form nicht praktikabel. Es findet innerhalb der Pipeline daher optionale Anwendung. Wenn einzelne Entitäten eine Wikidata-ID haben, wird diese in die \nameref{subsec:Nodegoat_chapter}-Datenbank aufgenommen, und für das Entity Matching verwendet.
 
 \subsection{GeoNames}\label{subsec:geonames}
 
 Ebenso wie Wikidata bietet \textit{GeoNames}\cite[vgl.][]{noauthor_geonames_nodate} eine Open-Source-Plattform für interoperable Daten. GeoNames fokussiert sich hierbei auf geografische Informationen 
 und stellt eine umfassende Datenbank mit über 25 Millionen Ortsnamen und rund 12 Millionen eindeutigen geografischen Objekten bereit.  
-Alle Einträge sind in neun Feature–Klassen und über 600 spezifische Feature–Codes kategorisiert. Die Plattform integriert Daten zu 
+Die Plattform integriert Daten zu 
 Ortsnamen in verschiedenen Sprachen, Höhenlagen, Bevölkerungszahlen und weiteren Attributen aus unterschiedlichen nationalen und internationalen Quellen.  
 Sämtliche Geokoordinaten basieren auf dem WGS84–System\cite[\textit{WGS84: geodätische Grundlage des Global Positioning System (GPS)} ;vgl.][]{noauthor_wgs84_nodate}
 und können über frei zugängliche Webservices oder eine API abgerufen werden.  
@@ -1132,35 +1150,88 @@ kollaborative Qualitätssicherung gewährleistet wird.
 
 GeoNames wird in dieser Arbeit intensiv zur Referenzierung von Ortsnamen verwendet und bildet die Basis für die Groundtruth, wie sie in den Kapiteln \nameref{subsec:Nodegoat_chapter} und 
 \nameref{subsec:place_matcher_chapter} beschrieben ist. Im Gegensatz zu Wikidata wurde hier von Beginn an darauf verzichtet, eigene Ortsdatensätze zu ergänzen. Dies liegt einerseits an 
-den klar kommunizierten Community–Guidelines und andererseits daran, dass der Datensatz bis auf wenige, sehr lokale Flurnamen als nahezu vollständig gelten kann.
+den klar kommunizierten Community-Guidelines und andererseits daran, dass der Datensatz bis auf wenige, sehr lokale Flurnamen als nahezu vollständig gelten kann\footnote{der \enquote{Totenbühl} in Murg ist beispielsweise ein solcher Flurname}.
 
 Historische Gebäude wie Gaststätten oder Spitäler fehlen folgerichtig in der GeoNames–Datenbank. Diese Lücke ist erwartbar, aber erwähnenswert, da GeoNames 
 ansonsten eine nahezu vollständige und ausgesprochen detaillierte Datengrundlage bietet.
+
+\subsection{Nodegoat}\label{subsec:Nodegoat_chapter}
+
+Nachdem sich die Implementierung von Linked Open Data (LOD) für das vorliegende Projekt aufgrund des hohen zeitlichen 
+Aufwands als nicht realisierbar erwiesen hat, wird mit \textbf{Nodegoat}\cite{kessels_nodegoat_2013}
+eine praktikable und zugleich forschungsnahe Alternative eingeführt. Im Folgenden soll das Tool näher beschrieben, und seine Anwendung für das Projekt erläutert werden.
+
+Nodegoat ist eine webbasierte Plattform, die sich besonders in den digitalen Forschungsprojekten in den Geisteswissenschaften etabliert hat. Es unterstützt Forschende in der Modellierung, 
+Verwaltung, Analyse und Visualisierung komplexer Datenbestände. Ein zentrales Merkmal von Nodegoat ist die grafische Benutzeroberfläche, die eine vergleichsweise niedrige Einstiegshürde bietet. 
+Auch Forschenden ohne tiefgehende Programmierkenntnisse wird so die Möglichkeit  eröffnet, eigene Datenmodelle zu definieren, zu pflegen und weiterzuentwickeln. Kritisiert werden muss an Nodegoat jedoch die fehlende Dokumentation. Viele Informationen finden sich nur über Drittparteien\cite[beispielsweise durch Schulungsunterlagen von Universitäten, 
+hier besonders:\\][]{gubler_nodegoat_nodate} oder, wie unten geschildert, auf konkrete Nachfrage bei den Entwicklern. Der dann geleistete Support 
+ist jedoch ausgesprochen zeitnah und umfassend erfolgt.
+Die Plattform folgt einem modularen Prinzip: Über das UI\footnote{Abk.:\textbf{UI} User-Interface} können beliebig viele Datenmodelle 
+erstellt werden, die sich flexibel an die spezifischen Forschungsfragen anpassen lassen. Diese hohe Individualisierbarkeit der Datenstrukturen erlaubt es, innerhalb kürzester Zeit projektspezifische 
+Datenbanken zu konzipieren und fortlaufend zu erweitern oder an sich ändernde Bedürfnisse anzupassen.
+
+Die Grundstruktur eines Modells unterscheidet in Nodegoat zwischen sogenannten \code{Object Descriptions} und \code{Sub-Objects}. 
+Erstere legen die grundlegenden Merkmale eines Objekts fest, etwa Zeichenketten, Zahlen oder Verweise auf andere Einträge. 
+So kann eine \code{Person} in diesem Projekt neben einem Feld für Vor- und Nachname auch eine Referenz auf ein \code{Gender}-Objekt enthalten, 
+das eine eindeutige Geschlechtszuordnung ermöglicht.
+
+Für das hier behandelte Forschungsvorhaben übernimmt Nodegoat die zentrale Verwaltung der Groundtruthdaten, die später als CSV-Export in die Pipeline integriert werden. 
+Für die Groundtruth werden folgende Entitäten modelliert:
+
+\begin{table}[h]
+  \renewcommand{\arraystretch}{1.5}
+  \centering
+  \rowcolors{1}{VeryLightGray}{VeryLightGray}
+  \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+    \hline
+    Personen & Orte \\ \hline
+    Organisationen & Ereignisse \\ \hline
+    Dokumente & Rollen \\ \hline
+    Gender & \\ \hline
+  \end{tabular}
+  \caption{\small Übersicht der erfassten Entitäten}
+\end{table}
+
+Die Auflistung ist dabei so geordnet, dass die Entitäten mit der grössten Anzahl oder Vielfalt an zugehörigen Sub-Objects zuerst genannt werden. \code{Sub-Objects} erlauben eine
+noch vielfältigere Abbildung abhängiger Informationen. Das können in dieser Arbeit zum Beispiel Quellenbelege, sowie temporale oder lokale Attribute, die einem Hauptobjekt zugeordnet werden. Lokale Attribute 
+werden in Verknüpfung mit \hyperref[subsec:geonames]{GeoNames} und für Länder, Flurnamen oder Gewässer im Geojson-Format\cite[Weiterführend:][]{thomson_geographic_2017}. So lassen sich beispielsweise für\code{Persons}
+in den Sub-Objekten \code{Geburt} oder \code{Tod} das Datum und der Ort modelieren, sowie die Todesursache notieren.
+
+Die in den Kapiteln \hyperref[section:Transkriptionen_Methoden]{Transkriptionen und Methoden}, \hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke} 
+sowie \hyperref[subsec:unmatched_logger]{Unmatched Logger} beschriebenen Verarbeitungsschritte bilden die Grundlage für die in Nodegoat hinterlegten Entitäten.
+Die strukturierte Erfassung dient dabei nicht nur der internen Qualitätssicherung, sondern ermöglicht auch eine nachhaltige Referenzierbarkeit durch eindeutig 
+vergebene Identifikatoren, die beispielsweise beim Abgleich von Personendaten genutzt werden, um Textstellen präzise mit den zugehörigen Datenbankeinträgen zu verknüpfen.
+
+Darüber hinaus wird Nodegoat über seine API\footnote{Programmierschnittstelle} mit einer eigens entwickelten Webanwendung verknüpft. Diese Webanwendung fungiert als publikumsorientierte 
+Such- und Präsentationsplattform für die erarbeiteten Quellen. Die in den strukturierten JSON-Daten enthaltenen Nodegoat-IDs verknüpfen hier ebenfalls jede identifizierte Named Entity eindeutig mit dem 
+zugehörigen Objekt in der Nodegoat-Datenbank.\footnote{an dieser Stelle sei ein Rückverweis auf die Kapitel \nameref{subsec:geonames} und \nameref{subsec:wikidata} gegeben.} 
+
+ 
+
 
 \subsection{Transkriptionen (Methodenvergleich)}\label{section:Transkriptionen_Methoden}
 \subsubsection{Tesseract}\label{subsubsection:Tesseract}
 
 Da bereits zu Beginn des Projekts klar ist, dass ein Grossteil der Datenverarbeitung mit Python-Code erfolgen soll, wird gezielt 
 nach Werkzeugen gesucht, die eine automatische Transkription von gescannten Dokumenten ermöglichen. 
-Als besonders etabliert erweist sich ein Open-Source-Projekt zur Texterkennung in Bilddateien, die OCR-Engine Tesseract. 
+Als besonders etabliert erweist sich die OCR-Engine Tesseract, ein Open-Source-Projekt zur Texterkennung in Bilddateien. 
 Tesseract wird seit den 1980er-Jahren entwickelt, zunächst von Hewlett-Packard, später von Google weitergeführt, 
 und ist über GitHub öffentlich zugänglich.\cite[vgl.][]{weil_tesseract-ocrtesseract_2025}
 
-Die Software basiert seit Version 4 auf einem LSTM-basierten\cite[Abk.: \textbf{LSTM} steht für \textit{Long Short-Term Memory};  Architektur der frühen Generation rekurrenter neuronaler Netzwerke \textit{RNNs}. LSTMs wurden entwickelt, um Sequenzdaten zu verarbeiten und dabei sowohl kurzfristige als auch langfristige Abhängigkeiten in der Datenfolge zu erfassen – ein typisches Beispiel sind Texte, Sprache, Zeitreihen oder Handschrift. ;vgl.][p.1-2]{beck_review_2020} neuronalen Netzwerk, das besonders bei der Erkennung von zusammenhängenden Textzeilen eine 
+Die Software basiert seit Version 4 auf einem LSTM-basierten\cite[Abk.: \textbf{LSTM} steht für \textit{Long Short-Term Memory};  Architektur der frühen Generation rekurrenter neuronaler Netzwerke \textit{RNNs}. LSTMs wurden entwickelt, um Sequenzdaten zu verarbeiten und dabei sowohl kurzfristige als auch langfristige Abhängigkeiten in der Datenfolge zu erfassen – ein typisches Beispiel sind Texte, Sprache, Zeitreihen oder Handschrift. ;vgl.][p.1-2]{beck_review_2020} neuronalen Netzwerk, das besonders bei der Erkennung von zusammenhängenden gedruckten Textzeilen eine 
 hohe Genauigkeit bietet. Tesseract unterstützt neben modernen Schrifttypen auch historische Schriftsätze wie Fraktur, was es besonders geeignet 
 für den Einsatz in digitalisierten Archiven macht.\cite[vgl.][]{weil_tesseract-ocrtesseract_2025}
 
 Vorbereitend für den Einsatz von Tesseract müssen alle gescannten PDF in das JPEG Format umgewandelt werden, wofür ein kurzes Python-Script verwendet wird\cite[vgl.][]{burkhardt_githubpdf_to_jpegpy_2025}. 
-Im praktischen Einsatz scheiterte die Integration von TEsseract jedoch an der Heterogenität des Korpus: uneinheitliche Layouts, wechselnde 
+Im praktischen Einsatz scheiterte die Integration von Tesseract jedoch an der Heterogenität des Korpus: uneinheitliche Layouts, wechselnde 
 Schrifttypen, maschinen- und handschriftliche Texte sowie komplexe Textverläufe. Beispielhaft sollen hier überlagerte oder mehrspaltig angeordnete 
-Passagen auf Postkarten und Zeitungsartikeln genannt werden, die zu massiven Erkennungsfehlern führten. Auch mit angepassten Segmentierungsparametern (--psm) 
-konnte keine zufriedenstellende Texterkennung erzielt werden.
+Passagen auf Postkarten und Zeitungsartikeln genannt werden, die zu massiven Erkennungsfehlern führten. Auch mit angepassten Segmentierungsparametern konnte keine zufriedenstellende Texterkennung erzielt werden.
 
 Tesseract wurde daher nicht weiterverwendet.
 
 \subsubsection{LLM}\label{subsubsec:LLM_transcript}
-Analog zum Einsatz des OCR-Systems Tesseract\footnote{siehe Abschnitt \nameref{subsubsec:Tesseract}} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
-Aus diesem Grund wird in einer frühen Phase auch der Einsatz von LLMs, spezifisch ChatGPT, bei der Transkription der Unterlagen erprobt.
+Analog zum Einsatz von Python\footnote{siehe Abschnitt \nameref{subsubsec:Tesseract}} stellt die Integration von Large Language Models (LLMs) von Beginn an einen zentralen Bestandteil der Projektkonzeption dar.
+Aus diesem Grund wird in einer frühen Phase auch der Einsatz von LLMs, spezifisch ChatGPT\footnote{eine detaillierte Erläuterung findet sich in \nameref{subsec:OpenAI}}, bei der Transkription der Unterlagen erprobt.
 
 Der Einsatz von LLMs wie ChatGPT für die Transkription historischer Quellen erweist sich als ambivalent. Während die Modelle nach gezielter 
 Anleitung eine erstaunlich präzise Rekonstruktion von Layoutstrukturen und maschinell erfassten Textdaten leisten, bestehen erhebliche Einschränkungen. Im Detail sind das
@@ -1224,73 +1295,59 @@ Gerade für forschungsorientierte Projekte mit Fokus auf strukturierte, semantis
 \subsection{Large Language Models} \label{subsubsec:LLM_use}
 Ein zentrales Werkzeug bei der Verarbeitung der historischen Quellen ist die weiter unten näher beschriebene Python-Pipeline, die auf der Verarbeitung von XML-Dateien basiert. Vorgreifend sei erwähnt, dass diese XML-Verarbeitung ein Large Language Model (LLM) zum Custom-Tagging nutzt. Nebst dem Tagging stellt das Programmieren dieser Pipeline eine der Kernherausforderungen dieses Forschungsprojekts dar. 
 Für das Tagging und die Entwicklung der Pipeline werden verschiedene Large Language Models intensiv getestet und eingesetzt.
-\subsection{Msty}
-Um ein dafür geeignetes LLM zu evaluieren, werden zu Beginn des Projektes beispielhafte Prompts erstellt und deren Ergebnisse systematisch verglichen. Um diesen Vergleich zu erleichtern, wird die Desktop-Anwendung Msty\cite[vgl][]{noauthor_msty_nodate} eingesetzt. Zu den zentralen Funktionen gehören parallele Chatinterfaces (\enquote{Parallel Multiverse Chats}),
-eine flexible Verwaltung lokaler Wissensbestände (\enquote{Knowledge Stacks})\cite[vgl][]{noauthor_msty_nodate}, sowie eine vollständige Offline-Nutzung ohne externe Datenübertragung. Msty dient dazu, verschiedene Modelle zu testen, durch die Parallel Multiverse Chats Antworten zu vergleichen und Konversationen strukturiert zu verzweigen und auszuwerten.
+\subsubsection{Msty}
+Um ein dafür geeignetes LLM zu evaluieren, werden zu Beginn des Projektes beispielhafte Prompts erstellt und deren Ergebnisse systematisch verglichen. Um diesen Vergleich zu erleichtern, wird die Desktop-Anwendung Msty\cite[vgl.][]{noauthor_msty_nodate} eingesetzt. Zu den zentralen Funktionen gehören parallele Chatinterfaces (\enquote{Parallel Multiverse Chats}),
+eine flexible Verwaltung lokaler Wissensbestände (\enquote{Knowledge Stacks})\cite[vgl.][]{noauthor_msty_nodate}, sowie eine vollständige Offline-Nutzung ohne externe Datenübertragung. Msty dient dazu, verschiedene Modelle zu testen, durch die Parallel Multiverse Chats Antworten zu vergleichen und Konversationen strukturiert zu verzweigen und auszuwerten.
 
-Wichtig ist, dass dies kein klassisches Benchmarking auf Basis vergleichbarer Resultate ist. Es wird zu diesem frühen Projektzeitpunkt weder systematisch überpüft, welche Qualität der jeweilge Codeteil hat, noch wird gemessen, wie viel Prozent der Named Entities jeweils richtig erkannt werden. Der direkte Vergleich der getesteten LLMs liefert jedoch schnell ein klares Bild, welches Modell sich am besten eignet. Beprobt werden die Folgenden Anbieter und Modelle:
+Hervorzuheben ist, dass dies kein klassisches Benchmarking auf Basis vergleichbarer Resultate ist. Es wird zu diesem frühen Projektzeitpunkt weder systematisch überprüft, welche Qualität der jeweilige Codeteil hat, noch wird gemessen, wie viel Prozent der Named Entities jeweils richtig erkannt werden. Der direkte Vergleich der getesteten LLMs liefert jedoch schnell ein Bild, welches Modell sich für die gleiche Aufgabe besser eignet. Erprobt werden zu Beginn des Projektes im November die folgenden Anbieter und Modelle:
+\begin{itemize}
+    \item Alphabet – Gemini
+    \item Anthopic – Claude
+    \item OpenAI – ChatGPT
+\end{itemize}
+Sie sollen nachfolgend eingeordnet und deren Verwendung erläutert werden.
 
+\subsubsection{Alphabet – Gemini}
+Google Gemini\footnote{ehemals Google Bard} wird im Dezember 2023\cite{noauthor_gemini_2023} von Google zunächst einer eingeschränkten Userzahl verfügbar gemacht und gilt als direkte Antwort auf OpenAIs ChatGPT. Es nimmt in dieser Arbeit keinen grossen Raum ein, da es sich im direkten Vergleich mit ChatGPT zum Zeitpunkt des Tests im Winter 2024 und Frühjahr 2025 als weniger präzise bei der Annotation von XML-Files, und weniger zuverlässig beim coden in Python herausstellte. Zur Falsifizierung dieser Annahme gelegentlich durchgeführte Überprüfungen im April und Juni 2025 brachten das selbe Ergebnis. Auch aus ökonomischen Gründen wurde auf ein zusätzlich zu OpenAI abgeschlossenes Abonnement verzichtet.
 
+\subsubsection{Anthropic – Claude Code}\label{subsec:claude_code}
 
-\subsection{Alphabet – Gemini}
-\subsection{Anthopic – Claude}
-\subsection{OpenAI – ChatGPT}
+Claude Code wird am 22.~Mai~2025 offiziell veröffentlicht\cite{noauthor_claude_nodate} und ist bereits ab dem 24.~Februar~2025 in einer öffentlichen Betaphase verfügbar. In diesem Projekt erfolgt die Integration des Tools bereits sehr früh. Am 3.~April~2025 wird es erstmals eingesetzt, um komplexe Aufgaben bei der Entwicklung der Verarbeitungs- und Analysepipeline direkt in VS-Code\footnote{\textbf{Abk.:} \textit{Visual Studio Code}, die verwendete Programmierumgebung} zu übernehmen.
 
+In den ersten Tagen erzielt Claude Code beeindruckende Resultate. Es unterstützt erfolgreich bei der Generierung von Programmcode, insbesondere bei strukturierenden Aufgaben bei der Initialisierung von Python-Funktionen. Einzelne Funktionsbausteine lassen sich durch das Tool effizient erstellen, was zunächst zu einer spürbaren Beschleunigung des Entwicklungsfortschritts führt.
 
-\subsection{Nodegoat}\label{subsec:Nodegoat_chapter}
+Im weiteren Verlauf zeigen sich jedoch klare Begrenzungen. Bereits im April ist der Kontextumfang des Projekts so gross, dass Claude Code Schwierigkeiten hat, über mehrere Module hinweg konsistent zu arbeiten. Eine zentrale Schwäche besteht darin, dass projektweite Variablen nicht zuverlässig erkannt und übergeben werden. So kann etwa die Variable \texttt{mentioned\_persons} aus dem Modul \texttt{person\_matcher.py} nicht als wichtig erkannt und korrekt in \texttt{letter\_matcher.py} eingebunden werden.
 
-Nachdem sich die Implementierung von Linked Open Data (LOD) für das vorliegende Projekt aufgrund des hohen zeitlichen 
-Aufwands als nicht realisierbar erwiesen hat, wird mit \textbf{Nodegoat}\cite{kessels_nodegoat_2013}
-eine praktikable und zugleich forschungsnahe Alternative eingeführt. Im Folgenden soll das Tool näher beschrieben, und ihre Anwendung für das Projekt erläutert werden.
+Ein weiteres Problem ist die tiefgreifende Veränderung bestehender Funktionsstrukturen. Claude Code verändert mitunter voll funktionsfähige Module, ohne auf deren interne Abhängigkeiten Rücksicht zu nehmen. Diese Eingriffe führen häufig dazu, dass vormals stabile Komponenten nicht mehr korrekt ausgeführt werden. Variablennamen werden ohne Anzeige modifiziert, Dictionaries durch Listen ersetzt. Der Aufwand für das anschliessende Debugging übersteigt in vielen Fällen den Nutzen der automatisierten Generierung. Zwar können einzelne Änderungsschritte von Claude Code angezeigt werden, Veränderungen können aber so subtil sein, dass sie oft unbemerkt bleiben.
 
-Nodegoat ist eine webbasierte Plattform, die sich besonders in den Digital Humanities etabliert hat. Es unterstützt Forschende in der Modellierung, 
-Verwaltung, Analyse und Visualisierung komplexer Datenbestände. Ein zentrales Merkmal von Nodegoat ist die grafische Benutzeroberfläche, die eine vergleichsweise niedrige Einstiegshürde bietet. 
-Auch Forschenden ohne tiefgehende Programmierkenntnisse wird so die Möglichkeit  eröffnet, eigene Datenmodelle zu definieren, zu pflegen und weiterzuentwickeln. 
-Die Plattform folgt einem modularen Prinzip: Über das UI\footnote{Abk.:\textbf{UI} User-Interface} können beliebig viele Datenmodelle 
-erstellt werden, die sich flexibel an die spezifischen Forschungsfragen anpassen lassen. Diese hohe Individualisierbarkeit der Datenstrukturen erlaubt es, innerhalb kürzester Zeit projektspezifische 
-Datenbanken zu konzipieren und fortlaufend zu erweitern oder an sich ändernde Bedürfnisse anzupassen.
+Hinzu kommen erhebliche Nutzungskosten. Aufgrund der Projektgrösse entstehen bereits im April für einzelne Prompts Kosten von bis zu vier US-Dollar. Durch präzises Prompting\footnote{Beispielsweise durch Angabe von Dateipfaden und Zeilennummern} lässt sich dieser Betrag zwar begrenzen, doch unterschreitet der Preis pro Anfrage selten 0,40\$. Die Arbeit mit Claude Code ist damit nicht nur zeitintensiv durch den notwendigen Korrekturaufwand, sondern auch kostenintensiv im operativen Betrieb.
 
-Die Grundstruktur eines Modells unterscheidet in Nodegoat zwischen sogenannten \code{Object Descriptions} und \code{Sub-Objects}. 
-Erstere legen die grundlegenden Merkmale eines Objekts fest, etwa Zeichenketten, Zahlen oder Verweise auf andere Einträge. 
-So kann eine \code{Person} in diesem Projekt neben einem Feld für Vor- und Nachname auch eine Referenz auf ein \code{Gender}-Objekt enthalten, 
-das eine eindeutige Geschlechtszuordnung ermöglicht.
+Nach einer intensiven Probephase von etwa fünf Wochen wird der Einsatz von Claude Code im Projekt vor dem Public Release beendet. Die Entscheidung basiert auf einer kritischen Abwägung von Nutzen, Aufwand und Nachhaltigkeit im Hinblick auf die langfristige Wartbarkeit des Codes.
 
-Für das hier behandelte Forschungsvorhaben übernimmt Nodegoat die zentrale Verwaltung der Groundtruthdaten, die später als CSV-Export in die Pipeline integriert werden. 
-Für die Groundtruth werden folgende Entitäten modelliert:
+\subsubsection{OpenAI – ChatGPT}\label{subsec:OpenAI}
 
-\begin{table}[h]
-  \renewcommand{\arraystretch}{1.5}
-  \centering
-  \rowcolors{1}{VeryLightGray}{VeryLightGray}
-  \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
-    \hline
-    Personen & Orte \\ \hline
-    Organisationen & Ereignisse \\ \hline
-    Dokumente & Rollen \\ \hline
-    Gender & \\ \hline
-  \end{tabular}
-  \caption{\small Übersicht der erfassten Entitäten}
-\end{table}
+Im Verlauf der Arbeit wird ChatGPT intensiv in mehreren Funktionen genutzt. Dazu zählen Generierung und Überarbeitung von Quellcode, Fehleranalyse in Python- und LaTeX-Skripten, strukturierte Formulierung von Dokumentationsinhalten\footnote{in der Code-Dokumentation, Modulzusammenfassung oder beim Überarbeiten dieses Textes} sowie die semantische Annotation von Personen, Orten und Ereignissen im Transkriptionskorpus. Zum Einsatz kommen insbesondere die Modelle \textit{GPT-4o}, \textit{GPT-4.5}, \textit{o3-mini} sowie deren Varianten \textit{mini high} und \textit{GPT-4.1 mini}\cite[vgl.][]{noauthor_model_nodate}. 
+Bereits vor der eigentlichen Konzeptionsphase erfolgen erste Versuche mit dem Vorgängermodell \textit{GPT-3.5}, um grundlegende Anwendungsbereiche für historische Datenverarbeitung auszuloten. Im Folgenden sollen die drei Einsatzfelder \textbf{Custom-GPT, Custom-Projekt} und \textbf{API} beschrieben und eingeordnet werden.
 
-Die Auflistung ist dabei so geordnet, dass die Entitäten mit der grössten Anzahl oder Vielfalt an zugehörigen Sub-Objects zuerst genannt werden. \code{Sub-Objects} erlauben eine
-noch vielfältigere Abbildung abhängiger Informationen. Das können in dieser Arbeit zum Beispiel Quellenbelege, sowie temporale oder lokale Attribute, die einem Hauptobjekt zugeordnet werden. Lokale Attribute 
-werden in Verknüpfung mit \hyperref[subsec:geonames]{GeoNames} und für Länder, Flurnamen oder Gewässer im Geojson-Format\cite[Weiterführend:][]{thomson_geographic_2017}. So lassen sich beispielsweise für\code{Persons}
-in den Sub-Objekten \code{Geburt} oder \code{Tod} das Datum und der Ort modelieren, sowie die Todesursache notieren.
+\paragraph{Custom-GPT} Ein speziell für das Projekt konfiguriertes \textit{Custom-GPT}\footnote{\textbf{Abk.: GPT} = \textbf{G}enerative \textbf{P}retrained \textbf{T}ransformer} wird in dieser Frühphase eingerichtet und dient als Initialer Funktionstest für den Einsatz nicht-domänenspezifischer multimodaler Sprachmodelle. 
+Dieses Modell\cite[vgl.][]{burkhardt_gpt_nodate} basiert auf projektspezifischen Anweisungen, Orts- und Personenlisten sowie Groundtruth-Daten aus dem Korpus des Männerchors. Es stellt damit eine Vorform der heute verfügbaren \enquote{Projekte}-Funktion im Webinterface von ChatGPT dar. Konfiguriert wird es auf die Verarbeitung und Analyse historischer Dokumente. Zum Einsatz kommen in der Vorphase des Projektes erste Transkriptionen, Metadaten aus der Akten\_Gesamtübersicht.csv und ein erster kleiner Korpus sowie ein Manuskript von einem Chormitglied\cite[][Dieses autobiografische Manuskript wurde anfangs noch in den Korpus zu integrieren versucht, später jedoch entfernt. Es kommt aber in der Verifikation der Archivforschung (bspw. im Militärarchiv Freiburg) zum Einsatz.]{durst_sklaven_1948}. Getestet wird, ob das Modell  erkannte Personennamen mit einer bereitgestellten Namensliste vergleichen kann und die Verarbeitung diverser Formate (CSV, Excel, PDF, Bilddateien, Klartext) unterstützt.
 
-Die in den Kapiteln \hyperref[section:Transkriptionen_Methoden]{Transkriptionen und Methoden}, \hyperref[subsec:forschungsstand]{Forschungsstand und Forschungslücke} 
-sowie \hyperref[subsec:unmatched_logger]{Unmatched Logger} beschriebenen Verarbeitungsschritte bilden die Grundlage für die in Nodegoat hinterlegten Entitäten.
-Die strukturierte Erfassung dient dabei nicht nur der internen Qualitätssicherung, sondern ermöglicht auch eine nachhaltige Referenzierbarkeit durch eindeutig 
-vergebene Identifikatoren, die beispielsweise beim Abgleich von Personendaten genutzt werden, um Textstellen präzise mit den zugehörigen Datenbankeinträgen zu verknüpfen.
+ Der Abgleich mit den hinterlegten Namenslisten erweist sich als unzureichend. Die Ergebnisse stellen sich als methodisch unzuverlässig bzw. nicht reproduzierbar heraus. Auch eine Weiterverarbeitung durch eine vermeintlich direkte Abfrage von Wikidata zur semantischen Anreicherung historischer Entitäten bleibt ohne belastbare Resultate. Wikidata-IDs werden willkürlich generiert, so verweist die angebliche ID für München auf die Golden Gate Bridge. Gleichwohl zeigen sich punktuelle Stärken bei der automatisierten Erkennung von Strings, etwa bei der Identifikation potenzieller Personen- oder Ortsnamen. Dies legt den Grundstein für den Preprocessing–Schritt\footnote{vgl. \nameref{subsec:preprocessing}} und die später automatisierte NER Pipeline\footnote{vgl. \nameref{sec:transkribus_to_base}}. Im Dezember 2024 führt OpenAI \enquote{Custom-Projekten} ein. Ab diesem Zeitpunkt erfolgt der Wechsel zur Projektfunktion, die im Folgenden beschrieben wird.
 
-Darüber hinaus wird Nodegoat über seine Programmierschnittstelle (API) mit einer eigens entwickelten Webanwendung verknüpft. Diese Webanwendung fungiert als publikumsorientierte 
-Such- und Präsentationsplattform für die erarbeiteten Quellen. Die in den strukturierten JSON-Daten enthaltenen Nodegoat-IDs verknüpfen hier ebenfalls jede identifizierte Named Entity eindeutig mit dem 
-zugehörigen Objekt in der Nodegoat-Datenbank. Dies soll nachfolgend erläutert werden.
+\paragraph{Custom-Projekt}
+Projekte ermöglichen eine persistente, thematisch fokussierte Interaktion mit dem Modell über längere Zeiträume hinweg. Dabei wird kontextuell relevantes Hintergrundwissen – etwa über Datenstrukturen, verwendete Tools, Entitätenlisten oder Groundtruth-Dateien – dauerhaft im System gespeichert. Diese Informationen stehen in allen Konversationen innerhalb des Projekts zur Verfügung, ohne erneut übergeben werden zu müssen. Im Unterschied zu den oben genannten \textit{Custom GPTs}, bei denen ein Modell über eine Benutzeroberfläche gezielt mit Systemmeldungen und Beispieldaten konfiguriert wird, basiert das Projektkonzept nicht auf einer einmaligen statischen Initialisierung, sondern auf fortlaufender Kontexterweiterung durch Nutzerinteraktionen. Projekte sind nicht öffentlich verfügbar, nicht durch Dritte nutzbar, und bieten keine explizite Konfigurationsmaske. 
+Für dieses längerfristige Forschungsvorhaben mit sich entwickelnden Anforderungen eignet sich die Projekt-Funktion gut. Sich entwickelnde Änderungen im Code können nicht nur durch regelmässigen Uploads neuer Dateien abgebildet werden, sondern werden fortlaufend durch die Interaktion mit dem Modell erweitert, ergänzt und angepasst. So erhält das Projekt auch einen Überblick über andere Module, an denen gerade gearbeitet wird, und schliesst sie in die Antworten zu einem gewissen Grad ein. Insgesamt werden in dem Custom-Projekt \enquote{Masterarbeit} 17 Dateien hochgeladen, darunter fallen die Groundtruth-Dateien und die einzelnen Python-Module. Der Hauptfokus des Projektes liegt auf der Unterstützung beim Coden der im Kapitel \nameref{subsec:Module_im_Detail} erläuterten Codeteile.
 
-Kritisiert werden muss an Nodegoat die fehlende Doukumentation. Viele Informationen finden sich nur über Drittparteien\cite[beispielsweise durch Schulungsunterlagen von Universitäten, 
-hier besonders:\\][]{gubler_nodegoat_nodate} oder, wie unten geschildert, auf konkrete Nachfrage bei den Entwicklern. Der dann geleistete Support 
-ist jedoch ausgesprochen zeitnah und umfassend. 
+\paragraph{API}
+Für die automatisierte Verarbeitung und Annotation historischer Dokumente wird in diesem Projekt die Programmierschnittstelle (API) von OpenAI verwendet. Die API ermöglicht eine präzise Steuerung zentraler Parameter wie den Modelltyp, die Kontextlänge und die Temperatur\footnote{Die Temperatur steuert den Grad an Zufälligkeit in der Textgenerierung. Bei niedrigen Werten (z.B. 0,2) bevorzugt das Modell sehr wahrscheinliche Ausgaben; bei höheren Werten (bis 1{,}0) steigt der Anteil weniger wahrscheinlicher, "kreativer" Antworten.}.
+ Die Nutzung der API erleichtert die Integration in automatisierte, skalierbare Workflows und erlaubt eine Wiederverwendung von Prompts über große Dokumentenmengen hinweg. Gleichwohl ist die tatsächliche Reproduzierbarkeit der Ergebnisse nur eingeschränkt gegeben. Selbst bei identischen Eingaben und konstanten Parametern kann es zu leichten Variationen in den Ausgaben kommen, insbesondere bei höheren Temperatureinstellungen oder bei Modellen mit probabilistischer Antwortgenerierung. Reproduzierbarkeit ist daher in diesem Kontext primär als funktionale Replizierbarkeit von Abläufen, weniger als identische Ergebniswiedergabe zu verstehen. So ist eine der Grundannahmen dieser Arbeit, dass ChatGPT den Prompt exakt so ausführt und den Inhalt der historischen Texte komplett unverändert lässt. Dies soll in einem späteren Projektschritt durch eine automatisierte Pipeline überprüft werden. \footnote{Beispielsweise durch stichprobenartigen Abgleich einzelner Page-XMLs vor und nach der Verarbeitung, einem Stripping aller Tags und einem direkten Stringvergleich mit Levenshtein und einer ausgegebenen Check-Summe. Aufgrund zeitlicher Limitationen ist dies jedoch aktuell nicht der Fall}
+ 
+ Ein zentrales Anwendungsfeld der API im Projekt ist die Named Entity Recognition, die über prompt-basierte Anfragen realisiert wird. Dabei kann auf ein aufwendiges Modelltraining und damit einhergehende Groundthruth-Generierung verzichtet werden, da LLMs wie GPT-4 auch ohne Fine-Tuning eine kontextsensitive Entitätserkennung ermöglichen. Bereits 2020 verweisen Brown et al. darauf, dass sich die Lösung nicht explizit trainierte Tasks mit zunehmender Grösse des Models verbessert: \small\textit{\endquote{Each increase has brought improvements in text synthesis and/or downstream NLP tasks, and there is evidence suggesting that log loss, which correlates well with many downstream tasks, follows a
+smooth trend of improvement with scale [KMH+20]. Since in-context learning involves absorbing many skills and
+tasks within the parameters of the model, it is plausible that in-context learning abilities might show similarly strong
+gains with scale.}}\cite[vgl.][S.4]{brown_language_2020} 
 
-
+Dementsprechend wird OpenAIs LLM in diversen konzeptionellen und operativen Phasen dieses Projektes verwendet. Konkrete Beispiele hierfür finden sich unter anderem in dem Kapiteln \nameref{subsec:preprocessing}.
 
 \subsection{\colorbox{red}{Webtool}}\label{subsec:webtool_chapter}
 Die Planung sieht vor, oben beschriebene Verknüpfung zu nutzen, um aus der Webanwendung heraus bei Bedarf Detailinformationen zu den einzelnen Entitäten abzurufen. 
@@ -1307,7 +1364,7 @@ wird angestrebt, den aus Nodegoat bekannten \enquote{Object Detail View} in Form
 lediglich der gewünschte Objektbereich angezeigt wird, ohne die übrigen Bestandteile der öffentlichen Nodegoat-Oberfläche zu übernehmen.
 
 In der technischen Umsetzung wurde zudem erörtert, ob die interne Object-ID oder die plattformübergreifende Nodegoat-ID als Referenz verwendet werden sollte. Die Rückmeldung bei den
-Nodegoat-Entwicklern (Kessels und van Bree) legt auf Anfrage nahe, dass beide ID-Typen im Prinzip austauschbar sind: Die Object-ID gewährleistet eine eindeutige Identifikation 
+Nodegoat-Entwicklern \footnote{Kessels und van Bree} legt auf Anfrage nahe, dass beide ID-Typen im Prinzip austauschbar sind: Die Object-ID gewährleistet eine eindeutige Identifikation 
 innerhalb einer spezifischen Nodegoat-Instanz, 
 während die Nodegoat-ID eine konsistente Referenz über mehrere Installationen hinweg ermöglicht — auch im Hinblick auf LOD-Kompatibilität.
 
@@ -1319,7 +1376,15 @@ Auf diese Weise kann die Webanwendung den Nutzenden nicht nur eine reine Objektl
 gerendert und visualisieren alle relevanten Informationen direkt aus Nodegoat. Um die Serverlast zu minimieren, wird hierbei eine Caching-Strategie empfohlen, sodass wiederholte API-Abfragen 
 effizient verarbeitet werden können.
 
-Zusammengefasst fungiert Nodegoat somit als zentrales Bindeglied zwischen der internen Datenhaltung und der öffentlichen Präsentation: Es vereinfacht die Pflege konsistenter Groundtruth-Daten, 
+\subsubsection{NDRCore}
+
+https://ndrcore.org/ --> CMS und API-Wrapper
+\subsubsection{mongoDB}
+https://www.mongodb.com/de-de  --> Datenbanksystem für Korpusdaten
+\subsubsection{Cantaloupe}
+https://cantaloupe-project.github.io/  --> IIIF Image API server
+\subsubsection{Nodegoat}
+Zusammengefasst fungiert \nameref{subsec:Nodegoat_chapter} somit als zentrales Bindeglied zwischen der internen Datenhaltung und der öffentlichen Präsentation: Es vereinfacht die Pflege konsistenter Groundtruth-Daten, 
 unterstützt deren Ausspielung über standardisierte Schnittstellen und ermöglicht eine modular erweiterbare Verknüpfung mit Webportalen und Suchsystemen.
 
 
@@ -1532,44 +1597,27 @@ Pipeline (insbesondere \code{transkribus\_to\_base.py}) als Grundlage für die s
 
 
 \subsection{Hauptmodul -- Transkribus\_to\_base}\label{sec:transkribus_to_base}
-\subsubsection*{1. Initialisierung und Pfadlogik}
+\subsubsection{Initialisierung und Pfadlogik}
 
 Die Initialisierungsphase des Skripts\footnote{bis ca. Line 250} dient der Einrichtung sämtlicher Systempfade, Datenquellen, 
 Modulabhängigkeiten und Ressourcen. Im Zentrum steht dabei die Festlegung der Projektstruktur sowie die dynamische Integration aller untergeordneten Module und Datenbestände.
 
 Zu Beginn werden die Python-Standardbibliotheken sowie externe Abhängigkeiten geladen, darunter \code{pandas} für 
-Tabellenverarbeitung, \code{spacy} für die linguistische Analyse und \code{rapidfuzz} für den Vergleich von ähnlichen Strings. Zusätzlich 
-wird das aktuelle Datum mit Zeitstempel generiert und als Konsolenoutput ausgegeben. Das unterstützt die Nachvollziehbarkeit von
-Verarbeitungsläufen und das Debugging in grösseren Verarbeitungsszenarien.
+Tabellenverarbeitung, \code{spacy} für die linguistische Analyse und \code{rapidfuzz} für den Vergleich von ähnlichen Strings. Zur besseren Nachvollziehbarkeit von
+Verarbeitungsläufen beim Debugging wird das aktuelle Datum mit Zeitstempel generiert und als Konsolenoutput ausgegeben. 
 
-Das Verzeichnis der Skriptdatei wird mithilfe des \code{pathlib}-Moduls identifiziert. Anschliessend wird von dort ausgehend das 
-Projektwurzelverzeichnis nachvollzogen. Diese dynamisch bestimmte Wurzel fungiert als zentraler Referenzpunkt für alle nachfolgenden Verzeichnispfade, absolute Pfadangaben werden vollständig vermieden.  
 Das Projekt ist so organisiert, dass sämtliche zentralen Datenverzeichnisse, Ressourcen und Modulstrukturen relativ
-zur Wurzel definiert und im Code programmatisch zugänglich gemacht sind. Dazu gehören beispielsweise die 
-Unterverzeichnisse \code{Data} für CSV-basierte Groundtruth-Informationen, \code{Module} für modulare 
-Verarbeitungsfunktionen sowie \code{Transkribus\_test\_In} und \code{Transkribus\_test\_Out} als standardisierte 
-Ein- und Ausgabeverzeichnisse für XML-Dateien und strukturierte JSON-Outputs.
+zur Wurzel definiert und im Code programmatisch zugänglich gemacht sind. Das Projektwurzelverzeichnis wird dynamisch erkannt, und fungiert als zentraler Referenzpunkt für alle nachfolgenden Verzeichnispfade. Dadurch lassen sich alle enthaltenen Funktions- und Klassendefinitionen zentral importieren. Absolute Pfadangaben werden vollständig vermieden.\\
 
-Zur Gewährleistung der Modulverfügbarkeit wird dem globalen Importpfad das Verzeichnis \code{Module} über \code{sys.path.insert} hinzugefügt. 
-Dadurch lassen sich alle enthaltenen Funktions- und Klassendefinitionen zentral importieren. Die einzelnen Komponenten sind in modularisierten Unterdateien wie \nameref{subsec:person_matcher.py}, \nameref{subsec:place_matcher_chapter} und \nameref{subsec:document_schema} abgelegt. 
-Diese Struktur fördert die klare Trennung thematischer Verantwortlichkeiten innerhalb des Codes.
-
-Darüber hinaus erfolgt die Definition aller relevanten Ein- und Ausgabepfade. Der 
-Pfad \code{TRANSKRIBUS\_DIR} verweist auf das Eingabeverzeichnis für XML-Dateien, während 
-\code{OUTPUT\_DIR} die Ausgabe der produzierten Ergebnisse in JSON-Dateien 
-sowie untergeordnete Strukturen für ungematchte Entitäten, Logdateien und CSV-Dumps aufnimmt.
-
-Die Initialisierungslogik umfasst ferner das standardisierte Einlesen der Groundtruth-Dateien aus den 
-jeweiligen Nodegoat-Exporten, die zentral im Ordner \code{/Data/Nodegoat\_Export} gespeichert sind. 
-Dabei werden die dort hinterlegten Informationen aus den 
+Zur Initialisierungslogik gehört  beispielsweise das standardisierte Einlesen der 
+Unterverzeichnisse \code{Data} für CSV-basierte Groundtruth-Informationen sowie \code{Module} für Verarbeitungsfunktionen.\footnote{vgl. \nameref{subsec:Module_im_Detail}}. Die jeweiligen Nodegoat-Exporte sind zentral im Ordner \code{/Data/Nodegoat\_Export} gespeichert. 
+Die dort hinterlegten Informationen werden aus den 
 CSV-Dateien geladen, in \code{pandas.DataFrames} überführt und durch Fehlerbehandlung in Form von
 \code{try- \& exept}-Blöcken abgesichert. 
 Eine Konsolenausgabe informiert über Anzahl und Status der geladenen Einträge.
 
-Ob das deutsche Sprachmodell 
-\code{de\_core\_news\_sm} von \code{spaCy} verfügbar ist, wird geprüft und gegebenenfalls auf ein Fehlen hingewiesen. 
-Essentiell ist die Abfrage eines gültigen 
-API-Schlüssels aus der Umgebungsvariable für das OpenAI-Modul. Ist dies nicht der Fall, wird der am Ende folgende Enrichment-Prozess automatisch deaktiviert.
+Es folgen Abfragen, ob  das deutsche Sprachmodell 
+\code{de\_core\_news\_sm} von \code{spaCy} und ein gültiger API-Schlüssel für ChatGPT in der Umgebungsvariable geladen ist. Gegebenenfalls wird auf ein Fehlen hingewiesen. Sollte letztgenannter Schlüssel nicht vorhanden sein, wird der am Ende folgende Enrichment-Prozess automatisch deaktiviert.
 
 Die standardisierte Datenstruktur für Personen wird unmittelbar nach dem Einlesen der 
 Groundtruth-Dateien erzeugt. Hierzu werden die relevanten Felder aus der CSV-Datei 
@@ -1577,75 +1625,129 @@ Groundtruth-Dateien erzeugt. Hierzu werden die relevanten Felder aus der CSV-Dat
 Diese beinhalten Attribute wie \code{forename}, \code{familyname}, \code{alternate\_name}, 
 \code{title} sowie die eindeutige \code{nodegoat\_id}. Die Struktur orientiert sich an der in 
 \code{document\_schemas.py} definierten Klasse \code{Person}, bildet jedoch in dieser Phase noch 
-keine Instanzen davon.\footnote{Dies ist ein Relikt des dynamisch entstandenen Codes, das aus Zeitgründen noch nicht aufgelöst werden konnte} Sie dient als Referenz für alle nachfolgenden Matching- und 
+keine Instanzen davon.\footnote{Ein Relikt des dynamisch entstandenen Codes, das aus Zeitgründen noch nicht aufgelöst wurde} Sie dient als Referenz für alle nachfolgenden Matching- und 
 Deduplikationsvorgänge.
 
-Abschliessend stehen zwei Hilfsfunktionen bereit, um neu erkannte Personen in die bestehende 
+Abschliessend stehen zwei Hilfsfunktionen\footnote{\textbf{Hilfsfunktionen:} \code{load\_known\_persons} und \code{person\_exists\_in\_known\_list}} bereit, um neu erkannte Personen in die bestehende 
 CSV-Struktur zu überführen. Auf Basis des \enquote{fuzzy stringmatchings} mit der sogenannten Levensthein-Distanz\cite[\textbf{Levensthein-Distanz:} Die minimale Anzahl von elementaren Editieroperationen (Einfügen, Löschen, Ersetzen), die notwendig sind, um ein Wort a in ein anderes Wort b zu überführen. vgl:][]{levenshtein_binary_nodate} wird eine Duplikatsprüfung 
 durch \code{Rapidfuzz} realisiert und stellt sicher, dass nur bisher unbekannte Einträge ergänzt werden.
 
-Die Initialisierungs- und Pfadlogik legt damit den Grundstein für eine skalierbare, 
-reproduzierbare und systematisch strukturierte Weiterverarbeitung aller Eingabedaten.
+Damit ist die Initialisierungs- und Pfadlogik abgeschlossen, der Grundstein für eine skalierbare, 
+reproduzierbare und systematisch strukturierte Weiterverarbeitung in den folgenden Modulen gelegt.
 
+\subsubsection{Extraktion von Struktur und Fliesstext}
 
-\subsubsection*{2. Extraktion von Struktur und Fliesstext}
+Die Verarbeitung einer Transkribus-Seite beginnt mit der strukturierten Auswertung der zugehörigen PAGE-XML-Datei. Ziel ist die Gewinnung zentraler Informationen, die sowohl die technische Identifikation als auch die inhaltliche Analyse des Dokuments ermöglichen. Dieser Extraktionsprozess lässt sich in drei Segmente gliedern:
 
-Die Verarbeitung einer einzelnen Transkribus-Seite beginnt mit der systematischen Analyse der zugrundeliegenden XML-Datei. 
-Ziel dieses Abschnitts ist die strukturierte Extraktion zentraler Informationen, die als Grundlage für die weitere Anreicherung 
-und Validierung dienen. Dabei wird zwischen technischen Metadaten, transkribiertem Fliesstext und semantisch annotierten Entitäten 
-(in sogenannten \code{custom}-Tags) unterschieden. Die nachfolgend beschriebenen Funktionen sind für die Extraktion dieser drei 
-Bereiche zuständig.
+\begin{enumerate}
+\item Extraktion technischer Metadaten
+\item Extraktion des transkribierten Fließtexts
+\item Extraktion semantisch annotierter Entitäten aus Custom-Tags
+\end{enumerate}
 
-\paragraph{extract\_metadata\_from\_xml~(~)} Diese Funktion extrahiert maschinenlesbare Metadaten aus dem 
-\code{<TranskribusMetadata>}-Block der XML-Datei. Dazu gehören die eindeutige Dokumenten-ID (\code{docId}), die Seiten-ID 
-(\code{pageId}), die Transkriptions-ID (\code{tsid}), sowie die zugehörige Bildreferenz und die XML-Quelldatei. Diese Informationen 
-werden zentral in einem Metadaten-Dictionary gespeichert, das später in das Attributfeld des JSON-Objekts übernommen wird. 
-Sie bilden die technische Grundlage für die spätere Identifikation und Reproduzierbarkeit jeder Seite.
+Die folgenden Funktionen bilden jeweils die Kernoperationen dieser drei Schritte und bereiten die Daten für die nachgelagerte Entitätenanreicherung, Validierung und den Export in ein standardisiertes JSON-Format vor.
 
-\paragraph{get\_document\_type~(~)} ist in \nameref{subsection:type_matcher} genau erklärt. Es liefert Informationen, ob ein Dokument beispielsweise ein Brief, eine Postkarte oder Protokoll ist.
+\vspace{1em}
+\paragraph{1. Technische Metadaten}
 
-\paragraph{extract\_text\_from\_xml~(~)} Der transkribierte Fliesstext wird aus den Elementen \code{<TextEquiv>} bzw. 
-\code{<Unicode>} extrahiert. Dabei werden alle Textinhalte zeilenweise aus den \code{TextLine}-Knoten der XML-Datei gelesen und zu 
-einem zusammenhängenden String zusammengefügt. Jede Zeile wird durch einen Zeilenumbruch (\code{\textbackslash n}) getrennt, um den 
-späteren kontextuellen Zugriff auf Zeilenpositionen (z.B. bei der Erwähnung von Personen oder Rollen) zu ermöglichen. Der extrahierte 
-Text dient als Grundlage für regelbasierte Erkennungsverfahren sowie für LLM-gestützte Analysen in späteren Verarbeitungsschritten.
+\subparagraph{extract\_metadata\_from\_xml~(~)}\label{subpara:extract_metadata_from_xml} Diese Funktion liest die im \code{<TranskribusMetadata>}-Block gespeicherten Informationen aus, die für die eindeutige Identifikation jeder Seite erforderlich sind. Dazu zählen insbesondere die Dokumenten-ID (\code{docId}), die Seiten-ID (\code{pageId}), die Transkriptions-ID (\code{tsid}) sowie die Pfade zu Bild und XML-Datei. Diese Informationen werden in einem Dictionary gespeichert und später im Attributblock des JSON-Dokuments hinterlegt. Im Falle fehlender Metadaten wird ein leeres Dictionary zurückgegeben, um die Robustheit der Verarbeitung zu gewährleisten.
 
-\paragraph{extract\_custom\_attributes~(~)} Die semantische Annotation in den Transkribus-Dokumenten erfolgt über \code{custom}-
-Attribute, die bestimmten Textbereichen zugeordnet sind (z.B. \code{person\{offset:42; length:14\}}). Die Funktion 
-\code{extract\_custom\_attributes()} iteriert über alle \code{TextLine}-Elemente und prüft, ob ein solches Attribut vorhanden ist. 
-Ist dies der Fall, wird der betroffene Textabschnitt anhand der Offset-Angaben extrahiert und weiterverarbeitet. Die Extraktion 
-erfolgt kategoriebezogen, wobei für jede Entitätstyp eigene Subfunktionen aufgerufen werden:
+\subparagraph{get\_document\_type~(~)} ist eine in \nameref{subsection:type_matcher} genauer ausgeführte Funktion. Sie liefert Informationen, ob ein Dokument beispielsweise als Brief,  Postkarte oder Protokoll kategorisiert werden kann.
+
+\vspace{1em}
+\paragraph{2. Transkribierter Fließtext}
+
+\subparagraph{extract\_text\_from\_xml~(~)}\label{subpara:extract_text_from_xm} Der aus dem PAGE-XML extrahierte Fließtext bildet die Grundlage für eine Vielzahl regelbasierter und LLM-gestützter Analyseschritte. Die Funktion iteriert über alle \code{TextLine}-Elemente und extrahiert jeweils den Inhalt der Elemente \code{<TextEquiv>} bzw. \code{<Unicode>}-Unterelements. Die resultierenden Zeilen werden in einzeilige Strings überführt und mit Zeilenumbrüchen (\code{\textbackslash n}) getrennt. Dadurch bleibt der Zeilenkontext auch in der späteren Analyse (z.B. bei der Zuordnung von Rollen oder Orten) erhalten. Zusätzlich wird dieser Text verwendet, um die in den Custom-Tags angegebenen Offset-Positionen auf den tatsächlichen Textinhalt zu projizieren.
+
+\vspace{1em}
+\paragraph{3. Semantische Annotation über Custom-Tags}
+
+\subparagraph{extract\_custom\_attributes~(~)} Diese zentrale Funktion wertet die semantischen Annotationen aus, die über das \code{custom}-Attribut in den \code{TextLine}-Elementen gespeichert sind. Jede Zeile wird einzeln geprüft, ob sie eines oder mehrere Custom-Tags enthält. Ist dies der Fall, werden die in diesen Tags enthaltenen Entitätsangaben mittels spezialisierter Subfunktionen analysiert und strukturiert erfasst. Für jede Entität wird der zugehörige Textausschnitt mithilfe der im Tag angegebenen \code{offset}- und \code{length}-Angaben aus dem Fließtext extrahiert. Die Ergebnisse werden in einem Dictionary gesammelt, das nach Entitätskategorien gegliedert ist. Die relevanten Subfunktionen sind im Folgenden beschrieben:
 
 \begin{itemize}
-    \item \textbf{extract\_person\_from\_custom~(~)}: Diese Funktion extrahiert Personennamen, gegebenenfalls Titel (z.B. \enquote{Herr}, \enquote{Frau}) und mögliche Rollenbezeichnungen aus den XML-Tags. Sie bereitet die Einträge für ein späteres Matching gegen die bekannte Personenliste vor. Hier werden Vor- und Nachnamen aus den Tags abgeleitet. Unvollständige Angaben erhalten das Attribut \code{needs\_review=true}, wenn kein eindeutiger Abgleich möglich ist. Die Extraktion erfolgt entweder direkt über im Tag hinterlegte Informationen (\code{firstname}, \code{lastname}) oder – falls diese fehlen – anhand der im Attribut gespeicherten \code{offset}- und \code{length}-Werte im zugehörigen Textabschnitt. Zusätzlich werden bei Bedarf das Geschlecht sowie ein möglicher Titel heuristisch aus dem Textkontext abgeleitet. Die Funktion gibt eine Liste von Dictionaries zurück, die jeweils eine potenziell relevante Person beschreiben. Es handelt sich hierbei um einen vorbereitenden Zwischenschritt; die Daten sind noch nicht dedupliziert oder strukturell validiert.
-  
-  \item \textbf{extract\_organization\_from\_custom~(~)}: Diese Funktion erkennt Organisationen (z.B. \enquote{Männerchor Murg}) in den XML-Anmerkungen. Sie produziert die Variable \code{raw-string}, die in späteren Verarbeitungsschritten mit bekannten Organisationen abgeglichen wird. 
+\item \textbf{extract\_person\_from\_custom~(~)} erkennt Personen anhand expliziter Namensangaben im XML-Tag (\code{firstname}, \code{lastname}) oder, falls diese fehlen, heuristisch über Offset-basierte Textsegmente. Die Namen werden mit \code{split\_name\_string()} zerlegt und ggf.\ durch \code{correct\_swapped\_name()} korrigiert. Zusätzlich werden Titel \footnote{z.B. \enquote{\texttt{Herr}}, \enquote{\texttt{Fräulein}}} sowie Rollen\footnote{z.B.\ \enquote{\texttt{Führer}}, \enquote{\texttt{Schneiderin}}} identifiziert und in strukturierter Form gespeichert. Der Abgleich mit bekannten Personen erfolgt über die Funktion \code{match\_person()}, die Fuzzy-Matching und ID-Zuweisung auf Basis einer CSV-basierten Groundtruth durchführt. Bei unvollständigen Matches wird das Feld \code{needs\_review=true} gesetzt. Als ergänzender Mechanismus dient \code{fallback\_match\_by\_familyname\_and\_gender~(~)}, um die Nodegoat-ID einer weiblichen Personen bei fehlendem Vornamen dennoch zu identifizieren\footnote{z.B. um \texttt{\enquote{Frau Zimmermann}} nicht mit \code{\enquote{Alfons Zimmermann} zu matchen}}.
 
-  \item \textbf{extract\_place\_from\_custom~(~)}: Analog zur Personenerkennung werden Ortsnamen anhand der Offset-Daten aus dem Text extrahiert. Die Funktion übergibt die Einträge an eine vorbereitete \code{PlaceMatcher}-Instanz, die auf Basis von Groundtruth-Daten sowie ggf. externer APIs (GeoNames, Wikidata) einen Abgleich durchführt. Unsichere Orte werden ebenfalls mit \code{needs\_review} versehen.
-  
-  \item \textbf{extract\_date\_from\_custom~(~)}: Die Funktion erkennt Datumsangaben (z.B. \enquote{1. Januar 1943}) und normalisiert sie bei Bedarf. In einem späteren Schritt werden identische Daten zusammengeführt und gezählt (\code{combine\_dates()}), um Mehrfachnennungen zu erfassen.
+\item \textbf{extract\_organization\_from\_custom~(~)} verarbeitet Custom-Tags der Form \code{organization} oder \code{org}. Die Funktion extrahiert über Offset-Angaben den relevanten Textabschnitt und identifiziert zusätzlich eine potenzielle \code{wikidata\_id} mit Hilfe der Hilfsfunktion \code{extract\_wikidata\_id~(~)}. Die resultierenden Objekte enthalten strukturierte Felder für Name, Position, Wikidata-ID sowie Ort und Organisationstyp. Die Einträge werden dann mit \code{\nameref{subsection:organization_matcher}} gegen eine Groundtruth-Organisationstabelle validiert.
+
+\item \textbf{extract\_place\_from\_custom~(~)} ist zuständig für die Extraktion von Ortsnamen aus Custom-Tags der Form \code{place}. Basierend auf den Offset-Positionen wird der Ortstext extrahiert und über eine Instanz des \code{\nameref{subsec:place_matcher_chapter}}-Moduls mit bekannten Orten abgeglichen. Dabei werden GeoNames- und Wikidata-Daten einbezogen. Treffer werden anhand eines Score-Werts bewertet und mit Feldern wie \code{matched\_name}, \code{geonames\_id} oder \code{confidence} angereichert. Auch fehlerhafte oder nicht eindeutig zuordenbare Orte werden zurückgegeben, um eine nachträgliche manuelle Validierung zu ermöglichen.
+
+\item \textbf{extract\_date\_from\_custom~(~)} erkennt Datumsangaben anhand typischer Custom-Tag-Strukturen. Dabei wird das Datum aus dem Text extrahiert und in eine standardisierte Zeichenkette überführt. Die extrahierten Daten werden später zur Zählung und semantischen Kontextualisierung genutzt.
+
+\item \textbf{parse\_custom\_attributes~(~)} Diese Hilfsfunktion übernimmt die Umwandlung der Custom-Attributinhalte (z.B. \code{offset:10; length:12}) in strukturierte Dictionaries. Sie bildet die Grundlage für alle weiteren Extraktionsfunktionen und sorgt für eine einheitliche Zugriffsebene auf die annotierten Positionsdaten.
 \end{itemize}
 
-Alle extrahierten Custom-Tags werden in einem strukturierten Dictionary gesammelt, das unter anderem folgende Schlüssel enthält: \code{"persons"}, \code{"roles"}, \code{"places"}, \code{"organizations"}, \code{"dates"}. Diese Struktur dient als zentrale Datenquelle für die nachfolgende Entitätenanreicherung, Deduplikation und Netzwerkanalyse.
+Die in \code{extract\_custom\_attributes()} erkannten Entitäten werden in einem standardisierten Dictionary gespeichert, das fünf zentrale Schlüssel enthält: \code{persons}, \code{roles}, \code{organizations}, \code{places} und \code{dates}. Dieses Dictionary bildet die Basis für nachgelagerte Validierungsschritte, die Deduplikation der Entitäten sowie die finale Konvertierung in ein BaseDocument-konformes JSON-Schema.
+
+\subsubsection{Orchestrierungsfunktion}
+\code{process\_transkribus\_file()} ist der Kern der Dokumentenverarbeitung. Hier werden alle Module gebündelt aufgerufen, die Informationen der Verarbeitungsschritte abgefragt, und in das BaseDokument final zusammengefügt. Diese Orchestrierung erfolgt in insgesamt 18 Schritten, die nachfolgend erläutert werden sollen. 
+
+\paragraph{1. XML-Verarbeitung und Dokument-Identifikation}
+Das XML-Dokument wird mit \code{ET.parse()} geladen und in ein Elementbaumobjekt \code{root} überführt. Danach ermittelt \code{\nameref{subsection:type_matcher}} den Dokumenttyp, während \code{\nameref{subpara:extract_metadata_from_xml}} die extrahierten Metadaten liefert.
+
+\paragraph{2. Transkriptextraktion}
+Der mit \nameref{subpara:extract_text_from_xm} aus dem XML extrahierte Transkriptionstext wird zu einem fortlaufenden Fließtext zusammengesetzt. Dokumente mit zu kurzem oder fehlendem Text werden an dieser Stelle ausgeschlossen (\code{return None}).
+
+\paragraph{3. Raw\_author und Raw\_recipient}
+Die Funktionen \code{match\_authors()} und \code{match\_recipients()} aus dem Modul \code{\nameref{subsection:letter_metadata_matcher}} liefern potenzielle Verfasser:innen und Adressat:innen. Die Ausgabe dieser Funktionen kann in unterschiedlichen Formaten erfolgen – als \code{Person}-Instanz, als \code{dict} mit Namensfeldern oder als Liste solcher Elemente.
+
+Zur Vereinheitlichung und robusten Weiterverarbeitung werden alle Rückgaben in einheitliche \code{List[Person]}-Objekte überführt. Dabei wird für jedes Element geprüft, ob es sich bereits um eine gültige Instanz der Klasse \code{Person} handelt, oder ob es über \texttt{code.from\_dict()} aus einem Dictionary erzeugt werden muss. Diese Zwischenspeicherung in \code{temp\_authors} und \code{temp\_recipients} dient als Grundlage für spätere Validierungs-, Deduplikations- und Anreicherungsprozesse innerhalb der Pipeline.
+
+\paragraph{4. LLM-gestützte Verfeinerung} \
+\texttt{infer\_authors\_recipients()} verwendet ein Sprachmodell zur Klassifikation von Personenrollen auf Basis des Textkontexts. \texttt{ensure\_author\_recipient\_in\_mentions()} stellt sicher, dass alle erkannten Personen auch in \texttt{mentioned\_persons} auftauchen.
+
+\paragraph{5. Rollenanreicherung für Autor:innen} \
+\texttt{assign\_roles\_to\_known\_persons()} weist bekannten Personen basierend auf Textkontext ihre Rollen zu. Diese werden direkt in die Objekte der \texttt{authors}-Liste eingetragen.
+
+\paragraph{6. Extraktion aus Custom-Tags} \
+Die Funktion \texttt{extract\_custom\_attributes()} durchsucht XML-Custom-Tags nach annotierten Entitäten. Ergänzend erkennt \texttt{extract\_standalone\_roles()} kontextuell verwendete Rollenbezeichnungen ohne direkte Personenbindung.
+
+\paragraph{7. Organisationen im Fließtext} \
+Zusätzlich zu Custom-Tags werden Organisationen direkt im Fließtext mittels \texttt{match\_organization\_from\_text()} identifiziert und in die Datenstruktur übernommen.
+
+\paragraph{8. Personenanreicherung und Deduplikation} \
+Rollenbezeichnungen innerhalb von Tokens (z. B. \enquote{Dirigent Maier}) werden durch \texttt{extract\_role\_in\_token()} erkannt. \texttt{deduplicate\_persons()} entfernt doppelte Einträge, und \texttt{get\_best\_match\_info()} gleicht mit bekannten Personenprofilen ab.
+
+\paragraph{9. Autor-Rückübertragung} \
+Zur Verbesserung der Datenqualität werden fehlende Felder bei \texttt{authors} aus den angereicherten Personendaten (\texttt{enriched\_persons}) ergänzt.
+
+\paragraph{10. Logging neuer Personen} \
+Nicht in der Groundtruth enthaltene Personen werden für spätere Kontrolle im Logfile vermerkt.
+
+\paragraph{11. Konvertierung zu \texttt{Person}-Objekten} \
+Sämtliche angereicherten und nicht verworfenen Personeninformationen werden in valide Instanzen der Klasse \texttt{Person} überführt und der Liste \texttt{mentioned\_persons} hinzugefügt.
+
+\paragraph{12. Organisationen verarbeiten} \
+Die Liste der Organisationen wird in Instanzen der Klasse \texttt{Organization} übertragen und entsprechend normalisiert.
+
+\paragraph{13. Orte deduplizieren und zuordnen} \
+Ortsangaben werden durch \texttt{place\_m.deduplicate\_places()} bereinigt und in Instanzen der Klasse \texttt{Place} überführt.
+
+\paragraph{14. Ereignisse extrahieren} \
+Die Funktion \texttt{extract\_events\_from\_xml()} identifiziert strukturierte Ereignisse aus den XML-Tags.
+
+\paragraph{15. Konstruktion des \texttt{BaseDocument}} \
+Alle extrahierten und angereicherten Informationen werden in einem strukturierten \texttt{BaseDocument}-Objekt gebündelt.
+
+\paragraph{16. Zweite Rollenanreicherung (Autoren und Empfänger)} \
+Rollen und Rollenschemata werden erneut über \texttt{assign\_roles\_to\_known\_persons()} ermittelt. \texttt{flatten\_organisation\_entry()} sorgt für saubere Strukturen bei verknüpften Organisationen.
+
+\paragraph{17. Finaler Deduplikationsschritt} \
+\texttt{deduplicate\_and\_group\_persons()} konsolidiert die Entitätenlisten endgültig. \texttt{infer\_gender\_for\_person()} füllt ggf. fehlende Geschlechtsangaben. Auf Basis von ID oder Score werden die finalen \texttt{authors} und \texttt{recipients} bestimmt.
+
+\paragraph{18. Validierung und Speicherung} \
+Das erstellte Dokument wird durch \texttt{validate\_extended()} validiert. Bei Erfolg erfolgt die Ausgabe als JSON-Datei. Die Funktion \texttt{update\_total\_json()} aktualisiert das zentrale Gesamtverzeichnis \texttt{total\_json.json}.
 
 
 
-Zweck: Parsen der XML-Datei und strukturierte Extraktion von Text, Metadaten und Custom-Tags.
-\begin{itemize}
-\item \texttt{extract\_metadata\_from\_xml~(~)}
-\item \texttt{get\_document\_type~(~)}
-\item \texttt{extract\_text\_from\_xml~(~)}
-\item \texttt{extract\_custom\_attributes~(~)} mit:
-  \begin{itemize}
-  \item \textbf{extract\_and\_prepare\_persons~(~)}: Diese Funktion bildet das zentrale Anreicherungsmodul für alle zuvor extrahierten Personeninformationen. Sie übernimmt die von \code{extract\_person\_from\_custom()} zurückgegebenen Rohdaten (\code{raw\_persons}) und führt eine mehrstufige Weiterverarbeitung durch. Zunächst werden mit Hilfe von \code{split\_and\_enrich\_persons()} die Namen tokenisiert, normalisiert und durch Fuzzy-Matching mit den bekannten Personen aus der Groundtruth abgeglichen. In einem zweiten Schritt ergänzt die Funktion \code{assign\_roles\_to\_known\_persons()} passende Rolleninformationen aus dem Fließtextkontext. Anschliessend werden diese Informationen zusammengeführt, Dubletten entfernt und gleichnamige Personen gruppiert. Die bereinigte Personenliste wird dann auf potenzielle Autor:innen und Empfänger:innen hin analysiert. Dabei erfolgt die Zuweisung auf Basis textueller Heuristiken und Rollenkennzeichnungen. Das Ergebnis dieser Funktion ist eine dreiteilige Rückgabe: \code{mentioned\_persons}, \code{authors} und \code{recipients} – jeweils als strukturierte Liste von validierten Personenobjekten. Diese bilden die Grundlage für die finale JSON-Ausgabe.
 
-  \item \texttt{extract\_place\_from\_custom~(~)}
-  \item \texttt{extract\_organization\_from\_custom~(~)}
-  \item \texttt{extract\_date\_from\_custom~(~)}
-  \end{itemize}
-\end{itemize}
 
-\subsubsection*{3. Named Entity Recognition}
+
+
+
+
+
+
+
 Zweck: Erkennung, Anreicherung und Zuordnung von Personen, Rollen, Orten, Organisationen und Ereignissen.
 \begin{itemize}
 \item \texttt{mentioned\_places\_from\_custom\_data~(~)}
@@ -1658,7 +1760,7 @@ Zweck: Erkennung, Anreicherung und Zuordnung von Personen, Rollen, Orten, Organi
 \end{itemize}
 
 
-\subsubsection*{4. Deduplikation und Validierung}
+\subsubsection{Deduplikation und Validierung}
 Zweck: Zusammenführung mehrfach erkannter Entitäten und finale Konsistenzprüfung.
 \begin{itemize}
 \item \texttt{deduplicate\_and\_group\_persons~(~)}
@@ -1669,7 +1771,7 @@ Zweck: Zusammenführung mehrfach erkannter Entitäten und finale Konsistenzprüf
 \item \texttt{validate\_extended~(~)}
 \end{itemize}
 
-\subsubsection*{5. JSON-Export und Logging}
+\subsubsection*{JSON-Export und Logging}
 Zweck: Erstellung der finalen JSON-Dateien im gewünschten Basisschema und Protokollierung von problematischen Einträgen.
 \begin{itemize}
 \item Erstellung von \texttt{BaseDocument~(~)}
@@ -1681,7 +1783,7 @@ Zweck: Erstellung der finalen JSON-Dateien im gewünschten Basisschema und Proto
 
 JSon Export weil menschenlesbar und leichte Abwandelbarkeit in andere Formate.
 
-\subsubsection*{6. Review-Prozess}
+\subsubsection{Review-Prozess}
 Zweck: Markierung und Protokollierung unsicherer, unvollständiger oder nicht eindeutig gematchter Entitäten für eine spätere manuelle Überprüfung.
 
 \begin{itemize}
@@ -1770,7 +1872,7 @@ Das Modul \code{document\_schemas.py} definiert die zentrale Schema- und Datenst
 zur Modellierung aller extrahierten Inhalte aus den Transkribus-Dokumenten des Projekts. Es gewährleistet die einheitliche Repräsentation, 
 Serialisierung und Validierung der im Projekt verarbeiteten Entitäten und ihrer Relationen. Die definierten Klassen bilden die Grundlage für die JSON-Ausgabe der angereicherten Dokumente und dienen zugleich der Nachvollziehbarkeit und strukturierten Weiterverarbeitung in externen Anwendungen wie Nodegoat.
 
-\paragraph{Person}\\
+\paragraph{Person}
 Die Klasse \code{Person} bildet Einzelpersonen ab, wie sie in den Briefen, Postkarten oder Protokollen erscheinen. 
 Neben klassischen Namensfeldern (\code{forename}, \code{familyname}, \code{title}) unterstützt die Klasse auch 
 alternative Namen (\code{alternate\_name}) und Rolleninhalte. Die Rollenverarbeitung erfolgt in einem zweistufigen Verfahren:
@@ -1796,7 +1898,7 @@ Das Feld \code{confidence} beschreibt die Modell-Sicherheit der Zuordnung, z.B.b
 Ein optionales \code{needs\_review}-Flag sowie ein \code{review\_reason} ermöglichen die gezielte Markierung unsicherer oder 
 maschinell nur teilweise auflösbarer Fälle.
 
-\paragraph{Organization}\\
+\paragraph{Organization}
 Die Klasse \code{Organization} dient der Abbildung aller im Text genannten Vereine, Gruppen oder Institutionen, 
 darunter z.B. Gesangsvereine, NS-Organisationen. Neben dem Namen, Typ und eventuellen 
 Alternativnamen (\code{alternate\_names}) wird insbesondere die eindeutige \code{nodegoat\_id} gespeichert. Für den Spezialfall 
@@ -1805,7 +1907,7 @@ werden diese aktuell ausschliesslich über die Groundtruth abgerufen. Über \cod
 werden auch in der Klasse \code{Organization} Qualität und Unsicherheiten der Zuordnung nachvollziehbar gemacht. 
 Organisationen können zusätzlich über das Feld \code{associated\_place} mit einem geographischen Ort verknüpft werden, z.B. \enquote{Männerchor Murg} mit \enquote{Murg}.
 
-\paragraph{Place}\\
+\paragraph{Place}
 Die Klasse \code{Place} strukturiert geographische Orte, wie sie z.B. als Absender-, Empfänger- oder 
 Veranstaltungsorte im Dokument auftreten. Unterstützt werden neben der Hauptbezeichnung (\code{name}) 
 auch alternative Formen (\code{alternate\_place\_name}), sowie standardisierte Identifikatoren aus Geonames, 
@@ -1814,13 +1916,13 @@ Wikidata und Nodegoat. Diese Orte sind über eigene Felder sowohl im Metadatenbl
 Wie bei Personen, kann auch bei Orten 
 über das Flag \code{needs\_review} eine manuelle Überprüfung unsicherer Matches angestossen werden.
 
-\paragraph{Event}\\
+\paragraph{Event}
 Ereignisse werden über die Klasse \code{Event} abgebildet. Diese enthält einen Namen, eine optionale Beschreibung, 
 Datumsangaben und Referenzen auf beteiligte Personen, Orte und Organisationen. Über das Feld \code{inferred} wird angegeben, 
 ob das Ereignis direkt im Text genannt oder aus dem Kontext erschlossen wurde. Die genaue Event-Extraktion findet sich 
 in \nameref{subsection:event_matcher}.
 
-\paragraph{BaseDocument}\\
+\paragraph{BaseDocument}
 Alle genannten Entitäten werden im zentralen Objekttyp \code{BaseDocument} zusammengeführt. Diese Klasse bildet 
 die Grundlage für die strukturierte Speicherung jedes einzelnen Dokuments und enthält unter anderem:
 \begin{itemize}
@@ -1833,7 +1935,7 @@ die Grundlage für die strukturierte Speicherung jedes einzelnen Dokuments und e
 
 Zur automatisierten Konvertierung vom oder ins JSON-Format stehen die Methoden \code{to\_dict()}, \code{from\_dict()}, \code{to\_json()} und \code{from\_json()} zur Verfügung. Darüber hinaus erlaubt die Methode \code{validate()} eine strukturierte Prüfung der Einträge auf Konsistenz und Vollständigkeit, etwa im Hinblick auf unvollständige Daten oder ungültige Formate.
 
-\paragraph{Documenttype}\\
+\paragraph{Documenttype}
 Für die wichtigsten Dokumenttypen existieren spezialisierte Unterklassen wie \code{Brief}, 
 \code{Postkarte} oder \code{Protokoll}, die zusätzliche Felder (z.B.\code{greeting}, \code{postmark}, \code{meeting\_type}) aufnehmen. 
 Diese können über die zentrale sogenannte \enquote{factory function} \code{create\_document()} automatisch erzeugt werden, wenn ein Dokumenttyp erkannt wurde. 
@@ -1844,23 +1946,22 @@ entspricht.
 \subsubsection{\_\_init\_\_.py}\label{subsec:init_module}
 Das Modul \code{\_\_init\_\_.py} fungiert als zentrale Importschnittstelle für alle Funktionalitäten der Projektpipeline. Es aggregiert sämtliche zentralen Komponenten aus den verschiedenen Teilmodulen (z.B. \code{person\_matcher.py}, \code{document\_schemas.py}, \code{place\_matcher.py}) und stellt sie über das \code{\_\_all\_\_}-Array einheitlich zur Verfügung. Dadurch wird eine übersichtliche, modulübergreifende Nutzung der wichtigsten Funktionen und Klassen in anderen Programmteilen (z.B. in \code{transkribus\_to\_base.py}) ermöglicht.
 Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle notwendigen Komponenten mit einem einzigen Importbefehl zugreifen, ohne die internen Modulpfade kennen zu müssen. Die Datei übernimmt damit die Funktion einer projektinternen API und gewährleistet eine saubere Trennung zwischen interner Modulstruktur und externer Nutzung. 
-
 \newpage
 \begin{minipage}[t]{0.35\textwidth}
-   \setstretch{1.5}
-   \justifying%
+  \setstretch{1.5}
+  \justifying%
 
   \subsubsection{Person\_matcher.py}\label{subsec:person_matcher.py}
 
-  Hier steht eine menge schöner Text
-
-  \end{minipage}%
+  Die Erkennung und das Matching von Personen stellt bei weitem die grösste Herausforderung in diesem Projekt dar. Wie vorausgehend bereits angedeutet, gibt es eine Vielzahl von Möglichkeiten, eine Person in einem Text zu benennen oder nur Anzudeuten, was ein zuverlässiges Matching erschwert. Oft ist der Kontext relevant um Personen eindeutig zu identifizieren. Hinzu kommen ganz praktische Probleme. Ein Stringabgleich ist beispielsweise kasus- und genussensitiv. Bei einer Match-Prüfung müssen die   \end{minipage}
+  
 %================================
 %Person PROZESSDIAGRAMM
 %================================
   \hfill
 \begin{minipage}[t]{0.6\textwidth}
-  \vspace*{0.7cm} %► schiebt alles um 0.7cm nach unten
+\leavevmode
+  %\vspace*{0.7cm} %► schiebt alles um 0.7cm nach unten
 \centering
 \resizebox{\textwidth}{!}{
 \begin{tikzpicture}
@@ -2024,10 +2125,152 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
   }
   \captionof{figure}{\\\small Oben links: \small Prozessdiagramm für \code{Personen\_matcher.py},\\{\small Oben rechts: Pipelineübersicht}}\label{fig:person_matcher.py}
 \end{minipage}
+\vspace{1em}
+\justifying
+
+Algorithmen daher ein Wort im Nominativ Maskulinum genau so erkennen wie im Akkusativ Femininum. Daraus ergibt sich für den Person\_Matcher allein auf heurisitscher Ebene eine grosse Komplexität, die im Folgenden lediglich andeutungsweise dargelegt werden kann.
+  
+Im Laufe dieser Arbeit sind hierfür vier Parameter entwickelt worden, die diese Zuordnung ermöglichen sollen:
+\textbf{Vorname,
+Nachname,
+Rolle,
+Geschlecht} 
+
+Der Aufbau des Moduls gliedert sich wie folgt:\\[0.5em]
+\begin{minipage}[t]{0.45\textwidth}
+  \setstretch{1.5}
+  \justifying
+  \begin{enumerate}\small{
+    \item Blacklist \& Configuration 
+    \item Initialisierung
+    \item Namen- und Titelerkennung
+    \item Levenshtein-Fallback
+    \item Fuzzy-Matching}
+  \end{enumerate}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+  \setstretch{1.5}
+  \vspace*{0cm}
+  \justifying
+  \begin{enumerate}
+    \setcounter{enumi}{5}
+    \small{
+    \item Matching
+    \item \textit{Extract Person Data} mit Rolleninfos
+    \item Split und Enrichment
+    \item Deduplication 
+    \item Detail‑Info zum besten Match}
+  \end{enumerate}
+\end{minipage}
+\vspace*{0.4cm}\\
+
+Die nachfolgende Erläuterung des Moduls orientiert sich eng an dessen Aufbau im Quellcode, um die interne Struktur und Funktionalität möglichst transparent nachzuvollziehen.
+
+\paragraph{Blacklist \& Configuration}\label{paragraph:Pers_match/Blacklist}
+
+In der Initialisierung des Moduls \code{person\_matcher.py} werden neben der Groundtruth-Tabelle \texttt{export-person.csv} eine Vielzahl domänenspezifischer Konfigurationslisten geladen, um die Erkennung und Validierung von Personennamen zu unterstützen.
+\code{NICKNAME\_MAP} liefert beispielsweise ein Dictionary mit üblichen deutschen Spitznamen.\footnote{Durch ChatGPT generiertes Mapping geläufiger deutscher Vor- und Kosenamen auf ihre kanonische Form, einige Fälle sind händisch ergänzt}
+Diverse Blacklists statuieren Worte, die beispielsweise nicht menschlich sind (bsp. \texttt{"freundliche Grüsse")}. Zu den Blacklists zählt auch \code{Unmatchable\_Single\_Names}, die auf nicht eindeutig verknüpfbare Namen hinweist.\footnote{\texttt{"Otto"} oder \texttt{"Döbele}" sind so häufig vorkommende Namen, dass sie alleine nicht für ein \nameref{paragraph:Pers_match/Matching} ausreichen} \code{Pronoun} und nach Geschlecht zusammengefasste \code{Title\_Tokens}\footnote{\code{TITLE\_TOKENS = MALE\_TITLE\_TOKENS | FEMALE\_TITLE\_TOKENS | NEUTRAL\_TITLE\_TOKENS}} markieren Tokens zur gezielten Weiterverarbeitung in nachgelagerten Matching- und Anreicherungsschritten. Alle Ausschlusslisten werden in \code{NON\_PERSON\_TOKENS} zusammengeführt und dienen der Negativselektion im gesamten Matchingprozess. 
+
+\paragraph{Thresholds, CSV-Laden und Groundtruth-Erstellung}\label{paragraph:Pers_match/Threstholds}
+
+FÜr das Matching werden zwei essentielle Thresholds definiert, die erreicht werden müssen. für \code{forename} muss eine 80\%  Ähnlichkeit, für \code{familyname} eine 85\% Ähnlichkeit erreicht werden. Diese Zahlen ergeben sich durch unterschiedliche Tests. Sie bieten einen Kompromiss aus Toleranz gegenüber beispielsweise OCR-Fehlern heraus, und liefern dennoch präzise Trefferquoten. Alle Personendaten werden als Liste von Dictionaries\footnote{\code{List[Dict[str, str]]}} aus der Groundtruth geladen. Sie werden in die Variablen \code{KNOWN\_PERSONS}, \code{GROUNDTRUTH\_SURNAMES} und \code{GROUNDTRUTH\_FORENAMES} übergeben, um später gegen die genannten Thresholds zu testen.
+
+\paragraph{ Namensnormalisierung und Titelerkennung}\label{paragraph:Pers_match/Normalisierung}
+
+Für eine konsistente Weiterverarbeitung werden alle erkannten Namenstrings standardisiert, und auf mögliche Rollenstrings überprüft, weil Rollen oft durch das LLM als Person mit markiert werden. Daher durchlaufen die Namestrings zwei Normalisierungen (normalize\_name\_string und normalize\_name). Erstere bereinigt den Text grob und trennt Titel vom Rest. Da in den Quellen Initialen oft vorkommen\footnote{Bsp.:\texttt{"A. Zimmermann"}}, werden zwischen den beiden Funktionen ebenfalls auf eine Initiale geprüft.
+Die Funktion \code{normalize\_name()} extrahiert dann eventuell vorhandene Titel mithilfe eines dynamisch aus \code{TITLE\_TOKENS} generierten regulären Ausdrucks. Anschliessend werden Klammern entfernt, Unicode-Zeichen vereinheitlicht (NFKD-Normalisierung), Diakritika\footnote{Sonderbuchstaben, Bsp: \texttt{ä, ê, š, ç}} gelöscht und Sonderzeichen bereinigt.
+Die verbleibenden Namensbestandteile werden in Vor- und Nachname aufgeteilt. Dabei berücksichtigt die Funktion auch Nickname-Mappings, indem erkannte Kurzformen wie \texttt{Hansi} automatisch in ihre kanonische Form \texttt{Johannes} überführt werden. Enthält der Name nur ein Token, wird dieses als Vorname gewertet; andernfalls erfolgt eine Trennung in \code{forename} und \code{familyname}. Das Ergebnis ist ein Dictionary mit den Feldern \code{title}, \code{forename} und \code{familyname}, die in späteren Matching- und Review-Schritten verwendet werden. So wird mit \code{normalize\_name\_string} aus \texttt{"Dr. Hansi Müller"}
+→ \texttt{\code{forename}:johannes, \code{lastname}: müller, \code{title}: "Dr"}
+
+\paragraph{ Levenshtein-Fallback}\label{paragraph:Pers_match/Fallback}
+
+Nach der Namensnormalisierung folgen zwei zentrale Funktionen zur Fehlerkorrektur und Heuristik-basierter Umkehrung von Namensbestandteilen.
+
+Die Funktion \code{ocr\_error\_match()} verwendet die Levenshtein-Distanz zur Berechnung der Ähnlichkeit zwischen einem gegebenen Namen und einer Liste möglicher Kandidaten, um einzelne Tokens gegen bekannte Groundtruth-Namen zu prüfen. Dabei wird der Eingabename \code{name} zunächst in Kleinschreibung normalisiert (\code{name\_lower}), ebenso wie jeder Kandidat aus der Vergleichsliste (\code{cand\_lower}).
+Obwohl beide Seiten formal gleich behandelt werden, liegt der Unterschied in ihrer Herkunft: \code{name\_lower} entstammt der unkorrigierten Texterkennung und kann daher auch Schreibfehler beinhalten, während \code{cand\_lower} aus kuratierten Groundtruth-Listen stammt und damit als Referenz dient.
+Die Distanz zwischen beiden wird per \code{Levenshtein.distance()} berechnet; der beste Treffer mit der geringsten Distanz wird als Ergebnis zurückgegeben, ergänzt um einen prozentualen Score.
+
+Darauf aufbauend prüft \code{correct\_swapped\_name()}, ob Vor- und Nachname im gegebenen String möglicherweise vertauscht wurden. Dazu wird jeweils ermittelt, ob der Vorname einem bekannten Nachnamen entspricht oder umgekehrt. Neben direktem Lookup in \code{KNOWN\_FORENAMES} und \code{KNOWN\_SURNAMES} kommt hier ebenfalls ein Levenshtein-Fallback zum Einsatz, um kleine Abweichungen zu tolerieren. Wird auf diese Weise erkannt, dass eine Umkehrung wahrscheinlicher ist, wird das Tupel entsprechend getauscht zurückgegeben.
+
+
+\paragraph{ Fuzzy-Matching}\label{paragraph:Pers_match/Fuzzy}
+Um Namensähnlichkeiten robust zu erkennen, implementiert \code{fuzzy\_match\_name()} ein Fuzzy-Matching-Verfahren auf Basis des \code{fuzz.ratio()}-Scores. Für jedes Vergleichspaar (\code{name}/\code{candidate}) wird anschliessend ein Ähnlichkeitswert berechnet, und der beste Treffer bestimmt. Liegt der höchste Score über dem anfangs definierten Threshold, wird der entsprechende Kandidat samt Score zurückgegeben; andernfalls wird \code{None} geliefert.
+Dieses Verfahren ergänzt die Levenshtein-basierte Fehlerbehandlung um eine robustere, Token-basierte Ähnlichkeitsmessung, die auch bei Namensvarianten und OCR-Fehlern zuverlässige Resultate liefert.
+
+\paragraph{ Matching}\label{paragraph:Pers_match/Matching}
+Der \code{Person\_Matcher} verwendet nun die vorverarbeiteten Namensstrings als \code{person}, und die wahrscheinlichen Personen der Groundtruth als \code{candidate}. Gleich zu Beginn wird der \subparagraph*{Sonderfall} \textit{"nur Rolle, keine Namen"} geprüft. Wenn die Person nur eine Rolle, aber keinen Namen hat, wird ein Minimal-Objekt mit niedrigem Score zurückgegeben. Zudem erhält das Objekt dann den \code{Review-Reason}:\texttt{"Nur Rolle ohne vollständigen Namen erkannt"}.
+
+\subparagraph*{Inhalts-Filter} Es folgt zur Absicherung eine Normalisierung der Roh-(Vor-)Namen, und ein Check, ob die Strings in den Blacklists (\code{Pronoun\_Tokens},\code{Role\_Tokens}, \code{Non\_Person\_Tokens} vorkommen, um sie frühzeitig auszuschliessen. Diese Fälle liefern für \code{Match:None, 0}
+
+\subparagraph*{Unique-Name} Wenn nur der Vor- oder Nachname vorhanden ist, wird geprüft, ob der Name eindeutig in der Groundtruth vorkommt. Falls ja, wird sofort ein Match ausgegeben.
+
+\subparagraph*{Blacklist-Checks}
+
+Hier werden problematische Tokens vor dem eigentlichen Matching identifiziert und blockiert. Getestet werden \code{Non\_Person\_Tokens} und \code{Role\_Tokens} in zwei if-Blöcken und deren Vorkommen in Vor- oder Nachnamen. Im zweiten Fall (\code{if not ln and fn.lower() in ROLE\_TOKENS}) wird erkannt, ob ein Rollenbegriff fälschlich als Vorname (\code{fn}) identifiziert wurde. In beiden Fällen wird das Matching abgebrochen, die Person mit \code{match\_score = 0} und \code{confidence = "blacklist"} markiert sowie zur manuellen Nachprüfung (\code{needs\_review = True}) ausgegeben.
+
+\subparagraph*{Initialen-Check}
+Falls der Vorname \code{fn} lediglich eine Initiale darstellt, wird mit \code{is\_initial(fn)} versucht, einen passenden Eintrag in \code{candidates} zu finden. Dazu wird die Initiale (\code{init = fn[0].upper()}) mit dem ersten Buchstaben des Vornamens jedes Kandidaten verglichen und zusätzlich geprüft, ob der normalisierte Nachname (\code{ln}) mit demjenigen des Kandidaten übereinstimmt. Wird ein solcher Eintrag gefunden, wird er mit hoher Übereinstimmung (\code{match\_score = 95}) zurückgegeben.
+
+\subparagraph*{Fuzzy Matching über Vornamen und Nachnamen}
+Liegt ein Vorname \code{fn} mit mindestens drei Zeichen sowie ein Nachname \code{ln} vor, wird zunächst versucht, anhand eines Teilabgleichs zu matchen: Der Anfang des gegebenen Vornamens (\code{fn}) muss mit dem Kandidatennamen übereinstimmen, während der Nachname exakt übereinstimmt (\code{normalize\_name\_string(ln)}). In diesem Fall wird der Treffer mit einem Score von \code{89} zurückgegeben.
+
+Zusätzlich erfolgt eine \emph{Reverse-Prüfung}, um mögliche Vertauschungen von Vor- und Nachname zu erkennen. Dabei wird geprüft, ob die normalisierten ersten vier Zeichen des eingegebenen Nachnamens (\code{ln}) mit dem Vornamen eines Kandidaten übereinstimmen und gleichzeitig die normalisierten ersten vier Zeichen des eingegebenen Vornamens (\code{fn}) mit dessen Nachnamen. Voraussetzung ist ausserdem, dass nicht bereits eine Übereinstimmung von \code{fn} und \code{ln} mit den Feldern \code{forename} und \code{familyname} des Kandidaten vorliegt. Wird diese Bedingung erfüllt, werden die Namensfelder im Rückgabeobjekt vertauscht und der Match mit einem reduzierten Score von \code{88} zurückgegeben.
+
+\subparagraph*{Levenshtein-Fallback bei Namensvertauschung} 
+Zunächst wird geprüft, ob der normalisierte Vorname \code{fn} exakt mit dem eines Kandidaten übereinstimmt und der Nachname eine Levenshtein-Distanz von höchstens 1 zum Nachnamen des Kandidaten aufweist. In diesem Fall wird ein Match mit Score \code{90} zurückgegeben.
+
+Anschliessend erfolgt eine Reverse-Prüfung. Dabei wird getestet, ob der Nachname \code{ln} mit dem Vornamen eines Kandidaten übereinstimmt und der Vorname \code{fn} dem Nachnamen des Kandidaten bis auf eine maximale Levenshtein-Distanz von 1 entspricht. Das soll absichern, dass vertauschte Namensbestandteile auch mit geringen OCR-Fehlern korrekt gematched werden.
+
+
+\subparagraph{Matching über Einzelkomponenten} 
+
+Dieser Abschnitt deckt Fälle ab, in denen nur unvollständige Namensinformationen vorliegen. Ist lediglich ein Nachname vorhanden, wird ein fuzzy-Matching gegen alle Kandidaten-Nachnamen mittels \nameref{paragraph:Pers_match/Fuzzy} durchgeführt; erreicht ein Kandidat den konfigurierten Schwellenwert (\code{thr["familyname"]}), wird dieser mit dem berechneten Score übernommen. Liegen weder Vor- noch Nachname vor, aber eine Rollenbezeichnung (\code{role\_raw}), erfolgt ein Abgleich mit \code{role} und \code{alternate\_name} der Kandidaten; bei Übereinstimmung wird ein Treffer mit Score \code{80} zurückgegeben.
+
+Zusätzlich werden Namensbestandteile, die als generisch oder nicht personenspezifisch klassifiziert sind (\code{NON\_PERSON\_TOKENS}, speziell behandelt. Ist der Vorname ein solcher unerwünschter Token, aber ein Nachname vorhanden, wird dieser gegen alle \code{familyname}-Felder geprüft (Score \code{85}); umgekehrt wird bei generischem Nachnamen der Vorname geprüft. Als letzte Rückfallebene kommt \code{ocr\_error\_match()}\footnote{aus \nameref{paragraph:Pers_match/Fallback}} zum Einsatz: Ist nur ein Nachname vorhanden, wird dieser mit einer Toleranz von bis zu zwei Zeichen mit den Nachnamen aller Kandidaten verglichen; bei Übereinstimmung wird der entsprechende Treffer mit Score \code{85} übernommen. Alle Varianten markieren strukturunscharfe, aber potenziell gültige Entitäten.
+
+
+\subparagraph{Matching über Nachname und Gender}
+Dieser Abschnitt implementiert eine gender-basierte Disambiguierung, die dann greift, wenn der Nachname mit mehreren Personen übereinstimmt, aber das Geschlecht bekannt oder ableitbar ist. Zunächst wird versucht, dieses anhand von Titeln wie \code{"Frau"} oder \code{"Herr"} zu bestimmen. Ist anschliessend sowohl ein Nachname als auch ein valides Geschlecht verfügbar, werden alle Kandidaten mit identischem Nachnamen gesammelt und auf Übereinstimmung des Geschlechts gefiltert. Existiert genau ein solcher Treffer, wird dieser mit hoher Konfidenz (\code{confidence = "gender\_ln\_match"}) und einem Score von \code{95} zurückgegeben, ohne dass ein manueller Review erforderlich ist. Das Matching über Geschlecht und Nachname ist besonders wichtig, da Frauen in den Unterlagen bis auf sehr wenige Ausnahmen nie mit Vornamen genannt werden. Ohne den Geschlechtsabgleich würden sie mit (Ehe-)Männern gematched werden. Diese Funktion versucht also aktiv, gegen den Geschlechterbias in den historischen Unterlagen vorzugehen\cite[Geschlechterbias tritt bei dieser Arbeit in diversen Formen auf, \textit{Source Bias, Archival Bias, Model Bias, und Algorythic Bias}. Letzterer soll mit dieser Funktion abgeschwächt werden. Vgl.:][]{burkhardt_bias_2025}
+
+\subparagraph*{Last Fallback - Aufnahme mit Review}
+
+Falls mindestens eines der Felder \code{fn} (Vorname), \code{ln} (Nachname) oder \code{role\_raw} (Rolle) vorhanden ist, aber kein reguläres Matching möglich war, wird ein Fallback-Objekt erzeugt und zur manuellen Nachprüfung markiert (\code{needs\_review = True}). Die Funktion prüft, welche Felder fehlen, und protokolliert dies als \code{review\_reason} (z.\,B. \enquote{missing\_forename; missing\_role}).
+
+Eine Aufnahme erfolgt nur, wenn entweder der Vor- oder Nachname in einer Groundtruth-Liste vorkommt (\code{appears\_in\_groundtruth()}) oder eine Rollenbezeichnung vorhanden ist. In diesem Fall wird ein Personeneintrag mit \code{confidence = "partial-no-id"} und \code{match\_score = None} zurückgegeben. Andernfalls wird die Person vollständig verworfen.
+
+
+\paragraph{Extract Person Data mit Rolleninfos}\label{paragraph:Pers_match/Dataextract}
+
+Die Funktion \code{extract\_person\_data(row)} dient der strukturierten Aufbereitung einzelner Personeneinträge. Dafür holt sich die Funktion Informationen über die jeweilige Datenzeile (\code{row}) aus der \code{export-person.csv}. Ziel ist es, aus den Namensangaben und Metadaten ein standardisiertes Personenobjekt zu erzeugen, wie in \nameref{subsec:document_schema} beschrieben.
+
+Der übergebene Namensstring wird zu Beginn nach typischen Titeln durchsucht. Wird ein solcher Titel erkannt, wird er im Feld \code{title} gespeichert und aus dem Namensstring entfernt. Der verbleibende Name wird auf mögliche Rolleninhalte analysiert, die über \code{extract\_role\_from\_raw\_name()} aus dem \nameref{subsection:assigned_roles_module} ermittelt werden. Hierbei wird beispielsweise der String „Schriftführer Ganter“ in die Bestandteile \code{role=Schriftführer} und \code{name=Ganter} aufgetrennt.
+
+Anschliessend wird der bereinigte Namensstring in Einzelteile zerlegt. Das erste Token wird als Vorname, das letzte als Nachname interpretiert. Um typische OCR-Fehler oder Namensinversionen zu korrigieren, wird nochmal die Funktion \code{correct\_swapped\_name()} aufgerufen, welche Vor- und Nachnamen bei Bedarf vertauscht.
+
+Für den Rollenteil des Eintrags wird zunächst das Feld \code{role} aus der ursprünglichen CSV-Zeile übernommen. Falls bereits beim Parsing eine Rolle erkannt wurde, wird diese priorisiert. Der erkannte Rollentext wird dann durch \code{normalize\_and\_match\_role()} in eine standardisierte Form überführt. Über \code{map\_role\_to\_schema\_entry()} erfolgt anschliessend die semantische Abbildung auf ein normiertes Rollenschema\footnote{\code{role} ist der detektierte String, \code{role\_schema} die normalisierte Form}.
+
+Auch das Geschlecht der Person wird in diesem Schritt bestimmt. Dazu wird zunächst das übergebene Geschlechtsfeld bereinigt und vereinheitlicht. Sollte dieses keine gültige Angabe enthalten, wird als Fallback \code{infer\_gender\_for\_person()} aufgerufen. Diese Funktion versucht, das Geschlecht über den Titel oder durch Abgleich mit der Groundtruth-Liste zu ermitteln.
+
+Neben Namen, Titel, Rolle und Geschlecht werden auch zusätzliche Kontextinformationen aus der Groundtruth extrahiert, sofern vorhanden. Dazu zählen \code{alternate\_name}, der Wohnort und weitere. So kann für jedes Dokument garantiert werden, dass alle verfügbaren Daten für eine gegebenenfalls nötige manuelle Prüfung vorhanden sind. Plausibilitätsprüfungen funktionieren so unmittelbar, ohne Zwischenschritte.
+
+Die Funktion erzeugt abschliessend ein vollständiges Personenobjekt mit Attributen wie \code{confidence}, \code{match\_score} und \code{needs\_review}, die für spätere Matching- und Validierungsschritte relevant sind. Personen ohne Nodegoat-ID werden standardmässig zur manuellen Nachprüfung markiert.
+
+Zur systematischen Dokumentation unvollständiger Einträge wird zusätzlich die Funktion \code{get\_review\_reason\_for\_person()} bereitgestellt. Sie prüft, ob für die betreffende Person kritische Felder wie Vorname, Nachname oder Rolle fehlen und erzeugt eine entsprechende Review-Kennzeichnung. 
+
+Für Sonderfälle, bei denen keine Namen, sondern lediglich Rollentitel wie \code{„Vereinsführer“} erkannt wurden, dient die Funktion \code{detect\_and\_convert\_role\_only\_entries()}. Sie prüft, ob das einzige übergebene Token einem bekannten Rollenschema entspricht. Ist dies der Fall, wird eine strukturierte Rollenangabe ohne Namensinformation erzeugt und ebenfalls zur Überprüfung markiert.
+
+Schliesslich wird in Zusammenarbeit mit dem \code{Assigned\_Roles\_Module} mit \code{extract\_metadata\_names()} eine Funktion bereitgestellt, um auch aus dem Fliesstext zusätzliche Personenhinweise zu extrahieren. Hierbei kommen wieder RegEx zum Einsatz, die typische Anredeformen oder Signaturen am Briefende erkennen und zur weiteren Analyse aufbereiten.
 
 
 
 
+\paragraph{ Split und Enrichment}\label{paragraph:Pers_match/Split&Enrich}
+
+\paragraph{ Deduplication }\label{paragraph:Pers_match/Dedub}
+
+\paragraph{ Detail‑Info zum besten Match}\label{paragraph:Pers_match/DetailBestMatch}
 
 
 
@@ -2041,7 +2284,7 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
 
   \subsubsection{Assigned\_Roles\_Module.py}\label{subsection:assigned_roles_module}
 
-  Hier steht eine menge schöner Text
+  Hier steht eine Menge schöner Text
 
   \end{minipage}%
 % ================================
@@ -2189,8 +2432,10 @@ Auf diese Weise kann das Hauptprogramm \code{transkribus\_to\_base.py} auf alle 
   \justifying%
 
   \subsubsection{place\_matcher.py}\label{subsec:place_matcher_chapter}
+    
+  Hier steht eine Menge schöner Text
 
-  Hier steht eine menge schöner Text
+  Ortsnamenserkennung basiert stark auf GT, beispielsweise Murg 26 unterschiedliche Alternativnamen, daher Code vergleichsweise kurz
 
   \end{minipage}%
 % ================================
@@ -2563,10 +2808,10 @@ Die Funktion \code{match\_organization\_from\_text()} erweitert diesen Vergleich
 
 \subsubsection{letter\_metadata\_matcher.py}\label{subsection:letter_metadata_matcher}
 
-Der letter\_metadata\_matcher widmet sich auf der inhaltlichen Metadaten Briefen und Postkarten. Da diese Dokumententypen sehr ähnlich strukturiert sind, liegt der Fokus dieses Moduls auf der Extraktion ihrer Daten. Vornehmlich hier Informationen über die Autorenschaft, den Empfängern und Empfängerinnen sowie deren Rollen. Darüber hinaus sollen auch Daten und Orte nachvollzogen werden, mit einem Fokus auf den Absende- und Empfangsort. 
+Der letter\_metadata\_matcher widmet sich auf der Extraktion inhaltlicher Metadaten aus Briefen und Postkarten. Vornehmlich hier Informationen über die Autorenschaft, den Empfängern und Empfängerinnen sowie deren Rollen. Darüber hinaus sollen auch Daten und Orte nachvollzogen werden, mit einem Fokus auf den Absende- und Empfangsort. Da diese Briefe und Postkarten sehr ähnlich strukturiert sind, liegt der Fokus dieses Moduls auf der Extraktion ihrer Daten.
 
 \paragraph{Pattern Matching in Briefen und Postkarten}
-Die zentrale Annahme ist, dass diese Metadaten meist im Textkörper selbst enthalten sind und anhand wiederkehrender sprachlicher Muster bzw. Indikatoren erkannt werden können. Ein Autor oder eine Autorin beendet einen Brief beispielsweise in der Regel mit einer Grussformel. Die Pipeline macht sich das zunutze, indem diese Patterns als Marker in einem String dienen, und zusätzlich zu den Custom-Tags im XML File auf eine Autorenschaft hinweisen können. Diese Marker sind in fünf Listen auf RegEx-Basis notiert.
+Die zentrale Annahme ist, dass diese Metadaten meist im Textkörper selbst enthalten sind und anhand wiederkehrender sprachlicher Muster bzw. Indikatoren erkannt werden können. Ein Autor oder eine Autorin beendet einen Brief beispielsweise in der Regel mit einer Grussformel und einer Unterschrift. Die Pipeline macht sich das zunutze, indem diese Patterns als Marker in einem String dienen, und zusätzlich zu den Custom-Tags im XML File auf eine Autorenschaft hinweisen können. Diese Marker sind in fünf Listen auf RegEx-Basis notiert.
 \begin{itemize}
     \item \code{GREETING\_PATTERNS} als Schlussformel in einem Brief zeigt die Autorenschaft an. \\Beispiel: \texttt{mit freundlichen Grüßen} oder \texttt{Heil Hitler}.
     \item \code{RECIPIENT\_PATTERNS} Erkennt direkte Anreden von Empfänger:innen im Text. \\Beispiel: \texttt{An Herrn/Frau} oder \texttt{Lieber Fritz}
@@ -2585,13 +2830,14 @@ Da Autoren in der Regel am Briefende unterschreiben, werden die Zeilen des Trans
 Findet sich keine Rollenzeile, durchsucht die Funktion den Text nach einer Schlussformel basierend auf den in \code{GREETING\_PATTERNS} definierten Mustern. Der Textabschnitt, der auf diese Grussformel folgt, wird im nächsten Schritt nach Signaturen durchsucht. Die Auswertung erfolgt dabei in mehreren aufeinanderfolgenden Prüfungen.
 
 Zunächst wird versucht, eine Kombination aus Rolle und Nachname zu identifizieren\footnote{z.B. \texttt{Der Vereinsführer Zimmermann}}.
-Alternativ wird geprüft, ob Rolle und Name in zwei aufeinanderfolgenden Zeilen vorkommen.
-Weitere Varianten umfassen typische Signaturformate wie \texttt{\enquote{Max Ganter, Schriftführer}} oder Namensinitialen wie \texttt{\endquote{M. Ganter}}.
-Auch vollständige Namen (Vorname + Nachname) oder einzelne Namen (z.B. nur \texttt{\enquote{Fritz}}) werden erkannt und mit Platzhaltern übernommen.
+Alternativ wird geprüft, ob Rolle und Name in zwei aufeinanderfolgenden Zeilen vorkommen. In Fällen, in denen sowohl Rolle und Name in benachbarten Zeilen auftreten – etwa \texttt{"Der Vereinsführer"} gefolgt von \texttt{"Alfons Zimmermann"} – wird diese kontextuelle Nähe berücksichtigt. Die Funktion vergibt in solchen Fällen einen erhöhten \code{match\_score}, da die unmittelbare Abfolge als zuverlässiger Hinweis auf eine zusammengehörige Signatur gewertet wird. Technisch erfolgt die Prüfung auf $\pm1$ Zeile Abstand im Transkripttext.\\
+
+Weitere Varianten umfassen typische Signaturformate wie \texttt{Max Ganter, Schriftführer} oder Namensinitialen wie \texttt{M. Ganter}.
+Auch vollständige Namen (Vorname + Nachname) oder einzelne Namen (z.B. nur \texttt{Fritz}) werden erkannt und mit Platzhaltern übernommen. In Ausnahmefällen werden auch unvollständige Namensformen\footnote{etwa Initialen oder Einzelnamen} übernommen, sofern sie in typischen Signaturkontexten auftreten. Dabei wird der fehlende Vor- oder Nachname mit einem Platzhalter (\code{None}) belegt und der Eintrag entsprechend mit \code{needs\_review = true} markiert. Die Übernahme solcher Platzhalter erfolgt jedoch selektiv und nur bei klarer Signaturstruktur.
 
 Wird kein valides Format erkannt, liefert die Funktion ein leeres Dictionary mit einem Eintrag für \code{closing}, der die gefundene Grussformel dokumentiert.
 
-Neben der heuristischen Pattern-Suche durch \code{extract\_authors\_raw()} stützt sich die Pipeline auch auf strukturierte Annotationen aus dem XML. Die Funktion \code{extract\_author\_from\_custom\_tag()} sucht gezielt nach \code{<author>}-Tags und übernimmt diese, sofern sie vollständig sind. Im Anschluss wird jeder Kandidateneintrag durch \code{resolve\_llm\_custom\_authors\_recipients()} validiert und bewertet. Insbesondere dann, wenn er von einem LLM vorgeschlagen oder aus unstrukturiertem Text extrahiert wurde kommt die Bewertung zum tragen. Abschliessend übernimmt \code{letter\_match\_and\_enrich()} die Anreicherung durch bekannte Personen aus der Groundtruth-Liste. Hierbei werden unvollständige Einträge (z.B. nur ein Vorname) durch vollständigere bereits in \code{mentioned\_persons} aufgenommene Personen ersetzt, sofern möglich. 
+Neben der heuristischen Pattern-Suche durch \code{extract\_authors\_raw()} stützt sich die Pipeline auch auf strukturierte Annotationen aus dem XML. Die Funktion \code{extract\_author\_from\_custom\_tag()} sucht gezielt nach \code{<author>}-Tags und übernimmt diese, sofern sie vollständig sind. Im Anschluss wird jeder Kandidateneintrag durch \code{resolve\_llm\_custom\_authors\_recipients()} validiert und bewertet. Insbesondere dann, wenn er von einem LLM vorgeschlagen oder aus unstrukturiertem Text extrahiert wurde kommt die Bewertung zum tragen. Abschliessend übernimmt \code{letter\_match\_and\_enrich()} die Anreicherung durch bekannte Personen aus der Groundtruth-Liste. Hierbei werden unvollständige Einträge (z.B. nur ein Vorname) durch vollständigere bereits in \code{mentioned\_persons} aufgenommene Personen ersetzt, sofern möglich. Auch in Fällen, in denen keine strukturierte LLM-Annotation vorliegt, erfolgt eine nachgelagerte Prüfung gegen die Groundtruth. Die Funktion \code{resolve\_llm\_custom\_authors\_recipients()} gleicht unvollständige oder generische Einträge – etwa lediglich \texttt{"Otto"} oder \texttt{"Herrn"} – mit den zuvor erkannten \code{mentioned\_persons} ab. So können auch partielle oder schwach formatierte Namensangaben aufgelöst und angereichert werden.
 
 Die Pipeline deckt jedoch nicht nur einzelne Autoren ab. \code{match\_authors~(~)} kombiniert die Roh-Extraktion der Autor:in (\code{extract\_authors\_raw}) mit der Anreicherung durch \code{letter\_match\_and\_enrich}. Ist das Ergebnis leer, prüft sie, ob zumindest eine Rolle ohne Namensangabe vorliegt. In diesem Sonderfall wird ein Eintrag mit leerem Namen, aber übernommener Rolle erstellt. Die Rolle wird normalisiert (\code{normalize\_and\_match\_role}) und in ein \code{role\_schema} überführt. Der Rückgabewert enthält \code{needs\_review = True} sowie eine niedrige \code{match\_score} (10), um auf die Unsicherheit der reinen Rollenangabe hinzuweisen.
 
@@ -2600,13 +2846,13 @@ Die Pipeline deckt jedoch nicht nur einzelne Autoren ab. \code{match\_authors~(~
 
 Die Extraktion potenzieller Empfänger:innen erfolgt analog zur Autorenerkennung über eine Kombination aus regulären Ausdrücken, strukturierten XML-Tags und nachgelagerter Anreicherung. Im Gegensatz zur Autorenschaft, die typischerweise am Ende eines Dokuments steht, werden Empfänger:innen meist im Briefkopf genannt. Die Funktion \code{extract\_recipients\_raw()} konzentriert sich daher auf die ersten fünf Zeilen des Transkripts. Dieser Abschnitt enthält häufig Adressierungen wie \texttt{\enquote{An Herrn Otto Bollinger}} oder zeilenweise strukturierte Formate, die auf eine Empfängeradresse hindeuten. Die Funktion arbeitet unabhängig von expliziten XML-Tags wie \code{<recipient>}, wodurch sie auch bei unvollständig annotierten Dokumenten Ergebnisse liefern kann.
 
-Die Erkennung erfolgt in drei heuristischen Stufen, abhängig von der Länge und Struktur der jeweiligen Adressierung. Einzeilige Formulierungen wie \texttt{\enquote{An Herrn Otto Bollinger}} werden als besonders zuverlässig bewertet (\code{recipient\_score = 90}, \code{confidence = "header-inline"}). Dreizeilige Strukturen wie 
+Die Erkennung erfolgt in drei heuristischen Stufen, abhängig von der Länge und Struktur der jeweiligen Adressierung. Einzeilige Formulierungen wie \texttt{\enquote{An Herrn Otto Bollinger}} werden als besonders zuverlässig bewertet (\code{recipient\_score = 90}, \code{confidence \= "header-inline"}). Dreizeilige Strukturen wie 
 \\ \begin{center}
 \texttt{An\\Herrn\\Otto Bollinger}
 \end{center}
 \justifying werden als semistrukturiert interpretiert und mit einem Score von 80 markiert (\code{confidence = "header-3line"}). Bei zweizeiligen Konstruktionen – etwa \texttt{Herrn} in einer Zeile und ein Name in der nächsten – wird aus methodischer Vorsicht ein niedrigerer Score (70) vergeben, da diese auch als Fliesstextnennung interpretiert werden könnten (\code{confidence = "header-2line"}). Diese Liste von Empfängerkandidaten wird anschliessend in mehreren Schritten angereichert und validiert.
 
-In einem weiteren Schritt werden \code{<recipient>}-Tags aus dem XML durch \code{extract\_recipient\_from\_custom\_tag()} übernommen, sofern vorhanden. Wie bei den Authoren durchlaufen Rezipienten danach die Funktion \code{resolve\_llm\_custom\_authors\_recipients()}. So werden die Rohdaten zusammengeführt, und anschliessen eine Validierung vorgenommen. Insbesondere unvollständige oder generische Einträge wie \texttt{\enquote{Herrn}} oder häufig vorkommende Namen wie \texttt{\enquote{Otto}}\footnote{die Groundtruth kennt 11 verschiedene Otto} werden entweder mit dem Vermerk \code{needs\_review = true} versehen oder durch bereits \code{mentioned\_persons} ersetzt. Diese Ersetzung erfolgt abschliessend in \code{letter\_match\_and\_enrich()}, wo wie bei den Autor:innen unvollständige Einträge – etwa nur der Vorname – durch vollständigere Einträge aus \code{mentioned\_persons} ersetzt werden, sofern diese zuvor im Text erkannt wurden. Mit \code{extract\_multiple\_recipients\_raw()} können darüber hinaus potenzielle Empfänger:innen aus dem Transkripttext anhand direkter und indirekter Anredeformen aus den jeweiligen Patternlisten extrahiert werden. Direkte Formulierungen wie \texttt{Lieber Otto} werden mit \code{recipient\_score = 100} als besonders zuverlässig bewertet. Indirekte Anreden wie \texttt{zu Händen des Herrn Alfons Zimmermann} werden mit Score 70 erfasst. Die Ergebnisse enthalten Vorname, Nachname (falls vorhanden), Rolle (leer), Score und Confidence-Label. Durch die unterschiedlichen Ratings im Recipient-Scores können so Staffelungen dargestellt werden.
+In einem weiteren Schritt werden \code{<recipient>}-Tags aus dem XML durch \code{extract\_recipient\_from\_custom\_tag()} übernommen, sofern vorhanden. Wie bei den Authoren durchlaufen Rezipienten danach die Funktion \code{resolve\_llm\_custom\_authors\_recipients()}. So werden die Rohdaten zusammengeführt, und anschliessen eine Validierung vorgenommen. Insbesondere unvollständige oder generische Einträge wie \texttt{\enquote{Herrn}} oder häufig vorkommende Namen wie \texttt{\enquote{Otto}}\footnote{die Groundtruth kennt 11 verschiedene Personen namens Otto} werden entweder mit dem Vermerk \code{needs\_review = true} versehen oder durch bereits \code{mentioned\_persons} ersetzt. Diese Ersetzung erfolgt abschliessend in \code{letter\_match\_and\_enrich()}, wo wie bei den Autor:innen unvollständige Einträge – etwa nur der Vorname – durch vollständigere Einträge aus \code{mentioned\_persons} ersetzt werden, sofern diese zuvor im Text erkannt wurden. Mit \code{extract\_multiple\_recipients\_raw()} können darüber hinaus potenzielle Empfänger:innen aus dem Transkripttext anhand direkter und indirekter Anredeformen aus den jeweiligen Patternlisten extrahiert werden. Im Gegensatz zu \code{extract\_recipients\_raw()}, das sich auf die ersten Zeilen des Dokuments konzentriert, analysiert die Funktion \code{extract\_multiple\_recipients\_raw()} den gesamten Transkripttext. Sie erkennt direkte und indirekte Anredeformen auch im Fliesstext\footnote{etwa im Kontext von Zwischenempfängern oder weitergeleiteten Briefen} und erweitert damit die Empfängerliste über die Briefkopfregion hinaus. Direkte Formulierungen wie \texttt{Lieber Otto} werden mit \code{recipient\_score = 100} als besonders zuverlässig bewertet. Indirekte Anreden wie \texttt{zu Händen des Herrn Alfons Zimmermann} werden mit Score 70 erfasst. Die Ergebnisse enthalten Vorname, Nachname (falls vorhanden), Rolle (leer), Score und Confidence-Label. Durch die unterschiedlichen Ratings im Recipient-Scores können so Staffelungen dargestellt werden.
 
 
 \paragraph{Extraktion des Absendeort und Empfangsort}
@@ -2621,13 +2867,13 @@ Eine besondere Stärke der Pipeline liegt in der Erkennung zusammengesetzter Ort
 
 Abschliessend wird durch \code{finalize\_recipient\_places()} der am besten bewertete Empfängerort ausgewählt. Die Funktion sortiert alle erkannten Ortskandidaten nach Score und übernimmt den besten Eintrag als \code{recipient\_place}. Weitere valide, aber weniger eindeutige Orte werden ebenfalls gespeichert, jedoch mit dem Attribut \code{needs\_review = true} gekennzeichnet, um eine manuelle Prüfung zu ermöglichen.
 
-Die finale Ausgabe enthält für beide Ortsangaben strukturierte Einträge mit Namen, Score, falls vorhanden externe IDs aus der Groundtruth, Kontextinformationen und ggf. die Flag \code{needs\_review}. Durch das modulare Zusammenspiel der vier Funktionen können auch in schwierig strukturierten oder unvollständig annotierten Dokumenten präzise Ortsangaben extrahiert werden.
+Die finale Funktion \code{match\_place()} kann mehrere potenzielle Ortstreffer zurückgeben, insbesondere wenn es konkurrierende Varianten mit ähnlichem Namen gibt. In diesem Fall wählt die Funktion \code{finalize\_recipient\_places()} den Ort mit dem höchsten Score als \code{recipient\_place} aus, während weitere plausible, aber unsicherere Treffer mit dem Vermerk \code{needs\_review = true} gespeichert werden. Durch das modulare Zusammenspiel der vier Funktionen können auch in schwierig strukturierten oder unvollständig annotierten Dokumenten präzise Ortsangaben extrahiert werden.
 
 \paragraph{Extraktion des Erstellungsdatum}
 
 Die Erkennung von Entstehungsdaten (\code{creation\_date}) erfolgt im Modul \code{letter\_metadata\_matcher.py} primär über die von oben bereits bekannte Funktion \code{extract\_places\_and\_date( )}. Im Zentrum steht die Auswertung strukturierter Custom-Tags im PAGE-XML sowie ein regulärer Fallback-Mechanismus zur heuristischen Analyse des Briefkopfs.
 
-Im ersten Schritt durchsucht die Funktion alle \code{<TextLine>}-Elemente nach dem Attribut \code{custom}, das von Transkribus für semantische Annotationen verwendet wird. Wird ein Eintrag vom Typ \texttt{creation\_date} oder \texttt{date} erkannt, wird mittels RegEx nach einem \texttt{when}-Feld gesucht. Dieser Wert wird direkt übernommen und als \code{creation\_date} gespeichert. Da bei dem manuellen Tagging besonders auf die korrekten Daten geachtet, und diese händisch mit \code{when\=} immer ergänzt wurden, sind diese Angaben in jedem Fall vorhanden.
+Im ersten Schritt durchsucht die Funktion alle \code{<TextLine>}-Elemente nach dem Attribut \code{custom}, das von Transkribus für semantische Annotationen verwendet wird. Wird ein Eintrag vom Typ \texttt{creation\_date} oder \texttt{date} erkannt, wird mittels RegEx nach einem \texttt{when="YYYY-MM-DD"}-Feld innerhalb des custom-Attributs gesucht. Dieser Wert wird direkt übernommen und als \code{creation\_date} gespeichert. Da bei dem manuellen Tagging besonders auf die korrekten Daten geachtet, und diese händisch mit \code{when\=} immer ergänzt wurden, sind diese Angaben in jedem Fall vorhanden.
 
 Wird jedoch kein Custom-Tag erkannt, greift ein Fallback-Verfahren: Die Funktion analysiert hierfür die ersten fünf Zeilen des Dokuments – typischerweise der Briefkopf – auf typische Orts-Datumskombinationen. Dazu zählt insbesondere das Muster
 
@@ -2635,9 +2881,9 @@ Wird jedoch kein Custom-Tag erkannt, greift ein Fallback-Verfahren: Die Funktion
 \texttt{Ort, den dd.mm.yyyy}
 \end{center}
 
-\noindent Die RegEx erfasst dabei sowohl den Ort (als möglichen Absendeort) als auch das Datum. Sie sind daher auch gemeinsam in dieser Funktion aufgenommen. Wird ein solches Datum gefunden, wird es als \code{creation\_date} übernommen, selbst wenn kein zugehöriger Ort erkannt werden konnte. Die Erkennung erfolgt dabei tolerant gegenüber optionalem \enquote{den} und erlaubt sowohl zwei- als auch vierstellige Jahresangaben\footnote{erkannt werden also sowohl beispielsweise 1939, als auch nur 39}. Ist kein solcher Eintrag vorhanden, bleibt \code{creation\_date = None}.
+\noindent Die RegEx erfasst dabei sowohl den Ort (als möglichen Absendeort) als auch das Datum. Sie sind daher auch gemeinsam in dieser Funktion aufgenommen. Wird ein solches Datum gefunden, wird es als \code{creation\_date} übernommen, selbst wenn kein zugehöriger Ort erkannt werden konnte. Die Erkennung erfolgt dabei tolerant gegenüber dem optionalem Wort \enquote{den} und erlaubt sowohl zwei- als auch vierstellige Jahresangaben\footnote{erkannt werden also sowohl beispielsweise 1939, als auch nur 39}. Ist kein solcher Eintrag vorhanden, bleibt \code{creation\_date = None}.
 
-In Kombination mit \code{assign\_sender\_and\_recipient\_place()} wird das erkannte Datum anschliessend gemeinsam mit den Ortseinträgen an die Hauptverarbeitung zurückgegeben und in den Metadaten des Dokuments gespeichert.
+In Kombination mit \code{assign\_sender\_and\_recipient\_place()} wird das erkannte Datum anschliessend gemeinsam mit den Ortseinträgen an die Hauptverarbeitung zurückgegeben und als\code{ attributes["creation\_date"]} in den Metadaten des Dokuments gespeichert. Im Gegensatz zu \code{mentioned\_dates}\footnote{mehr in \nameref{subsection:date_matcher}}, die beliebige Datumsangaben im Fliesstext zählen, bezieht sich \code{creation\_date} ausschliesslich auf das Erstellungsdatum des Dokuments
 
 
 \subsubsection{type\_matcher.py}\label{subsection:type_matcher}
@@ -2884,13 +3130,90 @@ um einen vollständigen Überblick nicht zugeordneter Entitäten zu gewährleist
 
 Alle Ergebnisse werden zudem in einer Datei \code{unmatched.json} gespeichert, um einen Gesamtüberblick zu erhalten.
 
+\subsubsection{validation\_module.py}\label{subsec:validation_module}
+
+Das Modul \code{validation\_module.py} übernimmt die strukturierte Qualitätskontrolle der erzeugten JSON-Dokumente in der finalen Verarbeitungsphase. Es wird in der zentralen Verarbeitungsfunktion \code{process\_single\_xml()} unmittelbar vor dem Speichern der Ausgabedateien aufgerufen:
+
+\begin{minted}[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+bgcolor=LightGray,
+fontsize=\footnotesize,
+linenos,
+breaklines=true,
+breakanywhere=true
+]{python}
+validation_result = validate_extended(doc)
+    if validation_result:
+        print(f"[WARN] Validierungsfehler im Dokument {full_doc_id}:")
+        for err_type, errors in validation_result.items():
+            print(f"  - {err_type}: {', '.join(errors)}")
+
+\end{minted}
+
+Die Validierung erfolgt anhand des erzeugten \code{BaseDocument}-Objekts und basiert auf festen Regeln zur Überprüfung von Pflichtfeldern, Formatvorgaben sowie typischen Erkennungsfehlern bei Personen- oder Ortsangaben.
+
+Die Hauptfunktion \code{validate\_extended(doc)} analysiert das Dokument auf Inkonsistenzen und gibt ein Dictionary mit Fehlermeldungen pro Feld zurück. Neben formalen Anforderungen (z.\,B. korrektes Datumsformat) werden auch häufige Named-Entity-Fehlklassifikationen erkannt, etwa wenn Titelwörter als Vorname interpretiert werden.
+
+Beispielhafte Prüfungen:
+
+\begin{itemize}
+    \item \textbf{Datumsformat}: Ein Eintrag wie \texttt{1941.5.28} wird zurückgewiesen, da das erwartete Format \texttt{YYYY.MM.DD} lautet.\\
+    \texttt{[creation\_date] Fehlend oder ungültiges Format (YYYY.MM.DD)}
+
+    \item \textbf{Leere Empfängerliste}: Bei Dokumenten vom Typ \texttt{Brief} oder \texttt{Postkarte} wird überprüft, ob mindestens ein valider Empfänger mit Name oder Rolle vorhanden ist. Ist dies nicht der Fall, erfolgt eine Fehlermeldung.\\
+    \texttt{[recipients] Empfänger fehlt oder ist ungültig}
+
+    \item \textbf{Fehlerhafte Personennamen}: Wird ein Vorname wie \texttt{des} oder \texttt{Herrn} erkannt, erfolgt eine heuristische Warnung auf möglichen OCR- oder Parsingfehler.\\
+    \texttt{[mentioned\_persons[0]] Möglicher Fehlname: des}
+\end{itemize}
+
+Die Hinweise des Validierungsmoduls werden insbesondere während der Erprobungs- und Optimierungsphasen intensiv genutzt, etwa zur Feinjustierung der Methoden der Named-Entity-Recognition bei Personen. Sie dienen nicht nur der strukturellen Sicherung eines gültigen JSON-Outputs, sondern ermöglichen auch gezielte Nachkorrekturen im Rahmen der qualitativen Auswertung und visuellen Darstellung der Daten.
+
 
 
 \subsection{KEINE AHNUNG WAS DIE HIER MACHEN}
-\subsubsection{validation\_module.py}
-\subsubsection{validation\_module.py}
-\subsubsection{test\_role\_schema.py}
-\subsubsection{llm\_enricher.py}
+
+\subsubsection{llm\_enricher.py}\label{subsection:llm_enricher}
+
+Das Modul \code{llm\_enricher.py} dient der nachträglichen semantischen Anreicherung von JSON-Dokumenten mithilfe von GPT-4. Es wird gegen Ende des Verarbeitungsprozesses innerhalb von \code{transkribus\_to\_base.py} aufgerufen, nachdem die initiale Konvertierung der Transkribus-XML-Dateien abgeschlossen und das Entitätenmatching bereits erfolgt ist. Das Ziel besteht darin, fehlende Felder wie \code{author}, \code{recipient}, \code{creation\_date} oder \code{content\_tags\_in\_german} auf abzufangen und ggf. zu ergänzen.
+
+Die Funktion \code{enrich\_document\_with\_llm} übergibt das vollständige JSON-Dokument an das Sprachmodell. Dieses erhält einen Prompt mit präzisen Anweisungen zur Vervollständigung strukturierter Felder, inklusive Regeln z.B. Schutz von IDs wie der \code{nodegoat\_id}, Kombination von Ortsnamen, Erkennung von Vereinsnamen als Organisationen). Der Rückgabewert wird mit dem Originaldokument zusammengeführt und unter \code{\_enriched.json} gespeichert. Zusätzlich wird die LLM-Nutzung dokumentiert (\code{input\_tokens}, \code{output\_tokens}, \code{cost\_usd}).
+
+\paragraph{Abgrenzung zu \code{llm\_preprocessing.py}}%
+Trotz des gemeinsamen Einsatzes eines Sprachmodells unterscheiden sich die beiden Module grundlegend in Funktion, Datenbasis und Zielsetzung. Während \code{llm\_preprocessing.py} im Frühstadium der Verarbeitung eingesetzt wird, um Textabschnitte vorzubereiten, Prompts zu formulieren oder Entitäten lokal zu erkennen, operiert \code{llm\_enricher.py} am Ende des Workflows auf dokumentweiter Ebene des neu generierten JSON. Die folgende Tabelle fasst die Unterschiede zusammen:
+
+\begin{center}
+\begin{tabular}{p{1.5cm} p{6.2cm} p{6.2cm}}
+
+\toprule
+~ & \textbf{\code{llm\_preprocessing.py}} & \textbf{\code{llm\_enricher.py}} \\
+\midrule
+\textbf{Ziel} & 
+Vorbereitung des LLM-Einsatzes: Segmentierung, Prompt-Generierung und lokale Entitätenerkennung &
+Nachträgliche Anreicherung strukturierter JSONs mit fehlenden Metadaten auf Dokumentebene \\
+\midrule
+\textbf{Fokus} & 
+Lokale NER in isolierten Transkriptzeilen oder Abschnitten &
+Globale Dokumentinterpretation, Rollen- und Feldzuordnung, Dublettenfilterung \\
+\midrule
+\textbf{Input} & 
+Textsegmente oder XML-Zeilen aus Transkribus &
+Strukturiertes JSON-Dokument nach algorithmischer Vorverarbeitung \\
+\midrule
+\textbf{Output} & 
+Markierte Entitäten in Form von XML-Tags oder Listen (z.B. Personen, Orte) &
+Vervollständigtes JSON mit algorithmisch unausgefüllten Feldern\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Notwendigkeit beider Module trotz LLM-Einsatz}%
+Auch wenn beide Module aktuell das selbe Sprachmodell verwenden, besteht keine redundante Dopplung. Sie erfüllen komplementäre Aufgaben in einer zweistufigen Pipeline: Zuerst erfolgt mit \code{llm\_preprocessing.py} die Erkennung und Markierung von Entitäten in isolierten Textblöcken zur Named-Entity-Recognition. Anschliessend übernimmt \code{llm\_enricher.py} die Integration, Interpretation und strukturelle Vervollständigung dieser Einheiten im Gesamtkontext des Dokuments. Es handelt sich somit um ein hybrides Verfahren nach dem Prinzip: \textit{Erkennen → Zuordnen → Strukturieren}.
+
+Das Modul \code{llm\_enricher.py} wird in \code{transkribus\_to\_base.py} optional aufgerufen, nachdem die regulären Verarbeitungsschritte abgeschlossen sind. Nur wenn bestimmte Kernfelder im JSON-Dokument fehlen, wird das Enrichment aktiviert. Dies verhindert unnötige LLM-Aufrufe und erhöht die Effizienz. Die Rückgabe wird mit dem Originaldokument vereinigt, bestehende IDs und Daten werden geschützt, neue Felder ergänzt. Damit wird eine nachträgliche Qualitätssteigerung des Outputs erzielt – bei vollständiger Nachvollziehbarkeit.
+
 \subsubsection{enrich\_pipeline.py}
 
 
@@ -2901,6 +3224,7 @@ Alle Ergebnisse werden zudem in einer Datei \code{unmatched.json} gespeichert, u
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––% 
 \section{Analyse \& Diskussion der Ergebnisse}
 \subsection{Visualisierung auf der VM}
+
 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
@@ -2923,10 +3247,41 @@ Alle Ergebnisse werden zudem in einer Datei \code{unmatched.json} gespeichert, u
 \begingroup
 \small
 \singlespacing%
-\printbibliography[
-heading=bibintoc,
-title={Bibliographie}%title of the 'references' section, change this if necessary
-]%
+
+% Heading-Stil für jede Teilbibliografie
+\defbibheading{subbib}[\refname]{\subsubsection*{#1}}
+
+% Titel für das Gesamtverzeichnis (optional)
+\section*{Bibliographie}
+\addcontentsline{toc}{section}{Bibliographie}
+
+% Nach Typ sortierte Blöcke
+\subsection*{Artikel}
+\addcontentsline{toc}{subsection}{Artikel}
+\printbibliography[type=article, heading=none]
+
+%\subsection*{Beiträge in Sammelbänden}
+%\addcontentsline{toc}{subsection}{Beiträge in Sammelbänden}
+%\printbibliography[type=incollection, heading=none]
+
+\subsection*{Monografien}
+\addcontentsline{toc}{subsection}{Monografien}
+\printbibliography[type=book, heading=none]
+
+\subsection*{Onlinequellen}
+\addcontentsline{toc}{subsection}{Onlinequellen}
+\printbibliography[type=online, heading=none]
+
+\subsection*{Software}
+\addcontentsline{toc}{subsection}{Software}
+\printbibliography[type=misc, heading=none]
+
+\subsection*{Vorträge und Manuskripte}
+\addcontentsline{toc}{subsection}{Vorträge und Manuskripte}
+\printbibliography[type=unpublished, heading=none]
+
+
+
 \endgroup
 
 %––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––%
