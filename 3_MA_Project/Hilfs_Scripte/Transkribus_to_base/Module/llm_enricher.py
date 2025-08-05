@@ -14,7 +14,10 @@ except ImportError:
 INPUT_COST_PER_1K = 0.01  # USD
 OUTPUT_COST_PER_1K = 0.03  # USD
 
-def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temperature=0.0) -> Dict:
+
+def enrich_document_with_llm(
+    json_data: dict, client: any, model="gpt-4", temperature=0.0
+) -> Dict:
     prompt = f""" 
     Temperatur: 0,4  
     Du bekommst ein vollständiges JSON-Dokument aus einem historischen Transkriptionsworkflow.  
@@ -45,12 +48,11 @@ def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temper
     hier ist das Dokument
     {json.dumps(json_data, ensure_ascii=False, indent=2)}
     """
-    
 
     response = client.chat.completions.create(
         model=model,
         temperature=temperature,
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
     )
 
     output = response.choices[0].message.content
@@ -64,25 +66,37 @@ def enrich_document_with_llm(json_data: dict, client: any, model="gpt-4", temper
         enriched_data = json_data.copy()
         enriched_data["llm_metadata"] = {
             "error": f"Parsing error: {str(e)}",
-            "raw_llm_output": output[:500]  # optional: erste 500 Zeichen speichern
+            "raw_llm_output": output[
+                :500
+            ],  # optional: erste 500 Zeichen speichern
         }
 
     enriched_data["llm_metadata"] = {
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
-        "cost_usd": round((input_tokens / 1000 * INPUT_COST_PER_1K) + (output_tokens / 1000 * OUTPUT_COST_PER_1K), 4),
-        "model": model
+        "cost_usd": round(
+            (input_tokens / 1000 * INPUT_COST_PER_1K)
+            + (output_tokens / 1000 * OUTPUT_COST_PER_1K),
+            4,
+        ),
+        "model": model,
     }
 
     return enriched_data
 
-def merge_lists(orig_list: List[dict], enriched_list: List[dict], key_fields: List[str]) -> List[dict]:
+
+def merge_lists(
+    orig_list: List[dict], enriched_list: List[dict], key_fields: List[str]
+) -> List[dict]:
     result = orig_list.copy()
     for item in enriched_list:
         # prüfe, ob item nach key_fields schon existiert
-        if not any(all(o.get(k) == item.get(k) for k in key_fields) for o in orig_list):
+        if not any(
+            all(o.get(k) == item.get(k) for k in key_fields) for o in orig_list
+        ):
             result.append(item)
     return result
+
 
 def merge_original_and_enriched(orig: dict, enriched: dict) -> dict:
     merged = orig.copy()
@@ -94,16 +108,25 @@ def merge_original_and_enriched(orig: dict, enriched: dict) -> dict:
             # Spezialfall Listen: union
             if isinstance(v, list) and isinstance(merged.get(k), list):
                 if k == "mentioned_places":
-                    merged[k] = merge_lists(merged[k], v, key_fields=["name","nodegoat_id"])
+                    merged[k] = merge_lists(
+                        merged[k], v, key_fields=["name", "nodegoat_id"]
+                    )
                 elif k == "mentioned_persons":
-                    merged[k] = merge_lists(merged[k], v, key_fields=["forename","familyname","nodegoat_id"])
+                    merged[k] = merge_lists(
+                        merged[k],
+                        v,
+                        key_fields=["forename", "familyname", "nodegoat_id"],
+                    )
                 elif k == "mentioned_organizations":
-                    merged[k] = merge_lists(merged[k], v, key_fields=["name","nodegoat_id"])
+                    merged[k] = merge_lists(
+                        merged[k], v, key_fields=["name", "nodegoat_id"]
+                    )
                 else:
                     # für alle anderen Listen einfach ersetzen, wenn orig leer
                     pass
             # alle anderen Felder belassen wir, weil orig nicht leer war
     return merged
+
 
 def load_json_files(input_dir: str) -> List[str]:
     return [
@@ -112,27 +135,40 @@ def load_json_files(input_dir: str) -> List[str]:
         if f.endswith(".json") and not f.endswith("_enriched.json")
     ]
 
+
 def save_enriched_json(original_path: str, enriched_data: dict):
     dir_name = os.path.dirname(original_path)
-    base_name = os.path.basename(original_path).replace(".json", "_enriched.json")
+    base_name = os.path.basename(original_path).replace(
+        ".json", "_enriched.json"
+    )
     output_path = os.path.join(dir_name, base_name)
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(enriched_data, f, ensure_ascii=False, indent=2)
     print(f"Enriched JSON gespeichert: {output_path}")
 
-def log_enrichment(csv_path: str, file: str, input_tokens: int, output_tokens: int, cost_usd: float):
+
+def log_enrichment(
+    csv_path: str,
+    file: str,
+    input_tokens: int,
+    output_tokens: int,
+    cost_usd: float,
+):
     exists = os.path.exists(csv_path)
     with open(csv_path, mode="a", encoding="utf-8", newline="") as csvfile:
         writer = csv.writer(csvfile, delimiter=";")
         if not exists:
-            writer.writerow(["filename", "input_tokens", "output_tokens", "cost_usd"])
+            writer.writerow(
+                ["filename", "input_tokens", "output_tokens", "cost_usd"]
+            )
         writer.writerow([file, input_tokens, output_tokens, f"{cost_usd:.4f}"])
+
 
 def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
     if openai is None:
         print("OpenAI library not installed. Skipping enrichment.")
         return
-        
+
     client = openai.OpenAI(api_key=api_key)
     json_files = load_json_files(input_dir)
 
@@ -145,12 +181,14 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
             data = json.load(f)
 
         # nur, wenn wir wirklich etwas ergänzen müssen
-        missing = any([
-            not data.get("recipient"),
-            not data.get("author"),
-            not data.get("creation_date"),
-            not data.get("content_tags_in_german")
-        ])
+        missing = any(
+            [
+                not data.get("recipient"),
+                not data.get("author"),
+                not data.get("creation_date"),
+                not data.get("content_tags_in_german"),
+            ]
+        )
         if not missing:
             print(f"[SKIP] {os.path.basename(path)}: alles bereits vorhanden.")
             continue
@@ -158,8 +196,14 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
         enriched = enrich_document_with_llm(data, client, model=model)
 
         # IDs sichern und nach Merge wieder einsetzen
-        place_ids = { (p["name"], p["nodegoat_id"]) for p in data.get("mentioned_places", []) }
-        person_ids = { (p["forename"],p["familyname"],p["nodegoat_id"]) for p in data.get("mentioned_persons", []) }
+        place_ids = {
+            (p["name"], p["nodegoat_id"])
+            for p in data.get("mentioned_places", [])
+        }
+        person_ids = {
+            (p["forename"], p["familyname"], p["nodegoat_id"])
+            for p in data.get("mentioned_persons", [])
+        }
 
         merged = merge_original_and_enriched(data, enriched)
 
@@ -172,7 +216,11 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
             # nichts zu tun, existierende sind schon korrekt
 
         for p in merged.get("mentioned_persons", []):
-            key = (p.get("forename"),p.get("familyname"),p.get("nodegoat_id"))
+            key = (
+                p.get("forename"),
+                p.get("familyname"),
+                p.get("nodegoat_id"),
+            )
             if key not in person_ids:
                 continue
 
@@ -182,7 +230,9 @@ def run_enrichment_on_directory(input_dir: str, api_key: str, model="gpt-4"):
         i_tok = meta.get("input_tokens", 0)
         o_tok = meta.get("output_tokens", 0)
         cost = meta.get("cost_usd", 0.0)
-        log_enrichment(csv_log_path, os.path.basename(path), i_tok, o_tok, cost)
+        log_enrichment(
+            csv_log_path, os.path.basename(path), i_tok, o_tok, cost
+        )
 
         total_in += i_tok
         total_out += o_tok

@@ -20,62 +20,112 @@
 \contentsline {subsubsection}{\numberline {4.1.3}LOD-Ontologie}{16}{subsubsection.4.1.3}%
 \contentsline {subsection}{\numberline {4.2}Wikidata}{17}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}GeoNames}{18}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Transkriptionen (Methodenvergleich)}{19}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Tesseract}{19}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}LLM}{19}{subsubsection.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.3}Transkribus}{21}{subsubsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.5}Large Language Models}{22}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Msty}{23}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Alphabet – Gemini}{23}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Anthopic – Claude}{23}{subsection.4.8}%
-\contentsline {subsection}{\numberline {4.9}OpenAI – ChatGPT}{23}{subsection.4.9}%
-\contentsline {subsection}{\numberline {4.10}Nodegoat}{23}{subsection.4.10}%
-\contentsline {subsection}{\numberline {4.11}\colorbox {red}{Webtool}}{25}{subsection.4.11}%
-\contentsline {section}{\numberline {5}Pipeline}{27}{section.5}%
-\contentsline {subsubsection}{\numberline {5.0.1}Übersichtsgrafik der Pipeline}{27}{subsubsection.5.0.1}%
-\contentsline {subsection}{\numberline {5.1}Vorverarbeitung}{28}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Hauptmodul -- Transkribus\_to\_base}{30}{subsection.5.2}%
-\contentsline {paragraph}{extract\_metadata\_from\_xml~(~)}{32}{section*.8}%
-\contentsline {paragraph}{get\_document\_type~(~)}{33}{section*.9}%
-\contentsline {paragraph}{extract\_text\_from\_xml~(~)}{33}{section*.10}%
-\contentsline {paragraph}{extract\_custom\_attributes~(~)}{33}{section*.11}%
-\contentsline {subsection}{\numberline {5.3}Module im Detail}{39}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}document\_schemas.py}{39}{subsubsection.5.3.1}%
-\contentsline {paragraph}{Person}{39}{section*.16}%
-\contentsline {paragraph}{Organization}{40}{section*.17}%
-\contentsline {paragraph}{Place}{40}{section*.18}%
-\contentsline {paragraph}{Event}{40}{section*.19}%
-\contentsline {paragraph}{BaseDocument}{41}{section*.20}%
-\contentsline {paragraph}{Documenttype}{41}{section*.21}%
-\contentsline {subsubsection}{\numberline {5.3.2}\_\_init\_\_.py}{41}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}Person\_matcher.py}{43}{subsubsection.5.3.3}%
-\contentsline {subsubsection}{\numberline {5.3.4}Assigned\_Roles\_Module.py}{44}{subsubsection.5.3.4}%
-\contentsline {subsubsection}{\numberline {5.3.5}place\_matcher.py}{45}{subsubsection.5.3.5}%
-\contentsline {subsubsection}{\numberline {5.3.6}organization\_matcher.py}{45}{subsubsection.5.3.6}%
-\contentsline {subsubsection}{\numberline {5.3.7}letter\_metadata\_matcher.py}{47}{subsubsection.5.3.7}%
-\contentsline {paragraph}{Pattern Matching in Briefen und Postkarten}{47}{section*.22}%
-\contentsline {paragraph}{Extraktion von Autorinnen und Autoren}{48}{section*.23}%
-\contentsline {paragraph}{Extraktion von Empfängerinnen und Empfängern}{49}{section*.24}%
-\contentsline {paragraph}{Extraktion des Absendeort und Empfangsort}{50}{section*.25}%
-\contentsline {paragraph}{Extraktion des Erstellungsdatum}{52}{section*.26}%
-\contentsline {subsubsection}{\numberline {5.3.8}type\_matcher.py}{53}{subsubsection.5.3.8}%
-\contentsline {subsubsection}{\numberline {5.3.9}unmatched\_logger.py}{57}{subsubsection.5.3.9}%
-\contentsline {subsection}{\numberline {5.4}KEINE AHNUNG WAS DIE HIER MACHEN}{58}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}validation\_module.py}{58}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}validation\_module.py}{58}{subsubsection.5.4.2}%
-\contentsline {subsubsection}{\numberline {5.4.3}test\_role\_schema.py}{58}{subsubsection.5.4.3}%
-\contentsline {subsubsection}{\numberline {5.4.4}llm\_enricher.py}{58}{subsubsection.5.4.4}%
-\contentsline {subsubsection}{\numberline {5.4.5}enrich\_pipeline.py}{58}{subsubsection.5.4.5}%
-\contentsline {section}{\numberline {6}Analyse \& Diskussion der Ergebnisse}{58}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Visualisierung auf der VM}{58}{subsection.6.1}%
-\contentsline {section}{\numberline {7}Fazit und Ausblick}{58}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Zusammenfassung der zentralen Erkenntnisse}{58}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Methodische Herausforderungen und Lösungen}{58}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{58}{subsection.7.3}%
-\contentsline {section}{Bibliographie}{59}{section*.29}%
-\contentsline {section}{\numberline {A}Anhang}{63}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}PDF\_to\_JPEG.py}{63}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Tagging in Transkribus}{64}{subsection.A.2}%
-\contentsline {subsubsection}{\numberline {A.2.1}Strukturelle Tags}{64}{subsubsection.A.2.1}%
-\contentsline {subsubsection}{\numberline {A.2.2}Inhaltliche Tags}{65}{subsubsection.A.2.2}%
-\contentsline {subsection}{\numberline {A.3}Prompt der LLM Vorverarbeitung}{67}{subsection.A.3}%
+\contentsline {subsection}{\numberline {4.4}Nodegoat}{19}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Transkriptionen (Methodenvergleich)}{21}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}Tesseract}{21}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}LLM}{21}{subsubsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.3}Transkribus}{23}{subsubsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.6}Large Language Models}{24}{subsection.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.1}Msty}{25}{subsubsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.2}Alphabet – Gemini}{25}{subsubsection.4.6.2}%
+\contentsline {subsubsection}{\numberline {4.6.3}Anthropic – Claude Code}{26}{subsubsection.4.6.3}%
+\contentsline {subsubsection}{\numberline {4.6.4}OpenAI – ChatGPT}{27}{subsubsection.4.6.4}%
+\contentsline {paragraph}{Custom-GPT}{27}{section*.5}%
+\contentsline {paragraph}{Custom-Projekt}{28}{section*.6}%
+\contentsline {paragraph}{API}{29}{section*.7}%
+\contentsline {subsection}{\numberline {4.7}\colorbox {red}{Webtool}}{30}{subsection.4.7}%
+\contentsline {subsubsection}{\numberline {4.7.1}NDRCore}{31}{subsubsection.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.7.2}mongoDB}{31}{subsubsection.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.7.3}Cantaloupe}{31}{subsubsection.4.7.3}%
+\contentsline {subsubsection}{\numberline {4.7.4}Nodegoat}{31}{subsubsection.4.7.4}%
+\contentsline {section}{\numberline {5}Pipeline}{31}{section.5}%
+\contentsline {subsubsection}{\numberline {5.0.1}Übersichtsgrafik der Pipeline}{31}{subsubsection.5.0.1}%
+\contentsline {subsection}{\numberline {5.1}Vorverarbeitung}{33}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Hauptmodul -- Transkribus\_to\_base}{34}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Initialisierung und Pfadlogik}{34}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Extraktion von Struktur und Fliesstext}{36}{subsubsection.5.2.2}%
+\contentsline {paragraph}{1. Technische Metadaten}{36}{section*.9}%
+\contentsline {subparagraph}{extract\_metadata\_from\_xml~(~)}{36}{section*.10}%
+\contentsline {subparagraph}{get\_document\_type~(~)}{36}{section*.11}%
+\contentsline {paragraph}{2. Transkribierter Fließtext}{36}{section*.12}%
+\contentsline {subparagraph}{extract\_text\_from\_xml~(~)}{36}{section*.13}%
+\contentsline {paragraph}{3. Semantische Annotation über Custom-Tags}{37}{section*.14}%
+\contentsline {subparagraph}{extract\_custom\_attributes~(~)}{37}{section*.15}%
+\contentsline {subsubsection}{\numberline {5.2.3}Orchestrierungsfunktion}{38}{subsubsection.5.2.3}%
+\contentsline {paragraph}{1. XML-Verarbeitung und Dokument-Identifikation}{38}{section*.16}%
+\contentsline {paragraph}{2. Transkriptextraktion}{38}{section*.17}%
+\contentsline {paragraph}{3. Raw\_author und Raw\_recipient}{39}{section*.18}%
+\contentsline {paragraph}{4. LLM-gestützte Verfeinerung}{39}{section*.19}%
+\contentsline {paragraph}{5. Rollenanreicherung für Autor:innen}{39}{section*.20}%
+\contentsline {paragraph}{6. Extraktion aus Custom-Tags}{39}{section*.21}%
+\contentsline {paragraph}{7. Organisationen im Fließtext}{39}{section*.22}%
+\contentsline {paragraph}{8. Personenanreicherung und Deduplikation}{39}{section*.23}%
+\contentsline {paragraph}{9. Autor-Rückübertragung}{39}{section*.24}%
+\contentsline {paragraph}{10. Logging neuer Personen}{40}{section*.25}%
+\contentsline {paragraph}{11. Konvertierung zu \texttt {Person}-Objekten}{40}{section*.26}%
+\contentsline {paragraph}{12. Organisationen verarbeiten}{40}{section*.27}%
+\contentsline {paragraph}{13. Orte deduplizieren und zuordnen}{40}{section*.28}%
+\contentsline {paragraph}{14. Ereignisse extrahieren}{40}{section*.29}%
+\contentsline {paragraph}{15. Konstruktion des \texttt {BaseDocument}}{40}{section*.30}%
+\contentsline {paragraph}{16. Zweite Rollenanreicherung (Autoren und Empfänger)}{40}{section*.31}%
+\contentsline {paragraph}{17. Finaler Deduplikationsschritt}{40}{section*.32}%
+\contentsline {paragraph}{18. Validierung und Speicherung}{40}{section*.33}%
+\contentsline {subsubsection}{\numberline {5.2.4}Deduplikation und Validierung}{41}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Review-Prozess}{41}{subsubsection.5.2.5}%
+\contentsline {subsection}{\numberline {5.3}Module im Detail}{44}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}document\_schemas.py}{44}{subsubsection.5.3.1}%
+\contentsline {paragraph}{Person}{44}{section*.35}%
+\contentsline {paragraph}{Organization}{45}{section*.36}%
+\contentsline {paragraph}{Place}{45}{section*.37}%
+\contentsline {paragraph}{Event}{46}{section*.38}%
+\contentsline {paragraph}{BaseDocument}{46}{section*.39}%
+\contentsline {paragraph}{Documenttype}{46}{section*.40}%
+\contentsline {subsubsection}{\numberline {5.3.2}\_\_init\_\_.py}{47}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Person\_matcher.py}{48}{subsubsection.5.3.3}%
+\contentsline {paragraph}{Blacklist \& Configuration}{49}{section*.41}%
+\contentsline {paragraph}{Thresholds, CSV-Laden und Groundtruth-Erstellung}{49}{section*.42}%
+\contentsline {paragraph}{ Namensnormalisierung und Titelerkennung}{50}{section*.43}%
+\contentsline {paragraph}{ Levenshtein-Fallback}{50}{section*.44}%
+\contentsline {paragraph}{ Fuzzy-Matching}{51}{section*.45}%
+\contentsline {paragraph}{ Matching}{51}{section*.46}%
+\contentsline {subparagraph}{Matching über Einzelkomponenten}{52}{section*.54}%
+\contentsline {subparagraph}{Matching über Nachname und Gender}{53}{section*.55}%
+\contentsline {paragraph}{Extract Person Data mit Rolleninfos}{54}{section*.57}%
+\contentsline {paragraph}{ Split und Enrichment}{55}{section*.58}%
+\contentsline {paragraph}{ Deduplication }{55}{section*.59}%
+\contentsline {paragraph}{ Detail‑Info zum besten Match}{55}{section*.60}%
+\contentsline {subsubsection}{\numberline {5.3.4}Assigned\_Roles\_Module.py}{56}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}place\_matcher.py}{57}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}organization\_matcher.py}{57}{subsubsection.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.3.7}letter\_metadata\_matcher.py}{59}{subsubsection.5.3.7}%
+\contentsline {paragraph}{Pattern Matching in Briefen und Postkarten}{59}{section*.61}%
+\contentsline {paragraph}{Extraktion von Autorinnen und Autoren}{59}{section*.62}%
+\contentsline {paragraph}{Extraktion von Empfängerinnen und Empfängern}{61}{section*.63}%
+\contentsline {paragraph}{Extraktion des Absendeort und Empfangsort}{63}{section*.64}%
+\contentsline {paragraph}{Extraktion des Erstellungsdatum}{64}{section*.65}%
+\contentsline {subsubsection}{\numberline {5.3.8}type\_matcher.py}{65}{subsubsection.5.3.8}%
+\contentsline {subsubsection}{\numberline {5.3.9}unmatched\_logger.py}{68}{subsubsection.5.3.9}%
+\contentsline {subsubsection}{\numberline {5.3.10}validation\_module.py}{69}{subsubsection.5.3.10}%
+\contentsline {subsection}{\numberline {5.4}KEINE AHNUNG WAS DIE HIER MACHEN}{70}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}llm\_enricher.py}{70}{subsubsection.5.4.1}%
+\contentsline {paragraph}{Abgrenzung zu \colorbox {VeryLightGray}{\texttt {llm\_preprocessing.py}}}{70}{section*.68}%
+\contentsline {paragraph}{Notwendigkeit beider Module trotz LLM-Einsatz}{71}{section*.69}%
+\contentsline {subsubsection}{\numberline {5.4.2}enrich\_pipeline.py}{72}{subsubsection.5.4.2}%
+\contentsline {section}{\numberline {6}Analyse \& Diskussion der Ergebnisse}{72}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Visualisierung auf der VM}{72}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Fazit und Ausblick}{72}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Zusammenfassung der zentralen Erkenntnisse}{72}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Methodische Herausforderungen und Lösungen}{72}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Ausblick auf zukünftige Forschung und mögliche Erweiterungen der Datenbank}{72}{subsection.7.3}%
+\contentsline {section}{Bibliographie}{73}{section*.70}%
+\contentsline {subsection}{Artikel}{73}{section*.71}%
+\contentsline {subsection}{Monografien}{73}{section*.72}%
+\contentsline {subsection}{Onlinequellen}{74}{section*.73}%
+\contentsline {subsection}{Software}{76}{section*.74}%
+\contentsline {subsection}{Vorträge und Manuskripte}{76}{section*.75}%
+\contentsline {section}{\numberline {A}Anhang}{77}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}PDF\_to\_JPEG.py}{77}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Tagging in Transkribus}{78}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Strukturelle Tags}{78}{subsubsection.A.2.1}%
+\contentsline {subsubsection}{\numberline {A.2.2}Inhaltliche Tags}{79}{subsubsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.3}Prompt der LLM Vorverarbeitung}{81}{subsection.A.3}%

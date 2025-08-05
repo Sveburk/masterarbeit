@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{validation\PYGZus{}result} \PYG{o}{=} \PYG{n}{validate\PYGZus{}extended}\PYG{p}{(}\PYG{n}{doc}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{validation\PYGZus{}result}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}[WARN] Validierungsfehler im Dokument }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{full\PYGZus{}doc\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{for} \PYG{n}{err\PYGZus{}type}\PYG{p}{,} \PYG{n}{errors} \PYG{o+ow}{in} \PYG{n}{validation\PYGZus{}result}\PYG{o}{.}\PYG{n}{items}\PYG{p}{():}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}  \PYGZhy{} }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{err\PYGZus{}type}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{: }\PYG{l+s+si}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}, \PYGZsq{}}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{errors}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\end{Verbatim}
