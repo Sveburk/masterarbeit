@@ -30,7 +30,7 @@ from Module.letter_metadata_matcher import (
 )
 
 # ============================================================================
-#   BLACKLIST & CONFIGURATION
+# region BLACKLIST & KONFIGURATION
 # ============================================================================
 
 # Vereine/Rollen, die niemals als Personenname gelten dürfen
@@ -233,12 +233,13 @@ OCR_ERRORS: Dict[str, List[str]] = {
     "ß": ["ss"],
 }
 
+# endregion
+# ============================================================================
+# ============================================================================
+# region       Thresholds, CSV-Laden und Groundtruth-Erstellung            ---
+# ============================================================================
+# ============================================================================
 
-# ============================================================================
-# ============================================================================
-# ---          Thresholds, CSV-Laden und Groundtruth-Erstellung            ---
-# ============================================================================
-# ============================================================================
 
 
 def get_matching_thresholds() -> dict[str, int]:
@@ -364,10 +365,10 @@ def appears_in_groundtruth(name: str) -> bool:
     return n in GROUNDTRUTH_SURNAMES or n in GROUNDTRUTH_FORENAMES
 
 
-
+# endregion
 
 # ============================================================================
-#   Namensnormalisierung und Titelerkennung
+# region Namensnormalisierung und Titelerkennung
 # ============================================================================
 
 
@@ -455,9 +456,10 @@ def normalize_name(name: str) -> Dict[str, str]:
         "familyname": " ".join(parts[1:]).capitalize(),
     }
 
+#endregion
 
 # ============================================================================
-#   Levenshtein-Fallback
+# region  Levenshtein-Fallback
 # ============================================================================
 def ocr_error_match(
     name: str, candidates: List[str]
@@ -511,9 +513,9 @@ def correct_swapped_name(forename: str, familyname: str) -> Tuple[str, str]:
 
     return forename, familyname
 
-
+# endregion
 # ----------------------------------------------------------------------------
-# Fuzzy Matching
+# region Fuzzy Matching
 # ----------------------------------------------------------------------------
 
 
@@ -528,11 +530,11 @@ def fuzzy_match_name(
             best, score = c, sc
     return (best, score) if score >= threshold else (None, 0)
 
-
+# endregion
 from typing import Union, Optional, Dict, Tuple, List, Any
 
 # ----------------------------------------------------------------------------
-# Matching
+# region Matching
 # ----------------------------------------------------------------------------
 
 
@@ -928,10 +930,10 @@ def match_person(
             }, 0
 
     return None, 0
-
+# endregion
 
 # ----------------------------------------------------------------------------
-# Extract Person Data mit Rolleninfos
+# region Extraktion von Personendaten
 # ----------------------------------------------------------------------------
 # Groundtruth-Listen
 KNOWN_SURNAMES = {
@@ -1207,9 +1209,9 @@ def merge_title_tokens(
 
     return merged
 
-
+# endregion
 # ----------------------------------------------------------------------------
-# Split und Enrichment
+# region Segmentierung und Anreicherung
 # ----------------------------------------------------------------------------
 
 def split_and_enrich_persons(
@@ -1223,6 +1225,9 @@ def split_and_enrich_persons(
     i = 0
     while i < len(raw_persons):
         current = raw_persons[i]
+#---------------------------------
+# Vorverarbeitung
+#---------------------------------
 
         # Bereits vollständiges Personenobjekt → direkt übernehmen
         if isinstance(current, dict) and (
@@ -1278,6 +1283,10 @@ def split_and_enrich_persons(
     merged_raw_persons = merge_title_tokens(merged_raw_persons)
 
     print("[DEBUG] Merged raw_persons vor Filter:", merged_raw_persons)
+    
+    #---------------------------------
+    #Tokenisierung und heuristische Vervollständigung
+    #---------------------------------
 
     processed_raw_persons = []
     skip_next = False
@@ -1386,8 +1395,10 @@ def split_and_enrich_persons(
                         "gender": "",
                     }
                 )
+    #---------------------------------
+    # Kontextbasierte Rollenerkennung
+    #---------------------------------
 
-    # ✅ Final
     raw_persons = processed_raw_persons
 
     print(f"[DEBUG] raw persons nach Zeile 1116: {raw_persons}")
@@ -1420,7 +1431,13 @@ def split_and_enrich_persons(
                     p["associated_organisation"] = org
                 break
 
-    # --- 3. Matching & Key-Bildung ---
+
+
+    #---------------------------------
+    # Macthich gegen Groundtruth
+    #---------------------------------
+
+
     seen, matched, unmatched = set(), [], []
     cand_list = candidates or KNOWN_PERSONS
 
@@ -1659,9 +1676,9 @@ def infer_role_and_organisation(
 
 
 
-
+# endregion
 # ----------------------------------------------------------------------------
-# Deduplication
+# region Deduplication
 # ----------------------------------------------------------------------------
 def deduplicate_persons(
     persons: List[Dict[str, str]],
@@ -1873,39 +1890,10 @@ def deduplicate_persons(
 
     return unique
 
-
-def assess_llm_entry_score(
-    forename: str, familyname: str, role: str
-) -> Tuple[int, str, bool, str]:
-    """
-    Bewertet eine LLM-generierte Personeneintragung hinsichtlich Vollständigkeit.
-
-    Gibt zurück:
-    - match_score (int): Score für die Matching-Güte (30 = unvollständig, 50 = brauchbar)
-    - confidence (str): Herkunft und Zuverlässigkeit der Information ("llm", "llm-incomplete")
-    - needs_review (bool): Muss der Eintrag manuell überprüft werden?
-    - review_reason (str): Erklärung für die Prüfbedürftigkeit
-    """
-    is_incomplete = not familyname or not forename or not role
-
-    review_reasons = []
-    if not forename:
-        review_reasons.append("missing_forename")
-    if not familyname:
-        review_reasons.append("missing_familyname")
-    if not role:
-        review_reasons.append("missing_role")
-
-    score = 30 if is_incomplete else 50
-    confidence = "llm-incomplete" if is_incomplete else "llm"
-    needs_review = is_incomplete
-    review_reason = "; ".join(review_reasons) if review_reasons else ""
-
-    return score, confidence, needs_review, review_reason
-
+# endregion
 
 # ----------------------------------------------------------------------------
-# Detail‑Info zum besten Match
+# region Detail‑Info zum besten Match
 # ----------------------------------------------------------------------------
 def get_best_match_info(
     person: Dict[str, str], candidates: Optional[List[Dict[str, str]]] = None
@@ -2081,3 +2069,4 @@ def count_mentions_in_transcript_contextual(
         p.mentioned_count = max(count, 1)
 
     return persons
+# endregion

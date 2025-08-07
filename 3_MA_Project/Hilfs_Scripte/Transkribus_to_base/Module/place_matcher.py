@@ -102,7 +102,7 @@ def extract_place_lines_from_xml(xml_root: ET.Element) -> List[Dict[str, Any]]:
             })
     return lines
 
-
+# endregion
 class PlaceMatcher:
     def safe_split_semicolon(value):
         if isinstance(value, str):
