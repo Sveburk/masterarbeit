@@ -71,12 +71,9 @@ from Module import (
     normalize_name_string,
     merge_title_tokens,
     correct_swapped_name,
-    match_person_from_text,
+    
     fuzzy_match_name,
-    fuzzy_person_match,
-    save_new_person_to_csv,
-    person_exists_in_known_list,
-    extract_name_with_spacy,
+
     # letter-metadata-matcher
     match_authors,
     match_recipients,
@@ -126,7 +123,8 @@ from Module import (
 
 # --------------- Pfadkonfiguration ---------------
 # TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+#TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+TRANSKRIBUS_DIR = "/Users/svenburkhardt/Downloads/export_job_17826913"
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
@@ -986,9 +984,10 @@ def update_total_json(out_path: str, doc: BaseDocument):
     print(f"[DEBUG] filename = {filename}")
 
     match = re.search(
-        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",
+        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",                  
         filename,
     )
+
 
     if not match:
         print(

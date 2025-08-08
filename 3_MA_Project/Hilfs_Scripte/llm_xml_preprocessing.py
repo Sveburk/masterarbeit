@@ -12,7 +12,7 @@ INPUT_COST_PER_1K = 0.0011   # USD per 1K input tokens (non-cached)
 OUTPUT_COST_PER_1K = 0.0044  # USD per 1K output tokens
 
 # --- Konfiguration: Pfade anpassen falls nötig ---
-TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150")
+TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Downloads/export_job_17826913")
 
 # --- Hilfsfunktionen ---
 def get_api_client() -> openai.OpenAI:
