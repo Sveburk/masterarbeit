@@ -8,17 +8,16 @@ from .Assigned_Roles_Module import (
     map_role_to_schema_entry,
     ROLE_MAPPINGS_DE,
     KNOWN_ROLE_LIST,
-)
-
-import json
-from pathlib import Path
-from .Assigned_Roles_Module import (
     assign_roles_to_known_persons,
     map_role_to_schema_entry,
     normalize_and_match_role,
 )
-from Module.place_matcher import PlaceMatcher, consolidate_places
+
+import json
+from pathlib import Path
+from .place_matcher import PlaceMatcher, consolidate_places
 from .date_matcher import extract_custom_date
+
 
 
 # --- Dokumenttypen für authors-/recipients-Erkennung ---
@@ -313,6 +312,41 @@ def extract_recipients_raw(text: str) -> List[Dict[str, Any]]:
 
     return recipients
 
+def assess_llm_entry_score(
+    forename: str,
+    familyname: str,
+    role: str
+) -> Tuple[int, str, bool, str]:
+    """
+    Bewertet einen LLM-generierten Personeneintrag anhand seiner Struktur.
+
+    Diese Funktion wird aufgerufen, wenn kein eindeutiger Match gegen bekannte Personen
+    erzielt werden konnte. Sie liefert ein standardisiertes Scoring- und Bewertungsschema,
+    das zur Einordnung, Nachprüfung und Validierung solcher Fälle dient.
+
+    Args:
+        forename (str): Vorname der Person
+        familyname (str): Nachname der Person
+        role (str): ggf. erkannte Rolle
+
+    Returns:
+        Tuple[int, str, bool, str]:
+            - score (int): numerische Bewertung (z.B. 100 = sicher, 10 = unbrauchbar)
+            - confidence (str): Qualitätsklassifikation ("llm", "partial", "low", "role_only")
+            - needs_review (bool): Muss manuell geprüft werden?
+            - review_reason (str): Erklärung, warum eine Nachprüfung erforderlich ist
+    """
+
+    if not forename and not familyname:
+        return 10, "low", True, "Kein Name erkannt"
+    
+    if role and not (forename or familyname):
+        return 30, "role_only", True, "Nur Rolle erkannt"
+    
+    if forename and familyname:
+        return 100, "llm", False, ""
+    
+    return 50, "partial", True, "Unvollständiger Name"
 
 def letter_match_and_enrich(
     raw: Dict[str, str], text: str, mentioned_persons: List[Person] = None
@@ -321,7 +355,7 @@ def letter_match_and_enrich(
         match_person,
         KNOWN_PERSONS,
         get_matching_thresholds,
-        assess_llm_entry_score,
+        
     )
 
     if raw.get("forename") and not raw.get("familyname"):
@@ -691,7 +725,7 @@ def match_recipients(
 
 
 def enrich_final_recipients(base_doc: BaseDocument):
-    from Module.person_matcher import match_person, KNOWN_PERSONS
+    from .person_matcher import match_person, KNOWN_PERSONS
 
     for rec in base_doc.recipients:
         is_incomplete = (
@@ -843,6 +877,11 @@ def assign_roles_from_context(text_lines: List[str], base_doc: BaseDocument):
 def _assign_role(
     base_doc: BaseDocument, forename: str, familyname: str, role: str
 ):
+    from .person_matcher import (
+        match_person,
+        KNOWN_PERSONS,
+        get_matching_thresholds,
+        is_initial)
     for person in base_doc.mentioned_persons:
         match_found = False
         if forename and is_initial(forename):
@@ -861,7 +900,7 @@ def _assign_role(
             if not person.role:
                 person.role = role
                 # Set role_schema when setting role
-                from Module.Assigned_Roles_Module import (
+                from .Assigned_Roles_Module import (
                     map_role_to_schema_entry,
                 )
 
@@ -872,9 +911,7 @@ def _assign_role(
             break
 
 
-def resolve_llm_custom_authors_recipients(
-    base_doc: BaseDocument, xml_text: str, log_path: Optional[Path] = None
-) -> Tuple[List[Person], List[Person]]:
+def resolve_llm_custom_authors_recipients(base_doc: BaseDocument, xml_text: str, log_path: Optional[Path] = None, transcript_text: Optional[str] = None,) -> Tuple[List[Person], List[Person]]:
     """
     Analysiert custom-Tags im XML nach authors/recipients-Einträgen und vergleicht sie mit vorher erkannten Personen.
     Wenn dort authors/recipients leer ist, übernimmt es den LLM-Vorschlag mit match_score="llm-matched".
@@ -883,15 +920,6 @@ def resolve_llm_custom_authors_recipients(
     Returns:
         Tuple[List[Person], List[Person]]: Listen der erkannten Autoren und Empfänger
     """
-
-    from .person_matcher import (
-        match_person,
-        KNOWN_PERSONS,
-        get_matching_thresholds,
-        assess_llm_entry_score,
-    )
-
-    log = []
 
     # Helper: Durchsuche alle TextLines mit passenden custom-Tags
     # Diese Funktion hat praktischen Nutzen und kann für zukünftige Erweiterungen behalten werden
@@ -978,7 +1006,7 @@ def resolve_llm_custom_authors_recipients(
             entries: Liste von Personen-Dictionaries
             field: Feldname im BaseDocument (z.B. "authors", "recipients")
         """
-        nonlocal log
+        
         for entry in entries:
             # Zuerst prüfen wir gegen mentioned_persons
             matched = None
@@ -994,7 +1022,7 @@ def resolve_llm_custom_authors_recipients(
                 person.role = entry.get("role", "")
                 # Set role_schema when setting role
                 if person.role:
-                    from Module.Assigned_Roles_Module import (
+                    from .Assigned_Roles_Module import (
                         map_role_to_schema_entry,
                     )
 
@@ -1009,7 +1037,7 @@ def resolve_llm_custom_authors_recipients(
                 person.match_score = 100 if matched.nodegoat_id else 20
                 person.confidence = "llm"
             else:
-                from Module.person_matcher import match_person, KNOWN_PERSONS
+                from .person_matcher import match_person, KNOWN_PERSONS
 
                 match_result, _ = match_person(entry, KNOWN_PERSONS)
                 if match_result:
@@ -1026,7 +1054,7 @@ def resolve_llm_custom_authors_recipients(
                     # Get the role_schema for the role
                     role_schema = ""
                     if role:
-                        from Module.Assigned_Roles_Module import (
+                        from .Assigned_Roles_Module import (
                             map_role_to_schema_entry,
                         )
 
@@ -1110,7 +1138,7 @@ def resolve_llm_custom_authors_recipients(
     # Kontextbasierte Rollenprüfung
     assign_roles_from_context(xml_text.splitlines(), base_doc)
     # Ensure authors and recipients are in mentioned_persons
-    ensure_author_recipient_in_mentions(base_doc)
+    ensure_author_recipient_in_mentions(base_doc, transcript_text) 
 
     # Always return lists (even if empty) for consistent return type
     author_list = base_doc.authors if base_doc.authors else []
@@ -1146,7 +1174,7 @@ def ensure_author_recipient_in_mentions(
     Verhindert auch das Hinzufügen von Personen ohne Namen.
     """
     # Blacklist prüfen: keine Dummy-Empfänger wie "Grüße"
-    from Module.person_matcher import (
+    from .person_matcher import (
         UNMATCHABLE_SINGLE_NAMES,
         NON_PERSON_TOKENS,
     )
@@ -1615,7 +1643,7 @@ def assign_sender_and_recipient_place(
         match_person,
         KNOWN_PERSONS,
         get_matching_thresholds,
-        assess_llm_entry_score,
+
     )
 
     raw_creation, raw_recipient, creation_date = extract_places_and_date(

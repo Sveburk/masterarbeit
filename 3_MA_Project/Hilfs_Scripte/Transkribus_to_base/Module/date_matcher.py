@@ -1,3 +1,4 @@
+"""This Module is for detecting Dates in Strings or xml tags"""
 from typing import List, Dict, Union
 from collections import defaultdict
 import re
@@ -5,6 +6,7 @@ import xml.etree.ElementTree as ET
 
 
 def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
+    """for pasring custom attributes in XML"""
     result = {}
     for part in attr_str.split(";"):
         part = part.strip()
@@ -18,6 +20,7 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
 
 
 def normalize_to_ddmmyyyy(date_str: str) -> Union[str, None]:
+    """for normalizing dates to ddmmyyyy format"""
     if re.match(r"^\d{2}\.\d{2}\.\d{4}$", date_str):
         day, month, year = date_str.split(".")
     elif re.match(r"^\d{4}-\d{2}-\d{2}$", date_str):
@@ -31,9 +34,8 @@ def normalize_to_ddmmyyyy(date_str: str) -> Union[str, None]:
     return f"{int(day):02d}.{int(month):02d}.{year}"
 
 
-def extract_date_from_custom(
-    custom_attr: str,
-) -> List[Dict[str, Union[str, Dict[str, str]]]]:
+def extract_date_from_custom(custom_attr: str,) -> List[Dict[str, Union[str, Dict[str, str]]]]:
+    """for extracting dates from custom xml tags"""
     dates = []
     for pattern in [r"date\s+\{([^}]+)\}", r"date\s*{([^}]+)}"]:
         for match in re.finditer(pattern, custom_attr):
@@ -81,6 +83,7 @@ def extract_custom_date(root: ET.Element, ns: Dict[str, str]) -> List[str]:
 
 
 def combine_dates(all_custom_attrs: List[str]) -> List[Dict[str, object]]:
+    """combines dateranges by providing the earlist and latest date by list of dateranges"""
     single_counter = defaultdict(int)
     range_counter = defaultdict(int)
 

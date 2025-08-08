@@ -6,8 +6,8 @@ import re
 import xml.etree.ElementTree as ET
 from typing import List, Dict, Any, Optional, Tuple
 from Module.document_schemas import Place
-
-
+#=====================================
+# region #Vorbereitung der Datenbasis
 
 def sanitize_id(v) -> str:
     """
@@ -103,8 +103,11 @@ def extract_place_lines_from_xml(xml_root: ET.Element) -> List[Dict[str, Any]]:
     return lines
 
 # endregion
+
+#=====================================
+# region #Initialisierung des PlaceMatchers
 class PlaceMatcher:
-    def safe_split_semicolon(value):
+    def safe_split_semicolon(self, value):
         if isinstance(value, str):
             return value.split(";")
         elif isinstance(value, list):
@@ -177,7 +180,10 @@ class PlaceMatcher:
                 "nodegoat_id": nodegoat_id or "",
                 "reason": reason
             })
-
+    #endregion    
+    
+    #======================================
+    #region Normierung und Kontext-Matching
 
     def _normalize_place_name(self, name: str) -> str:
         name = name.lower()
@@ -234,9 +240,10 @@ class PlaceMatcher:
                                 combined_names.add("-".join(window1 + window2))
 
         return combined_names
+    #endregiom
+    #======================================
+    #region matching-strategien
 
-
-    
     def _build_match_result(self, entry, raw_input, score, method):
         alternate_str = ";".join(entry["all_variants"])
         data = entry["data"].copy()
@@ -359,6 +366,10 @@ class PlaceMatcher:
         logging.info(f"Insgesamt {len(name_map)} Ortsnamen-Varianten im Index geladen")
         return name_map
 
+    #endregion
+
+    #=========================
+#region # Matching-Logik und Kontextverarbeitung
     def _match_combined_place_from_context(self, input_place: str) -> Optional[List[Dict[str, Any]]]:
         combined_names = self._generate_combined_place_names()
 

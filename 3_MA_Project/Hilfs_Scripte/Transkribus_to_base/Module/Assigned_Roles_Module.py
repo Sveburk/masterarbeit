@@ -331,8 +331,7 @@ def assign_roles_to_known_persons(
                 )
                 p["match_score"] = 30
                 p["mentioned_count"] = 1
-                continue
-        
+                continue       
 
     # 1) Inline-Matches nach ROLE_AFTER_NAME_RE und ROLE_BEFORE_NAME_RE
     for regex in (ROLE_AFTER_NAME_RE, ROLE_BEFORE_NAME_RE):

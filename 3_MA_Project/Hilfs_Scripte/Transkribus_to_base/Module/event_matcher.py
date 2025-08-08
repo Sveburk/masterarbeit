@@ -59,7 +59,6 @@ def extract_events_from_xml(
                 "beim",
             }:
                 continue
-            
             if token_clean[0].islower():
                 continue
 

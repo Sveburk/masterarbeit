@@ -11,8 +11,8 @@ from collections import defaultdict
 from rapidfuzz import fuzz
 from rapidfuzz.distance import Levenshtein
 
-from Module.document_schemas import Person
-from Module.Assigned_Roles_Module import (
+from .document_schemas import Person
+from .Assigned_Roles_Module import (
     POSSIBLE_ROLES,
     ROLE_AFTER_NAME_RE,
     ROLE_BEFORE_NAME_RE,
@@ -21,7 +21,7 @@ from Module.Assigned_Roles_Module import (
     extract_role_from_raw_name,
     normalize_and_match_role,
 )
-from Module.letter_metadata_matcher import (
+from .letter_metadata_matcher import (
     _RECIPIENT_RE,
     INDIRECT_RECIPIENT_PATTERNS,
     GREETING_PATTERNS as CLOSING_PATTERNS,
@@ -70,12 +70,6 @@ PRONOUN_TOKENS = {
     "eines",
     "einem",
     "mein",
-    "dein",
-    "sein",
-    "ihr",
-    "unser",
-    "euer",
-    "mein",
     "meine",
     "meinen",
     "meinem",
@@ -110,9 +104,7 @@ PRONOUN_TOKENS = {
     "euren",
     "eurem",
     "eurer",
-    "eures",
-    "ihr",
-}
+    "eures"}
 
 # ----- Gesamt‑Blacklist -------
 NON_PERSON_TOKENS = ROLE_TOKENS.union(
@@ -946,7 +938,7 @@ print(f"[DEBUG] KNOWN_FORENAMES count: {len(KNOWN_FORENAMES)}")
 
 
 def extract_person_data(row: Dict[str, Any]) -> Dict[str, Any]:
-    from Module.Assigned_Roles_Module import (
+    from .Assigned_Roles_Module import (
         normalize_and_match_role,
         extract_role_from_raw_name,
         map_role_to_schema_entry,
@@ -1105,7 +1097,7 @@ def detect_and_convert_role_only_entries(
 import re
 
 # benutze deine bereits definierten Patterns
-from Module.letter_metadata_matcher import (
+from .letter_metadata_matcher import (
     _RECIPIENT_RE,
     INDIRECT_RECIPIENT_PATTERNS,
     GREETING_PATTERNS as CLOSING_PATTERNS,
@@ -1114,7 +1106,7 @@ from Module.letter_metadata_matcher import (
 
 
 def extract_metadata_names(text: str) -> list[str]:
-    from Module.letter_metadata_matcher import (
+    from .letter_metadata_matcher import (
         _CLOSING_RE,
         INDIRECT_RECIPIENT_PATTERNS,
         direct_patterns,
@@ -1630,7 +1622,7 @@ def infer_role_and_organisation(
     forename: str = "",
     familyname: str = "",
 ) -> Tuple[str, str]:
-    from Module.letter_metadata_matcher import (
+    from .letter_metadata_matcher import (
         _CLOSING_RE,
         _RECIPIENT_RE,
         GREETING_PATTERNS,
@@ -1752,7 +1744,7 @@ def deduplicate_persons(
                 if all_roles:
                     merged["role"] = "; ".join(sorted(all_roles))
                     # Update role_schema based on the combined roles
-                    from Module.Assigned_Roles_Module import (
+                    from .Assigned_Roles_Module import (
                         map_role_to_schema_entry,
                     )
 
