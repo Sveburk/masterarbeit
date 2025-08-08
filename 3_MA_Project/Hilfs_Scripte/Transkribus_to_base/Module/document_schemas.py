@@ -11,6 +11,7 @@ from typing import Dict, List, Optional, Union, Any
 import re
 from datetime import datetime
 
+
 class Person:
     """Repräsentiert eine Person mit verschiedenen Attributen.
 
@@ -28,7 +29,7 @@ class Person:
         confidence: Vertrauenswert für die Zuordnung.
         mentioned_count: Anzahl der Erwähnungen.
     """
-    
+
     def __init__(
         self,
         forename: str = "",
@@ -37,7 +38,7 @@ class Person:
         title: str = "",
         role: str = "",
         role_schema: str = "",
-        gender: str = "",                  
+        gender: str = "",
         associated_place: str = "",
         associated_organisation: str = "",
         associated_organisation_id: str = "",
@@ -46,7 +47,7 @@ class Person:
         recipient_score: Optional[int] = 0,
         confidence: str = "",
         mentioned_count: int = 1,
-        needs_review: bool = False,               
+        needs_review: bool = False,
         review_reason: str = "",
     ):
         self.forename = forename
@@ -55,7 +56,7 @@ class Person:
         self.title = title
         self.role = role
         self.role_schema = role_schema
-        self.gender = gender                 
+        self.gender = gender
         self.associated_place = associated_place
         self.associated_organisation = associated_organisation
         self.associated_organisation_id = associated_organisation_id
@@ -64,16 +65,19 @@ class Person:
         self.recipient_score = recipient_score or 0
         self.confidence = confidence
         self.mentioned_count = mentioned_count
-        self.needs_review = needs_review          
-        self.review_reason = review_reason 
-
+        self.needs_review = needs_review
+        self.review_reason = review_reason
 
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert ein Person-Objekt in ein Dictionary."""
 
         # Normiere nur für das Schema, wenn nötig
         if self.role and not self.role_schema:
-            from Module.Assigned_Roles_Module import normalize_and_match_role, map_role_to_schema_entry
+            from Module.Assigned_Roles_Module import (
+                normalize_and_match_role,
+                map_role_to_schema_entry,
+            )
+
             norm_role = normalize_and_match_role(self.role)
             if norm_role:
                 self.role_schema = map_role_to_schema_entry(norm_role)
@@ -82,6 +86,7 @@ class Person:
         role_out = self.role or ""
         if self.role:
             from Module.Assigned_Roles_Module import normalize_and_match_role
+
             normalized_role = normalize_and_match_role(self.role)
             if normalized_role:
                 role_out = normalized_role
@@ -100,20 +105,25 @@ class Person:
             "confidence": self.confidence or "",
             "needs_review": self.needs_review,
             "review_reason": self.review_reason,
-            "match_score": self.match_score if self.match_score is not None else 0,
-            "recipient_score": self.recipient_score if self.recipient_score is not None else 0,
-            "mentioned_count": int(self.mentioned_count) if self.mentioned_count else 1,
+            "match_score": (
+                self.match_score if self.match_score is not None else 0
+            ),
+            "recipient_score": (
+                self.recipient_score if self.recipient_score is not None else 0
+            ),
+            "mentioned_count": (
+                int(self.mentioned_count) if self.mentioned_count else 1
+            ),
         }
 
-        #Organisation nur wenn vorhanden
+        # Organisation nur wenn vorhanden
         if self.associated_organisation or self.associated_organisation_id:
             result["associated_organisation"] = {
                 "name": self.associated_organisation or "",
-                "nodegoat_id": self.associated_organisation_id or ""
+                "nodegoat_id": self.associated_organisation_id or "",
             }
-            
-        return result
 
+        return result
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Person":
@@ -135,7 +145,7 @@ class Person:
             alternate_name=data.get("alternate_name", ""),
             title=data.get("title", ""),
             role=data.get("role", ""),
-            gender=data.get("gender", ""), 
+            gender=data.get("gender", ""),
             associated_place=data.get("associated_place", ""),
             associated_organisation=assoc_name,
             associated_organisation_id=assoc_id,
@@ -146,9 +156,8 @@ class Person:
             confidence=data.get("confidence", ""),
             needs_review=data.get("needs_review", False),
             review_reason=data.get("review_reason", ""),
-            role_schema=data.get("role_schema", "")
+            role_schema=data.get("role_schema", ""),
         )
-
 
     def is_valid(self) -> bool:
         """
@@ -172,7 +181,7 @@ class Organization:
         alternate_names: List[str] = None,
         feldpostnummer: str = "",
         match_score: Optional[float] = None,
-        confidence: str = ""
+        confidence: str = "",
     ):
         self.name = name
         self.type = type
@@ -188,7 +197,7 @@ class Organization:
             "type": self.type,
             "nodegoat_id": self.nodegoat_id,
             "alternate_names": self.alternate_names,
-            "feldpostnummer": self.feldpostnummer
+            "feldpostnummer": self.feldpostnummer,
         }
         if self.match_score is not None:
             d["match_score"] = self.match_score
@@ -197,7 +206,7 @@ class Organization:
         return d
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Organization':
+    def from_dict(cls, data: Dict[str, Any]) -> "Organization":
         return cls(
             name=data.get("name", ""),
             type=data.get("type", ""),
@@ -205,25 +214,33 @@ class Organization:
             alternate_names=data.get("alternate_names", []),
             feldpostnummer=data.get("feldpostnummer", ""),
             match_score=data.get("match_score"),
-            confidence=data.get("confidence", "")
+            confidence=data.get("confidence", ""),
         )
 
     def is_valid(self) -> bool:
         """Prüft, ob die Organisationsdaten gültig sind."""
         return bool(self.name.strip())
 
+
 class Place:
     """Repräsentiert einen Ort."""
-    
-    def __init__(self, name: str = "", type: str = "",
-                 alternate_place_name: str = "", geonames_id: str = "", wikidata_id: str = "", nodegoat_id: str = ""):
+
+    def __init__(
+        self,
+        name: str = "",
+        type: str = "",
+        alternate_place_name: str = "",
+        geonames_id: str = "",
+        wikidata_id: str = "",
+        nodegoat_id: str = "",
+    ):
         self.name = name
         self.type = type
         self.alternate_place_name = alternate_place_name
         self.geonames_id = geonames_id
         self.wikidata_id = wikidata_id
         self.nodegoat_id = nodegoat_id
-    
+
     def to_dict(self) -> Dict[str, str]:
         """Konvertiert Ortsobjekt in ein Dictionary."""
         return {
@@ -232,23 +249,27 @@ class Place:
             "alternate_place_name": self.alternate_place_name,
             "geonames_id": self.geonames_id,
             "wikidata_id": self.wikidata_id,
-            "nodegoat_id": self.nodegoat_id
+            "nodegoat_id": self.nodegoat_id,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, str]) -> 'Place':
+    def from_dict(cls, data: Dict[str, str]) -> "Place":
         """Erstellt ein Ortsobjekt aus einem Dictionary."""
         if isinstance(data, str):
-            raise ValueError(f"Place.from_dict() erwartet Dict, bekam String: {data}")
+            raise ValueError(
+                f"Place.from_dict() erwartet Dict, bekam String: {data}"
+            )
         return cls(
             name=data.get("name", ""),
             type=data.get("type", ""),
-            alternate_place_name=data.get("alternate_place_name", data.get("alternate_name", "")), 
+            alternate_place_name=data.get(
+                "alternate_place_name", data.get("alternate_name", "")
+            ),
             geonames_id=data.get("geonames_id", ""),
             wikidata_id=data.get("wikidata_id", ""),
-            nodegoat_id=data.get("nodegoat_id", "")
+            nodegoat_id=data.get("nodegoat_id", ""),
         )
-    
+
     def is_valid(self) -> bool:
         """Prüft, ob die Ortsdaten gültig sind."""
         return bool(self.name.strip())
@@ -266,7 +287,7 @@ class Event:
         involved_persons: Optional[List[Person]] = None,
         involved_organizations: Optional[List[Organization]] = None,
         involved_places: Optional[List[Place]] = None,
-        dates: Optional[List[Dict[str, Optional[str]]]] = None
+        dates: Optional[List[Dict[str, Optional[str]]]] = None,
     ):
         self.name = name
         self.date = date
@@ -285,58 +306,86 @@ class Event:
             "location": self.location,
             "description": self.description,
             "involved_persons": [p.to_dict() for p in self.involved_persons],
-            "involved_organizations": [o.to_dict() for o in self.involved_organizations],
+            "involved_organizations": [
+                o.to_dict() for o in self.involved_organizations
+            ],
             "involved_places": [pl.to_dict() for pl in self.involved_places],
-            "dates": self.dates
+            "dates": self.dates,
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Event':
+    def from_dict(cls, data: Dict[str, Any]) -> "Event":
         """Erstellt ein Ereignisobjekt aus einem Dictionary."""
         return cls(
             name=data.get("name", ""),
             date=data.get("date", ""),
             location=data.get("location", ""),
             description=data.get("description", ""),
-            involved_persons=[Person.from_dict(p) for p in data.get("involved_persons", [])],
-            involved_organizations=[Organization.from_dict(o) for o in data.get("involved_organizations", [])],
-            involved_places=[Place.from_dict(pl) for pl in data.get("involved_places", [])],
-            dates=data.get("dates", [])
+            involved_persons=[
+                Person.from_dict(p) for p in data.get("involved_persons", [])
+            ],
+            involved_organizations=[
+                Organization.from_dict(o)
+                for o in data.get("involved_organizations", [])
+            ],
+            involved_places=[
+                Place.from_dict(pl) for pl in data.get("involved_places", [])
+            ],
+            dates=data.get("dates", []),
         )
 
     def is_valid(self) -> bool:
         """Prüft, ob die Ereignisdaten gültig sind."""
         return bool(self.name.strip())
-    
+
+
 class BaseDocument:
     """Basis-Dokumentenklasse, die gemeinsame Attribute für alle Dokumente definiert."""
-    
+
     # Listen der gültigen Dokumenttypen und -formate
     VALID_DOCUMENT_TYPES = [
-        "Brief", "Protokoll", "Postkarte", "Rechnung",
-        "Regierungsdokument", "Karte", "Noten", "Zeitungsartikel",
-        "Liste", "Website", "Notizzettel", "Offerte"
+        "Brief",
+        "Protokoll",
+        "Postkarte",
+        "Rechnung",
+        "Regierungsdokument",
+        "Karte",
+        "Noten",
+        "Zeitungsartikel",
+        "Liste",
+        "Website",
+        "Notizzettel",
+        "Offerte",
     ]
-    
-    VALID_DOCUMENT_FORMATS = ["Handschrift", "Maschinell", "mitUnterschrift", "Bild"]
-    
-    def __init__(self, 
-                 object_type: str = "Dokument",
-                 attributes: Dict[str, str] = None,
-                 authors: List[Union[Person, Dict[str, Any]]] = None,
-                 recipients: List[Union[Person, Dict[str, Any]]] = None,
-                 mentioned_persons: List[Union[Person, Dict[str, Any]]] = None,
-                 mentioned_organizations: List[Union[Organization, Dict[str, Any]]] = None,
-                 mentioned_events: List[Union[Event, Dict[str, Any]]] = None,
-                 creation_date: str = "",
-                 creation_place: str = "",
-                 mentioned_dates: List[str] = None,
-                 mentioned_places: List[Union[Place, Dict[str, Any]]] = None,
-                 content_tags_in_german: List[str] = None,
-                 content_transcription: str = "",
-                 document_type: str = "",
-                 document_format: str = ""):
-        
+
+    VALID_DOCUMENT_FORMATS = [
+        "Handschrift",
+        "Maschinell",
+        "mitUnterschrift",
+        "Bild",
+    ]
+
+    def __init__(
+        self,
+        object_type: str = "Dokument",
+        attributes: Dict[str, str] = None,
+        authors: List[Union[Person, Dict[str, Any]]] = None,
+        recipients: List[Union[Person, Dict[str, Any]]] = None,
+        mentioned_persons: List[Union[Person, Dict[str, Any]]] = None,
+        mentioned_organizations: List[
+            Union[Organization, Dict[str, Any]]
+        ] = None,
+        mentioned_events: List[Union[Event, Dict[str, Any]]] = None,
+        creation_date: str = "",
+        creation_place: str = "",
+        mentioned_dates: List[str] = None,
+        mentioned_places: List[Union[Place, Dict[str, Any]]] = None,
+        content_tags_in_german: List[str] = None,
+        content_transcription: str = "",
+        document_type: str = "",
+        document_format: str = "",
+    ):
+
         self.object_type = object_type
         self.attributes = attributes or {}
         self.object_type = self.attributes.get("object_type", "Dokument")
@@ -344,16 +393,22 @@ class BaseDocument:
 
         # Konvertieren der Person-Objekte für Autoren
         self.authors = self._convert_person_list(authors) or []
-        
+
         # Konvertieren der Person-Objekte für Empfänger
         self.recipients = self._convert_person_list(recipients) or []
-        
+
         # Konvertieren der Listen von Objekten oder Dictionaries
         self.mentioned_persons = self._convert_person_list(mentioned_persons)
-        self.mentioned_organizations = self._convert_object_list(mentioned_organizations, Organization)
-        self.mentioned_events = self._convert_object_list(mentioned_events, Event)
-        self.mentioned_places = self._convert_object_list(mentioned_places, Place)
-        
+        self.mentioned_organizations = self._convert_object_list(
+            mentioned_organizations, Organization
+        )
+        self.mentioned_events = self._convert_object_list(
+            mentioned_events, Event
+        )
+        self.mentioned_places = self._convert_object_list(
+            mentioned_places, Place
+        )
+
         self.creation_date = creation_date
         self.creation_place = creation_place
         self.mentioned_dates = mentioned_dates or []
@@ -361,74 +416,97 @@ class BaseDocument:
         self.content_transcription = content_transcription
         self.document_type = document_type
         self.document_format = document_format
-        
+
     def _convert_person_list(self, items) -> List[Person]:
         """Konvertiert eine Liste von Person-Dictionaries oder Person-Objekten in eine Liste von Person-Objekten."""
         result = []
-        
+
         if not items:
             return result
-            
+
         # Falls ein einzelnes Element statt einer Liste übergeben wurde
         if not isinstance(items, list):
             items = [items]
-            
+
         for item in items:
             if isinstance(item, dict):
                 result.append(Person.from_dict(item))
             else:
                 result.append(item)
-                
+
         return result
-        
+
     def _convert_object_list(self, items, cls) -> List:
         """Konvertiert eine Liste von Dictionaries oder Objekten in eine Liste von Objekten des angegebenen Typs."""
         result = []
-        
+
         if not items:
             return result
-            
+
         # Falls ein einzelnes Element statt einer Liste übergeben wurde
         if not isinstance(items, list):
             items = [items]
-            
+
         for item in items:
             if isinstance(item, dict):
                 result.append(cls.from_dict(item))
             else:
                 result.append(item)
-                
+
         return result
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert document to a JSON-serializable dict with unified English attribute names."""
-        # Baue den attributes-Block mit fünf Feldern, Default="" wenn nichts da
-        attrs = {
-            "document_type":   self.attributes.get("document_type", "") or self.document_type or "",
-            "object_type":     self.attributes.get("object_type", "")   or self.object_type   or "",
-            "creation_date":   self.creation_date or self.attributes.get("creation_date", ""),
-            "creation_place":  self.creation_place or self.attributes.get("creation_place", ""),
-            "recipient_place": self.attributes.get("recipient_place", "")
-        }
+        # Baue den attributes-Block, Default="" wenn nichts da
+        attrs = dict(self.attributes)  # übernimmt alle vorhandenen Attribute
+        attrs.setdefault("document_type", self.document_type or "")
+        attrs.setdefault("object_type", self.object_type or "")
+        attrs.setdefault("creation_date", self.creation_date or "")
+        attrs.setdefault("creation_place", self.creation_place or "")
+        attrs.setdefault(
+            "recipient_place", self.attributes.get("recipient_place", "")
+        )
 
         result = {
             "attributes": attrs,
-            "authors":                  [a.to_dict() for a in self.authors] if self.authors else [],
-            "recipients":               [r.to_dict() for r in self.recipients] if self.recipients else [],
-            "mentioned_persons":        [p.to_dict() for p in self.mentioned_persons] if self.mentioned_persons else [],
-            "mentioned_organizations":  [o.to_dict() for o in self.mentioned_organizations] if self.mentioned_organizations else [],
-            "mentioned_events":         [e.to_dict() for e in self.mentioned_events] if self.mentioned_events else [],
-            "mentioned_dates":          self.mentioned_dates or [],
-            "mentioned_places":         [pl.to_dict() for pl in self.mentioned_places] if self.mentioned_places else [],
-            "content_tags_in_german":   self.content_tags_in_german or [],
-            "content_transcription":    self.content_transcription or "",
-            "document_format":          self.document_format or ""
+            "authors": (
+                [a.to_dict() for a in self.authors] if self.authors else []
+            ),
+            "recipients": (
+                [r.to_dict() for r in self.recipients]
+                if self.recipients
+                else []
+            ),
+            "mentioned_persons": (
+                [p.to_dict() for p in self.mentioned_persons]
+                if self.mentioned_persons
+                else []
+            ),
+            "mentioned_organizations": (
+                [o.to_dict() for o in self.mentioned_organizations]
+                if self.mentioned_organizations
+                else []
+            ),
+            "mentioned_events": (
+                [e.to_dict() for e in self.mentioned_events]
+                if self.mentioned_events
+                else []
+            ),
+            "mentioned_dates": self.mentioned_dates or [],
+            "mentioned_places": (
+                [pl.to_dict() for pl in self.mentioned_places]
+                if self.mentioned_places
+                else []
+            ),
+            "content_tags_in_german": self.content_tags_in_german or [],
+            "content_transcription": self.content_transcription or "",
+            "document_format": self.document_format or "",
         }
 
         return result
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'BaseDocument':
+    def from_dict(cls, data: Dict[str, Any]) -> "BaseDocument":
         """Erstellt ein Dokumentobjekt aus einem Dictionary."""
         authors = data.get("authors", [])
         if not authors and "author" in data:
@@ -440,7 +518,7 @@ class BaseDocument:
 
         attributes = data.get("attributes", {})
         document_type = attributes.get("document_type", "")
-        object_type   = attributes.get("object_type", "Dokument")
+        object_type = attributes.get("object_type", "Dokument")
 
         return cls(
             object_type=object_type,
@@ -457,90 +535,112 @@ class BaseDocument:
             content_tags_in_german=data.get("content_tags_in_german", []),
             content_transcription=data.get("content_transcription", ""),
             document_type=document_type,  # ← wichtig
-            document_format=data.get("document_format", "")
+            document_format=data.get("document_format", ""),
         )
 
-    
-    
     def to_json(self, indent: int = 4) -> str:
         """Konvertiert das Dokument in einen JSON-String."""
         return json.dumps(self.to_dict(), indent=indent, ensure_ascii=False)
-    
 
-    
     @classmethod
-    def from_json(cls, json_str: str) -> 'BaseDocument':
+    def from_json(cls, json_str: str) -> "BaseDocument":
         """Erstellt ein Dokumentobjekt aus einem JSON-String."""
         data = json.loads(json_str)
         return cls.from_dict(data)
-    
+
     def validate(self) -> Dict[str, List[str]]:
         """
         Validiert das Dokument und gibt Fehler zurück.
-        
+
         Returns:
-            Dict[str, List[str]]: Dictionary mit Feldnamen als Schlüssel 
+            Dict[str, List[str]]: Dictionary mit Feldnamen als Schlüssel
                                  und Listen von Fehlermeldungen als Werte
         """
         errors = {}
-        
+
         # Validiere Dokumenttyp
-        if self.document_type and self.document_type not in self.VALID_DOCUMENT_TYPES:
-            errors["document_type"] = [f"Ungültiger Dokumenttyp: {self.document_type}. Muss einer der folgenden sein: {', '.join(self.VALID_DOCUMENT_TYPES)}"]
-        
+        if (
+            self.document_type
+            and self.document_type not in self.VALID_DOCUMENT_TYPES
+        ):
+            errors["document_type"] = [
+                f"Ungültiger Dokumenttyp: {self.document_type}. Muss einer der folgenden sein: {', '.join(self.VALID_DOCUMENT_TYPES)}"
+            ]
+
         # Validiere Dokumentformat
-        if self.document_format and self.document_format not in self.VALID_DOCUMENT_FORMATS:
-            errors["document_format"] = [f"Ungültiges Dokumentformat: {self.document_format}. Muss einer der folgenden sein: {', '.join(self.VALID_DOCUMENT_FORMATS)}"]
-        
+        if (
+            self.document_format
+            and self.document_format not in self.VALID_DOCUMENT_FORMATS
+        ):
+            errors["document_format"] = [
+                f"Ungültiges Dokumentformat: {self.document_format}. Muss einer der folgenden sein: {', '.join(self.VALID_DOCUMENT_FORMATS)}"
+            ]
+
         # Validiere Datum (falls vorhanden)
         if self.creation_date and not self._is_valid_date(self.creation_date):
-            errors["creation_date"] = [f"Ungültiges Datum: {self.creation_date}. Format sollte YYYY.MM.DD sein"]
-        
+            errors["creation_date"] = [
+                f"Ungültiges Datum: {self.creation_date}. Format sollte YYYY.MM.DD sein"
+            ]
+
         # Validiere erwähnte Daten
         for i, date in enumerate(self.mentioned_dates):
             if not self._is_valid_date(date):
                 if "mentioned_dates" not in errors:
                     errors["mentioned_dates"] = []
-                errors["mentioned_dates"].append(f"Ungültiges Datum an Index {i}: {date}. Format sollte YYYY.MM.DD sein")
-        
+                errors["mentioned_dates"].append(
+                    f"Ungültiges Datum an Index {i}: {date}. Format sollte YYYY.MM.DD sein"
+                )
+
         # Validiere Empfänger für Briefe und Postkarten
-        if not any(r.is_valid() for r in self.recipients) and self.document_type in ["Brief", "Postkarte"]:
-            errors["recipients"] = ["Empfänger muss für Briefe und Postkarten angegeben werden"]
-        
+        if not any(
+            r.is_valid() for r in self.recipients
+        ) and self.document_type in ["Brief", "Postkarte"]:
+            errors["recipients"] = [
+                "Empfänger muss für Briefe und Postkarten angegeben werden"
+            ]
+
         # Validiere erwähnte Personen
         for i, person in enumerate(self.mentioned_persons):
             if not person.is_valid():
                 if "mentioned_persons" not in errors:
                     errors["mentioned_persons"] = []
-                errors["mentioned_persons"].append(f"Ungültige Person an Index {i}: muss mindestens Vor- oder Nachnamen haben")
-        
+                errors["mentioned_persons"].append(
+                    f"Ungültige Person an Index {i}: muss mindestens Vor- oder Nachnamen haben"
+                )
+
         # Validiere erwähnte Organisationen
         for i, org in enumerate(self.mentioned_organizations):
             if not org.is_valid():
                 if "mentioned_organizations" not in errors:
                     errors["mentioned_organizations"] = []
-                errors["mentioned_organizations"].append(f"Ungültige Organisation an Index {i}: muss einen Namen haben")
-        
+                errors["mentioned_organizations"].append(
+                    f"Ungültige Organisation an Index {i}: muss einen Namen haben"
+                )
+
         # Validiere erwähnte Ereignisse
         for i, event in enumerate(self.mentioned_events):
             if not event.is_valid():
                 if "mentioned_events" not in errors:
                     errors["mentioned_events"] = []
-                errors["mentioned_events"].append(f"Ungültiges Ereignis an Index {i}: muss einen Namen haben")
-        
+                errors["mentioned_events"].append(
+                    f"Ungültiges Ereignis an Index {i}: muss einen Namen haben"
+                )
+
         # Validiere erwähnte Orte
         for i, place in enumerate(self.mentioned_places):
             if not place.is_valid():
                 if "mentioned_places" not in errors:
                     errors["mentioned_places"] = []
-                errors["mentioned_places"].append(f"Ungültiger Ort an Index {i}: muss einen Namen haben")
-        
+                errors["mentioned_places"].append(
+                    f"Ungültiger Ort an Index {i}: muss einen Namen haben"
+                )
+
         return errors
-    
+
     def is_valid(self) -> bool:
         """Prüft, ob das Dokument gültig ist."""
         return len(self.validate()) == 0
-    
+
     def _is_valid_date(self, date_str: str) -> bool:
         """
         Prüft, ob ein Datum im Format YYYY.MM.DD gültig ist.
@@ -548,33 +648,34 @@ class BaseDocument:
         """
         if not date_str:
             return True  # Leere Daten sind erlaubt
-        
+
         # Prüfe Datumsformate: YYYY.MM.DD, YYYY.MM, YYYY
         patterns = [
             r"^\d{4}\.\d{2}\.\d{2}$",  # YYYY.MM.DD
-            r"^\d{4}\.\d{2}$",          # YYYY.MM
-            r"^\d{4}$"                  # YYYY
+            r"^\d{4}\.\d{2}$",  # YYYY.MM
+            r"^\d{4}$",  # YYYY
         ]
-        
+
         # Wenn eines der Muster passt, ist das Format korrekt
         for pattern in patterns:
             if re.match(pattern, date_str):
                 return True
-        
+
         return False
 
 
 # Beispiele für spezifische Dokumenttypen (können erweitert werden)
 
+
 class Brief(BaseDocument):
     """Repräsentiert einen Brief mit zusätzlichen brief-spezifischen Attributen."""
-    
+
     def __init__(self, greeting: str = "", closing: str = "", **kwargs):
         super().__init__(**kwargs)
         self.document_type = "Brief"
         self.greeting = greeting
         self.closing = closing
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert den Brief in ein Dictionary."""
         data = super().to_dict()
@@ -582,88 +683,91 @@ class Brief(BaseDocument):
         data["closing"] = self.closing
         return data
 
-
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Brief':
+    def from_dict(cls, data: Dict[str, Any]) -> "Brief":
         """Erstellt ein Brief-Objekt aus einem Dictionary."""
         brief = cls(
-            greeting=data.get("greeting", ""),
-            closing=data.get("closing", "")
+            greeting=data.get("greeting", ""), closing=data.get("closing", "")
         )
         for key, value in data.items():
             if key not in ["greeting", "closing"]:
                 setattr(brief, key, value)
         return brief
 
+
 class Postkarte(BaseDocument):
     """Repräsentiert eine Postkarte mit zusätzlichen postkarten-spezifischen Attributen."""
-    
+
     def __init__(self, postmark: str = "", postmark_date: str = "", **kwargs):
         super().__init__(**kwargs)
         self.document_type = "Postkarte"
         self.postmark = postmark
         self.postmark_date = postmark_date
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert die Postkarte in ein Dictionary."""
         data = super().to_dict()
         data["postmark"] = self.postmark
         data["postmark_date"] = self.postmark_date
         return data
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Postkarte':
+    def from_dict(cls, data: Dict[str, Any]) -> "Postkarte":
         """Erstellt ein Postkarte-Objekt aus einem Dictionary."""
         postkarte = cls(
             postmark=data.get("postmark", ""),
-            postmark_date=data.get("postmark_date", "")
+            postmark_date=data.get("postmark_date", ""),
         )
         for key, value in data.items():
             if key not in ["postmark", "postmark_date"]:
                 setattr(postkarte, key, value)
         return postkarte
 
+
 class Protokoll(BaseDocument):
     """Repräsentiert ein Protokoll mit zusätzlichen protokoll-spezifischen Attributen."""
-    
-    def __init__(self, meeting_type: str = "", attendees: List[str] = None, **kwargs):
+
+    def __init__(
+        self, meeting_type: str = "", attendees: List[str] = None, **kwargs
+    ):
         super().__init__(**kwargs)
         self.document_type = "Protokoll"
         self.meeting_type = meeting_type
         self.attendees = attendees or []
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Konvertiert das Protokoll in ein Dictionary."""
         data = super().to_dict()
         data["meeting_type"] = self.meeting_type
         data["attendees"] = self.attendees
         return data
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Protokoll':
+    def from_dict(cls, data: Dict[str, Any]) -> "Protokoll":
         """Erstellt ein Protokoll-Objekt aus einem Dictionary."""
         protokoll = cls(
             meeting_type=data.get("meeting_type", ""),
-            attendees=data.get("attendees", [])
+            attendees=data.get("attendees", []),
         )
         for key, value in data.items():
             if key not in ["meeting_type", "attendees"]:
                 setattr(protokoll, key, value)
         return protokoll
 
+
 # Fabrik-Funktion, um das richtige Dokumentobjekt basierend auf dem Typ zu erstellen
 def create_document(data: Dict[str, Any]) -> BaseDocument:
     """
     Erstellt das passende Dokumentobjekt basierend auf dem Dokumenttyp im Dictionary.
-    
+
     Args:
         data: Dictionary mit Dokumentdaten
-        
+
     Returns:
         Ein spezialisiertes Dokumentobjekt oder ein BaseDocument-Objekt
     """
     document_type = data.get("attributes", {}).get("document_type", "")
-    
+
     if document_type == "Brief":
         return Brief.from_dict(data)
     elif document_type == "Postkarte":
@@ -672,8 +776,11 @@ def create_document(data: Dict[str, Any]) -> BaseDocument:
         return Protokoll.from_dict(data)
     else:
         return BaseDocument.from_dict(data)
-    
-def mentioned_places_from_custom_data(custom_data: Dict[str, Any], full_doc_id: str) -> List[Place]:
+
+
+def mentioned_places_from_custom_data(
+    custom_data: Dict[str, Any], full_doc_id: str
+) -> List[Place]:
     """
     Extrahiert deduplizierte Place-Objekte aus custom_data["places"] mithilfe der lokalen deduplicate_places-Funktion.
     """
@@ -688,23 +795,27 @@ def mentioned_places_from_custom_data(custom_data: Dict[str, Any], full_doc_id: 
                 "alternate_place_name": pl.get("alternate_name", ""),
                 "geonames_id": pl.get("geonames_id", ""),
                 "wikidata_id": pl.get("wikidata_id", ""),
-                "nodegoat_id": pl.get("nodegoat_id", "")
-            }
+                "nodegoat_id": pl.get("nodegoat_id", ""),
+            },
         }
         for pl in custom_data.get("places", [])
     ]
 
     # Hier wird angenommen, dass deduplicate_places() im gleichen Modul definiert ist.
-    deduplicated_places = deduplicate_places(raw_places, document_id=full_doc_id)[0]
+    deduplicated_places = deduplicate_places(
+        raw_places, document_id=full_doc_id
+    )[0]
 
     return [
         Place(
-            name=pl.get("name") or pl.get("matched_name") or pl.get("matched_raw_input", ""),
+            name=pl.get("name")
+            or pl.get("matched_name")
+            or pl.get("matched_raw_input", ""),
             type=pl.get("type", ""),
             alternate_place_name=pl.get("alternate_place_name", ""),
             geonames_id=pl.get("geonames_id", ""),
             wikidata_id=pl.get("wikidata_id", ""),
-            nodegoat_id=pl.get("nodegoat_id", "")
+            nodegoat_id=pl.get("nodegoat_id", ""),
         )
         for pl in deduplicated_places
     ]

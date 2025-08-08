@@ -71,9 +71,7 @@ from Module import (
     normalize_name_string,
     merge_title_tokens,
     correct_swapped_name,
-    
     fuzzy_match_name,
-
     # letter-metadata-matcher
     match_authors,
     match_recipients,
@@ -123,7 +121,7 @@ from Module import (
 
 # --------------- Pfadkonfiguration ---------------
 # TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
-#TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+# TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 TRANSKRIBUS_DIR = "/Users/svenburkhardt/Downloads/export_job_17826913"
 OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
 OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
@@ -313,7 +311,7 @@ def extract_text_from_xml(root: ET.Element) -> str:
     transcript_text = ""
     for text_equiv in root.findall(".//ns:TextEquiv/ns:Unicode", NS):
         if text_equiv.text:
-            transcript_text += text_equiv.text + "\n"
+            transcript_text += text_equiv.text + " \n "
 
     return transcript_text.strip()
 
@@ -395,8 +393,11 @@ def extract_wikidata_id(custom_str: str) -> Optional[str]:
 
 
 # ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Custom-Tag-Extraction
 # ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 def extract_custom_attributes(
     root: ET.Element,
@@ -497,9 +498,12 @@ def extract_custom_attributes(
     )
 
     return result
+
+
 # ----------------------------------------------------------------------------
 # Custom-Tag-Extraction (PERSON)
-# ----------------------------------------------------------------------------
+
+
 def extract_person_data(row: Dict[str, Any]) -> Dict[str, str]:
     name = row.get("name", "").strip()
     return split_name_string(name)
@@ -759,9 +763,11 @@ def extract_person_from_custom(
 
     return persons
 
+
 # ----------------------------------------------------------------------------
 # Custom-Tag-Extraction (Organisation)
-# ----------------------------------------------------------------------------
+
+
 def extract_organization_from_custom(
     custom_attr: str, text_content: str
 ) -> List[Dict[str, str]]:
@@ -799,7 +805,9 @@ def extract_organization_from_custom(
             offset = int(org_data.get("offset", 0))
             length = int(org_data.get("length", 0))
 
-            if offset < len(text_content) and offset + length <= len(text_content):
+            if offset < len(text_content) and offset + length <= len(
+                text_content
+            ):
                 name = text_content[offset : offset + length].strip()
                 wikidata = extract_wikidata_id(custom_attr)
 
@@ -817,9 +825,10 @@ def extract_organization_from_custom(
 
     return orgs
 
+
 # ----------------------------------------------------------------------------
 # Custom-Tag-Extraction (PLACE)
-# ----------------------------------------------------------------------------
+
 
 def extract_place_from_custom(
     custom_attr: str, text_content: str, place_m=None
@@ -964,9 +973,8 @@ def parse_custom_attributes(attr_str: str) -> Dict[str, str]:
     return result
 
 
-
 # ----------------------------------------------------------------------------
-# --- total_json schreiben 
+# --- total_json schreiben
 # ----------------------------------------------------------------------------
 def update_total_json(out_path: str, doc: BaseDocument):
     total_path = Path(out_path).parent / "total_json.json"
@@ -984,10 +992,9 @@ def update_total_json(out_path: str, doc: BaseDocument):
     print(f"[DEBUG] filename = {filename}")
 
     match = re.search(
-        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",                  
+        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",
         filename,
     )
-
 
     if not match:
         print(
@@ -1011,11 +1018,13 @@ def update_total_json(out_path: str, doc: BaseDocument):
 
     print(f"[DEBUG] total_json.json aktualisiert: {akte} / Seite {page}")
 
+
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 #                           HAUPTVERARBEITUNG
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
+
 
 def process_transkribus_file(
     xml_path: str, seven_digit_folder: str, subdir: str
@@ -1046,7 +1055,7 @@ def process_transkribus_file(
         document_type = get_document_type(filename, xml_path, debug=True)
 
         # 4) Transkript holen und auf Länge prüfen
-        transcript_text = "\n".join(
+        transcript_text = " \n ".join(
             te.text
             for te in root.findall(
                 ".//ns:TextEquiv/ns:Unicode",
@@ -1761,14 +1770,11 @@ def process_single_xml(
     )
     # 6) Transkript
     transcript = extract_text_from_xml(root)
-    if not transcript or len(transcript.strip()) < 10:
+    is_transcript_empty = False
+    if not transcript or len(transcript.strip()) < 3:
         print(f"[WARN] Leeres oder zu kurzes Transkript: {xml_file}")
-        return
-    print("\n")
-    print(
-        f"[DEBUG] extrahiertes Transkript:\n********************************\n{transcript}\n********************************"
-    )
-    print("\n")
+        transcript = ""  # Leerer Fallback
+        is_transcript_empty = True
 
     # 7) Datumsangaben aus Fließtext extrahieren (Module/date_matcher.py)
     custom_data = extract_custom_attributes(
@@ -2299,6 +2305,7 @@ def merge_person_lists(
         if not already:
             merged.append(p)
     return merged
+
 
 def infer_authors_recipients(
     text: str, doc_type: Optional[str], persons: List[Person]

@@ -16,7 +16,8 @@ TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Downloads/export_job_17826913")
 
 # --- Hilfsfunktionen ---
 def get_api_client() -> openai.OpenAI:
-    api_key = os.getenv("OPENAI_API_KEY")
+    #api_key = os.getenv("OPENAI_API_KEY")
+    api_key = "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"
     if not api_key:
         raise RuntimeError("Kein OPENAI_API_KEY in der Umgebung gefunden.")
     return openai.OpenAI(api_key=api_key)
@@ -96,12 +97,13 @@ def annotate_with_llm(xml_content: str,
     6. XML-Regeln:
     - **Verändere nur** `custom`-Attribute innerhalb von `<TextLine>`.
     - Belasse alle anderen XML-Strukturen vollständig unverändert.
+    - Sind die XML Files leer, lasse sie unverändert leer.
 
     7. Ausgabe:
     - Gib ausschließlich ein vollständiges, wohlgeformtes XML zurück.
     - Kein Freitext, kein Kommentar, kein Markdown.
 
-    Beispielausgabe:
+    Beispielausgabe, die unter keinen Umständen als XML gespeichert werden darf!:
     <?xml version="1.0" encoding="UTF-8"?>
     <PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15">
     <Page imageFilename="dummy.jpg" imageWidth="1000" imageHeight="1000">
@@ -154,7 +156,6 @@ def annotate_with_llm(xml_content: str,
     </PcGts>
 
     Hier ist das zu annotierende XML:
-
 ```
 {xml_content}
 ```
@@ -169,9 +170,14 @@ def annotate_with_llm(xml_content: str,
         ]
     )
 
-    usage = resp.usage
-    in_tok = usage.prompt_tokens
-    out_tok = usage.completion_tokens
+    usage = getattr(resp, "usage", None)
+    if usage is None:
+        in_tok = out_tok = cost = 0
+    else:
+        in_tok = usage.prompt_tokens
+        out_tok = usage.completion_tokens
+        cost   = round(in_tok / 1000 * INPUT_COST_PER_1K + out_tok / 1000 * OUTPUT_COST_PER_1K, 4)
+
     cost   = round(in_tok/1000*INPUT_COST_PER_1K + out_tok/1000*OUTPUT_COST_PER_1K, 4)
 
     return {

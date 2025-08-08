@@ -49,10 +49,12 @@ def get_document_type(filename: str, xml_path: Optional[str] = None, debug: bool
     ]
 
     if not row.empty:
-        doc_type = row.iloc[0].get("Dokumententyp", "").strip()
+        doc_type_value = row.iloc[0]["Dokumententyp"]
+        doc_type = doc_type_value.strip() if isinstance(doc_type_value, str) else ""
         if debug:
             print(f"[DEBUG] Typ aus CSV: {doc_type} für ID {transkribus_id}, Seite {page_number}")
         return doc_type
+
 
     if xml_path:
         try:
