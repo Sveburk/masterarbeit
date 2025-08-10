@@ -1,0 +1,200 @@
+{
+  "attributes": {
+    "docId": "6478651",
+    "pageId": "89798966",
+    "tsid": "236064550",
+    "imgUrl": "https://files.transkribus.eu/Get?id=OLCHMQODSZLALCPBFCMCQSXL&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=ACXQZNKPCXOXBLGGIYUMOYSN",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Donaueschingen",
+        "type": "",
+        "alternate_place_name": "Donaueschingen",
+        "geonames_id": "6558125.0",
+        "wikidata_id": "Q83062",
+        "nodegoat_id": "ngMT5Y28xMDYxODYyOF02bTljMmJcYTZzMA"
+      },
+      {
+        "name": "Binzgen",
+        "type": "",
+        "alternate_place_name": "Binzgen;Laufenburg-Binzgen;TÜBINGEN",
+        "geonames_id": "2948738.0",
+        "wikidata_id": "",
+        "nodegoat_id": "ngHO2H18sHeT5JYxtIA94wOUeHBExTOIuHb"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {
+      "name": "Binzgen",
+      "nodegoat_id": "ngHO2H18sHeT5JYxtIA94wOUeHBExTOIuHb",
+      "score": 105.0,
+      "alternate_place_name": "Binzgen;Laufenburg-Binzgen;TÜBINGEN"
+    },
+    "creation_date": "28.09.1940"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Sängerbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "",
+      "alternate_name": "",
+      "familyname": "Schlageter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngVC0Z98gVMHfWiJ4Wu71kCqsGPR9HCKiVJ",
+      "confidence": "fuzzy",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 100,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "H.",
+      "alternate_name": "Johann",
+      "familyname": "Schlageter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngTA5B98eUKFeUgT4Ts73iAYqUNQjFACgUH",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 95,
+      "recipient_score": 0,
+      "mentioned_count": 3
+    },
+    {
+      "forename": "Alf.",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Kaufmann",
+      "role_schema": "Kaufmann",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "28.09.1940",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Donaueschingen",
+      "type": "",
+      "alternate_place_name": "Donaueschingen",
+      "geonames_id": "6558125.0",
+      "wikidata_id": "Q83062",
+      "nodegoat_id": "ngMT5Y28xMDYxODYyOF02bTljMmJcYTZzMA"
+    },
+    {
+      "name": "Binzgen",
+      "type": "",
+      "alternate_place_name": "Binzgen;Laufenburg-Binzgen;TÜBINGEN",
+      "geonames_id": "2948738.0",
+      "wikidata_id": "",
+      "nodegoat_id": "ngHO2H18sHeT5JYxtIA94wOUeHBExTOIuHb"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Hans. Schlageter \n 2/ Inf. Ers. Batt. 358 \n Donaueschingen \n Liebe Sängerbrüder \n Meinen frohen \n Gruss sendet \n euch Schütze \n H. Schlageter \n Feldpost \n TÜBINGEN \n 28.09.40-19 \n An den  \n Männerchor Murg \n z. H. v. Alf. Zimmermann \n Kaufmann \n Laufenburg-Rhina \n Baden",
+  "document_format": ""
+}

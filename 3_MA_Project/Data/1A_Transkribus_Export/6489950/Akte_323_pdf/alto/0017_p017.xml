@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0017_p017.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:34:09.873+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags/>
+   <Layout>
+      <Page ID="Page17" PHYSICAL_IMG_NR="17" HEIGHT="3508" WIDTH="2479">
+         <TopMargin HEIGHT="0" WIDTH="2479" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="2479"/>
+         <BottomMargin HEIGHT="0" WIDTH="2479" VPOS="3508" HPOS="0"/>
+         <PrintSpace HEIGHT="3508" WIDTH="2479" VPOS="0" HPOS="0">
+            <TextBlock ID="tr_1" HEIGHT="175" WIDTH="1857" VPOS="462" HPOS="322">
+               <Shape>
+                  <Polygon POINTS="322,462 322,637 2179,637 2179,462"/>
+               </Shape>
+               <TextLine ID="tr_1_tl_1"
+                         BASELINE="334,507 426,513 518,514 610,517 702,519 794,519 886,517 978,516 1070,516 1162,517 1255,513 1347,519 1439,516 1531,518 1623,519 1715,516 1807,516 1899,516 1991,513 2083,510 2176,510"
+                         HEIGHT="197"
+                         WIDTH="1848"
+                         VPOS="365"
+                         HPOS="321">
+                  <String HEIGHT="197"
+                          WIDTH="1725"
+                          VPOS="365"
+                          HPOS="198"
+                          CONTENT="MÄNNERCHOR"/>
+                  <SP HEIGHT="197" WIDTH="123" VPOS="365" HPOS="1923"/>
+                  <String HEIGHT="197"
+                          WIDTH="739"
+                          VPOS="365"
+                          HPOS="1430"
+                          CONTENT="MURG"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_2"
+                         BASELINE="322,609 414,612 507,612 600,612 693,612 786,612 879,612 971,612 1064,612 1157,612 1250,612 1343,610 1436,612 1529,612 1621,612 1714,612 1807,615 1900,614 1993,612 2086,612 2179,609"
+                         HEIGHT="109"
+                         WIDTH="1867"
+                         VPOS="516"
+                         HPOS="309">
+                  <String HEIGHT="109"
+                          WIDTH="646"
+                          VPOS="516"
+                          HPOS="237"
+                          CONTENT="ALTER"/>
+                  <SP HEIGHT="109" WIDTH="72" VPOS="516" HPOS="883"/>
+                  <String HEIGHT="109"
+                          WIDTH="1580"
+                          VPOS="516"
+                          HPOS="596"
+                          CONTENT="SCHWEIZER-MÄNNERCHOR"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=13_03_2025_14:56</Creator>
+        <Created>2025-01-23T12:55:17.736+01:00</Created>
+        <LastChange>2025-03-13T14:56:33.102+01:00</LastChange>
+        <TranskribusMetadata docId="6489950" pageId="89834637" pageNr="20" tsid="234969518" status="IN_PROGRESS" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=OUPSDOOWGWUBUHNXACRVVTHO&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=BTTGEAYUPNDAKUYANQORTUNK" imageId="74848223"/>
+    </Metadata>
+    <Page imageFilename="0020_p020.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1754652850026" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="322,401 322,662 2191,662 2191,401"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="321,523 2188,530 2188,395 2125,376 1623,423 1537,386 1454,427 321,395"/>
+                <Baseline points="334,501 426,504 519,504 612,510 705,511 798,515 891,513 983,513 1076,513 1169,514 1262,511 1355,514 1448,513 1541,513 1633,513 1726,515 1819,513 1912,512 2005,509 2098,507 2191,504"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="309,625 2176,622 2160,532 309,546"/>
+                <Baseline points="322,597 414,603 507,612 600,609 693,609 786,607 879,606 971,606 1064,610 1157,610 1250,609 1343,608 1436,609 1529,610 1621,612 1714,612 1807,609 1900,612 1993,609 2086,606 2179,603"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MÄNNERCHOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

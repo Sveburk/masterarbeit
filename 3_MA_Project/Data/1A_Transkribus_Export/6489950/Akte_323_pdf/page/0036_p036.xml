@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=13_03_2025_14:56</Creator>
+        <Created>2025-01-23T12:55:21.248+01:00</Created>
+        <LastChange>2025-03-13T14:56:35.477+01:00</LastChange>
+        <TranskribusMetadata docId="6489950" pageId="89834617" pageNr="36" tsid="234969526" status="IN_PROGRESS" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=YECOQJCFKVAPXFEFNMTODOSF&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=WLDMCZYQMXMBPKIUMZWWZXFE" imageId="74848241"/>
+    </Metadata>
+    <Page imageFilename="0036_p036.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1754652851186" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="325,453 325,637 2182,637 2182,453"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="325,547 2176,540 2176,374 1599,436 1479,385 325,425"/>
+                <Baseline points="337,513 429,510 521,513 613,513 706,514 798,517 890,514 982,515 1075,515 1167,514 1259,513 1351,517 1444,517 1536,518 1628,517 1720,516 1813,516 1905,513 1997,513 2089,507 2182,498"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="1936,625 1973,614 2008,623 2019,611 2042,625 2054,616 2068,623 2098,614 2134,628 2164,616 2167,538 2109,535 2086,547 2049,533 2012,549 1994,533 1938,531"/>
+                <Baseline points="1949,612 1976,610 2003,609 2030,609 2058,609 2085,608 2112,607 2139,606 2167,606"/>
+                <TextEquiv>
+                    <Unicode>HOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="1698,625 1726,618 1756,630 1791,614 1823,630 1864,611 1897,623 1915,618 1915,542 1888,545 1864,535 1834,542 1825,533 1811,542 1781,533 1754,547 1747,540 1735,545 1714,528 1698,531"/>
+                <Baseline points="1710,609 1736,611 1763,612 1789,612 1816,611 1842,609 1869,611 1895,612 1922,612"/>
+                <TextEquiv>
+                    <Unicode>ERC</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="312,616 1604,621 1583,542 312,547"/>
+                <Baseline points="325,615 389,612 453,614 517,612 581,612 646,612 710,612 774,611 838,609 902,609 967,609 1031,612 1095,612 1159,612 1223,609 1288,612 1352,612 1416,614 1480,612 1544,609 1609,612"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MÄT</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

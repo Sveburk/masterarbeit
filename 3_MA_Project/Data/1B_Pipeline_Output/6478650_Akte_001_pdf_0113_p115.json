@@ -1,0 +1,148 @@
+{
+  "attributes": {
+    "docId": "6478650",
+    "pageId": "89799305",
+    "tsid": "236048822",
+    "imgUrl": "https://files.transkribus.eu/Get?id=CGBZTTBBPVRZCZFDALXRZUJQ&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=NKACQWAXYZBGPDXHLYPFFMZF",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Schopfheim",
+        "type": "",
+        "alternate_place_name": "SCHOPFHEIM;Schopfheim",
+        "geonames_id": "6558144.0",
+        "wikidata_id": "Q61734",
+        "nodegoat_id": "ngRY3N18cReD4TIDdTK94gYqoSrOhDYOeRb"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Niederhof",
+        "type": "",
+        "alternate_place_name": "Murg-Niederhof;Niederhof;Niederwihl",
+        "geonames_id": "2863309.0",
+        "wikidata_id": "Q20616204",
+        "nodegoat_id": "ngFM1B98qGcRsHWFrG079uMacFZCvRMCsGz"
+      },
+      {
+        "name": "Steinen",
+        "type": "",
+        "alternate_place_name": "Steinen",
+        "geonames_id": "6555894.0",
+        "wikidata_id": "Q62014",
+        "nodegoat_id": "ngNU0F18yNkZyPEFzN29ycUAkOHKdZUGaNh"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {
+      "name": "Niederhof",
+      "nodegoat_id": "ngFM1B98qGcRsHWFrG079uMacFZCvRMCsGz",
+      "score": 105.0,
+      "alternate_place_name": "Murg-Niederhof;Niederhof;Niederwihl"
+    },
+    "creation_date": "26.05.1920"
+  },
+  "authors": [],
+  "recipients": [],
+  "mentioned_persons": [
+    {
+      "forename": "",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Hauptlehrer",
+      "role_schema": "Hauptlehrer",
+      "gender": "male",
+      "associated_place": "Niederhof",
+      "nodegoat_id": "ngLS7X78wNCX8MyD2MU57aSQiMFIbXSYyNZ",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "missing_familyname",
+      "match_score": 85,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Rübin",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Dirigent",
+      "role_schema": "Dirigent",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "26.05.1920",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Schopfheim",
+      "type": "",
+      "alternate_place_name": "SCHOPFHEIM;Schopfheim",
+      "geonames_id": "6558144.0",
+      "wikidata_id": "Q61734",
+      "nodegoat_id": "ngRY3N18cReD4TIDdTK94gYqoSrOhDYOeRb"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Niederhof",
+      "type": "",
+      "alternate_place_name": "Murg-Niederhof;Niederhof;Niederwihl",
+      "geonames_id": "2863309.0",
+      "wikidata_id": "Q20616204",
+      "nodegoat_id": "ngFM1B98qGcRsHWFrG079uMacFZCvRMCsGz"
+    },
+    {
+      "name": "Steinen",
+      "type": "",
+      "alternate_place_name": "Steinen",
+      "geonames_id": "6555894.0",
+      "wikidata_id": "Q62014",
+      "nodegoat_id": "ngNU0F18yNkZyPEFzN29ycUAkOHKdZUGaNh"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "ALEMANNISCHER SÄNGERGAU \n SCHOPFHEIM, den 26.  Mai 1920 \n An den verehrlichen Gesangverein \n Männerchor Murg \n Murg \n Werte Sangesfreunde. \n Unsere Bemühungen,beim Unterrichtsministerium ,die Genehmigung \n zu erhalten ,dass Herr Hauptlehrer Fischer von Niederwihl Ihren Verein \n dirigieren darf ,waren leider ohne Erfolg geblieben. \n Herr Fischer hat schon vom Ministerium die Genehmigung zur Ausübung \n mehrerer Nebenbschäftigungen erhalten und darf deshalb ein weiteres \n Nebenamt nicht übernehmen. \n wenden Sie sich doch einmal an Herrn Gesangsdirigent Rübin in Steinen \n vielleich übernimmnt er oder sein Sohn die beide sehr tüchtige und er- \n folgreiche Dirigenten inunserem Gaue sind aushilfweise Ihren Verein. \n Wir bedauern sehr diese über Ihren Verein den wir sehr zu \n schätzen wissen ,hereingebrochene Krisis und hoffen dass solche bald \n behoben sein wird. \n mit treudeutschen Sängergrüssen! \n die Gauleitung: \n Wian. \n i.A. \n Gauschriftführer",
+  "document_format": ""
+}

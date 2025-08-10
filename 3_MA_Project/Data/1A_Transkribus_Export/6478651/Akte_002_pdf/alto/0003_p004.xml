@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0003_p004.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:05.408+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_0_8_pla" LABEL="Tübingen" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page3" PHYSICAL_IMG_NR="3" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="158" WIDTH="1419" VPOS="2114" HPOS="128">
+               <Shape>
+                  <Polygon POINTS="128,2114 1547,2114 1547,2272 128,2272"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="150,2221 1511,2212"
+                         HEIGHT="39"
+                         WIDTH="1361"
+                         VPOS="2182"
+                         HPOS="150">
+                  <String HEIGHT="39"
+                          WIDTH="454"
+                          VPOS="2182"
+                          HPOS="115"
+                          CONTENT="Tübingen."/>
+                  <SP HEIGHT="39" WIDTH="35" VPOS="2182" HPOS="569"/>
+                  <String HEIGHT="39"
+                          WIDTH="593"
+                          VPOS="2182"
+                          HPOS="464"
+                          CONTENT="Neckaransicht"/>
+                  <SP HEIGHT="39" WIDTH="35" VPOS="2182" HPOS="1057"/>
+                  <String HEIGHT="39"
+                          WIDTH="244"
+                          VPOS="2182"
+                          HPOS="953"
+                          CONTENT="mit"/>
+                  <SP HEIGHT="39" WIDTH="35" VPOS="2182" HPOS="1197"/>
+                  <String HEIGHT="39"
+                          WIDTH="454"
+                          VPOS="2182"
+                          HPOS="1057"
+                          CONTENT="Platenallee"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

@@ -68,7 +68,7 @@ def extract_events_from_xml(
                 # Kein Treffer → nächstes Token
                 continue
 
-            # Falls kein Listentyp (z. B. einzelnes Dict), in Liste packen
+            # Falls kein Listentyp (z. B. einzelnes Dict), in Liste packen
             if not isinstance(match_list, (list, tuple)):
                 match_list = [match_list]
 

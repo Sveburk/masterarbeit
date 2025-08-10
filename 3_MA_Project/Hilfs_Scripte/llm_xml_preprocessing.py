@@ -190,60 +190,76 @@ def annotate_with_llm(xml_content: str,
         }
     }
 
-def process_file(xml_path: Path, client: openai.OpenAI):
-    """Annotiert eine einzelne XML und speichert sie direkt im gleichen Ordner."""
+def process_file(xml_path: Path, client: openai.OpenAI, failed_log: Path):
+    """
+    Annotiert eine einzelne XML und speichert sie – auch bei Fehlern.
+    Fehlerhafte Dateien werden zusätzlich in einer Logdatei protokolliert.
+    """
     try:
-        # Ordnername und Pfad ermitteln
         folder_name = xml_path.parent.name
         folder_path = xml_path.parent.resolve()
 
-        # Neue Ausgabe
         print(f"\nVerarbeite Datei: {xml_path.name}")
         print(f"  • Verzeichnis: {folder_path}")
         print(f"  • Ordnername : {folder_name}")
         print("  → Starte Annotation via OpenAI…", end="", flush=True)
 
         xml_text = xml_path.read_text(encoding="utf-8")
-        print(f"\nVerarbeite Datei: {xml_path.name}")
 
-
-        result    = annotate_with_llm(xml_text, client)
+        result = annotate_with_llm(xml_text, client)
         annotated = clean_llm_output(result["annotated_xml"])
-        meta      = result["llm_metadata"]
+        meta = result["llm_metadata"]
 
-        # ✅ Check if LLM returned valid XML
+        # Standard: gültig
+        is_valid_xml = True
+        error_reason = ""
+
+        # Prüfe grob auf gültigen XML-Start
         if not annotated.strip().startswith("<"):
-            raise ValueError(
-                f"LLM did not return valid XML for {xml_path.name}.\n"
-                f"Response starts with: {annotated[:200]!r}"
-            )
-        try:
-            ET.fromstring(annotated)  # validiert grob das XML
-        except ET.ParseError as pe:
-            raise ValueError(
-                f"Returned XML is not well-formed for {xml_path.name}: {pe}\n"
-                f"Start of XML: {annotated[:200]!r}"
-            )
+            error_reason = "Antwort beginnt nicht mit '<'"
+            is_valid_xml = False
+        else:
+            try:
+                ET.fromstring(annotated)
+            except ET.ParseError as pe:
+                error_reason = f"ParseError: {pe}"
+                is_valid_xml = False
 
+        # Datei speichern – unabhängig von Gültigkeit
+        if is_valid_xml:
+            out_path = xml_path.with_name(f"{xml_path.stem}_preprocessed{xml_path.suffix}")
+        else:
+            out_path = xml_path.with_name(f"{xml_path.stem}_FAILED{xml_path.suffix}")
 
-        print(" ✓ zurück, speichere…")
-
-        # hier direkt neben der Originaldatei speichern
-        out_path = xml_path.with_name(f"{xml_path.stem}_preprocessed{xml_path.suffix}")
         out_path.write_text(annotated, encoding="utf-8")
-        folder_name = xml_path.parent.name
-        
-        print(f"    → Ordner      : {folder_name}")
         print(f"    → Gespeichert unter: {out_path}")
+
         print(f"    • Model: {meta['model']}")
         print(f"    • Input-Tokens: {meta['input_tokens']}, Output-Tokens: {meta['output_tokens']}")
-        print(f"    • Geschätzte Kosten: ${meta['cost_usd']}\n")
+        print(f"    • Geschätzte Kosten: ${meta['cost_usd']:.4f}\n")
+
+        # Falls fehlerhaft, schreibe in Logdatei
+        if not is_valid_xml:
+            try:
+                ordner = xml_path.parts[-4]  # z. B. "1782691"
+                akte = xml_path.parts[-3]    # z. B. "Akte_123"
+                dateiname = xml_path.name
+                match = re.search(r"[pP](\d{3})", dateiname)
+                seite = match.group(1) if match else "???"
+            except Exception:
+                ordner = akte = seite = "??"
+
+            with failed_log.open("a", encoding="utf-8") as log_f:
+                log_f.write(
+                    f"{ordner}\tAkte_{akte}\tSeite_{seite}\t{xml_path.name}\t{error_reason}\n"
+                )
 
         return out_path
 
     except Exception as e:
-        print(f"  ✗ Fehler bei {xml_path.name}: {e}")
+        print(f"  ✗ Schwerwiegender Fehler bei {xml_path.name}: {e}")
         return None
+
     
 def clean_llm_output(raw: str) -> str:
     """
@@ -263,6 +279,12 @@ def clean_llm_output(raw: str) -> str:
 
 def main():
     client = get_api_client()
+    xml_files = []
+    skipped_files = 0
+
+    failed_log = TRANSKRIBUS_DIR / "failed_files.log"
+    if failed_log.exists():
+        failed_log.unlink()
 
     # find all XMLs in the Transkribus structure
     xml_files = []
@@ -284,6 +306,7 @@ def main():
                 preproc = [p for p in all_xmls if p.stem.endswith("_preprocessed")]
                 ratio = len(preproc) / len(all_xmls)
                 if ratio >= 0.5:
+                    skipped_files += len(all_xmls)
                     print(f"Überspringe Ordner {page_dir.name}: "
                         f"{len(preproc)}/{len(all_xmls)} Dateien vorverarbeitet ({ratio:.0%}).")
                     continue
@@ -294,8 +317,9 @@ def main():
             xml_files.extend(to_process)
 
 
-    print(f"Starte LLM-Annotation für {len(xml_files)} Dateien…")
+    print(f"Starte LLM-Annotation für {len(xml_files)} Dateien "
+          f"(übersprungene Dateien: {skipped_files})")
     for xml_path in tqdm(xml_files, unit="file"):
-        process_file(xml_path, client)
+        process_file(xml_path, client, failed_log)
 if __name__ == "__main__":
     main()

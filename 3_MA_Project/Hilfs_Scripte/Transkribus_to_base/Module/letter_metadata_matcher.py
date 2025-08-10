@@ -1692,7 +1692,7 @@ def assign_sender_and_recipient_place(
                         if "-" not in alt:
                             continue
 
-                        # Teile aufsplitten: z. B. "Laufenburg-Rhina"
+                        # Teile aufsplitten: z. B. "Laufenburg-Rhina"
                         alt_parts = re.split(r"[-–—\s]", alt)
                         if len(alt_parts) < 2:
                             continue
@@ -1779,7 +1779,7 @@ def assign_sender_and_recipient_place(
                 if result and result["score"] >= score_threshold:
                     candidates.append(result)
 
-    # 2) Ergänze kombinierte Orte (z. B. "Laufenburg-Rhina")
+    # 2) Ergänze kombinierte Orte (z. B. "Laufenburg-Rhina")
     combined = find_combined_place(
         [text for _, text in lines], mentioned_places
     )

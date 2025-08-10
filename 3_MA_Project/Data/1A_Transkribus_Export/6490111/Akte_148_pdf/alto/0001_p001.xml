@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0001_p001.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:34:52.128+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_r_2_tl_2_19_7_pla" LABEL="Binzgen" TYPE="location"/>
+      <NamedEntityTag ID="Tag_r_2_tl_3_4_10_pla" LABEL="Laufenburg" TYPE="location"/>
+      <NamedEntityTag ID="Tag_r_tl_1_0_7_pla" LABEL="Binzgen" TYPE="location"/>
+      <NamedEntityTag ID="Tag_r_4_tl_4_8_7_pla" LABEL="Binzgen" TYPE="location"/>
+      <NamedEntityTag ID="Tag_r_4_tl_5_0_16_pla" LABEL="Komischen Fabrik" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page1" PHYSICAL_IMG_NR="1" HEIGHT="3508" WIDTH="2479">
+         <TopMargin HEIGHT="0" WIDTH="2479" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="2479"/>
+         <BottomMargin HEIGHT="0" WIDTH="2479" VPOS="3508" HPOS="0"/>
+         <PrintSpace HEIGHT="3508" WIDTH="2479" VPOS="0" HPOS="0">
+            <TextBlock ID="r_2" HEIGHT="428" WIDTH="725" VPOS="56" HPOS="100">
+               <Shape>
+                  <Polygon POINTS="100,56 825,56 825,484 100,484"/>
+               </Shape>
+               <TextLine ID="r_2_tl_2"
+                         BASELINE="137,316 182,316 226,319 271,319 316,319 361,322 406,319 450,319 495,319 540,319 585,319 629,319 674,319 719,319 764,319 797,316"
+                         HEIGHT="150"
+                         WIDTH="668"
+                         VPOS="227"
+                         HPOS="122">
+                  <String HEIGHT="150"
+                          WIDTH="565"
+                          VPOS="227"
+                          HPOS="96"
+                          CONTENT="Männergesangverein"/>
+                  <SP HEIGHT="150" WIDTH="26" VPOS="227" HPOS="662"/>
+                  <String HEIGHT="150"
+                          WIDTH="231"
+                          VPOS="227"
+                          HPOS="559"
+                          CONTENT="Binzgen"
+                          TAGREFS="Tag_r_2_tl_2_19_7_pla"/>
+               </TextLine>
+               <TextLine ID="r_2_tl_3"
+                         BASELINE="304,394 349,397 394,397 438,397 483,397 528,397 573,397 618,400 626,403"
+                         HEIGHT="137"
+                         WIDTH="332"
+                         VPOS="340"
+                         HPOS="290">
+                  <String HEIGHT="137"
+                          WIDTH="166"
+                          VPOS="340"
+                          HPOS="266"
+                          CONTENT="bei"/>
+                  <SP HEIGHT="137" WIDTH="24" VPOS="340" HPOS="432"/>
+                  <String HEIGHT="137"
+                          WIDTH="285"
+                          VPOS="340"
+                          HPOS="337"
+                          CONTENT="Laufenburg"
+                          TAGREFS="Tag_r_2_tl_3_4_10_pla"/>
+               </TextLine>
+            </TextBlock>
+            <TextBlock ID="r" HEIGHT="209" WIDTH="1018" VPOS="85" HPOS="1389">
+               <Shape>
+                  <Polygon POINTS="1389,85 2407,85 2407,294 1389,294"/>
+               </Shape>
+               <TextLine ID="r_tl_1"
+                         BASELINE="1424,232 1439,229 1483,229 1528,229 1573,226 1618,226 1662,226 1707,226 1752,226 1797,226 1842,223 1886,220 1931,220 1976,220 2021,217 2065,217 2110,217 2155,217 2200,220 2245,220 2289,220 2334,223 2379,226"
+                         HEIGHT="235"
+                         WIDTH="965"
+                         VPOS="75"
+                         HPOS="1409">
+                  <String HEIGHT="235"
+                          WIDTH="399"
+                          VPOS="75"
+                          HPOS="1376"
+                          CONTENT="Binzgen,"/>
+                  <SP HEIGHT="235" WIDTH="33" VPOS="75" HPOS="1775"/>
+                  <String HEIGHT="235"
+                          WIDTH="233"
+                          VPOS="75"
+                          HPOS="1675"
+                          CONTENT="den"/>
+                  <SP HEIGHT="235" WIDTH="33" VPOS="75" HPOS="1908"/>
+                  <String HEIGHT="235"
+                          WIDTH="266"
+                          VPOS="75"
+                          HPOS="1808"
+                          CONTENT="16.."/>
+                  <SP HEIGHT="235" WIDTH="33" VPOS="75" HPOS="2075"/>
+                  <String HEIGHT="235"
+                          WIDTH="333"
+                          VPOS="75"
+                          HPOS="1975"
+                          CONTENT="August"/>
+                  <SP HEIGHT="235" WIDTH="33" VPOS="75" HPOS="2307"/>
+                  <String HEIGHT="235"
+                          WIDTH="200"
+                          VPOS="75"
+                          HPOS="2174"
+                          CONTENT="1939"/>
+               </TextLine>
+            </TextBlock>
+            <TextBlock ID="r_3" HEIGHT="353" WIDTH="1409" VPOS="393" HPOS="978">
+               <Shape>
+                  <Polygon POINTS="978,393 2387,393 2387,746 978,746"/>
+               </Shape>
+               <TextLine ID="r_3_tl_1"
+                         BASELINE="991,534 1009,531 1053,522 1098,525 1143,528 1188,528 1233,525 1277,525 1322,525 1367,525 1412,522 1456,522 1501,525 1546,525 1591,525 1636,525 1680,528 1725,525 1770,528 1815,525 1859,525 1904,525 1949,522 1994,519 2039,516 2083,513"
+                         HEIGHT="235"
+                         WIDTH="1099"
+                         VPOS="377"
+                         HPOS="977">
+                  <String HEIGHT="235"
+                          WIDTH="334"
+                          VPOS="377"
+                          HPOS="929"
+                          CONTENT="Git"/>
+                  <SP HEIGHT="235" WIDTH="48" VPOS="377" HPOS="1264"/>
+                  <String HEIGHT="235"
+                          WIDTH="1003"
+                          VPOS="377"
+                          HPOS="1073"
+                          CONTENT="Männergesangsverein"/>
+               </TextLine>
+               <TextLine ID="r_3_tl_2"
+                         BASELINE="1901,638 1913,635 1958,632 2003,632 2048,632 2092,632 2137,629 2182,626 2227,626"
+                         HEIGHT="128"
+                         WIDTH="337"
+                         VPOS="532"
+                         HPOS="1887">
+                  <String HEIGHT="128"
+                          WIDTH="506"
+                          VPOS="532"
+                          HPOS="1719"
+                          CONTENT="Murg"/>
+               </TextLine>
+            </TextBlock>
+            <TextBlock ID="r_4" HEIGHT="2196" WIDTH="2213" VPOS="737" HPOS="235">
+               <Shape>
+                  <Polygon POINTS="235,737 2448,737 2448,2933 235,2933"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="713,853 758,850 803,847 847,847 892,850 937,850 982,847 1027,850 1071,850 1116,850 1161,850 1206,850 1250,853 1295,850 1340,853 1385,853 1430,853 1474,853 1519,853 1564,850 1609,853 1653,850 1698,850 1743,853 1788,853 1800,853 1862,850 1868,850 1913,850 1958,850 2003,847 2048,847 2092,844 2137,844 2182,844 2227,844 2271,844 2316,841"
+                         HEIGHT="180"
+                         WIDTH="1609"
+                         VPOS="745"
+                         HPOS="700">
+                  <String HEIGHT="180"
+                          WIDTH="375"
+                          VPOS="745"
+                          HPOS="646"
+                          CONTENT="Des"/>
+                  <SP HEIGHT="180" WIDTH="54" VPOS="745" HPOS="1022"/>
+                  <String HEIGHT="180"
+                          WIDTH="1180"
+                          VPOS="745"
+                          HPOS="861"
+                          CONTENT="Männergesangverein"/>
+                  <SP HEIGHT="180" WIDTH="54" VPOS="745" HPOS="2041"/>
+                  <String HEIGHT="180"
+                          WIDTH="483"
+                          VPOS="745"
+                          HPOS="1826"
+                          CONTENT="Binzgen"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_3"
+                         BASELINE="391,958 403,955 447,958 492,955 537,958 582,958 626,958 671,958 716,961 761,958 806,958 850,958 895,955 940,955 985,955 1030,955 1074,955 1119,952 1164,955 1209,955 1253,955 1298,955 1343,952 1388,952 1433,952 1477,952 1522,952 1567,955 1612,955 1656,955 1701,952 1746,955 1791,958 1836,961 1880,961 1925,961 1970,964 2015,961 2060,961 2104,958 2149,955 2194,958 2239,955 2283,955 2328,952 2373,955"
+                         HEIGHT="165"
+                         WIDTH="1989"
+                         VPOS="862"
+                         HPOS="377">
+                  <String HEIGHT="165"
+                          WIDTH="837"
+                          VPOS="862"
+                          HPOS="325"
+                          CONTENT="veranstaltet"/>
+                  <SP HEIGHT="165" WIDTH="52" VPOS="862" HPOS="1162"/>
+                  <String HEIGHT="165"
+                          WIDTH="314"
+                          VPOS="862"
+                          HPOS="1005"
+                          CONTENT="am"/>
+                  <SP HEIGHT="165" WIDTH="52" VPOS="862" HPOS="1319"/>
+                  <String HEIGHT="165"
+                          WIDTH="576"
+                          VPOS="862"
+                          HPOS="1162"
+                          CONTENT="Sonntag"/>
+                  <SP HEIGHT="165" WIDTH="52" VPOS="862" HPOS="1738"/>
+                  <String HEIGHT="165"
+                          WIDTH="366"
+                          VPOS="862"
+                          HPOS="1581"
+                          CONTENT="den"/>
+                  <SP HEIGHT="165" WIDTH="52" VPOS="862" HPOS="1947"/>
+                  <String HEIGHT="165"
+                          WIDTH="366"
+                          VPOS="862"
+                          HPOS="1790"
+                          CONTENT="27."/>
+                  <SP HEIGHT="165" WIDTH="52" VPOS="862" HPOS="2157"/>
+                  <String HEIGHT="165"
+                          WIDTH="419"
+                          VPOS="862"
+                          HPOS="1947"
+                          CONTENT="August"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_4"
+                         BASELINE="394,1065 400,1065 444,1065 489,1065 534,1065 579,1068 623,1065 668,1065 713,1062 758,1062 803,1062 847,1062 892,1065 937,1065 982,1062 1027,1062 1071,1062 1116,1062 1161,1062 1206,1062 1250,1062 1295,1062 1340,1065 1385,1062 1430,1062 1474,1062 1519,1062 1564,1065 1609,1065 1653,1062 1698,1059 1743,1059 1788,1059 1833,1059 1877,1062 1922,1059 1967,1059 2012,1059 2057,1059 2101,1059 2146,1059 2191,1059 2236,1059 2280,1059 2325,1056"
+                         HEIGHT="174"
+                         WIDTH="1939"
+                         VPOS="965"
+                         HPOS="380">
+                  <String HEIGHT="174"
+                          WIDTH="456"
+                          VPOS="965"
+                          HPOS="323"
+                          CONTENT="1934"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="779"/>
+                  <String HEIGHT="174"
+                          WIDTH="342"
+                          VPOS="965"
+                          HPOS="608"
+                          CONTENT="in"
+                          TAGREFS="Tag_r_4_tl_4_8_7_pla"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="950"/>
+                  <String HEIGHT="174"
+                          WIDTH="627"
+                          VPOS="965"
+                          HPOS="779"
+                          CONTENT="Binzgen"
+                          TAGREFS="Tag_r_4_tl_4_8_7_pla"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="1407"/>
+                  <String HEIGHT="174"
+                          WIDTH="342"
+                          VPOS="965"
+                          HPOS="1235"
+                          CONTENT="im"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="1578"/>
+                  <String HEIGHT="174"
+                          WIDTH="456"
+                          VPOS="965"
+                          HPOS="1407"
+                          CONTENT="Haus"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="1863"/>
+                  <String HEIGHT="174"
+                          WIDTH="570"
+                          VPOS="965"
+                          HPOS="1692"
+                          CONTENT="hinter"/>
+                  <SP HEIGHT="174" WIDTH="57" VPOS="965" HPOS="2262"/>
+                  <String HEIGHT="174"
+                          WIDTH="285"
+                          VPOS="965"
+                          HPOS="2034"
+                          CONTENT="der"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_5"
+                         BASELINE="391,1173 409,1173 453,1173 498,1170 543,1173 588,1170 632,1173 677,1170 722,1170 767,1173 812,1173 856,1176 901,1173 946,1173 991,1173 1035,1173 1080,1170 1125,1167 1170,1167 1215,1167 1259,1170 1304,1170 1349,1173 1394,1173 1439,1173 1483,1173 1528,1173 1573,1170 1618,1167 1662,1167 1707,1167 1752,1164 1797,1167 1842,1170 1886,1173 1931,1173 1976,1173 2021,1170 2065,1170 2110,1170 2155,1170 2200,1167 2245,1167 2289,1164 2334,1161 2379,1158"
+                         HEIGHT="153"
+                         WIDTH="1999"
+                         VPOS="1074"
+                         HPOS="375">
+                  <String HEIGHT="153"
+                          WIDTH="684"
+                          VPOS="1074"
+                          HPOS="322"
+                          CONTENT="Komischen"
+                          TAGREFS="Tag_r_4_tl_5_0_16_pla"/>
+                  <SP HEIGHT="153" WIDTH="53" VPOS="1074" HPOS="1006"/>
+                  <String HEIGHT="153"
+                          WIDTH="526"
+                          VPOS="1074"
+                          HPOS="848"
+                          CONTENT="Fabrik"
+                          TAGREFS="Tag_r_4_tl_5_0_16_pla"/>
+                  <SP HEIGHT="153" WIDTH="53" VPOS="1074" HPOS="1375"/>
+                  <String HEIGHT="153"
+                          WIDTH="789"
+                          VPOS="1074"
+                          HPOS="1217"
+                          CONTENT="nachmittags"/>
+                  <SP HEIGHT="153" WIDTH="53" VPOS="1074" HPOS="2006"/>
+                  <String HEIGHT="153"
+                          WIDTH="263"
+                          VPOS="1074"
+                          HPOS="1848"
+                          CONTENT="2"/>
+                  <SP HEIGHT="153" WIDTH="53" VPOS="1074" HPOS="2111"/>
+                  <String HEIGHT="153"
+                          WIDTH="368"
+                          VPOS="1074"
+                          HPOS="1953"
+                          CONTENT="Uhr"/>
+                  <SP HEIGHT="153" WIDTH="53" VPOS="1074" HPOS="2321"/>
+                  <String HEIGHT="153"
+                          WIDTH="263"
+                          VPOS="1074"
+                          HPOS="2111"
+                          CONTENT="ein"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_6"
+                         BASELINE="417,1280 444,1277 489,1274 534,1274 579,1277 623,1277 668,1280 713,1280 758,1277 803,1277 847,1274 892,1274 937,1274 982,1274 1027,1274 1071,1277 1116,1277 1161,1274 1206,1277 1250,1277 1295,1277 1340,1277 1385,1280 1430,1277 1474,1277 1519,1277 1564,1274 1609,1274 1653,1274 1698,1271 1743,1271 1788,1274 1833,1274 1877,1274 1922,1271 1967,1274 2012,1271 2057,1271 2101,1268 2146,1268 2191,1271 2236,1271 2280,1271 2325,1268 2370,1268 2415,1265"
+                         HEIGHT="170"
+                         WIDTH="2009"
+                         VPOS="1177"
+                         HPOS="402">
+                  <String HEIGHT="170"
+                          WIDTH="804"
+                          VPOS="1177"
+                          HPOS="352"
+                          CONTENT="Sängekonzert"/>
+                  <SP HEIGHT="170" WIDTH="50" VPOS="1177" HPOS="1155"/>
+                  <String HEIGHT="170"
+                          WIDTH="352"
+                          VPOS="1177"
+                          HPOS="1005"
+                          CONTENT="mit"/>
+                  <SP HEIGHT="170" WIDTH="50" VPOS="1177" HPOS="1356"/>
+                  <String HEIGHT="170"
+                          WIDTH="904"
+                          VPOS="1177"
+                          HPOS="1206"
+                          CONTENT="anschließendem"/>
+                  <SP HEIGHT="170" WIDTH="50" VPOS="1177" HPOS="2110"/>
+                  <String HEIGHT="170"
+                          WIDTH="502"
+                          VPOS="1177"
+                          HPOS="1909"
+                          CONTENT="Waldfest"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_7"
+                         BASELINE="731,1379 773,1379 818,1382 862,1385 907,1385 952,1385 997,1385 1041,1382 1086,1382 1131,1379 1176,1382 1221,1382 1265,1382 1310,1382 1355,1382 1400,1382 1444,1382 1489,1382 1534,1382 1579,1385 1624,1382 1668,1385 1713,1385 1758,1385 1803,1388 1848,1385 1892,1385 1937,1382 1982,1382 2027,1382 2071,1382 2116,1382 2161,1382 2206,1379 2251,1379 2295,1376 2340,1373 2385,1370 2430,1376"
+                         HEIGHT="180"
+                         WIDTH="1709"
+                         VPOS="1282"
+                         HPOS="717">
+                  <String HEIGHT="180"
+                          WIDTH="332"
+                          VPOS="1282"
+                          HPOS="670"
+                          CONTENT="Des"/>
+                  <SP HEIGHT="180" WIDTH="47" VPOS="1282" HPOS="1002"/>
+                  <String HEIGHT="180"
+                          WIDTH="1044"
+                          VPOS="1282"
+                          HPOS="859"
+                          CONTENT="Männergesangverein"/>
+                  <SP HEIGHT="180" WIDTH="47" VPOS="1282" HPOS="1904"/>
+                  <String HEIGHT="180"
+                          WIDTH="522"
+                          VPOS="1282"
+                          HPOS="1761"
+                          CONTENT="Binzgen"/>
+                  <SP HEIGHT="180" WIDTH="47" VPOS="1282" HPOS="2284"/>
+                  <String HEIGHT="180"
+                          WIDTH="332"
+                          VPOS="1282"
+                          HPOS="2094"
+                          CONTENT="ladet"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_8"
+                         BASELINE="429,1495 438,1495 483,1492 528,1489 573,1489 618,1489 662,1486 707,1489 752,1489 797,1489 841,1489 886,1489 931,1489 976,1489 1021,1489 1065,1492 1110,1489 1155,1486 1200,1486 1244,1486 1289,1486 1334,1486 1379,1486 1424,1483 1468,1486 1513,1486 1558,1486 1603,1486 1648,1489 1692,1489 1737,1489 1782,1489 1827,1489 1871,1486 1916,1486 1961,1489 2006,1489 2051,1489 2095,1489 2140,1489 2185,1486 2230,1486 2274,1486 2319,1486"
+                         HEIGHT="168"
+                         WIDTH="1899"
+                         VPOS="1389"
+                         HPOS="415">
+                  <String HEIGHT="168"
+                          WIDTH="350"
+                          VPOS="1389"
+                          HPOS="365"
+                          CONTENT="Sie"/>
+                  <SP HEIGHT="168" WIDTH="50" VPOS="1389" HPOS="715"/>
+                  <String HEIGHT="168"
+                          WIDTH="300"
+                          VPOS="1389"
+                          HPOS="565"
+                          CONTENT="zu"/>
+                  <SP HEIGHT="168" WIDTH="50" VPOS="1389" HPOS="865"/>
+                  <String HEIGHT="168"
+                          WIDTH="500"
+                          VPOS="1389"
+                          HPOS="715"
+                          CONTENT="diesem"/>
+                  <SP HEIGHT="168" WIDTH="50" VPOS="1389" HPOS="1215"/>
+                  <String HEIGHT="168"
+                          WIDTH="550"
+                          VPOS="1389"
+                          HPOS="1065"
+                          CONTENT="Konzert"/>
+                  <SP HEIGHT="168" WIDTH="50" VPOS="1389" HPOS="1614"/>
+                  <String HEIGHT="168"
+                          WIDTH="800"
+                          VPOS="1389"
+                          HPOS="1464"
+                          CONTENT="freundlichst"/>
+                  <SP HEIGHT="168" WIDTH="50" VPOS="1389" HPOS="2264"/>
+                  <String HEIGHT="168"
+                          WIDTH="250"
+                          VPOS="1389"
+                          HPOS="2064"
+                          CONTENT="ein"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_9"
+                         BASELINE="441,1594 480,1597 525,1597 570,1594 615,1591 659,1591 704,1591 749,1591 794,1591 838,1591 883,1591 928,1591 973,1594 1018,1597 1062,1597 1107,1597 1152,1594 1197,1597 1241,1597 1286,1597 1331,1597 1376,1597 1421,1597 1465,1594 1510,1591 1555,1591 1600,1588 1645,1588 1689,1588 1734,1588 1779,1588 1824,1585"
+                         HEIGHT="135"
+                         WIDTH="1390"
+                         VPOS="1487"
+                         HPOS="427">
+                  <String HEIGHT="135"
+                          WIDTH="336"
+                          VPOS="1487"
+                          HPOS="379"
+                          CONTENT="und"/>
+                  <SP HEIGHT="135" WIDTH="48" VPOS="1487" HPOS="715"/>
+                  <String HEIGHT="135"
+                          WIDTH="479"
+                          VPOS="1487"
+                          HPOS="571"
+                          CONTENT="bittet"/>
+                  <SP HEIGHT="135" WIDTH="48" VPOS="1487" HPOS="1050"/>
+                  <String HEIGHT="135"
+                          WIDTH="288"
+                          VPOS="1487"
+                          HPOS="906"
+                          CONTENT="um"/>
+                  <SP HEIGHT="135" WIDTH="48" VPOS="1487" HPOS="1194"/>
+                  <String HEIGHT="135"
+                          WIDTH="336"
+                          VPOS="1487"
+                          HPOS="1050"
+                          CONTENT="Ihr"/>
+                  <SP HEIGHT="135" WIDTH="48" VPOS="1487" HPOS="1386"/>
+                  <String HEIGHT="135"
+                          WIDTH="623"
+                          VPOS="1487"
+                          HPOS="1194"
+                          CONTENT="bescheinen."/>
+               </TextLine>
+               <TextLine ID="r_4_tl_10"
+                         BASELINE="734,1695 767,1698 812,1695 856,1695 901,1698 946,1695 991,1695 1035,1698 1080,1698 1125,1695 1170,1698 1215,1698 1259,1698 1304,1701 1349,1701 1394,1698 1439,1698 1483,1698 1528,1695 1573,1695 1618,1695 1662,1692 1707,1692 1752,1692 1797,1695 1842,1695 1886,1698 1931,1698 1976,1701 2021,1701 2065,1698 2110,1698 2155,1698 2200,1698 2245,1695 2289,1692"
+                         HEIGHT="130"
+                         WIDTH="1564"
+                         VPOS="1607"
+                         HPOS="720">
+                  <String HEIGHT="130"
+                          WIDTH="313"
+                          VPOS="1607"
+                          HPOS="668"
+                          CONTENT="Da"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="981"/>
+                  <String HEIGHT="130"
+                          WIDTH="365"
+                          VPOS="1607"
+                          HPOS="824"
+                          CONTENT="wir"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="1189"/>
+                  <String HEIGHT="130"
+                          WIDTH="417"
+                          VPOS="1607"
+                          HPOS="1033"
+                          CONTENT="auch"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="1450"/>
+                  <String HEIGHT="130"
+                          WIDTH="313"
+                          VPOS="1607"
+                          HPOS="1293"
+                          CONTENT="in"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="1606"/>
+                  <String HEIGHT="130"
+                          WIDTH="469"
+                          VPOS="1607"
+                          HPOS="1450"
+                          CONTENT="Ihrem"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="1919"/>
+                  <String HEIGHT="130"
+                          WIDTH="521"
+                          VPOS="1607"
+                          HPOS="1763"
+                          CONTENT="Verein"/>
+                  <SP HEIGHT="130" WIDTH="52" VPOS="1607" HPOS="2284"/>
+                  <String HEIGHT="130"
+                          WIDTH="209"
+                          VPOS="1607"
+                          HPOS="2075"
+                          CONTENT="in"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_11"
+                         BASELINE="465,1806 498,1806 543,1806 588,1809 632,1806 677,1806 722,1809 767,1806 812,1806 856,1806 901,1803 946,1803 991,1803 1035,1803 1080,1806 1125,1803 1170,1803 1215,1803 1259,1803 1304,1803 1349,1806 1394,1803 1439,1803 1483,1803 1528,1803 1573,1806 1618,1806 1662,1803 1707,1800 1752,1797 1797,1797 1842,1800 1886,1800 1931,1800 1976,1800 2021,1800 2065,1800 2110,1803 2155,1803 2200,1803 2245,1803 2289,1800 2334,1800 2379,1800"
+                         HEIGHT="170"
+                         WIDTH="1924"
+                         VPOS="1714"
+                         HPOS="452">
+                  <String HEIGHT="170"
+                          WIDTH="440"
+                          VPOS="1714"
+                          HPOS="397"
+                          CONTENT="Murg"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="837"/>
+                  <String HEIGHT="170"
+                          WIDTH="495"
+                          VPOS="1714"
+                          HPOS="672"
+                          CONTENT="schon"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="1167"/>
+                  <String HEIGHT="170"
+                          WIDTH="275"
+                          VPOS="1714"
+                          HPOS="1002"
+                          CONTENT="2"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="1277"/>
+                  <String HEIGHT="170"
+                          WIDTH="385"
+                          VPOS="1714"
+                          HPOS="1112"
+                          CONTENT="mal"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="1496"/>
+                  <String HEIGHT="170"
+                          WIDTH="385"
+                          VPOS="1714"
+                          HPOS="1332"
+                          CONTENT="bei"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="1716"/>
+                  <String HEIGHT="170"
+                          WIDTH="770"
+                          VPOS="1714"
+                          HPOS="1551"
+                          CONTENT="Konzertten"/>
+                  <SP HEIGHT="170" WIDTH="55" VPOS="1714" HPOS="2321"/>
+                  <String HEIGHT="170"
+                          WIDTH="275"
+                          VPOS="1714"
+                          HPOS="2101"
+                          CONTENT="mit"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_12"
+                         BASELINE="489,1907 501,1904 546,1907 591,1910 635,1907 680,1907 725,1910 770,1910 815,1907 859,1907 904,1907 949,1907 994,1904 1038,1904 1083,1907 1128,1907 1173,1907 1218,1907 1262,1907 1307,1907 1352,1910 1397,1907 1442,1907 1486,1910 1531,1907 1576,1907 1621,1904 1665,1907 1710,1907 1755,1907 1800,1907 1845,1907 1889,1907 1934,1907 1979,1907 2024,1907 2068,1910 2113,1910 2158,1910 2203,1910 2248,1910 2292,1907 2337,1904 2382,1904"
+                         HEIGHT="168"
+                         WIDTH="1901"
+                         VPOS="1814"
+                         HPOS="475">
+                  <String HEIGHT="168"
+                          WIDTH="486"
+                          VPOS="1814"
+                          HPOS="431"
+                          CONTENT="gewirkr"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="917"/>
+                  <String HEIGHT="168"
+                          WIDTH="442"
+                          VPOS="1814"
+                          HPOS="784"
+                          CONTENT="haben,"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="1227"/>
+                  <String HEIGHT="168"
+                          WIDTH="265"
+                          VPOS="1814"
+                          HPOS="1094"
+                          CONTENT="so"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="1359"/>
+                  <String HEIGHT="168"
+                          WIDTH="442"
+                          VPOS="1814"
+                          HPOS="1227"
+                          CONTENT="dürfen"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="1669"/>
+                  <String HEIGHT="168"
+                          WIDTH="309"
+                          VPOS="1814"
+                          HPOS="1536"
+                          CONTENT="wir"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="1845"/>
+                  <String HEIGHT="168"
+                          WIDTH="354"
+                          VPOS="1814"
+                          HPOS="1713"
+                          CONTENT="doch"/>
+                  <SP HEIGHT="168" WIDTH="44" VPOS="1814" HPOS="2067"/>
+                  <String HEIGHT="168"
+                          WIDTH="486"
+                          VPOS="1814"
+                          HPOS="1890"
+                          CONTENT="bestimmt."/>
+               </TextLine>
+               <TextLine ID="r_4_tl_13"
+                         BASELINE="465,2015 507,2015 552,2012 597,2012 641,2012 686,2015 731,2015 776,2012 821,2012 865,2012 910,2009 955,2006 1000,2009 1044,2006 1089,2003 1134,2006 1179,2009 1224,2009 1268,2009 1313,2012 1358,2009 1403,2009 1447,2009 1492,2009 1537,2009 1582,2009 1627,2009 1671,2012 1716,2012 1761,2012 1806,2012 1851,2012 1895,2012 1940,2012 1985,2012 2030,2012 2074,2015 2119,2015 2164,2015 2209,2015 2254,2012"
+                         HEIGHT="162"
+                         WIDTH="1797"
+                         VPOS="1917"
+                         HPOS="452">
+                  <String HEIGHT="162"
+                          WIDTH="381"
+                          VPOS="1917"
+                          HPOS="398"
+                          CONTENT="mit"/>
+                  <SP HEIGHT="162" WIDTH="54" VPOS="1917" HPOS="779"/>
+                  <String HEIGHT="162"
+                          WIDTH="490"
+                          VPOS="1917"
+                          HPOS="615"
+                          CONTENT="Ihrem"/>
+                  <SP HEIGHT="162" WIDTH="54" VPOS="1917" HPOS="1105"/>
+                  <String HEIGHT="162"
+                          WIDTH="817"
+                          VPOS="1917"
+                          HPOS="942"
+                          CONTENT="Gegenbesuch"/>
+                  <SP HEIGHT="162" WIDTH="54" VPOS="1917" HPOS="1759"/>
+                  <String HEIGHT="162"
+                          WIDTH="653"
+                          VPOS="1917"
+                          HPOS="1596"
+                          CONTENT="rechnen,"/>
+                  <SP HEIGHT="162" WIDTH="54" VPOS="1917" HPOS="2249"/>
+                  <String HEIGHT="162"
+                          WIDTH="218"
+                          VPOS="1917"
+                          HPOS="2031"
+                          CONTENT="um"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_14"
+                         BASELINE="480,2116 525,2116 570,2119 615,2119 659,2119 704,2119 749,2119 794,2119 838,2119 883,2119 928,2119 973,2119 1018,2116 1062,2116 1107,2116 1152,2113 1197,2116 1241,2116 1286,2116 1331,2116 1376,2116 1421,2116 1465,2116 1510,2116 1555,2116 1600,2116 1645,2116 1689,2119 1734,2119 1779,2122 1824,2122 1868,2122 1913,2119 1958,2122 2003,2119 2048,2122 2092,2122 2137,2125 2182,2125 2227,2125 2248,2125"
+                         HEIGHT="178"
+                         WIDTH="1777"
+                         VPOS="2021"
+                         HPOS="467">
+                  <String HEIGHT="178"
+                          WIDTH="538"
+                          VPOS="2021"
+                          HPOS="413"
+                          CONTENT="einige"/>
+                  <SP HEIGHT="178" WIDTH="54" VPOS="2021" HPOS="952"/>
+                  <String HEIGHT="178"
+                          WIDTH="754"
+                          VPOS="2021"
+                          HPOS="790"
+                          CONTENT="gemütliche"/>
+                  <SP HEIGHT="178" WIDTH="54" VPOS="2021" HPOS="1544"/>
+                  <String HEIGHT="178"
+                          WIDTH="592"
+                          VPOS="2021"
+                          HPOS="1382"
+                          CONTENT="Stunden"/>
+                  <SP HEIGHT="178" WIDTH="54" VPOS="2021" HPOS="1975"/>
+                  <String HEIGHT="178"
+                          WIDTH="377"
+                          VPOS="2021"
+                          HPOS="1813"
+                          CONTENT="mit"/>
+                  <SP HEIGHT="178" WIDTH="54" VPOS="2021" HPOS="2190"/>
+                  <String HEIGHT="178"
+                          WIDTH="269"
+                          VPOS="2021"
+                          HPOS="1975"
+                          CONTENT="uns"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_15"
+                         BASELINE="492,2227 537,2224 582,2224 626,2227 671,2227 716,2227 761,2224 806,2224 850,2224 895,2224 940,2221 985,2221 1030,2221"
+                         HEIGHT="165"
+                         WIDTH="547"
+                         VPOS="2136"
+                         HPOS="477">
+                  <String HEIGHT="165"
+                          WIDTH="328"
+                          VPOS="2136"
+                          HPOS="422"
+                          CONTENT="zu"/>
+                  <SP HEIGHT="165" WIDTH="55" VPOS="2136" HPOS="751"/>
+                  <String HEIGHT="165"
+                          WIDTH="492"
+                          VPOS="2136"
+                          HPOS="532"
+                          CONTENT="erlben."/>
+               </TextLine>
+               <TextLine ID="r_4_tl_16"
+                         BASELINE="1364,2325 1409,2328 1453,2328 1498,2331 1543,2331 1588,2331 1633,2331 1677,2328 1722,2331 1767,2331 1812,2334 1857,2331 1901,2331 1946,2331 1991,2331 2036,2334 2080,2334 2125,2334 2170,2331 2215,2337 2260,2337 2304,2340 2349,2337 2379,2340"
+                         HEIGHT="235"
+                         WIDTH="1027"
+                         VPOS="2184"
+                         HPOS="1347">
+                  <String HEIGHT="235"
+                          WIDTH="668"
+                          VPOS="2184"
+                          HPOS="1296"
+                          CONTENT="Deutschem"/>
+                  <SP HEIGHT="235" WIDTH="51" VPOS="2184" HPOS="1963"/>
+                  <String HEIGHT="235"
+                          WIDTH="616"
+                          VPOS="2184"
+                          HPOS="1758"
+                          CONTENT="Sangesgruß"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_17"
+                         BASELINE="1047,2331 1092,2331 1137,2328 1182,2328 1227,2328 1271,2331 1316,2331 1331,2331"
+                         HEIGHT="147"
+                         WIDTH="290"
+                         VPOS="2234"
+                         HPOS="1034">
+                  <String HEIGHT="147"
+                          WIDTH="483"
+                          VPOS="2234"
+                          HPOS="841"
+                          CONTENT="Mit"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_18"
+                         BASELINE="1146,2537 1191,2537 1236,2537 1280,2537 1325,2540 1370,2537 1415,2540 1459,2540 1504,2540 1549,2540 1594,2543 1639,2540 1683,2540 1728,2540 1773,2540 1818,2540 1862,2540 1907,2540 1952,2540 1991,2540"
+                         HEIGHT="178"
+                         WIDTH="852"
+                         VPOS="2436"
+                         HPOS="1132">
+                  <String HEIGHT="178"
+                          WIDTH="947"
+                          VPOS="2436"
+                          HPOS="1037"
+                          CONTENT="Männergesangverein"/>
+               </TextLine>
+               <TextLine ID="r_4_tl_19"
+                         BASELINE="2024,2537 2068,2540 2113,2540 2158,2543 2203,2543 2248,2546 2292,2546 2337,2543 2382,2546 2406,2555"
+                         HEIGHT="235"
+                         WIDTH="390"
+                         VPOS="2404"
+                         HPOS="2009">
+                  <String HEIGHT="235"
+                          WIDTH="488"
+                          VPOS="2404"
+                          HPOS="1912"
+                          CONTENT="Binzgen."/>
+               </TextLine>
+               <TextLine ID="r_4_tl_20"
+                         BASELINE="1427,2749 1471,2749 1516,2749 1561,2752 1606,2752 1650,2752 1695,2752 1740,2752 1785,2752 1830,2752 1874,2752 1919,2752 1964,2755 2009,2755 2054,2755 2098,2755 2143,2758 2188,2755 2233,2761 2277,2767 2307,2776"
+                         HEIGHT="177"
+                         WIDTH="890"
+                         VPOS="2654"
+                         HPOS="1414">
+                  <String HEIGHT="177"
+                          WIDTH="408"
+                          VPOS="2654"
+                          HPOS="1377"
+                          CONTENT="Andreas"/>
+                  <SP HEIGHT="177" WIDTH="37" VPOS="2654" HPOS="1785"/>
+                  <String HEIGHT="177"
+                          WIDTH="371"
+                          VPOS="2654"
+                          HPOS="1674"
+                          CONTENT="Mutter"/>
+                  <SP HEIGHT="177" WIDTH="37" VPOS="2654" HPOS="2044"/>
+                  <String HEIGHT="177"
+                          WIDTH="408"
+                          VPOS="2654"
+                          HPOS="1896"
+                          CONTENT="Schriftf."/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

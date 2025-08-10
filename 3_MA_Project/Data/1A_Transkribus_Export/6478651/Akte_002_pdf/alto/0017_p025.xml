@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0017_p025.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:07.038+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_6_11_per" LABEL="Rolf Keller" TYPE="person"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page17" PHYSICAL_IMG_NR="17" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="95" WIDTH="521" VPOS="2217" HPOS="2888">
+               <Shape>
+                  <Polygon POINTS="2888,2217 3409,2217 3409,2312 2888,2312"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="2907,2274 3346,2274"
+                         HEIGHT="30"
+                         WIDTH="439"
+                         VPOS="2244"
+                         HPOS="2907">
+                  <String HEIGHT="30"
+                          WIDTH="232"
+                          VPOS="2244"
+                          HPOS="2881"
+                          CONTENT="phot."/>
+                  <SP HEIGHT="30" WIDTH="26" VPOS="2244" HPOS="3114"/>
+                  <String HEIGHT="30"
+                          WIDTH="207"
+                          VPOS="2244"
+                          HPOS="3036"
+                          CONTENT="Rolf"
+                          TAGREFS="Tag_l_6_11_per"/>
+                  <SP HEIGHT="30" WIDTH="26" VPOS="2244" HPOS="3243"/>
+                  <String HEIGHT="30"
+                          WIDTH="207"
+                          VPOS="2244"
+                          HPOS="3139"
+                          CONTENT="Keller"
+                          TAGREFS="Tag_l_6_11_per"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

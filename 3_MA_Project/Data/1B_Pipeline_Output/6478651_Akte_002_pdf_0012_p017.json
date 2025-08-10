@@ -1,0 +1,178 @@
+{
+  "attributes": {
+    "docId": "6478651",
+    "pageId": "89798973",
+    "tsid": "236069535",
+    "imgUrl": "https://files.transkribus.eu/Get?id=KNXVBSOFDUJGLKRSFSOTZPYL&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=MZWUQTCTUMQTIWEDEGXUOVIV",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Dresden",
+        "type": "",
+        "alternate_place_name": "Dresden",
+        "geonames_id": "2935022.0",
+        "wikidata_id": "Q1731",
+        "nodegoat_id": "ngFM4F58qFsR6HWdrHY30uMScGZCvRMGsFp"
+      },
+      {
+        "name": "Feldlazarett Sankt Vinzenz Stift",
+        "type": "",
+        "alternate_place_name": "Feldlazarett Sankt Vinzenz Stift;Feldlazarett St Vinzent-Stift;Lazarett",
+        "geonames_id": "",
+        "wikidata_id": "",
+        "nodegoat_id": "ngSZ8q48dTpEcUJKeTB2fhZHpUMPiEZrfTm"
+      },
+      {
+        "name": "Frankreich",
+        "type": "",
+        "alternate_place_name": "Frankreich;Reich",
+        "geonames_id": "3017382.0",
+        "wikidata_id": "Q142",
+        "nodegoat_id": "ngKR2G48vMRW7MBiwMT24zRfhMEHaWRHxMO"
+      },
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      }
+    ],
+    "creation_place": {
+      "name": "Dresden",
+      "nodegoat_id": "ngFM4F58qFsR6HWdrHY30uMScGZCvRMGsFp",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "17.04.1942"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Sängerkammeraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerkammeraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "16.04.1942",
+      "count": 2
+    },
+    {
+      "date": "17.04.1942",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Dresden",
+      "type": "",
+      "alternate_place_name": "Dresden",
+      "geonames_id": "2935022.0",
+      "wikidata_id": "Q1731",
+      "nodegoat_id": "ngFM4F58qFsR6HWdrHY30uMScGZCvRMGsFp"
+    },
+    {
+      "name": "Feldlazarett Sankt Vinzenz Stift",
+      "type": "",
+      "alternate_place_name": "Feldlazarett Sankt Vinzenz Stift;Feldlazarett St Vinzent-Stift;Lazarett",
+      "geonames_id": "",
+      "wikidata_id": "",
+      "nodegoat_id": "ngSZ8q48dTpEcUJKeTB2fhZHpUMPiEZrfTm"
+    },
+    {
+      "name": "Frankreich",
+      "type": "",
+      "alternate_place_name": "Frankreich;Reich",
+      "geonames_id": "3017382.0",
+      "wikidata_id": "Q142",
+      "nodegoat_id": "ngKR2G48vMRW7MBiwMT24zRfhMEHaWRHxMO"
+    },
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Kunstanstalt Stengel & Co. G.m.b.H. Dresden \n Freigegeben durch R.I.M E 34418441 \n Dresden 16.4.42 \n Liebe Sängerkammeraden! \n Nachdem es mir nun einigermaßen \n möglich ist ein paar Zeilen zu schreiben \n so will ich mich nachträglich für \n das schöne Notizbuch sowie Zigaretten \n bedanken. Ich liege nun schon die  \n ganze Woche im Lazarett und vor \n einer Woche bin ich ins Reich nach  \n Dresden überführt worden. Das Soldat  \n sein ist nun für mich erledigt. \n Grüße nun alle Sängerkameraden herzlichst. \n Stengel \n Feldpost \n Dresden A 21 \n 17.4.42-10 \n An \n Männerchor \n Laufenburg-Rhina \n Murg (Baden) \n Alfons Zimmermann \n Feldlazarett St Vinzent-Stift",
+  "document_format": ""
+}

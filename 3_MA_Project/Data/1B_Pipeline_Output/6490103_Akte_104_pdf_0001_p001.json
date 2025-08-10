@@ -1,0 +1,195 @@
+{
+  "attributes": {
+    "docId": "6490103",
+    "pageId": "89842205",
+    "tsid": "235009151",
+    "imgUrl": "https://files.transkribus.eu/Get?id=OAGDAPHBGIPVVNRJHVNJDNZD&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=ZBKURPFBGKHPHNGWZHPWMXSG",
+    "document_type": "Protokoll",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Säckingen",
+        "type": "",
+        "alternate_place_name": "Bad Säckingen;Säckingen",
+        "geonames_id": "11973618.0",
+        "wikidata_id": "",
+        "nodegoat_id": "ngCJ4C28nDzO6ETKoEL03rJDzDcZsOJDpDw"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      }
+    ],
+    "creation_place": {
+      "name": "Säckingen",
+      "nodegoat_id": "ngCJ4C28nDzO6ETKoEL03rJDzDcZsOJDpDw",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": "12.04.1940"
+  },
+  "authors": [],
+  "recipients": [],
+  "mentioned_persons": [
+    {
+      "forename": "Kurt",
+      "alternate_name": "",
+      "familyname": "Strittmatter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngZG3D98kBGLkAmp4ZS7moGMwZTWpLGEmBD",
+      "confidence": "fuzzy",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 90,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Lapyher",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Musikdirektor",
+      "role_schema": "Musikdirektor",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Lüthy",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Prokurist",
+      "role_schema": "Prokurist",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Musikdiroktor",
+      "alternate_name": "",
+      "familyname": "Layher",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 4
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [
+    {
+      "name": "den 12.Mai 1940 (Pfingstsonntag) stattfindende Veranstaltung des",
+      "date": "",
+      "location": "12.Mai, 12.April",
+      "description": "den 12.Mai 1940 (Pfingstsonntag) stattfindende Veranstaltung des\nMännerchor Murg verpflichtet.\n2. Musikdirektor Layher erhält dafür RM.60.-(sechzig Reichsmark)als\nEntschädigung.\nSäckingen,den 12.April 1940.\nMännerchor Murg\nMusikdirektor Layher\ni.A.\nLayher\nLütty",
+      "involved_persons": [],
+      "involved_organizations": [
+        {
+          "name": "Männerchor Murg",
+          "type": "Verein",
+          "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+          "alternate_names": [
+            "Alter Schweizer Männerchor"
+          ],
+          "feldpostnummer": ""
+        }
+      ],
+      "involved_places": [
+        {
+          "name": "12.Mai",
+          "type": "",
+          "alternate_place_name": "",
+          "geonames_id": "",
+          "wikidata_id": "",
+          "nodegoat_id": ""
+        },
+        {
+          "name": "12.April",
+          "type": "",
+          "alternate_place_name": "",
+          "geonames_id": "",
+          "wikidata_id": "",
+          "nodegoat_id": ""
+        }
+      ],
+      "dates": []
+    }
+  ],
+  "mentioned_dates": [
+    {
+      "date": "12.04.1940",
+      "count": 4
+    },
+    {
+      "date": "12.05.1940",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Säckingen",
+      "type": "",
+      "alternate_place_name": "Bad Säckingen;Säckingen",
+      "geonames_id": "11973618.0",
+      "wikidata_id": "",
+      "nodegoat_id": "ngCJ4C28nDzO6ETKoEL03rJDzDcZsOJDpDw"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Musikdirektor Lapyher \n Säckingen,den 12.April 1940. \n Vereinbarung \n Zwischen dem Männerchor Murg d.h. dessen Beauftragten \n Herrn Prokurist Otto Lüthy (Murg) und Musikdirektor Kurt \n Layher (Säckingen) wurde heute folgende Vereinbarung getreffen: \n Musikdiroktor Layher wird als Solist (Bariton) für eine am Sonntag, \n den 12.Mai 1940 (Pfingstsonntag) stattfindende Veranstaltung des \n Männerchor Murg verpflichtet. \n 2. Musikdirektor Layher erhält dafür RM.60.-(sechzig Reichsmark)als \n Entschädigung. \n Säckingen,den 12.April 1940. \n Männerchor Murg \n Musikdirektor Layher \n i.A. \n Layher \n Lütty",
+  "document_format": ""
+}

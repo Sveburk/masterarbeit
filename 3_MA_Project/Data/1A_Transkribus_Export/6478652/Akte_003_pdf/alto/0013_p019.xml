@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0013_p019.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:10.97+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_tr_1_tl_1_17_15_pla"
+                      LABEL="Murg-Laufenburg"
+                      TYPE="location"/>
+      <NamedEntityTag ID="Tag_tr_1_tl_9_21_9_pla" LABEL="Karlsruhe" TYPE="location"/>
+      <NamedEntityTag ID="Tag_tr_1_tl_10_20_9_pla" LABEL="Säckingen" TYPE="location"/>
+      <NamedEntityTag ID="Tag_tr_1_tl_13_4_10_pla" LABEL="Laufenburg" TYPE="location"/>
+      <NamedEntityTag ID="Tag_tr_1_tl_2_0_4_pla" LABEL="Murg" TYPE="location"/>
+      <NamedEntityTag ID="Tag_tr_1_tl_12_0_4_pla" LABEL="Murg" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page13" PHYSICAL_IMG_NR="13" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="634" WIDTH="1484" VPOS="208" HPOS="67">
+               <Shape>
+                  <Polygon POINTS="67,208 1551,208 1551,842 67,842"/>
+               </Shape>
+               <TextLine ID="tr_1_tl_1"
+                         BASELINE="98,364 167,366 237,364 307,368 377,370 447,372 517,373 586,373 656,370 726,373 796,375 866,379 936,382 1006,381 1075,381 1145,381 1215,379 1285,383 1355,385 1425,385 1495,383"
+                         HEIGHT="177"
+                         WIDTH="1407"
+                         VPOS="237"
+                         HPOS="86">
+                  <String HEIGHT="177"
+                          WIDTH="879"
+                          VPOS="237"
+                          HPOS="42"
+                          CONTENT="Bezirkssparkasse"/>
+                  <SP HEIGHT="177" WIDTH="44" VPOS="237" HPOS="921"/>
+                  <String HEIGHT="177"
+                          WIDTH="747"
+                          VPOS="237"
+                          HPOS="746"
+                          CONTENT="Murg-Laufenburg"
+                          TAGREFS="Tag_tr_1_tl_1_17_15_pla"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_3"
+                         BASELINE="477,456 508,456 540,457 572,459 604,459 636,459 668,459 699,459 731,459 763,459 795,459 827,457 859,459 891,462 922,462 954,462 986,463 1018,465 1050,467 1082,468 1114,465"
+                         HEIGHT="126"
+                         WIDTH="645"
+                         VPOS="376"
+                         HPOS="464">
+                  <String HEIGHT="126"
+                          WIDTH="430"
+                          VPOS="376"
+                          HPOS="410"
+                          CONTENT="Murg"/>
+                  <SP HEIGHT="126" WIDTH="54" VPOS="376" HPOS="840"/>
+                  <String HEIGHT="126"
+                          WIDTH="484"
+                          VPOS="376"
+                          HPOS="625"
+                          CONTENT="(Baden)"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_4"
+                         BASELINE="480,528 513,528 546,529 580,531 613,531 647,531 680,532 714,534 747,534 781,534 814,534 847,534 881,534 914,534 948,533 981,533 1015,539 1048,538 1082,537 1115,538 1149,540"
+                         HEIGHT="100"
+                         WIDTH="675"
+                         VPOS="472"
+                         HPOS="470">
+                  <String HEIGHT="100"
+                          WIDTH="568"
+                          VPOS="472"
+                          HPOS="434"
+                          CONTENT="Fernsprecher"/>
+                  <SP HEIGHT="100" WIDTH="36" VPOS="472" HPOS="1003"/>
+                  <String HEIGHT="100"
+                          WIDTH="249"
+                          VPOS="472"
+                          HPOS="896"
+                          CONTENT="Nr."/>
+                  <SP HEIGHT="100" WIDTH="36" VPOS="472" HPOS="1145"/>
+                  <String HEIGHT="100"
+                          WIDTH="142"
+                          VPOS="472"
+                          HPOS="1003"
+                          CONTENT="3."/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_9"
+                         BASELINE="331,591 379,600 427,606 476,606 524,606 573,607 621,610 669,612 718,612 766,612 815,612 863,612 911,612 960,615 1008,612 1057,613 1105,615 1153,615 1202,615 1250,615 1299,618"
+                         HEIGHT="137"
+                         WIDTH="973"
+                         VPOS="502"
+                         HPOS="320">
+                  <String HEIGHT="137"
+                          WIDTH="616"
+                          VPOS="502"
+                          HPOS="288"
+                          CONTENT="Postscheckkonto"/>
+                  <SP HEIGHT="137" WIDTH="32" VPOS="502" HPOS="904"/>
+                  <String HEIGHT="137"
+                          WIDTH="259"
+                          VPOS="502"
+                          HPOS="807"
+                          CONTENT="9692"/>
+                  <SP HEIGHT="137" WIDTH="32" VPOS="502" HPOS="1066"/>
+                  <String HEIGHT="137"
+                          WIDTH="357"
+                          VPOS="502"
+                          HPOS="936"
+                          CONTENT="Karlsruhe"
+                          TAGREFS="Tag_tr_1_tl_9_21_9_pla"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_10"
+                         BASELINE="331,666 379,666 427,666 476,670 524,672 573,672 621,672 669,672 718,674 766,675 815,675 863,675 911,675 960,677 1008,677 1057,677 1105,677 1153,677 1202,677 1250,677 1299,680"
+                         HEIGHT="100"
+                         WIDTH="972"
+                         VPOS="611"
+                         HPOS="321">
+                  <String HEIGHT="100"
+                          WIDTH="771"
+                          VPOS="611"
+                          HPOS="287"
+                          CONTENT="Reichsbankgirokonto"/>
+                  <SP HEIGHT="100" WIDTH="34" VPOS="611" HPOS="1058"/>
+                  <String HEIGHT="100"
+                          WIDTH="369"
+                          VPOS="611"
+                          HPOS="924"
+                          CONTENT="Säckingen"
+                          TAGREFS="Tag_tr_1_tl_10_20_9_pla"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_11"
+                         BASELINE="474,734 508,732 542,733 577,734 611,734 645,734 680,736 714,737 748,737 783,737 817,737 851,737 886,737 920,737 954,737 989,737 1023,737 1057,737 1092,737 1126,737 1161,737"
+                         HEIGHT="84"
+                         WIDTH="694"
+                         VPOS="679"
+                         HPOS="464">
+                  <String HEIGHT="84"
+                          WIDTH="727"
+                          VPOS="679"
+                          HPOS="431"
+                          CONTENT="Zweigniederlassung"/>
+                  <SP HEIGHT="84" WIDTH="33" VPOS="679" HPOS="1158"/>
+                  <String HEIGHT="84" WIDTH="132" VPOS="679" HPOS="1026" CONTENT="in"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_13"
+                         BASELINE="474,794 508,794 543,796 577,797 612,797 647,797 681,797 716,797 751,798 785,803 820,803 855,803 889,803 924,803 959,803 993,803 1028,803 1063,803 1097,803 1132,805 1167,809"
+                         HEIGHT="101"
+                         WIDTH="700"
+                         VPOS="737"
+                         HPOS="464">
+                  <String HEIGHT="101"
+                          WIDTH="573"
+                          VPOS="737"
+                          HPOS="432"
+                          CONTENT="Kl.-Laufenburg"/>
+                  <SP HEIGHT="101" WIDTH="32" VPOS="737" HPOS="1005"/>
+                  <String HEIGHT="101"
+                          WIDTH="286"
+                          VPOS="737"
+                          HPOS="878"
+                          CONTENT="(Baden)"/>
+               </TextLine>
+            </TextBlock>
+            <TextBlock ID="r_43" HEIGHT="587" WIDTH="1805" VPOS="247" HPOS="1611">
+               <Shape>
+                  <Polygon POINTS="1611,247 3416,247 3416,834 1611,834"/>
+               </Shape>
+               <TextLine ID="tr_1_tl_2"
+                         BASELINE="2045,382 2111,380 2178,385 2244,385 2311,385 2378,385 2444,385 2511,384 2578,382 2644,382 2711,385 2778,382 2844,382 2911,383 2978,385 3044,385 3111,385 3178,385 3244,385 3311,384 3378,385"
+                         HEIGHT="175"
+                         WIDTH="1339"
+                         VPOS="271"
+                         HPOS="2034">
+                  <String HEIGHT="175"
+                          WIDTH="574"
+                          VPOS="271"
+                          HPOS="1970"
+                          CONTENT="Murg,"/>
+                  <SP HEIGHT="175" WIDTH="64" VPOS="271" HPOS="2544"/>
+                  <String HEIGHT="175"
+                          WIDTH="446"
+                          VPOS="271"
+                          HPOS="2353"
+                          CONTENT="den"/>
+                  <SP HEIGHT="175" WIDTH="64" VPOS="271" HPOS="2799"/>
+                  <String HEIGHT="175"
+                          WIDTH="829"
+                          VPOS="271"
+                          HPOS="2544"
+                          CONTENT="-1.JUL.1931"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_5"
+                         BASELINE="2120,585 2148,585 2176,585 2205,585 2233,583 2262,582 2290,582 2318,583 2347,585 2375,587 2404,588 2432,588 2460,588 2489,588 2517,588 2546,593 2574,597 2602,599 2631,601 2659,603 2688,600"
+                         HEIGHT="169"
+                         WIDTH="577"
+                         VPOS="491"
+                         HPOS="2106">
+                  <String HEIGHT="169"
+                          WIDTH="682"
+                          VPOS="491"
+                          HPOS="2001"
+                          CONTENT="Männerchor,"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_6"
+                         BASELINE="1742,587 1768,591 1795,594 1822,594 1849,594 1876,594 1903,594 1930,594 1957,592 1984,585 2011,585 2038,585 2065,586"
+                         HEIGHT="185"
+                         WIDTH="332"
+                         VPOS="464"
+                         HPOS="1730">
+                  <String HEIGHT="185"
+                          WIDTH="332"
+                          VPOS="464"
+                          HPOS="1675"
+                          CONTENT="An"/>
+                  <SP HEIGHT="185" WIDTH="55" VPOS="464" HPOS="2007"/>
+                  <String HEIGHT="185"
+                          WIDTH="277"
+                          VPOS="464"
+                          HPOS="1785"
+                          CONTENT="den"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_12"
+                         BASELINE="2404,728 2452,740 2500,744 2548,753 2596,755 2644,755 2692,752 2740,747 2788,748 2836,751 2885,752 2933,754 2981,755 3029,758 3077,758 3125,758 3173,759 3221,760 3269,758 3317,759 3366,758"
+                         HEIGHT="186"
+                         WIDTH="968"
+                         VPOS="641"
+                         HPOS="2393">
+                  <String HEIGHT="186"
+                          WIDTH="645"
+                          VPOS="641"
+                          HPOS="2312"
+                          CONTENT="Murg"
+                          TAGREFS="Tag_tr_1_tl_12_0_4_pla"/>
+                  <SP HEIGHT="186" WIDTH="81" VPOS="641" HPOS="2958"/>
+                  <String HEIGHT="186"
+                          WIDTH="726"
+                          VPOS="641"
+                          HPOS="2635"
+                          CONTENT="(Baden)"/>
+               </TextLine>
+            </TextBlock>
+            <TextBlock ID="r_1368"
+                       HEIGHT="429"
+                       WIDTH="1688"
+                       VPOS="1928"
+                       HPOS="1755">
+               <Shape>
+                  <Polygon POINTS="1755,1928 3443,1928 3443,2357 1755,2357"/>
+               </Shape>
+               <TextLine ID="l_1404"
+                         BASELINE="2298,2042 2837,2046"
+                         HEIGHT="34"
+                         WIDTH="539"
+                         VPOS="2012"
+                         HPOS="2298">
+                  <String HEIGHT="34"
+                          WIDTH="606"
+                          VPOS="2012"
+                          HPOS="2231"
+                          CONTENT="Hochachtungsvoll"/>
+               </TextLine>
+               <TextLine ID="l_1440"
+                         BASELINE="1810,2137 3357,2160"
+                         HEIGHT="53"
+                         WIDTH="1547"
+                         VPOS="2107"
+                         HPOS="1810">
+                  <String HEIGHT="53"
+                          WIDTH="948"
+                          VPOS="2107"
+                          HPOS="1760"
+                          CONTENT="Bezirksparkasse"/>
+                  <SP HEIGHT="53" WIDTH="50" VPOS="2107" HPOS="2708"/>
+                  <String HEIGHT="53"
+                          WIDTH="848"
+                          VPOS="2107"
+                          HPOS="2509"
+                          CONTENT="Murg-Laufenburg"/>
+               </TextLine>
+               <TextLine ID="l_1476"
+                         BASELINE="1960,2255 3404,2259"
+                         HEIGHT="34"
+                         WIDTH="1444"
+                         VPOS="2225"
+                         HPOS="1960">
+                  <String HEIGHT="34"
+                          WIDTH="889"
+                          VPOS="2225"
+                          HPOS="1849"
+                          CONTENT="Jung"/>
+                  <SP HEIGHT="34" WIDTH="111" VPOS="2225" HPOS="2738"/>
+                  <String HEIGHT="34"
+                          WIDTH="1111"
+                          VPOS="2225"
+                          HPOS="2293"
+                          CONTENT="Gerensen"/>
+               </TextLine>
+            </TextBlock>
+            <ComposedBlock ID="t_652"
+                           HEIGHT="1478"
+                           WIDTH="3320"
+                           VPOS="856"
+                           HPOS="139"
+                           TYPE="table">
+               <TextBlock ID="c_722" HEIGHT="248" WIDTH="1834" VPOS="856" HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,856 139,1104 1973,1104 1973,856"/>
+                  </Shape>
+                  <TextLine ID="l"
+                            BASELINE="431,999 1703,1009"
+                            HEIGHT="40"
+                            WIDTH="1273"
+                            VPOS="969"
+                            HPOS="431">
+                     <String HEIGHT="40" WIDTH="255" VPOS="969" HPOS="395" CONTENT="Wir"/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="649"/>
+                     <String HEIGHT="40"
+                             WIDTH="400"
+                             VPOS="969"
+                             HPOS="540"
+                             CONTENT="buchten"/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="940"/>
+                     <String HEIGHT="40" WIDTH="255" VPOS="969" HPOS="831" CONTENT="auf"/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="1086"/>
+                     <String HEIGHT="40"
+                             WIDTH="327"
+                             VPOS="969"
+                             HPOS="977"
+                             CONTENT="Ihrem"/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="1304"/>
+                     <String HEIGHT="40"
+                             WIDTH="327"
+                             VPOS="969"
+                             HPOS="1195"
+                             CONTENT="Konto"/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="1522"/>
+                     <String HEIGHT="40"
+                             WIDTH="255"
+                             VPOS="969"
+                             HPOS="1413"
+                             CONTENT="Nr."/>
+                     <SP HEIGHT="40" WIDTH="36" VPOS="969" HPOS="1668"/>
+                     <String HEIGHT="40"
+                             WIDTH="182"
+                             VPOS="969"
+                             HPOS="1522"
+                             CONTENT="93-"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_741" HEIGHT="248" WIDTH="239" VPOS="856" HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,856 1973,1104 2212,1104 2212,856"/>
+                  </Shape>
+                  <TextLine ID="l_837"
+                            BASELINE="2025,1007 2158,1014"
+                            HEIGHT="37"
+                            WIDTH="134"
+                            VPOS="977"
+                            HPOS="2025">
+                     <String HEIGHT="37"
+                             WIDTH="201"
+                             VPOS="977"
+                             HPOS="1958"
+                             CONTENT="Wert"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_776" HEIGHT="248" WIDTH="547" VPOS="856" HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,856 2212,1104 2759,1104 2759,856"/>
+                  </Shape>
+                  <TextLine ID="l_869"
+                            BASELINE="2412,976 2589,972"
+                            HEIGHT="34"
+                            WIDTH="178"
+                            VPOS="942"
+                            HPOS="2411">
+                     <String HEIGHT="34"
+                             WIDTH="267"
+                             VPOS="942"
+                             HPOS="2322"
+                             CONTENT="Soll"/>
+                  </TextLine>
+                  <TextLine ID="l_885"
+                            BASELINE="2341,1024 2614,1022"
+                            HEIGHT="32"
+                            WIDTH="274"
+                            VPOS="992"
+                            HPOS="2340">
+                     <String HEIGHT="32"
+                             WIDTH="316"
+                             VPOS="992"
+                             HPOS="2298"
+                             CONTENT="(Lastschrift)"/>
+                  </TextLine>
+                  <TextLine ID="l_901"
+                            BASELINE="2330,1081 2730,1087"
+                            HEIGHT="36"
+                            WIDTH="400"
+                            VPOS="1051"
+                            HPOS="2330">
+                     <String HEIGHT="36"
+                             WIDTH="364"
+                             VPOS="1051"
+                             HPOS="2294"
+                             CONTENT="R.-Mk."/>
+                     <SP HEIGHT="36" WIDTH="36" VPOS="1051" HPOS="2657"/>
+                     <String HEIGHT="36"
+                             WIDTH="218"
+                             VPOS="1051"
+                             HPOS="2512"
+                             CONTENT="Pfg."/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_777" HEIGHT="248" WIDTH="700" VPOS="856" HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,856 2759,1104 3459,1104 3459,856"/>
+                  </Shape>
+                  <TextLine ID="l_933"
+                            BASELINE="2900,967 3159,974"
+                            HEIGHT="37"
+                            WIDTH="259"
+                            VPOS="937"
+                            HPOS="2900">
+                     <String HEIGHT="37"
+                             WIDTH="363"
+                             VPOS="937"
+                             HPOS="2796"
+                             CONTENT="Haben"/>
+                  </TextLine>
+                  <TextLine ID="l_949"
+                            BASELINE="2906,1033 3169,1024"
+                            HEIGHT="39"
+                            WIDTH="264"
+                            VPOS="994"
+                            HPOS="2905">
+                     <String HEIGHT="39"
+                             WIDTH="308"
+                             VPOS="994"
+                             HPOS="2861"
+                             CONTENT="(Gutschrift)"/>
+                  </TextLine>
+                  <TextLine ID="l_917"
+                            BASELINE="2866,1079 3287,1087"
+                            HEIGHT="38"
+                            WIDTH="422"
+                            VPOS="1049"
+                            HPOS="2866">
+                     <String HEIGHT="38"
+                             WIDTH="422"
+                             VPOS="1049"
+                             HPOS="2824"
+                             CONTENT="R.-Mk."/>
+                     <SP HEIGHT="38" WIDTH="42" VPOS="1049" HPOS="3246"/>
+                     <String HEIGHT="38"
+                             WIDTH="211"
+                             VPOS="1049"
+                             HPOS="3077"
+                             CONTENT="Pfg"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_724" HEIGHT="135" WIDTH="1834" VPOS="1104" HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1104 139,1239 1973,1239 1973,1104"/>
+                  </Shape>
+                  <TextLine ID="l_821"
+                            BASELINE="275,1218 1476,1234"
+                            HEIGHT="46"
+                            WIDTH="1202"
+                            VPOS="1188"
+                            HPOS="275">
+                     <String HEIGHT="46"
+                             WIDTH="1316"
+                             VPOS="1188"
+                             HPOS="161"
+                             CONTENT="w/Gustav-Will-Siftung"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_743" HEIGHT="135" WIDTH="239" VPOS="1104" HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1104 1973,1239 2212,1239 2212,1104"/>
+                  </Shape>
+                  <TextLine ID="l_853"
+                            BASELINE="1979,1234 2166,1241"
+                            HEIGHT="37"
+                            WIDTH="188"
+                            VPOS="1204"
+                            HPOS="1979">
+                     <String HEIGHT="37"
+                             WIDTH="313"
+                             VPOS="1204"
+                             HPOS="1854"
+                             CONTENT="–.–"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_778" HEIGHT="135" WIDTH="547" VPOS="1104" HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1104 2212,1239 2759,1239 2759,1104"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_779" HEIGHT="135" WIDTH="700" VPOS="1104" HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1104 2759,1239 3459,1239 3459,1104"/>
+                  </Shape>
+                  <TextLine ID="l_965"
+                            BASELINE="2940,1245 3291,1253"
+                            HEIGHT="38"
+                            WIDTH="352"
+                            VPOS="1215"
+                            HPOS="2940">
+                     <String HEIGHT="38"
+                             WIDTH="469"
+                             VPOS="1215"
+                             HPOS="2823"
+                             CONTENT="804.––"/>
+                  </TextLine>
+               </TextBlock>
+               <TextBlock ID="c_1148"
+                          HEIGHT="138"
+                          WIDTH="1834"
+                          VPOS="1239"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1239 139,1377 1973,1377 1973,1239"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1150"
+                          HEIGHT="138"
+                          WIDTH="239"
+                          VPOS="1239"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1239 1973,1377 2212,1377 2212,1239"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1152"
+                          HEIGHT="138"
+                          WIDTH="547"
+                          VPOS="1239"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1239 2212,1377 2759,1377 2759,1239"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1154"
+                          HEIGHT="138"
+                          WIDTH="700"
+                          VPOS="1239"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1239 2759,1377 3459,1377 3459,1239"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1182"
+                          HEIGHT="146"
+                          WIDTH="1834"
+                          VPOS="1377"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1377 139,1523 1973,1523 1973,1377"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1184"
+                          HEIGHT="146"
+                          WIDTH="239"
+                          VPOS="1377"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1377 1973,1523 2212,1523 2212,1377"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1186"
+                          HEIGHT="146"
+                          WIDTH="547"
+                          VPOS="1377"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1377 2212,1523 2759,1523 2759,1377"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1188"
+                          HEIGHT="146"
+                          WIDTH="700"
+                          VPOS="1377"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1377 2759,1523 3459,1523 3459,1377"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1221"
+                          HEIGHT="134"
+                          WIDTH="1834"
+                          VPOS="1523"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1523 139,1657 1973,1657 1973,1523"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1223"
+                          HEIGHT="134"
+                          WIDTH="239"
+                          VPOS="1523"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1523 1973,1657 2212,1657 2212,1523"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1225"
+                          HEIGHT="134"
+                          WIDTH="547"
+                          VPOS="1523"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1523 2212,1657 2759,1657 2759,1523"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1227"
+                          HEIGHT="134"
+                          WIDTH="700"
+                          VPOS="1523"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1523 2759,1657 3459,1657 3459,1523"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1265"
+                          HEIGHT="129"
+                          WIDTH="1834"
+                          VPOS="1657"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1657 139,1786 1973,1786 1973,1657"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1267"
+                          HEIGHT="129"
+                          WIDTH="239"
+                          VPOS="1657"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1657 1973,1786 2212,1786 2212,1657"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1269"
+                          HEIGHT="129"
+                          WIDTH="547"
+                          VPOS="1657"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1657 2212,1786 2759,1786 2759,1657"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1271"
+                          HEIGHT="129"
+                          WIDTH="700"
+                          VPOS="1657"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1657 2759,1786 3459,1786 3459,1657"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1314"
+                          HEIGHT="150"
+                          WIDTH="1834"
+                          VPOS="1786"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1786 139,1936 1973,1936 1973,1786"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1316"
+                          HEIGHT="150"
+                          WIDTH="239"
+                          VPOS="1786"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1786 1973,1936 2212,1936 2212,1786"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1318"
+                          HEIGHT="150"
+                          WIDTH="547"
+                          VPOS="1786"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1786 2212,1936 2759,1936 2759,1786"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1320"
+                          HEIGHT="150"
+                          WIDTH="700"
+                          VPOS="1786"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1786 2759,1936 3459,1936 3459,1786"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1315"
+                          HEIGHT="398"
+                          WIDTH="1834"
+                          VPOS="1936"
+                          HPOS="139">
+                  <Shape>
+                     <Polygon POINTS="139,1936 139,2334 1973,2334 1973,1936"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1317"
+                          HEIGHT="398"
+                          WIDTH="239"
+                          VPOS="1936"
+                          HPOS="1973">
+                  <Shape>
+                     <Polygon POINTS="1973,1936 1973,2334 2212,2334 2212,1936"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1319"
+                          HEIGHT="398"
+                          WIDTH="547"
+                          VPOS="1936"
+                          HPOS="2212">
+                  <Shape>
+                     <Polygon POINTS="2212,1936 2212,2334 2759,2334 2759,1936"/>
+                  </Shape>
+               </TextBlock>
+               <TextBlock ID="c_1321"
+                          HEIGHT="398"
+                          WIDTH="700"
+                          VPOS="1936"
+                          HPOS="2759">
+                  <Shape>
+                     <Polygon POINTS="2759,1936 2759,2334 3459,2334 3459,1936"/>
+                  </Shape>
+               </TextBlock>
+            </ComposedBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

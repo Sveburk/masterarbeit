@@ -1,0 +1,147 @@
+{
+  "attributes": {
+    "docId": "6478651",
+    "pageId": "89798946",
+    "tsid": "236063379",
+    "imgUrl": "https://files.transkribus.eu/Get?id=FSYDKTTIXLUGOHQWKTEPCMCK&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=QBGCXMDZCZWIGQCTHGORQZKP",
+    "document_type": "Postkarte",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Straßburg",
+        "type": "",
+        "alternate_place_name": "Strassburg;Straßburg",
+        "geonames_id": "6441375.0",
+        "wikidata_id": "",
+        "nodegoat_id": "ngPW5B58aQmB8RGXbPY37eWomPpMfBWCcQj"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {},
+    "creation_date": "03.05.1943"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerkameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Emil",
+      "alternate_name": "",
+      "familyname": "Durs",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngRY0J58cSoDdSeD0R63cgYmoSLOhDYKeSl",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 90,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerkameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "03.05.1943",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Straßburg",
+      "type": "",
+      "alternate_place_name": "Strassburg;Straßburg",
+      "geonames_id": "6441375.0",
+      "wikidata_id": "",
+      "nodegoat_id": "ngPW5B58aQmB8RGXbPY37eWomPpMfBWCcQj"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "03.5.43-19 \n Strassburg \n Feldpost \n An den \n Männerchor Murg \n z. hd. v. Herrn \n Alfons Zimmermann \n Liebe Sängerkameraden \n Das Liebespaket dankend \n erhalten. Es kam eben zur \n rechten Zeit, denn mein \n Zigarettenbestand war eben  \n im Nichts verschwunden, und  \n meine Gesundheit liess schon zu \n wünschen übrig, aber nun bin  \n ich wieder gesund. \n Herzliche Grüsse Emil Durst \n Strassburg \n Das Münster",
+  "document_format": ""
+}

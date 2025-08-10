@@ -120,10 +120,19 @@ from Module import (
 
 
 # --------------- Pfadkonfiguration ---------------
-# TRANSKRIBUS_DIR = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_08.04.2025_Akte_001-Akte_150"
-# TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
-TRANSKRIBUS_DIR = "/Users/svenburkhardt/Downloads/export_job_17826913"
-OUTPUT_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_Out"
+
+#TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
+
+TRANSKRIBUS_DIR = os.path.join(os.getcwd(), "masterarbeit/3_MA_Project/Data/1A_Transkribus_Export")
+if not os.path.exists(TRANSKRIBUS_DIR):
+    print(f"Fehler: Der Ordner {TRANSKRIBUS_DIR} existiert nicht.")
+else:
+    print(f"Pfad gefunden: {TRANSKRIBUS_DIR}")
+OUTPUT_DIR =  os.path.join(os.getcwd(), "masterarbeit/3_MA_Project/Data/1B_Pipeline_Output")
+if not os.path.exists(OUTPUT_DIR):
+    print(f"Fehler: Der Ordner {OUTPUT_DIR} existiert nicht.")
+else:
+    print(f"Pfad gefunden: {OUTPUT_DIR}")
 OUTPUT_DIR_UNMATCHED = os.path.join(OUTPUT_DIR, "unmatched")
 OUTPUT_CSV_PATH = os.path.join(OUTPUT_DIR, "known_persons_output.csv")
 
@@ -667,7 +676,7 @@ def extract_person_from_custom(
                     person_info["title"] = detected_title.capitalize()
                     person_info["gender"] = gender
 
-                # Rolle aus deklinierter Form erkennen (z. B. "Führers Adolf")
+                # Rolle aus deklinierter Form erkennen (z. B. "Führers Adolf")
                 role = ""
                 role_match = re.match(
                     r"(?P<role>[A-ZÄÖÜa-zäöüß\-]+(?:en|ers|ers|in|er|e))\s+(?P<name>[A-ZÄÖÜ][a-zäöüß]+)",
@@ -779,7 +788,7 @@ def extract_organization_from_custom(
     Gibt strukturierte Dictionaries zurück, die mit Matchingfunktionen kompatibel sind.
 
     Returns:
-        Eine Liste von Dictionaries mit Organisationseinträgen, z. B.:
+        Eine Liste von Dictionaries mit Organisationseinträgen, z. B.:
         {
             "name": "Männerchor Murg",
             "original_input": "Männerchor Murg",
@@ -867,7 +876,7 @@ def extract_place_from_custom(
                             )
 
                             if match_result:
-                                # match_result ist eine Liste von Matches, nimm z. B. den besten
+                                # match_result ist eine Liste von Matches, nimm z. B. den besten
                                 best_match = max(
                                     match_result,
                                     key=lambda x: x.get("score", 0),
@@ -992,9 +1001,10 @@ def update_total_json(out_path: str, doc: BaseDocument):
     print(f"[DEBUG] filename = {filename}")
 
     match = re.search(
-        r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_preprocessed)?$",
-        filename,
-    )
+    r"(?P<akte>\d+_Akte_\d+).*?[pP](?P<page>\d{3})(?:_(?:preprocessed|failed))?$",
+    filename,
+)
+
 
     if not match:
         print(

@@ -180,14 +180,14 @@ def normalize_and_match_role(text: str) -> str:
     if text_clean in ROLE_MAPPINGS_DE:
         return ROLE_MAPPINGS_DE[text_clean]
 
-    # 2. Genitiv-Erkennung (z. B. „Führers“ → „Führer“)
+    # 2. Genitiv-Erkennung (z. B. „Führers“ → „Führer“)
     if text_clean.endswith("s") and len(text_clean) > 4:
         base = text_clean[:-1]
         if base in ROLE_MAPPINGS_DE:
             print(f"[DEBUG] Genitiv erkannt: {text_clean} → {base}")
             return ROLE_MAPPINGS_DE[base]
 
-    # 3. Maskuline Flexionsendungen zurückführen (z. B. „vorsitzenden“ → „vorsitzender“)
+    # 3. Maskuline Flexionsendungen zurückführen (z. B. „vorsitzenden“ → „vorsitzender“)
     suffixes = ["en", "ern", "em", "e", "n", "er", "es", "nt", "ner", "ners"]
     for suffix in suffixes:
         if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
@@ -198,7 +198,7 @@ def normalize_and_match_role(text: str) -> str:
                 )
                 return ROLE_MAPPINGS_DE[base]
 
-    # 4. Feminine Rollenformen (z. B. „Führerin“ → „Führer“)
+    # 4. Feminine Rollenformen (z. B. „Führerin“ → „Führer“)
     feminine_suffixes = ["in", "innen", "e"]
     for suffix in feminine_suffixes:
         if text_clean.endswith(suffix) and len(text_clean) > len(suffix) + 2:
@@ -257,7 +257,7 @@ def map_role_to_schema_entry(role_string: str) -> str:
     return ROLE_MAPPINGS_DE.get(role_string.strip().lower(), "")
 
 
-# === Extraktion Inline-Rollen zu bekannten Personen ===
+# ===   Inline-Rollen zu bekannten Personen ===
 
 def find_line_index_for_person(p: Dict[str, Any], lines: List[str]) -> int:
     """

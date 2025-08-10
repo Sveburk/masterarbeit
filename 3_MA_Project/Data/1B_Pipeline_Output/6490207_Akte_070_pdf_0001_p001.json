@@ -1,0 +1,168 @@
+{
+  "attributes": {
+    "docId": "6490207",
+    "pageId": "89843445",
+    "tsid": "235191031",
+    "imgUrl": "https://files.transkribus.eu/Get?id=WWCHGMETJXMNABQJANTLKNUX&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=TNDELKPAQGLEKSEDHWTHNOAS",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "M u r g /Bad;MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      }
+    ],
+    "creation_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "27.10.1941"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Jakob",
+      "alternate_name": "",
+      "familyname": "Küpfer",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngPW8f18aPmB5QcL6Po91eWYmPpMfBWgcPj",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Küpfer",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Jakob",
+      "alternate_name": "",
+      "familyname": "Küpfer",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngPW8f18aPmB5QcL6Po91eWYmPpMfBWgcPj",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Küpfer",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Männerchor",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Führer",
+      "role_schema": "Führer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "24.10.1941",
+      "count": 1
+    },
+    {
+      "date": "25.10.1941",
+      "count": 1
+    },
+    {
+      "date": "27.10.1941",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "M u r g /Bad;MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Rhina, den 27. Oktober 1941. \n Herrn \n Jakob Küpfer  \n \"zum Meyerhof“ \n M u r g /Baden. \n Lieber Herr Küpfer! \n Als ich am Samstag Abend von einer Geschäftsreise \n nach Hause kam, sagte mir meine Frau, dass Sie mich \n besuchen wollten und gab mir gleichzeitig Ihr Brief. \n vom 24. d.M. \n Während meiner Amtstätigkeit als Männerchor Führer \n habe ich schon so oft Ihr offenes Herz für unsere \n Sängersache kennen gelernt. Ich weis, dass keiner \n mehr wie Sie unsere Opfer um das deutsche Lied \n achtet und schätzt. Dies stellen Sie nun wieder \n erneut unter Beweis. Schon seit einiger Zeit be- \n schäftige ich mich mit dem Gedanken, wie wir unseren \n Kameraden in Felde zu Weihnachten, dem Fest der Liebe \n und des Gebens, eine Freude machen können, welche die \n Soldaten, wie Sie richtig schreiben, wirklich ver- \n dienen. Erst vor zwei Wochen habe ich die Sänger um \n Unterstützung beim Zustandekommen der Feldpost- \n Päckchen gebeten. Nun nehmen Sie mir mit Ihrer hoch- \n herzigen Spende von RM. 100.-- alle Sorge ab. \n Im Namen des Chors hiermit meinen aufrichtigen Dank. \n Ich werde die Vorstandschaft sowie den Verein über- \n Ihre edle Handlungsweise am kommenden Donnerstag \n orientieren und das Geld dem gedachten Zweck zuführen. \n mit herzlichem Sängergruss und \n Heil Hitler ! \n Der Vereinsführer:",
+  "document_format": ""
+}

@@ -1,0 +1,171 @@
+{
+  "attributes": {
+    "docId": "6490101",
+    "pageId": "89842125",
+    "tsid": "235008137",
+    "imgUrl": "https://files.transkribus.eu/Get?id=AZAKCNQWJEMCQFHVLQHKRNEC&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=DNJAQQGTPTSOYAQGYTZKJNZU",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      },
+      {
+        "name": "Herrischried",
+        "type": "",
+        "alternate_place_name": "Herrischried",
+        "geonames_id": "6555911.0",
+        "wikidata_id": "Q834905",
+        "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+      }
+    ],
+    "creation_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "04.03.1940"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Carl",
+      "alternate_name": "",
+      "familyname": "Burger",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngIP4I88tKPUsJvg3JR68xPhfIiFyUPJvKM",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 2,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    },
+    {
+      "forename": "Burger",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Carl",
+      "alternate_name": "",
+      "familyname": "Burger",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngIP4I88tKPUsJvg3JR68xPhfIiFyUPJvKM",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 2,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    },
+    {
+      "forename": "Burger",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 96.7741935483871,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "04.03.1940",
+      "count": 2
+    },
+    {
+      "date": "17.02.1940",
+      "count": 1
+    },
+    {
+      "date": "18.01.1940",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    },
+    {
+      "name": "Herrischried",
+      "type": "",
+      "alternate_place_name": "Herrischried",
+      "geonames_id": "6555911.0",
+      "wikidata_id": "Q834905",
+      "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Rhina, den 4. März 1940. \n Herrn \n Carl Burger \n Ehrenvorsitzender des Männerchors Murg, \n Herrischried \n Lieber Sangesbruder Burger ! \n Ihr Einschreibebrief vom 18.Februar d.J. und die \n ihm beigehefteten RM. 50.-- sind in meinem Besitz. \n Im Namen der Sängerschaft danke ich Ihnen recht \n verbindlich dafür. Wir haben so etwas wirklich \n nicht erwartet. Nicht um Geld oder sonst etwas von \n Ihnen zu ergattern, sind wir am 17.v.M. vor Ihrer \n Wohnung erschienen, sondern einzig und allein um \n unsere Pflicht zu tun. Wenn ich zurückdenke an \n die Jahre, während welchen Sie die Führung des \n Vereins inne hatten, dann ist die kleine Ehrung \n zu Ihrem 60sten Geburtstag mehr wie am Platze \n gewesen. Wir wollten Ihnen damit unsere Verbunden- \n heit beweisen, die auch heute noch, genau wie \n damals, zwischen Ihnen und der Sängerschaft besteht. \n Also nochmals recht herzlichen Dank für Ihre \n Gabe. Ich werde dieselbe, Ihrem Wunsche entsprechend, \n bei passenden Gelegenheiten verwenden. \n Heil Hitler ! \n Der Vereinsführer:",
+  "document_format": ""
+}

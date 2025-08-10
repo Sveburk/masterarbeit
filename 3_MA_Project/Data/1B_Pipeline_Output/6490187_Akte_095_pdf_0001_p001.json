@@ -1,0 +1,188 @@
+{
+  "attributes": {
+    "docId": "6490187",
+    "pageId": "89842525",
+    "tsid": "235010461",
+    "imgUrl": "https://files.transkribus.eu/Get?id=ZRAHPHPOSMHZNZLOYFIICOIQ&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=NVELQZVZTEZMQYWYTDTPFEXW",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden;Murg/Baden,",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Tiengen",
+        "type": "",
+        "alternate_place_name": "Tiengen;Tiengen /Hochrhein;Tiengen. /Oberrhein;Tiengen/Hochrhein;Tiengen/Hochrhein.;Tiengen/Oberrhein",
+        "geonames_id": "11611411.0",
+        "wikidata_id": "Q47501199",
+        "nodegoat_id": "ngSZ8q48dTpEcUJieSr2ehZBpSsPiEZrfTm"
+      },
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      }
+    ],
+    "creation_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "06.12.1940"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Bächle",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Josef",
+      "alternate_name": "Dapot",
+      "familyname": "Albiez",
+      "title": "",
+      "role": "Sangesbruder",
+      "role_schema": "Sangesbruder",
+      "gender": "male",
+      "associated_place": "",
+      "nodegoat_id": "ngKR2G48vMRW7Lxi9MT29zRZhMEHaWRHxMO",
+      "confidence": "",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Vereinsführer",
+      "role_schema": "Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "fuzzy",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Bächle",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Gau",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Führer",
+      "role_schema": "Führer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "06.12.1940",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden;Murg/Baden,",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Tiengen",
+      "type": "",
+      "alternate_place_name": "Tiengen;Tiengen /Hochrhein;Tiengen. /Oberrhein;Tiengen/Hochrhein;Tiengen/Hochrhein.;Tiengen/Oberrhein",
+      "geonames_id": "11611411.0",
+      "wikidata_id": "Q47501199",
+      "nodegoat_id": "ngSZ8q48dTpEcUJieSr2ehZBpSsPiEZrfTm"
+    },
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Männerchor Murg \n (Alter Schweizer-Männerchor) \n Murg, den 6. Dezember 1940. \n Herrn \n Bächle \n Sängerkreisführer \n Tiengen/Hochrhein. \n Unser Sangesbruder Josef Albiez gehört \n seit dem Jahre 1915 ununterbrochen als Aktiv- \n Mitglied unserem Verein an. Er soll deshalb \n zu Weihnachten mit der silbernen Nadel vom Gau \n und durch 1 Ring vom Verein geehrt werden. \n was die silberne Nadel betrifft, so möchte ich \n Sie hierdurch bitten, uns dieselbe zu besorgen. \n Oder muss ich den Antrag beim Gauführer direkt \n einreichen ? \n Können Sie mir evtl. auch eine Adresse nennen, \n wo man Sängerringe her haben kann ? \n Heil Hitler ! \n Der Vereinsführer \n NB. \n Ich wohne seit 1 Jahr nicht mehr in Murg, \n sondern in Rhina. Das Vereinsführer-Amt \n bin ich bis jetzt nicht losgeworden. Bitte \n richten Sie also alle Pgst für unseren Verein \n bis auf Widerruf an nachstehende Adresse: \n Männerchor Murg/Baden, \n z.Hd.v.Herrn Alfons Zimmermann,Vereinsführer, \n Laufenburg-Rhina/Baden.",
+  "document_format": ""
+}

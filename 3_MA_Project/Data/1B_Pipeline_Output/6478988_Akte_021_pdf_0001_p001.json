@@ -1,0 +1,171 @@
+{
+  "attributes": {
+    "docId": "6478988",
+    "pageId": "89800185",
+    "tsid": "235487663",
+    "imgUrl": "https://files.transkribus.eu/Get?id=WAHOVZNCBHIKBRJPNUXOWBTP&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=SWLPNOYNTNDXHQURKATICEGN",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Todtnau",
+        "type": "",
+        "alternate_place_name": "Todtnau;Todtnau/Schw.",
+        "geonames_id": "6558145.0",
+        "wikidata_id": "",
+        "nodegoat_id": "ngDK4D38oEKP8FUVpDM16sKIaFXAtPKEqEH"
+      }
+    ],
+    "creation_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": "12.10.1943"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Theodor",
+      "alternate_name": "",
+      "familyname": "Enderle",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngHO4L78sHYTrIuP2Ig5rwOyeHhExTOMuHV",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Sangesbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Theodor",
+      "alternate_name": "",
+      "familyname": "Enderle",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngHO4L78sHYTrIuP2Ig5rwOyeHhExTOMuHV",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmerman",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 90,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sangesbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 87.8048780487805,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "12.10.1943",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Todtnau",
+      "type": "",
+      "alternate_place_name": "Todtnau;Todtnau/Schw.",
+      "geonames_id": "6558145.0",
+      "wikidata_id": "",
+      "nodegoat_id": "ngDK4D38oEKP8FUVpDM16sKIaFXAtPKEqEH"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Murg, den 12. Oktober 1943. \n An den \n Männer-Gesangverein. \n Todtnau/Schw. \n Liebe Sangesbrüder von Todtnau ! \n Theodor Enderle ist nicht mehr. Im Dienste für unser \n Vaterland musste er sein junges, hoffnungsvolles Leben \n hingeben. Sie haben damit Ihren Vereinsführer und \n Chorleiter verloren. Wir sprechen Ihnen hierzu unser \n herzliches Beileid aus. \n Sie dürfen uns glauben, auch wir haben in dem gefallenen \n Helden ein grosses Stück Sängerheimat hingeben müssen. \n Manch einen Kameraden hat die Todesnachricht von unserem \n lieben Theodor im innersten der Seele erschüttert. \n Trotzdem Enderle in den letzten Jahren nicht mehr aktiv \n bei uns mitwirken konnte, ist er jedem Einzelnen von uns \n und zwar ob jung oder alt ein leuchtendes Beispiel \n geblieben. Sein Wirken als Chorleiter unseres Vereins \n darf sich in unserer 50jährigen Vereinsgeschichte sehen \n lassen. Ich bin felsenfest überzeugt, dass es auch bei \n Ihnen so sein wird. Der tote Kamerad wird also in unseren \n beiden Vereinen weiterleben. \n Mit freundlichen Sängergrüssen \n und Heil Hitler ! \n Der Vereinsführer: Alfons Zimmermann",
+  "document_format": ""
+}

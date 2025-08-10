@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0036_p036.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:34:11.229+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags/>
+   <Layout>
+      <Page ID="Page36" PHYSICAL_IMG_NR="36" HEIGHT="3508" WIDTH="2479">
+         <TopMargin HEIGHT="0" WIDTH="2479" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="2479"/>
+         <BottomMargin HEIGHT="0" WIDTH="2479" VPOS="3508" HPOS="0"/>
+         <PrintSpace HEIGHT="3508" WIDTH="2479" VPOS="0" HPOS="0">
+            <TextBlock ID="tr_1" HEIGHT="184" WIDTH="1857" VPOS="453" HPOS="325">
+               <Shape>
+                  <Polygon POINTS="325,453 325,637 2182,637 2182,453"/>
+               </Shape>
+               <TextLine ID="tr_1_tl_1"
+                         BASELINE="337,513 429,510 521,513 613,513 706,514 798,517 890,514 982,515 1075,515 1167,514 1259,513 1351,517 1444,517 1536,518 1628,517 1720,516 1813,516 1905,513 1997,513 2089,507 2182,498"
+                         HEIGHT="173"
+                         WIDTH="1851"
+                         VPOS="374"
+                         HPOS="325">
+                  <String HEIGHT="173"
+                          WIDTH="1728"
+                          VPOS="374"
+                          HPOS="202"
+                          CONTENT="MÄNNERCHOR"/>
+                  <SP HEIGHT="173" WIDTH="123" VPOS="374" HPOS="1929"/>
+                  <String HEIGHT="173"
+                          WIDTH="740"
+                          VPOS="374"
+                          HPOS="1436"
+                          CONTENT="MURG"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_2"
+                         BASELINE="1949,612 1976,610 2003,609 2030,609 2058,609 2085,608 2112,607 2139,606 2167,606"
+                         HEIGHT="97"
+                         WIDTH="231"
+                         VPOS="531"
+                         HPOS="1936">
+                  <String HEIGHT="97"
+                          WIDTH="385"
+                          VPOS="531"
+                          HPOS="1782"
+                          CONTENT="HOR"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_3"
+                         BASELINE="1710,609 1736,611 1763,612 1789,612 1816,611 1842,609 1869,611 1895,612 1922,612"
+                         HEIGHT="102"
+                         WIDTH="217"
+                         VPOS="528"
+                         HPOS="1698">
+                  <String HEIGHT="102"
+                          WIDTH="362"
+                          VPOS="528"
+                          HPOS="1553"
+                          CONTENT="ERC"/>
+               </TextLine>
+               <TextLine ID="tr_1_tl_4"
+                         BASELINE="325,615 389,612 453,614 517,612 581,612 646,612 710,612 774,611 838,609 902,609 967,609 1031,612 1095,612 1159,612 1223,609 1288,612 1352,612 1416,614 1480,612 1544,609 1609,612"
+                         HEIGHT="79"
+                         WIDTH="1292"
+                         VPOS="542"
+                         HPOS="312">
+                  <String HEIGHT="79"
+                          WIDTH="612"
+                          VPOS="542"
+                          HPOS="244"
+                          CONTENT="ALTER"/>
+                  <SP HEIGHT="79" WIDTH="68" VPOS="542" HPOS="856"/>
+                  <String HEIGHT="79"
+                          WIDTH="1020"
+                          VPOS="542"
+                          HPOS="584"
+                          CONTENT="SCHWEIZER-MÄT"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0004_p005.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:05.514+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_67_9_15_per" LABEL="Alf. Zimmermann" TYPE="person"/>
+      <NamedEntityTag ID="Tag_l_72_0_8_per" LABEL="Kaufmann" TYPE="person"/>
+      <NamedEntityTag ID="Tag_l_119_0_8_pla" LABEL="TÜBINGEN" TYPE="location"/>
+      <NamedEntityTag ID="Tag_l_62_11_4_pla" LABEL="Murg" TYPE="location"/>
+      <NamedEntityTag ID="Tag_l_84_0_16_pla" LABEL="Laufenburg-Rhina" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page4" PHYSICAL_IMG_NR="4" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r_2" HEIGHT="2300" WIDTH="1754" VPOS="30" HPOS="1730">
+               <Shape>
+                  <Polygon POINTS="1730,30 3484,30 3484,2330 1730,2330"/>
+               </Shape>
+               <TextLine ID="l_45"
+                         BASELINE="1806,391 2615,358"
+                         HEIGHT="347"
+                         WIDTH="822"
+                         VPOS="83"
+                         HPOS="1794">
+                  <String HEIGHT="347"
+                          WIDTH="1028"
+                          VPOS="83"
+                          HPOS="1589"
+                          CONTENT="Feldpost"/>
+               </TextLine>
+               <TextLine ID="l_119"
+                         BASELINE="2442,815 2466,721 2509,648 2612,597 2721,570 2806,600 2921,718"
+                         HEIGHT="470"
+                         WIDTH="413"
+                         VPOS="370"
+                         HPOS="2426">
+                  <String HEIGHT="470"
+                          WIDTH="516"
+                          VPOS="370"
+                          HPOS="2323"
+                          CONTENT="TÜBINGEN"
+                          TAGREFS="Tag_l_119_0_8_pla"/>
+               </TextLine>
+               <TextLine ID="l_124"
+                         BASELINE="2509,918 2894,818"
+                         HEIGHT="210"
+                         WIDTH="406"
+                         VPOS="721"
+                         HPOS="2499">
+                  <String HEIGHT="210"
+                          WIDTH="480"
+                          VPOS="721"
+                          HPOS="2425"
+                          CONTENT="28.09.40-19"/>
+               </TextLine>
+               <TextLine ID="l_50"
+                         BASELINE="1706,903 2315,888"
+                         HEIGHT="416"
+                         WIDTH="622"
+                         VPOS="586"
+                         HPOS="1693">
+                  <String HEIGHT="416"
+                          WIDTH="533"
+                          VPOS="586"
+                          HPOS="1604"
+                          CONTENT="An"/>
+                  <SP HEIGHT="416" WIDTH="89" VPOS="586" HPOS="2137"/>
+                  <String HEIGHT="416"
+                          WIDTH="622"
+                          VPOS="586"
+                          HPOS="1871"
+                          CONTENT="den"/>
+                  <SP HEIGHT="416" WIDTH="89" VPOS="586" HPOS="2493"/>
+                  <String HEIGHT="416" WIDTH="178" VPOS="586" HPOS="2137" CONTENT=""/>
+               </TextLine>
+               <TextLine ID="l_62"
+                         BASELINE="1824,1112 2033,1148 2391,1148 3412,1133"
+                         HEIGHT="404"
+                         WIDTH="1594"
+                         VPOS="907"
+                         HPOS="1813">
+                  <String HEIGHT="404"
+                          WIDTH="1488"
+                          VPOS="907"
+                          HPOS="1707"
+                          CONTENT="Männerchor"/>
+                  <SP HEIGHT="404" WIDTH="106" VPOS="907" HPOS="3194"/>
+                  <String HEIGHT="404"
+                          WIDTH="638"
+                          VPOS="907"
+                          HPOS="2769"
+                          CONTENT="Murg"
+                          TAGREFS="Tag_l_62_11_4_pla"/>
+               </TextLine>
+               <TextLine ID="l_67"
+                         BASELINE="1697,1361 3457,1376"
+                         HEIGHT="267"
+                         WIDTH="1661"
+                         VPOS="1185"
+                         HPOS="1794">
+                  <String HEIGHT="267"
+                          WIDTH="415"
+                          VPOS="1185"
+                          HPOS="1725"
+                          CONTENT="z."/>
+                  <SP HEIGHT="267" WIDTH="69" VPOS="1185" HPOS="2140"/>
+                  <String HEIGHT="267"
+                          WIDTH="415"
+                          VPOS="1185"
+                          HPOS="1932"
+                          CONTENT="H."/>
+                  <SP HEIGHT="267" WIDTH="69" VPOS="1185" HPOS="2348"/>
+                  <String HEIGHT="267"
+                          WIDTH="415"
+                          VPOS="1185"
+                          HPOS="2140"
+                          CONTENT="v."/>
+                  <SP HEIGHT="267" WIDTH="69" VPOS="1185" HPOS="2555"/>
+                  <String HEIGHT="267"
+                          WIDTH="554"
+                          VPOS="1185"
+                          HPOS="2348"
+                          CONTENT="Alf."
+                          TAGREFS="Tag_l_67_9_15_per"/>
+                  <SP HEIGHT="267" WIDTH="69" VPOS="1185" HPOS="2901"/>
+                  <String HEIGHT="267"
+                          WIDTH="831"
+                          VPOS="1185"
+                          HPOS="2625"
+                          CONTENT="Zimmermann"
+                          TAGREFS="Tag_l_67_9_15_per"/>
+               </TextLine>
+               <TextLine ID="l_72"
+                         BASELINE="2348,1500 3330,1485"
+                         HEIGHT="155"
+                         WIDTH="991"
+                         VPOS="1402"
+                         HPOS="2338">
+                  <String HEIGHT="155"
+                          WIDTH="1239"
+                          VPOS="1402"
+                          HPOS="2090"
+                          CONTENT="Kaufmann"
+                          TAGREFS="Tag_l_72_0_8_per"/>
+               </TextLine>
+               <TextLine ID="l_84"
+                         BASELINE="1845,1760 2282,1806 2566,1818 3466,1824"
+                         HEIGHT="521"
+                         WIDTH="1627"
+                         VPOS="1441"
+                         HPOS="1828">
+                  <String HEIGHT="521"
+                          WIDTH="1830"
+                          VPOS="1441"
+                          HPOS="1625"
+                          CONTENT="Laufenburg-Rhina"
+                          TAGREFS="Tag_l_84_0_16_pla"/>
+               </TextLine>
+               <TextLine ID="l_89"
+                         BASELINE="2742,2109 3375,2118"
+                         HEIGHT="207"
+                         WIDTH="640"
+                         VPOS="1947"
+                         HPOS="2730">
+                  <String HEIGHT="207"
+                          WIDTH="896"
+                          VPOS="1947"
+                          HPOS="2474"
+                          CONTENT="Baden"/>
+               </TextLine>
+            </TextBlock>
+            <ComposedBlock ID="t"
+                           HEIGHT="2158"
+                           WIDTH="1755"
+                           VPOS="130"
+                           HPOS="45"
+                           TYPE="table">
+               <TextBlock ID="c" HEIGHT="2158" WIDTH="1755" VPOS="130" HPOS="45">
+                  <Shape>
+                     <Polygon POINTS="45,130 45,2288 1800,2288 1800,130"/>
+                  </Shape>
+                  <TextLine ID="l"
+                            BASELINE="67,300 1130,300"
+                            HEIGHT="228"
+                            WIDTH="1071"
+                            VPOS="78"
+                            HPOS="56">
+                     <String HEIGHT="228" WIDTH="602" VPOS="78" HPOS="0" CONTENT="Hans."/>
+                     <SP HEIGHT="228" WIDTH="67" VPOS="78" HPOS="592"/>
+                     <String HEIGHT="228"
+                             WIDTH="803"
+                             VPOS="78"
+                             HPOS="324"
+                             CONTENT="Schlageter"
+                             TAGREFS="Tag_l_6_10_per"/>
+                  </TextLine>
+                  <TextLine ID="l_10"
+                            BASELINE="103,476 1654,458"
+                            HEIGHT="262"
+                            WIDTH="1559"
+                            VPOS="283"
+                            HPOS="91">
+                     <String HEIGHT="262" WIDTH="425" VPOS="283" HPOS="20" CONTENT="2/"/>
+                     <SP HEIGHT="262" WIDTH="71" VPOS="283" HPOS="445"/>
+                     <String HEIGHT="262"
+                             WIDTH="567"
+                             VPOS="283"
+                             HPOS="233"
+                             CONTENT="Inf."/>
+                     <SP HEIGHT="262" WIDTH="71" VPOS="283" HPOS="800"/>
+                     <String HEIGHT="262"
+                             WIDTH="567"
+                             VPOS="283"
+                             HPOS="587"
+                             CONTENT="Ers."/>
+                     <SP HEIGHT="262" WIDTH="71" VPOS="283" HPOS="1154"/>
+                     <String HEIGHT="262"
+                             WIDTH="638"
+                             VPOS="283"
+                             HPOS="941"
+                             CONTENT="Batt."/>
+                     <SP HEIGHT="262" WIDTH="71" VPOS="283" HPOS="1579"/>
+                     <String HEIGHT="262"
+                             WIDTH="354"
+                             VPOS="283"
+                             HPOS="1296"
+                             CONTENT="358"/>
+                  </TextLine>
+                  <TextLine ID="l_15"
+                            BASELINE="718,667 1821,667"
+                            HEIGHT="238"
+                            WIDTH="1109"
+                            VPOS="479"
+                            HPOS="706">
+                     <String HEIGHT="238"
+                             WIDTH="1267"
+                             VPOS="479"
+                             HPOS="548"
+                             CONTENT="Donaueschingen"
+                             TAGREFS="Tag_l_15_0_14_pla"/>
+                  </TextLine>
+                  <TextLine ID="l_20"
+                            BASELINE="103,860 1633,906"
+                            HEIGHT="337"
+                            WIDTH="1542"
+                            VPOS="669"
+                            HPOS="87">
+                     <String HEIGHT="337"
+                             WIDTH="771"
+                             VPOS="669"
+                             HPOS="1"
+                             CONTENT="Liebe"/>
+                     <SP HEIGHT="337" WIDTH="86" VPOS="669" HPOS="772"/>
+                     <String HEIGHT="337"
+                             WIDTH="1199"
+                             VPOS="669"
+                             HPOS="430"
+                             CONTENT="Sängerbrüder"/>
+                  </TextLine>
+                  <TextLine ID="l_25"
+                            BASELINE="142,1142 1515,1154"
+                            HEIGHT="349"
+                            WIDTH="1382"
+                            VPOS="907"
+                            HPOS="130">
+                     <String HEIGHT="349"
+                             WIDTH="1063"
+                             VPOS="907"
+                             HPOS="24"
+                             CONTENT="Meinen"/>
+                     <SP HEIGHT="349" WIDTH="106" VPOS="907" HPOS="1087"/>
+                     <String HEIGHT="349"
+                             WIDTH="850"
+                             VPOS="907"
+                             HPOS="662"
+                             CONTENT="frohen"/>
+                  </TextLine>
+                  <TextLine ID="l_30"
+                            BASELINE="209,1354 1739,1360"
+                            HEIGHT="312"
+                            WIDTH="1537"
+                            VPOS="1156"
+                            HPOS="198">
+                     <String HEIGHT="312"
+                             WIDTH="1153"
+                             VPOS="1156"
+                             HPOS="70"
+                             CONTENT="Gruss"/>
+                     <SP HEIGHT="312" WIDTH="128" VPOS="1156" HPOS="1223"/>
+                     <String HEIGHT="312"
+                             WIDTH="1025"
+                             VPOS="1156"
+                             HPOS="710"
+                             CONTENT="sendet"/>
+                  </TextLine>
+                  <TextLine ID="l_35"
+                            BASELINE="248,1536 1597,1563"
+                            HEIGHT="320"
+                            WIDTH="1357"
+                            VPOS="1365"
+                            HPOS="235">
+                     <String HEIGHT="320"
+                             WIDTH="905"
+                             VPOS="1365"
+                             HPOS="122"
+                             CONTENT="euch"/>
+                     <SP HEIGHT="320" WIDTH="113" VPOS="1365" HPOS="1027"/>
+                     <String HEIGHT="320"
+                             WIDTH="1018"
+                             VPOS="1365"
+                             HPOS="574"
+                             CONTENT="Schütze"
+                             TAGREFS="Tag_l_35_5_7_per"/>
+                  </TextLine>
+                  <TextLine ID="l_40"
+                            BASELINE="318,1745 1630,1757"
+                            HEIGHT="232"
+                            WIDTH="1319"
+                            VPOS="1596"
+                            HPOS="306">
+                     <String HEIGHT="232"
+                             WIDTH="609"
+                             VPOS="1596"
+                             HPOS="205"
+                             CONTENT="H."
+                             TAGREFS="Tag_l_40_0_13_per"/>
+                     <SP HEIGHT="232" WIDTH="101" VPOS="1596" HPOS="813"/>
+                     <String HEIGHT="232"
+                             WIDTH="1218"
+                             VPOS="1596"
+                             HPOS="407"
+                             CONTENT="Schlageter"
+                             TAGREFS="Tag_l_40_0_13_per"/>
+                  </TextLine>
+               </TextBlock>
+            </ComposedBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

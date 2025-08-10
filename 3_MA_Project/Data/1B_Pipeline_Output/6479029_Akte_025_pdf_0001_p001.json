@@ -1,0 +1,166 @@
+{
+  "attributes": {
+    "docId": "6479029",
+    "pageId": "89800365",
+    "tsid": "235485278",
+    "imgUrl": "https://files.transkribus.eu/Get?id=SDMKBNRKPFANROXYTFYCOSZP&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=GYIEKGZNPWUYMSISRFOLWUJV",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Deutsches Reich",
+        "type": "",
+        "alternate_place_name": "Deutsches Reich;Deutschland;Heimatland;NS-Staat;Vaterland",
+        "geonames_id": "",
+        "wikidata_id": "Q518617",
+        "nodegoat_id": "ngIP2I28tIPU5KZIuKB0txPVfKCFyUPJvIM"
+      }
+    ],
+    "creation_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": "11.05.1943"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Emil",
+      "alternate_name": "",
+      "familyname": "Suter",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngEL4E48pFVQ6Frc9GN2qtLXbFeBuQLFrFS",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Emil",
+      "alternate_name": "",
+      "familyname": "Suter",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngEL4E48pFVQ6Frc9GN2qtLXbFeBuQLFrFS",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    },
+    {
+      "forename": "Murg",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Lb.",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Frau",
+      "role_schema": "Frau",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "11.05.1943",
+      "count": 2
+    },
+    {
+      "date": "13.05.1941",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Deutsches Reich",
+      "type": "",
+      "alternate_place_name": "Deutsches Reich;Deutschland;Heimatland;NS-Staat;Vaterland",
+      "geonames_id": "",
+      "wikidata_id": "Q518617",
+      "nodegoat_id": "ngIP2I28tIPU5KZIuKB0txPVfKCFyUPJvIM"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Murg, den 11. Mai 1943. \n Herrn \n Emil Suter \n Ehrenführer des Männerchor Murg, \n Murg \n Mein lieber Ehrenführer! \n Ich weiss es, Sie haben von jeher ein gutes Herz für \n unseren Chor gehabt. Diese Tatsache stellten sie \n gestern Abend erneut unter Beweis. Recht vielen, vielen \n Dank für Ihre hochherzige Spende von \n RMk. 50.-- \n Sobald ich wieder mit ihnen zusammenkomme, müssen Sie \n mich wissen lassen, ob Sie in Bezug auf die Verwendung \n des Geldes gewisse Wünsche haben. \n Dieses Jahr sind es 50 Jahre her, dass eine kleine \n Schar Anhänger des Liedes - es waren damals Männer \n aus Ihrem lieben Heimatland - unseren Verein gründeten. \n Nahezu seit der Gründung dienen Sie nun der edlen \n Sängersache, davon jahrzehnte als umsichtiger Vereins- \n führer. Wie schön wäre es, wenn wir nun den Jübiläumstag \n feierlich zusammen begehen könnten. Sie dürfen überzeugt \n sein, er würde ein Markstein in Ihrem Leben werden. \n Leider ist die Zeit aber nicht zum Feiern von Festen \n angetan. Wir müssen warten bis der Krieg vorüber ist. \n Solange aber und dann erst recht, wünscht Ihnen die \n Sängerschaft gesunde Tage. Mögen Sie noch viele Jahre \n mit Ihrer lb.Frau in körperlicher und geistiger Frische \n durchs Leben gehen können. \n Der Vereinsführer: \n Zimmermann",
+  "document_format": ""
+}

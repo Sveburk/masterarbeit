@@ -1,0 +1,178 @@
+{
+  "attributes": {
+    "docId": "6478650",
+    "pageId": "89799065",
+    "tsid": "234916333",
+    "imgUrl": "https://files.transkribus.eu/Get?id=NRUJASJWFKWZNFJJTUPSPHJD&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=NDUJVLOYGEDTVTSGZIRAGORA",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      }
+    ],
+    "creation_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": ""
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "",
+      "alternate_name": "",
+      "familyname": "Strittmatter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN2C08rHNS0HtC5H182vNbdIADwSNDtHK",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "oder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "header-inline",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname",
+      "match_score": 50,
+      "recipient_score": 90,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "",
+      "alternate_name": "",
+      "familyname": "Strittmatter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN2C08rHNS0HtC5H182vNbdIADwSNDtHK",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Emil",
+      "alternate_name": "",
+      "familyname": "Suter",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngEL4E48pFVQ6Frc9GN2qtLXbFeBuQLFrFS",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Hans",
+      "alternate_name": "",
+      "familyname": "Habig",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngNU5V38yPUZzOaJ8O417cUKkNHKdZUWaPR",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "oder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "header-inline",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname",
+      "match_score": 50,
+      "recipient_score": 90,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Gemeindeverwaltung Murg",
+      "type": "Staatliche Organisation",
+      "nodegoat_id": "ngGN7a28rGNS7IXwqIP0tvNVdGADwSNbtGK",
+      "alternate_names": [
+        "Gemeinde Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 96.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Entwurf \n Herr oder F, \n Murg, den \n Seit vielten Jahren wird bei Anlässen und in den Ge- \n sangsstunden der Mangel eines Klaviers ausserordentlich empfunden. \n Die Uebungsstunden werden mit einem kleinen Harmonium durchgeführt \n Abgesehen davon, dass das Instrument nicht dem Verein gehört und daher \n jederzeit zurückgegeben werden muss, erfüllt dasselbe bei der heuti- \n gen Stärke des Vereins nicht mehr seinen Zweck. Der Verein steht \n vorder Frage Anschaffung eines neuen grossen Harmoniums oder eines \n Klaviers. Aus eigenen Mitteln ist der Verein nicht in der Lage die \n Anschaffung durchzuführen und beabsichtigen wir daher bei sangesfreun- \n den ein zinsloses Darlehen zu beschaffen, welche Schuld durch Losung \n jährlich mit M 2-300 abzutragen ist. Wir vertrauen auf das Gemein - \n schaftsgefühl, indem wir auf andere Orte und Städte hinweisen, die \n schon längst im Besitze eines eigenen Klaviers sind, ebenfalls auf \n Grund von Zeichnungen von Musikfreunden und der Gemeinde. Wir bitten \n Sie um gütige Zeichnung ,und ist ein echter Sängerdank sicher. \n Mit treudeutschem Sängergruss \n Männerchor Murg \n (Alter Schweizer Männerchor) \n Burger \n Herrn Burger \n Strittmatter Iy \n Bingert \n Albietz \n Gemeinde Murg \n M 100. \n 100.- \n 100.- \n 100.- \n steht noch aus \n Vohels beicht \n Suter Emil \n Habig Hans \n Weis z. Gem Hof \n Laule g Riesse \n Kraftwerk \n Nilun  } antworteten nicht. \n Riegeler",
+  "document_format": ""
+}

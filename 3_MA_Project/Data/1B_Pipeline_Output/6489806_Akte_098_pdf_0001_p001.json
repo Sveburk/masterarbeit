@@ -1,0 +1,181 @@
+{
+  "attributes": {
+    "docId": "6489806",
+    "pageId": "89842425",
+    "tsid": "235010450",
+    "imgUrl": "https://files.transkribus.eu/Get?id=OXVOOFAINWNXFPPCNAJXUPYZ&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=QFUFKCEQSQTXVFIJCACRXGKJ",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg(Baden);Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Gasthaus Murgtal, Murg",
+        "type": "",
+        "alternate_place_name": "Gasthaus Murgtal, Murg;Gasthaus zum Murgtal;Murgtal Saal;Murgtalsaal;Murgtalsaale;Saal im Gasthaus Murgtal;Saal im Murgtal",
+        "geonames_id": "",
+        "wikidata_id": "",
+        "nodegoat_id": "ngUB0M88fUhG9WLYgVN61jBHrVORkGBNhUe"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": "09.10.1940"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "R",
+      "alternate_name": "",
+      "familyname": "Weiss",
+      "title": "",
+      "role": "Ortsverbandsleiter",
+      "role_schema": "Ortsverbandsleiter",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngNU0F18yNkZxOad6Nm9ycUGkNnKdZUGaNh",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 95,
+      "recipient_score": 100,
+      "mentioned_count": 9,
+      "associated_organisation": {
+        "name": "V.D.A.",
+        "nodegoat_id": ""
+      }
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Vereinsführer",
+      "role_schema": "Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 70,
+      "mentioned_count": 2,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "R",
+      "alternate_name": "",
+      "familyname": "Weiss",
+      "title": "",
+      "role": "Ortsverbandsleiter",
+      "role_schema": "Ortsverbandsleiter",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngNU0F18yNkZxOad6Nm9ycUGkNnKdZUGaNh",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 95,
+      "recipient_score": 100,
+      "mentioned_count": 9,
+      "associated_organisation": {
+        "name": "V.D.A.",
+        "nodegoat_id": ""
+      }
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Vereinsführer",
+      "role_schema": "Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "header-2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 70,
+      "mentioned_count": 2,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Verein für das Deutschtum im Ausland",
+      "type": "Verein",
+      "nodegoat_id": "ngXE8v98iZEJ9ZOPhXQ71mEMuZRUnJEwkZB",
+      "alternate_names": [
+        "V.D.A."
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "09.10.1940",
+      "count": 2
+    },
+    {
+      "date": "20.10.1940",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg(Baden);Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Gasthaus Murgtal, Murg",
+      "type": "",
+      "alternate_place_name": "Gasthaus Murgtal, Murg;Gasthaus zum Murgtal;Murgtal Saal;Murgtalsaal;Murgtalsaale;Saal im Gasthaus Murgtal;Saal im Murgtal",
+      "geonames_id": "",
+      "wikidata_id": "",
+      "nodegoat_id": "ngUB0M88fUhG9WLYgVN61jBHrVORkGBNhUe"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Rudolf Weiss \n Murg (Baden) \n Postfach 6 \n Murg(Baden), den 9.Okt. 1940. \n Herrn \n Alfons Zimmermann \n Vereinsleiter des Männerchor \n Murg \n Sehr geehrter Herr Zimmermann ! \n Sie hatten mir seiner Zeit zugesagt, dass der Männerchor Murg bei der \n Kundgebung des V.D.A. mitwirken wurde. Die Grosskundgebung,die zugleich \n Pflichtversammlung der Partei ist, findet nun am Sonntag den 20. ds. \n abends 8 Uhr im Murgtalsaale statt und hoffe ich gerne, dass Sie die \n mir gegebene Zusage aufrecht erhalten werden. Im Voraus bestens dankend \n zeichne ich mit \n Heil Hitler ! \n R Weiss \n Ortsverbandsleiter des V.D.A.",
+  "document_format": ""
+}

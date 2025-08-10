@@ -1,0 +1,170 @@
+{
+  "attributes": {
+    "docId": "6490228",
+    "pageId": "89843565",
+    "tsid": "235192028",
+    "imgUrl": "https://files.transkribus.eu/Get?id=ZEBRVSSRQVMIEBLDMAPBWGPE&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=BIEMYNDTQZVBUEWYEDHTQNNB",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Herrischried",
+        "type": "",
+        "alternate_place_name": "Herrischried",
+        "geonames_id": "6555911.0",
+        "wikidata_id": "Q834905",
+        "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+      },
+      {
+        "name": "Neustadt",
+        "type": "",
+        "alternate_place_name": "Neustadt",
+        "geonames_id": "11974751.0",
+        "wikidata_id": "Q991522",
+        "nodegoat_id": "ngWD6E28hWDIhYNSiX304lDTtWQTmIDFjWA"
+      }
+    ],
+    "creation_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "01.11.1941"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Carl",
+      "alternate_name": "",
+      "familyname": "Burger,",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngIP4I88tKPUsJvg3JR68xPhfIiFyUPJvKM",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Carl",
+      "alternate_name": "",
+      "familyname": "Burger,",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngIP4I88tKPUsJvg3JR68xPhfIiFyUPJvKM",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "D.",
+      "alternate_name": "",
+      "familyname": "Murg",
+      "title": "",
+      "role": "Ehrenvorsitzender",
+      "role_schema": "Ehrenvorsitzender",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 96.7741935483871,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "01.11.1941",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Herrischried",
+      "type": "",
+      "alternate_place_name": "Herrischried",
+      "geonames_id": "6555911.0",
+      "wikidata_id": "Q834905",
+      "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+    },
+    {
+      "name": "Neustadt",
+      "type": "",
+      "alternate_place_name": "Neustadt",
+      "geonames_id": "11974751.0",
+      "wikidata_id": "Q991522",
+      "nodegoat_id": "ngWD6E28hWDIhYNSiX304lDTtWQTmIDFjWA"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Rhina, den 1. November 1941. \n Herrn \n Carl Burger, \n Ehrenführer d. Männerchors Murg, \n Herrischried \n Mein Lieber ! \n Ich muss heute wieder einmal mit einer Bitte an Dich- \n gelangen. Der Männerchor schickt seinen 20 Soldaten \n zu Weihnachten Päckchen. Finanziert sind dieselben. \n Ein Passiv-Mitglied hat RMk. 100.-- gestiftet. Wer, \n werde ich Dir gelegentlich mündlich sagen. Nun ist es \n aber recht schwer, die Päckchen zu füllen. Gerne \n möchten wir u.a. je 1/4 1tr.Schnaps beilegen, am- \n liebsten einen guten Obst-Schnaps. Wo aber soll man \n bis spätestens Ende November 5 Itr. auftreiben ? \n Da bin ich nun auf den Gedanken gekommen, ob Du evtl. \n auf Grund Deiner Beziehungen zu den\"Wäldern“ etwas \n auftreiben kannst. Ich weis wohl, die Zeit ist augen- \n blicklich ungünstig, weil die Leute noch nicht gebrannt. \n haben. Deshalb wäre ich natürlich auch schon mit einer \n kleineren Menge zufrieden. Vielleicht bekommt man von \n anderer Seite noch etwas. Bitte, sei so gut und gebe- \n mir bald Bescheid, wenn Du Umschau gehalten hast. \n Neustadt hat mir auch nicht geantwortet trotzdem ich \n ebenfalls einen Freiumschlag beifügte. Ich kann so was \n nicht verstehen. Schön, wir haben Krieg. Der Vorstand \n ist vielleicht eingezogen. Aber da muss doch sonst \n noch ein Mensch da sein, der eingehende Post erledigt. \n Wann kann man Dich wieder einmal in Murg sehen. Es wäre \n jetzt an der Zeit, dass Du den restlichen Teil Deines \n Urlaubs nimmst. Herzlicher Gruss \n Dein",
+  "document_format": ""
+}

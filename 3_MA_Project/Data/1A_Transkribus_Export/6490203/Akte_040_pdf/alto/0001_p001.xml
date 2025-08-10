@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0001_p001.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:35:14.854+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_0_59_pla"
+                      LABEL="Königshütte O-S. - Bergwerksdirektion am Adolf-Hitler-Platz"
+                      TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page1" PHYSICAL_IMG_NR="1" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="140" WIDTH="1907" VPOS="2196" HPOS="1573">
+               <Shape>
+                  <Polygon POINTS="1573,2196 3480,2196 3480,2336 1573,2336"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="1601,2276 3452,2304"
+                         HEIGHT="83"
+                         WIDTH="1861"
+                         VPOS="2225"
+                         HPOS="1588">
+                  <String HEIGHT="83"
+                          WIDTH="473"
+                          VPOS="2225"
+                          HPOS="1556"
+                          CONTENT="Königshütte"
+                          TAGREFS="Tag_l_0_59_pla"/>
+                  <SP HEIGHT="83" WIDTH="32" VPOS="2225" HPOS="2030"/>
+                  <String HEIGHT="83"
+                          WIDTH="252"
+                          VPOS="2225"
+                          HPOS="1935"
+                          CONTENT="O-S."
+                          TAGREFS="Tag_l_0_59_pla"/>
+                  <SP HEIGHT="83" WIDTH="32" VPOS="2225" HPOS="2187"/>
+                  <String HEIGHT="83"
+                          WIDTH="158"
+                          VPOS="2225"
+                          HPOS="2093"
+                          CONTENT="-"
+                          TAGREFS="Tag_l_0_59_pla"/>
+                  <SP HEIGHT="83" WIDTH="32" VPOS="2225" HPOS="2250"/>
+                  <String HEIGHT="83"
+                          WIDTH="694"
+                          VPOS="2225"
+                          HPOS="2156"
+                          CONTENT="Bergwerksdirektion"
+                          TAGREFS="Tag_l_0_59_pla"/>
+                  <SP HEIGHT="83" WIDTH="32" VPOS="2225" HPOS="2850"/>
+                  <String HEIGHT="83"
+                          WIDTH="189"
+                          VPOS="2225"
+                          HPOS="2755"
+                          CONTENT="am"
+                          TAGREFS="Tag_l_0_59_pla"/>
+                  <SP HEIGHT="83" WIDTH="32" VPOS="2225" HPOS="2944"/>
+                  <String HEIGHT="83"
+                          WIDTH="631"
+                          VPOS="2225"
+                          HPOS="2818"
+                          CONTENT="Adolf-Hitler-Platz"
+                          TAGREFS="Tag_l_0_59_pla"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

@@ -1,0 +1,230 @@
+{
+  "attributes": {
+    "docId": "6489763",
+    "pageId": "89843066",
+    "tsid": "235278320",
+    "imgUrl": "https://files.transkribus.eu/Get?id=NVLRTPUUANJUBNPVLBBSYDLG&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=SJEGZPMGSYBETMRCFRENKRPE",
+    "document_type": "Postkarte",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "München",
+        "type": "",
+        "alternate_place_name": "Hauptstadt der Bewegung;München",
+        "geonames_id": "2867714.0",
+        "wikidata_id": "Q1726",
+        "nodegoat_id": "ngMT2E68xOTYzODkyMF48bThjMGJcYTFzOQ"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Laufenburg",
+        "type": "",
+        "alternate_place_name": "Laufenburg;Laufenburg (Baden)",
+        "geonames_id": "6559168.0",
+        "wikidata_id": "Q539801",
+        "nodegoat_id": "ngHO2H18sHeT5JYHtHQ9uwOMeHBExTOIuHb"
+      },
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      }
+    ],
+    "creation_place": {
+      "name": "München",
+      "nodegoat_id": "ngMT2E68xOTYzODkyMF48bThjMGJcYTFzOQ",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina"
+    },
+    "creation_date": "28.05.1941"
+  },
+  "authors": [
+    {
+      "forename": "Lina",
+      "alternate_name": "",
+      "familyname": "Fingerdick",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngAH6I68lBHM6BnI1AJ4lpHTxBaXqMHJnBE",
+      "confidence": "LLM_Tag_match_in_mentioned_persons",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    }
+  ],
+  "recipients": [
+    {
+      "forename": "Otto",
+      "alternate_name": "",
+      "familyname": "Bollinger",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngFM4F58qFsR8GsF0Ge38uMGcFfCvRMGsFp",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "extracted_from_text_only",
+      "match_score": 90,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Vereinsführer",
+      "role_schema": "Vereinsführer",
+      "gender": "male",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "indirect_2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Lina",
+      "alternate_name": "",
+      "familyname": "Fingerdick",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngAH6I68lBHM6BnI1AJ4lpHTxBaXqMHJnBE",
+      "confidence": "LLM_Tag_match_in_mentioned_persons",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Otto",
+      "alternate_name": "",
+      "familyname": "Bollinger",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngFM4F58qFsR8GsF0Ge38uMGcFfCvRMGsFp",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "extracted_from_text_only",
+      "match_score": 90,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "Vereinsführer",
+      "role_schema": "Vereinsführer",
+      "gender": "male",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "indirect_2line",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 100,
+      "recipient_score": 100,
+      "mentioned_count": 1,
+      "associated_organisation": {
+        "name": "Männerchor Murg",
+        "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU"
+      }
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "28.05.1941",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "München",
+      "type": "",
+      "alternate_place_name": "Hauptstadt der Bewegung;München",
+      "geonames_id": "2867714.0",
+      "wikidata_id": "Q1726",
+      "nodegoat_id": "ngMT2E68xOTYzODkyMF48bThjMGJcYTFzOQ"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Laufenburg",
+      "type": "",
+      "alternate_place_name": "Laufenburg;Laufenburg (Baden)",
+      "geonames_id": "6559168.0",
+      "wikidata_id": "Q539801",
+      "nodegoat_id": "ngHO2H18sHeT5JYHtHQ9uwOMeHBExTOIuHb"
+    },
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "München 28.V.1941 \n Lieber Otto! \n Nur wer die Sehnsucht kennt weiß was ich leide \n Ich wandle traurig her in schwarzer Seide. \n die Sehnsucht brennt du bist so fern \n Ach lieber Otto wie hab ich dich gern. \n Ich schnitt es gern in alle Rinden \n Ach Otto wann u. wo kann ich dich finden? \n Deine Dich nie vergessende \n Lina Fingerdick \n An  \n Herrn \n Otto Bollinger \n z.H.d Herrn Alfons Zimmermann \n Vereinsführer des Männerchor \n Murg \n Laufenburg (Baden) \n Rhina",
+  "document_format": ""
+}

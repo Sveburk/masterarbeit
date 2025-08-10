@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=13_03_2025_14:56</Creator>
+        <Created>2025-01-23T12:55:17.157+01:00</Created>
+        <LastChange>2025-03-13T14:56:32.685+01:00</LastChange>
+        <TranskribusMetadata docId="6489950" pageId="89834635" pageNr="17" tsid="234969497" status="IN_PROGRESS" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=SLKLZTZVPFPMWAYQZCPBFEKS&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=TRFRBMLMJAMJSOSHUZFNMDYQ" imageId="74848221"/>
+    </Metadata>
+    <Page imageFilename="0017_p017.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1754652849839" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="322,462 322,637 2179,637 2179,462"/>
+            <TextLine id="tr_1_tl_1" custom="organization {offset:0; length:14;} place {offset:15; length:4;}">
+                <Coords points="321,527 685,562 1099,518 2169,532 2169,390 1584,434 1524,386 955,413 632,365 527,411 321,411"/>
+                <Baseline points="334,507 426,513 518,514 610,517 702,519 794,519 886,517 978,516 1070,516 1162,517 1255,513 1347,519 1439,516 1531,518 1623,519 1715,516 1807,516 1899,516 1991,513 2083,510 2176,510"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="organization {offset:0; length:27;}">
+                <Coords points="309,625 2176,622 2176,541 2060,530 752,530 680,562 309,516"/>
+                <Baseline points="322,609 414,612 507,612 600,612 693,612 786,612 879,612 971,612 1064,612 1157,612 1250,612 1343,610 1436,612 1529,612 1621,612 1714,612 1807,615 1900,614 1993,612 2086,612 2179,609"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MÄNNERCHOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

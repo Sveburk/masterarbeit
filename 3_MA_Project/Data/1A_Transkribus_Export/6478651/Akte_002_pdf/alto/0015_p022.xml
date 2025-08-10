@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0015_p022.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:06.83+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_28_0_8_pla" LABEL="Russland" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page15" PHYSICAL_IMG_NR="15" HEIGHT="3508" WIDTH="2479">
+         <TopMargin HEIGHT="0" WIDTH="2479" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="3508" WIDTH="0" VPOS="0" HPOS="2479"/>
+         <BottomMargin HEIGHT="0" WIDTH="2479" VPOS="3508" HPOS="0"/>
+         <PrintSpace HEIGHT="3508" WIDTH="2479" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="2763" WIDTH="1862" VPOS="233" HPOS="359">
+               <Shape>
+                  <Polygon POINTS="359,233 2221,233 2221,2996 359,2996"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="567,828 800,707 1013,621 1377,593 1937,781"
+                         HEIGHT="265"
+                         WIDTH="1394"
+                         VPOS="563"
+                         HPOS="553">
+                  <String HEIGHT="265"
+                          WIDTH="1647"
+                          VPOS="563"
+                          HPOS="300"
+                          CONTENT="Weihnachten"/>
+               </TextLine>
+               <TextLine ID="l_28"
+                         BASELINE="500,2584 1348,2613 1915,2610"
+                         HEIGHT="59"
+                         WIDTH="1415"
+                         VPOS="2554"
+                         HPOS="500">
+                  <String HEIGHT="59"
+                          WIDTH="1769"
+                          VPOS="2554"
+                          HPOS="146"
+                          CONTENT="Russland"
+                          TAGREFS="Tag_l_28_0_8_pla"/>
+               </TextLine>
+               <TextLine ID="l_37"
+                         BASELINE="730,2845 1045,2868 1749,2868"
+                         HEIGHT="52"
+                         WIDTH="1019"
+                         VPOS="2816"
+                         HPOS="730">
+                  <String HEIGHT="52"
+                          WIDTH="1529"
+                          VPOS="2816"
+                          HPOS="221"
+                          CONTENT="1942"/>
+               </TextLine>
+            </TextBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

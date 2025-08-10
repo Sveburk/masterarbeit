@@ -1,0 +1,222 @@
+{
+  "attributes": {
+    "docId": "6490129",
+    "pageId": "89841665",
+    "tsid": "234993590",
+    "imgUrl": "https://files.transkribus.eu/Get?id=SJTAVVTZPYGNYUQBPUBWMAHA&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=IEMOGIUHAQFDMWALKFYEZQRY",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Rhina",
+        "type": "",
+        "alternate_place_name": "Laufenburg-Rhina;Rhina;Rhina/Bd.",
+        "geonames_id": "2847580.0",
+        "wikidata_id": "Q109796187",
+        "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+      },
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg.;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Gasthaus zum Hirschen, Murg",
+        "type": "",
+        "alternate_place_name": "Gasthaus zum Hirschen;Gasthaus zum Hirschen, Murg;Hirschen;Lokal zum Hirschen;den Hirschen;im Hirschen;zum Hirschen",
+        "geonames_id": "",
+        "wikidata_id": "",
+        "nodegoat_id": "ngSZ8q48dTpEdUJEeSB2chZLpTsPiEZrfTm"
+      }
+    ],
+    "creation_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Rhina",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR",
+      "score": 105.0,
+      "alternate_place_name": "Laufenburg-Rhina;Rhina;Rhina/Bd."
+    },
+    "creation_date": "11.01.1940"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Eduard",
+      "alternate_name": "",
+      "familyname": "Asal",
+      "title": "",
+      "role": "stellvertretender Vereinsführer",
+      "role_schema": "stellvertretender Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngKR5W08vKhWwLxS5L181zRPhLEHaWRXxKe",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "extracted_from_text_only",
+      "match_score": 90,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Jung",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 3
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Eduard",
+      "alternate_name": "",
+      "familyname": "Asal",
+      "title": "",
+      "role": "stellvertretender Vereinsführer",
+      "role_schema": "stellvertretender Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngKR5W08vKhWwLxS5L181zRPhLEHaWRXxKe",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "extracted_from_text_only",
+      "match_score": 90,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Alfons",
+      "alternate_name": "",
+      "familyname": "Zimmermann",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngGN4K68rGNSrHtG1Gf48vNZdHgDwSNLtGK",
+      "confidence": "",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 89,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Jung",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 3
+    },
+    {
+      "forename": "D.Männerchors",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "stellvertretender Vereinsführer",
+      "role_schema": "stellvertretender Vereinsführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "erste",
+      "alternate_name": "",
+      "familyname": "Jung",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 3
+    }
+  ],
+  "mentioned_organizations": [],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "06.01.1940",
+      "count": 2
+    },
+    {
+      "date": "10.01.1940",
+      "count": 1
+    },
+    {
+      "date": "11.01.1940",
+      "count": 2
+    },
+    {
+      "date": "13.01.1940",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Rhina",
+      "type": "",
+      "alternate_place_name": "Laufenburg-Rhina;Rhina;Rhina/Bd.",
+      "geonames_id": "2847580.0",
+      "wikidata_id": "Q109796187",
+      "nodegoat_id": "ngDK1Z78oFUP8FUZpD852sKEaEdAtPKAqFR"
+    },
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg.;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Gasthaus zum Hirschen, Murg",
+      "type": "",
+      "alternate_place_name": "Gasthaus zum Hirschen;Gasthaus zum Hirschen, Murg;Hirschen;Lokal zum Hirschen;den Hirschen;im Hirschen;zum Hirschen",
+      "geonames_id": "",
+      "wikidata_id": "",
+      "nodegoat_id": "ngSZ8q48dTpEdUJEeSB2chZLpTsPiEZrfTm"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Alfons Zimmermann, \n Rhina/Bd. \n Rhina, den 11. Januar 1940. \n Herrn \n Eduard Asal \n stellvertr. Vereinsführer d.Männerchors \n Murg. \n Lieber Eduard ! \n Wenn ich mich recht erinnere, habe ich Dir am letzten \n Samstag meinen Brief an Sangesbruder Jung und dessen \n Antwort gezeigt. Ich glaubte damit das Vorkommnis von \n Neujahr erledigt. Dem ist aber nicht so. Gestern wurde \n ich erneut mit einem Schreiben von Jung und zwar dies- \n mal mit einem vierseitigen beglückt. Ich lege Dir das- \n selbe hier bei und bitte Dich den Inhalt genau zu \n studieren, so wie ich es auch tun musste, um mit den \n rechtsanwaltlichen Gedankengängen mitzukommen. Voraus- \n sichtlich werde ich Dich am nächsten Samstag gegen \n 1/2 8 Uhr abends in Deiner Wohnung besuchen. Ich wäre \n Dir zu Dank verpflichtet, wenn Du mir dann sagen \n würdest, was ich Deiner Meinung nach in der Angelegen- \n heit tun soll. Meine Einladung zum Bierabend auf kommen- \n den Samstag wirst Du bekommen haben. Trotz allem wird \n der Abend selbstverständlich durchgeführt, auch auf die \n Gefahr hin, dass der erste Tenor Jung nicht anwesend ist \n Der Freitrunk kam absolut nicht bettelhaft zustande. \n Herr Bürgermeister hat mir von seiner Absicht, dem \n Männerchor 1 Fass Bier zu stiften, schon 8 Tage vor der \n Generalversammlung Andeutungen gemacht, ohne dass ich \n ihn besonders bearbeitet hätte. Ich habe dafür meine \n Zeugen. \n Zu unserem Bierabend selbst möchte ich zu Deiner \n persönlichen Information bemerken, dass es mir lieber \n gewesen wäre, wenn derselbe in einer anderen Wirtschaft \n durchgeführt worden wäre, nachdem wir nun schon 2 mal \n hintereinander, im Hirschen gewesen sind. Herr Grass aber \n wollte in den Hirschen. Nach Sachlage durfte ich ihn zu \n irgend einer andern Gaststätte nicht umstimmen. \n Herzliche Grüsse \n Dein \n Anlage.",
+  "document_format": ""
+}

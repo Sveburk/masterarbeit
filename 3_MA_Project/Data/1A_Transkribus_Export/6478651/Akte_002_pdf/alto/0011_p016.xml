@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+      xmlns:page="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15"
+      xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+      xmlns:local="local"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# https://www.loc.gov/standards/alto/v4/alto.xsd">
+   <Description>
+      <MeasurementUnit>pixel</MeasurementUnit>
+      <sourceImageInformation>
+         <fileName>0011_p016.jpg</fileName>
+      </sourceImageInformation>
+      <Processing ID="IdOcr">
+         <processingDateTime>2025-08-08T13:33:06.451+02:00</processingDateTime>
+         <processingSoftware>
+            <softwareCreator>READ COOP</softwareCreator>
+            <softwareName>Transkribus</softwareName>
+         </processingSoftware>
+      </Processing>
+   </Description>
+   <Styles>
+      <TextStyle ID="ID_bold" FONTSTYLE="bold"/>
+      <TextStyle ID="ID_italics" FONTSTYLE="italics"/>
+      <TextStyle ID="ID_smallcaps" FONTSTYLE="smallcaps"/>
+      <TextStyle ID="ID_strikethrough" FONTSTYLE="strikethrough"/>
+      <TextStyle ID="ID_subscript" FONTSTYLE="subscript"/>
+      <TextStyle ID="ID_superscript" FONTSTYLE="superscript"/>
+      <TextStyle ID="ID_underline" FONTSTYLE="underline"/>
+   </Styles>
+   <Tags>
+      <NamedEntityTag ID="Tag_l_11_7_pla" LABEL="Dresden" TYPE="location"/>
+   </Tags>
+   <Layout>
+      <Page ID="Page11" PHYSICAL_IMG_NR="11" HEIGHT="2479" WIDTH="3508">
+         <TopMargin HEIGHT="0" WIDTH="3508" VPOS="0" HPOS="0"/>
+         <LeftMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="0"/>
+         <RightMargin HEIGHT="2479" WIDTH="0" VPOS="0" HPOS="3508"/>
+         <BottomMargin HEIGHT="0" WIDTH="3508" VPOS="2479" HPOS="0"/>
+         <PrintSpace HEIGHT="2479" WIDTH="3508" VPOS="0" HPOS="0">
+            <TextBlock ID="r" HEIGHT="191" WIDTH="957" VPOS="2110" HPOS="144">
+               <Shape>
+                  <Polygon POINTS="144,2110 1101,2110 1101,2301 144,2301"/>
+               </Shape>
+               <TextLine ID="l"
+                         BASELINE="161,2249 1056,2237"
+                         HEIGHT="42"
+                         WIDTH="895"
+                         VPOS="2207"
+                         HPOS="161">
+                  <String HEIGHT="42"
+                          WIDTH="348"
+                          VPOS="2207"
+                          HPOS="111"
+                          CONTENT="Das"/>
+                  <SP HEIGHT="42" WIDTH="50" VPOS="2207" HPOS="459"/>
+                  <String HEIGHT="42"
+                          WIDTH="497"
+                          VPOS="2207"
+                          HPOS="310"
+                          CONTENT="schöne"/>
+                  <SP HEIGHT="42" WIDTH="50" VPOS="2207" HPOS="807"/>
+                  <String HEIGHT="42"
+                          WIDTH="448"
+                          VPOS="2207"
+                          HPOS="609"
+                          CONTENT="Dresden"
+                          TAGREFS="Tag_l_11_7_pla"/>
+               </TextLine>
+            </TextBlock>
+            <ComposedBlock ID="t"
+                           HEIGHT="650"
+                           WIDTH="1698"
+                           VPOS="114"
+                           HPOS="112"
+                           TYPE="table">
+               <TextBlock ID="c" HEIGHT="650" WIDTH="1698" VPOS="114" HPOS="112">
+                  <Shape>
+                     <Polygon POINTS="1810,764 1810,114 112,114 112,764"/>
+                  </Shape>
+                  <TextLine ID="l_7"
+                            BASELINE="1714,585 1421,608"
+                            HEIGHT="52"
+                            WIDTH="295"
+                            VPOS="585"
+                            HPOS="1421">
+                     <String HEIGHT="52"
+                             WIDTH="443"
+                             VPOS="585"
+                             HPOS="1274"
+                             CONTENT="Abs."/>
+                  </TextLine>
+                  <TextLine ID="l_12"
+                            BASELINE="1419,521 724,558"
+                            HEIGHT="67"
+                            WIDTH="696"
+                            VPOS="521"
+                            HPOS="724">
+                     <String HEIGHT="67"
+                             WIDTH="487"
+                             VPOS="521"
+                             HPOS="654"
+                             CONTENT="Max"
+                             TAGREFS="Tag_l_12_0_10_per"/>
+                     <SP HEIGHT="67" WIDTH="70" VPOS="521" HPOS="1142"/>
+                     <String HEIGHT="67"
+                             WIDTH="557"
+                             VPOS="521"
+                             HPOS="863"
+                             CONTENT="Ganter"
+                             TAGREFS="Tag_l_12_0_10_per"/>
+                  </TextLine>
+                  <TextLine ID="l_35"
+                            BASELINE="1706,409 1463,417 1175,404 650,379 560,357 360,414"
+                            HEIGHT="90"
+                            WIDTH="1347"
+                            VPOS="357"
+                            HPOS="360">
+                     <String HEIGHT="90"
+                             WIDTH="851"
+                             VPOS="357"
+                             HPOS="289"
+                             CONTENT="Res.Laz."
+                             TAGREFS="Tag_l_35_0_19_pla"/>
+                     <SP HEIGHT="90" WIDTH="71" VPOS="357" HPOS="1140"/>
+                     <String HEIGHT="90"
+                             WIDTH="780"
+                             VPOS="357"
+                             HPOS="927"
+                             CONTENT="Dresden"
+                             TAGREFS="Tag_l_35_0_19_pla"/>
+                     <SP HEIGHT="90" WIDTH="71" VPOS="357" HPOS="1707"/>
+                     <String HEIGHT="90"
+                             WIDTH="284"
+                             VPOS="357"
+                             HPOS="1423"
+                             CONTENT="VI"
+                             TAGREFS="Tag_l_35_0_19_pla"/>
+                  </TextLine>
+                  <TextLine ID="l_52"
+                            BASELINE="1609,241 1290,231 1101,221 647,223 164,206"
+                            HEIGHT="65"
+                            WIDTH="1446"
+                            VPOS="206"
+                            HPOS="163">
+                     <String HEIGHT="65"
+                             WIDTH="629"
+                             VPOS="206"
+                             HPOS="100"
+                             CONTENT="Teill."/>
+                     <SP HEIGHT="65" WIDTH="63" VPOS="206" HPOS="729"/>
+                     <String HEIGHT="65"
+                             WIDTH="1132"
+                             VPOS="206"
+                             HPOS="477"
+                             CONTENT="St.=Vinzenz=Heim"/>
+                  </TextLine>
+               </TextBlock>
+            </ComposedBlock>
+         </PrintSpace>
+      </Page>
+   </Layout>
+</alto>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=13_03_2025_14:56</Creator>
+        <Created>2025-01-23T12:55:19.843+01:00</Created>
+        <LastChange>2025-03-13T14:56:34.626+01:00</LastChange>
+        <TranskribusMetadata docId="6489950" pageId="89834643" pageNr="30" tsid="234969523" status="IN_PROGRESS" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=NYANXPFIYSQCEIXBZLLIDYCC&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=EXCHERWTTGWLJWXJXYOVJBBY" imageId="74848229"/>
+    </Metadata>
+    <Page imageFilename="0030_p030.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1754652850654" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="331,469 331,3423 2170,3423 2170,469"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="321,535 2168,530 2168,383 2005,358 1805,418 1699,367 1596,427 1263,423 1015,363 533,377 321,326"/>
+                <Baseline points="334,510 427,510 524,513 621,516 718,515 814,519 911,516 1008,513 1105,513 1202,515 1298,516 1395,517 1492,516 1589,519 1686,518 1782,511 1879,513 1976,513 2073,507 2170,504"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="319,627 2161,620 2161,530 319,526"/>
+                <Baseline points="331,609 422,612 514,615 606,612 698,613 790,612 881,612 973,612 1065,612 1157,612 1249,614 1340,610 1432,613 1524,610 1616,612 1708,612 1799,613 1891,615 1983,612 2075,612 2167,603"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MÄNNERCHOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="705,3077 730,3075 737,3082 749,3072 753,3075 776,3072 790,3077 792,3017 762,3013 746,3026 730,3008 707,3008"/>
+                <Baseline points="719,3048 745,3048 771,3047 797,3045"/>
+                <TextEquiv>
+                    <Unicode>1</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="434,3127 485,3139 677,3118 712,3134 808,3105 840,3123 918,3116 921,3063 879,3052 815,3079 737,3082 654,3024 436,3024"/>
+                <Baseline points="447,3113 472,3113 497,3113 522,3113 547,3111 572,3110 597,3110 623,3109 648,3108 673,3107 698,3107 723,3106 748,3104 774,3102 799,3101 824,3101 849,3100 874,3098 899,3098 925,3098"/>
+                <TextEquiv>
+                    <Unicode>rodrus Bte</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="400,3185 443,3180 468,3203 648,3173 735,3201 836,3164 1008,3171 1010,3116 987,3107 402,3139"/>
+                <Baseline points="412,3173 442,3172 472,3170 502,3170 532,3169 562,3165 592,3162 623,3161 653,3161 683,3161 713,3160 743,3158 773,3158 803,3158 834,3158 864,3156 894,3154 924,3152 954,3150 984,3148 1015,3146"/>
+                <TextEquiv>
+                    <Unicode>e 244</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="464,3412 547,3412 544,3334 533,3334 526,3341 517,3341 512,3336 507,3341 498,3341 480,3332 459,3332"/>
+                <Baseline points="477,3403 502,3405 527,3406 552,3406"/>
+                <TextEquiv>
+                    <Unicode>–</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

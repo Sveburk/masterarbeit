@@ -1,0 +1,157 @@
+{
+  "attributes": {
+    "docId": "6490209",
+    "pageId": "89843705",
+    "tsid": "235193673",
+    "imgUrl": "https://files.transkribus.eu/Get?id=YGJZJWTNSKEQGNJKFYJPAOZZ&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=IUJNWVGSAXQJAIKRLPZDFIPY",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Herrischried",
+        "type": "",
+        "alternate_place_name": "Herrischried",
+        "geonames_id": "6555911.0",
+        "wikidata_id": "Q834905",
+        "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+      }
+    ],
+    "creation_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Herrischried",
+      "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp",
+      "score": 100.0
+    },
+    "creation_date": "05.11.1941"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Max",
+      "alternate_name": "",
+      "familyname": "Matt",
+      "title": "",
+      "role": "Bürgermeister",
+      "role_schema": "Bürgermeister",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Max",
+      "alternate_name": "",
+      "familyname": "Matt",
+      "title": "",
+      "role": "Bürgermeister",
+      "role_schema": "Bürgermeister",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "vorsitzender",
+      "alternate_name": "",
+      "familyname": "Vereins",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Männer-Gesangverein Murg"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [
+    {
+      "name": "wollen wir zu Weihnachten Päckchen schicken. Es ist",
+      "date": "",
+      "location": "1Lr.",
+      "description": "wollen wir zu Weihnachten Päckchen schicken. Es ist\naber heute ausserordentlich schwer, dafür etwas auf-\nzutreiben. Recht gerne würden wir jedem Kameraden\nu.a. etwas Obstschnaps schicken. Im ganzen müssten\nwir 5 ltr. haben. Aber woher nehmen ? Die Leute haben\njetzt noch nicht gebrannt und doch soll man die\nPäckchen anfangs Dezember aufgeben.\nIch habe nun schon des öftern gehört, dass Sie,Herr\nBürgermeister,ein besonders gutes Herz und eine\noffene Hand für unsere Soldaten im Felde haben. Auch\nhat mir Herr Burger von der Waldelektra, der Ehren-\nvorsitzender unseres Vereins ist, schon erzählt, in\nwelch vorbildlicher Weise Sie als echt deutscher Mann\nSIE Ihre Pflichten dem Vaterland gegenüber erfüllen.\nDa dachte ich mir, ob Sie uns vielleicht auf Grund\nihrer Beziehungen bis Ende November/Anfang Dezember\netwa 5 1Lr. Obstschnaps verschaffen könnten. Ent-\nschuldigen Sie, wenn ich sie zu Ihrer Arbeit hin noch\nmit so etwas belästige.\nVielleicht sind sie so freundlich und geben mir bald\nBescheid. Sofern Sie meiner Bitte entsprechen können,\nsagen Sie auch gleich was es kostet, damit ich Ihnen\ndann sofort das Geld schicken kann.\n1 Freiumschlag.\nHeil Hitler!\nDer Vereinsführer:",
+      "involved_persons": [],
+      "involved_organizations": [],
+      "involved_places": [
+        {
+          "name": "1Lr.",
+          "type": "",
+          "alternate_place_name": "",
+          "geonames_id": "",
+          "wikidata_id": "",
+          "nodegoat_id": ""
+        }
+      ],
+      "dates": []
+    }
+  ],
+  "mentioned_dates": [
+    {
+      "date": "05.11.1941",
+      "count": 2
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Herrischried",
+      "type": "",
+      "alternate_place_name": "Herrischried",
+      "geonames_id": "6555911.0",
+      "wikidata_id": "Q834905",
+      "nodegoat_id": "ngVC6D18gVsHgXMRhVu9fkCIsWPSlHCEiVp"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Murg, den 5.November 1941. \n Herrn \n Max Matt \n Bürgermeister \n Herrischried \n Sehr geehrter Herr Bürgermeister ! \n Sie werden sich fragen, was will denn der Männerchor \n Murg von mir. Nun, ich möchte Ihnen mein Anliegen \n nachstehend gleich vortragen. Es handelt sich um \n folgendes: \n Unser Verein hat 20 Sänger im Felde stehen. Diesen \n wollen wir zu Weihnachten Päckchen schicken. Es ist \n aber heute ausserordentlich schwer, dafür etwas auf- \n zutreiben. Recht gerne würden wir jedem Kameraden \n u.a. etwas Obstschnaps schicken. Im ganzen müssten \n wir 5 ltr. haben. Aber woher nehmen ? Die Leute haben \n jetzt noch nicht gebrannt und doch soll man die \n Päckchen anfangs Dezember aufgeben. \n Ich habe nun schon des öftern gehört, dass Sie,Herr \n Bürgermeister,ein besonders gutes Herz und eine \n offene Hand für unsere Soldaten im Felde haben. Auch \n hat mir Herr Burger von der Waldelektra, der Ehren- \n vorsitzender unseres Vereins ist, schon erzählt, in \n welch vorbildlicher Weise Sie als echt deutscher Mann \n SIE Ihre Pflichten dem Vaterland gegenüber erfüllen. \n Da dachte ich mir, ob Sie uns vielleicht auf Grund \n ihrer Beziehungen bis Ende November/Anfang Dezember \n etwa 5 1Lr. Obstschnaps verschaffen könnten. Ent- \n schuldigen Sie, wenn ich sie zu Ihrer Arbeit hin noch \n mit so etwas belästige. \n Vielleicht sind sie so freundlich und geben mir bald \n Bescheid. Sofern Sie meiner Bitte entsprechen können, \n sagen Sie auch gleich was es kostet, damit ich Ihnen \n dann sofort das Geld schicken kann. \n 1 Freiumschlag. \n Heil Hitler! \n Der Vereinsführer:",
+  "document_format": ""
+}

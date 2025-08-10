@@ -1,0 +1,176 @@
+{
+  "attributes": {
+    "docId": "6479008",
+    "pageId": "89800065",
+    "tsid": "235489161",
+    "imgUrl": "https://files.transkribus.eu/Get?id=TNITIOEVURPTKPHXCBVWYUFV&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=FVRZQUPQGKVFRMEJIUKWDQLG",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Murg",
+        "type": "",
+        "alternate_place_name": "Bd.;MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg.;Murg/ h.Rh.;Murg/Baden",
+        "geonames_id": "6555918.0",
+        "wikidata_id": "Q550673",
+        "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+      },
+      {
+        "name": "Todtnau",
+        "type": "",
+        "alternate_place_name": "Todtnau",
+        "geonames_id": "6558145.0",
+        "wikidata_id": "Q61665",
+        "nodegoat_id": "ngDK4D38oEKP8FUVpDM16sKIaFXAtPKEqEH"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {
+      "name": "Murg",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD",
+      "score": 100.0
+    },
+    "creation_date": "1846"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Theodor",
+      "alternate_name": "",
+      "familyname": "Enderle",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngHO4L78sHYTrIuP2Ig5rwOyeHhExTOMuHV",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Sangesbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Theodor",
+      "alternate_name": "",
+      "familyname": "Enderle",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngHO4L78sHYTrIuP2Ig5rwOyeHhExTOMuHV",
+      "confidence": "context_window",
+      "needs_review": false,
+      "review_reason": "",
+      "match_score": 89,
+      "recipient_score": 100,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Sangesbrüder",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Vereinsführers",
+      "alternate_name": "",
+      "familyname": "U",
+      "title": "",
+      "role": "Chorleiter",
+      "role_schema": "Chorleiter",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 12
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "Männerchor Murg",
+      "type": "Verein",
+      "nodegoat_id": "ngQX0k48bSXC5SHQaRJ2cfXFnBKM8CXpdRU",
+      "alternate_names": [
+        "Alter Schweizer Männerchor"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Männer-Gesangverein Todtnau",
+      "type": "Verein",
+      "nodegoat_id": "ngOV0G28zOVAzQFKyOX0ydVDlQILeAVHbOS",
+      "alternate_names": [],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "23.10.1943",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Murg",
+      "type": "",
+      "alternate_place_name": "Bd.;MURG A. RH.;Murg;Murg (Baden);Murg /Bd.;Murg Baden;Murg Hochrhein;Murg a. Rhein (Baden);Murg am Hochrhein;Murg am Rh.;Murg am Rhein;Murg i/Baden;Murg in Baden;Murg.;Murg/ h.Rh.;Murg/Baden",
+      "geonames_id": "6555918.0",
+      "wikidata_id": "Q550673",
+      "nodegoat_id": "ngPW0H38aPGBaRGXbRY13eWomQpMfBWIcPD"
+    },
+    {
+      "name": "Todtnau",
+      "type": "",
+      "alternate_place_name": "Todtnau",
+      "geonames_id": "6558145.0",
+      "wikidata_id": "Q61665",
+      "nodegoat_id": "ngDK4D38oEKP8FUVpDM16sKIaFXAtPKEqEH"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Männergesangverein Todtnau (Schwarzwald) \n Gegründet 1846. \n Titel \n Männerchor \n Alter schweizer Männerchor \n Murg. \n Bd. \n Tag: 23 Oktober 1943 \n Liebe Sangesbrüder von Murg. \n Mit herzlichster Dankbarkeit hat der \n Männergesangverein Todtnau im Augenblick innigster \n Abschiedstrauer an dem Heldentod unserem unvergeßlichen \n u verdienstvollen Vereinsführers u Chorleiters, Sangesbruder \n Theodor Enderle \n entgegen genommen. Worte vermögen nicht auszudrücken, \n wie groß seine Liebe u Begeisterung für das deutsche Lied \n stets gewesen sind u unser bald 10 jähriger Verein wird \n wohl niemals wieder eine so zur Vereinsführung befähigte \n Persönlichkeit erhalten u in unserer Vereinsgeschäfte u in \n unseren Sängerherzen hat er selbst, sich wohl das schönste \n Denkmal errichtet. Ehre seinem Heldentod für deutsches \n Vaterland u. Deutsches Lied \n Möge das gemeinsame Leid um unseren lieben \n Theodor unsere Vereine stets in Treue verbunden sein \n lassen für die edle Sache des Deutschen Männerchors. \n Mit freundl. Sängergrüßen u. \n Heil Hitler \n Männergesangverein Todtnau \n Gegründet 1846 \n Der Vereinsführer: \n Becker",
+  "document_format": ""
+}

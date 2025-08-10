@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=2.24.0:model_id=287793:lm=none:date=13_03_2025_14:56</Creator>
+        <Created>2025-01-23T12:55:18.284+01:00</Created>
+        <LastChange>2025-03-13T14:56:33.381+01:00</LastChange>
+        <TranskribusMetadata docId="6489950" pageId="89834638" pageNr="22" tsid="234969519" status="IN_PROGRESS" userId="134428" imgUrl="https://files.transkribus.eu/Get?id=ZBYOXQZAWTNVOLRVYYWHRFCD&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=DPLDDXTIHUZSMUFPBTNRMMVQ" imageId="74848224"/>
+    </Metadata>
+    <Page imageFilename="0022_p022.jpg" imageWidth="2479" imageHeight="3508">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1754652850122" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="tr_1"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="tr_1" custom="readingOrder {index:0;}">
+            <Coords points="319,465 319,2491 2173,2491 2173,465"/>
+            <TextLine id="tr_1_tl_1" custom="readingOrder {index:0;}">
+                <Coords points="307,541 2161,536 2161,395 2064,428 1713,398 1646,439 1502,393 307,409"/>
+                <Baseline points="319,513 411,511 503,510 596,510 688,513 781,516 873,516 965,519 1058,518 1150,516 1243,515 1335,518 1427,515 1520,518 1612,517 1705,514 1797,513 1889,513 1982,513 2074,507 2167,504"/>
+                <TextEquiv>
+                    <Unicode>MÄNNERCHOR MURG</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_2" custom="readingOrder {index:1;}">
+                <Coords points="1941,619 1967,617 1978,626 2015,610 2048,624 2059,617 2069,624 2080,612 2106,624 2166,619 2168,541 2126,541 2101,529 2034,532 2011,545 1978,532 1944,539"/>
+                <Baseline points="1955,612 1982,610 2009,610 2036,612 2064,612 2091,611 2118,607 2145,605 2173,603"/>
+                <TextEquiv>
+                    <Unicode>HOR</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_3" custom="readingOrder {index:2;}">
+                <Coords points="312,629 1923,619 1895,536 1375,571 1278,525 312,548"/>
+                <Baseline points="325,606 405,611 485,615 565,614 645,612 725,615 805,612 886,612 966,612 1046,612 1126,612 1206,612 1286,611 1366,610 1447,612 1527,609 1607,612 1687,612 1767,612 1847,612 1928,612"/>
+                <TextEquiv>
+                    <Unicode>ALTER SCHWEIZER-MÄNNERC</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_4" custom="readingOrder {index:3;}">
+                <Coords points="1082,2339 1100,2339 1109,2332 1123,2334 1130,2330 1135,2334 1139,2330 1156,2330 1163,2337 1176,2337 1176,2288 1160,2288 1151,2279 1142,2286 1130,2286 1126,2281 1119,2286 1107,2284 1102,2288 1082,2286"/>
+                <Baseline points="1095,2319 1124,2317 1153,2317 1182,2319"/>
+                <TextEquiv>
+                    <Unicode>NoV</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_5" custom="readingOrder {index:4;}">
+                <Coords points="1077,2383 1112,2378 1121,2385 1128,2381 1139,2388 1153,2376 1163,2383 1174,2383 1172,2332 1158,2334 1139,2330 1135,2334 1119,2334 1119,2337 1107,2332 1102,2339 1089,2330 1075,2330"/>
+                <Baseline points="1089,2367 1119,2367 1149,2368 1179,2370"/>
+                <TextEquiv>
+                    <Unicode>2</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="tr_1_tl_6" custom="readingOrder {index:5;}">
+                <Coords points="1059,2478 1084,2480 1093,2473 1105,2485 1121,2482 1128,2489 1139,2482 1146,2485 1153,2478 1167,2478 1169,2438 1158,2438 1149,2445 1139,2438 1130,2443 1119,2431 1102,2436 1084,2429 1061,2434"/>
+                <Baseline points="1071,2472 1096,2469 1122,2469 1147,2468 1173,2466"/>
+                <TextEquiv>
+                    <Unicode>To</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode></Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

@@ -1,0 +1,326 @@
+{
+  "attributes": {
+    "docId": "6490204",
+    "pageId": "89844465",
+    "tsid": "235204425",
+    "imgUrl": "https://files.transkribus.eu/Get?id=PCMZBRFJNHANQDGJBOHOWSYD&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=CPEFWOYTCPMRIIWLGVXLPEMB",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Gau Baden",
+        "type": "",
+        "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden",
+        "geonames_id": "",
+        "wikidata_id": "Q3099311",
+        "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj"
+      },
+      {
+        "name": "Karlsruhe",
+        "type": "",
+        "alternate_place_name": "Karlsruhe;Karlsruhe, Moltke-",
+        "geonames_id": "2892794.0",
+        "wikidata_id": "Q1040",
+        "nodegoat_id": "ngDK1Z78oFUP7FURpDW5nsKMaDdAtPKAqFR"
+      },
+      {
+        "name": "Kappelrodeck",
+        "type": "",
+        "alternate_place_name": "Kappelrodeck",
+        "geonames_id": "6555785.0",
+        "wikidata_id": "Q538599",
+        "nodegoat_id": "ngKR7W68vMRW7MBGwLD49zRXhLEHaWRXxMO"
+      },
+      {
+        "name": "Bruchsal",
+        "type": "",
+        "alternate_place_name": "Bruchsal",
+        "geonames_id": "6558034.0",
+        "wikidata_id": "Q7059",
+        "nodegoat_id": "ngQX0o48bQHC9SHUcQ524fXVnBKM9CXFdSU"
+      },
+      {
+        "name": "Heidelberg",
+        "type": "",
+        "alternate_place_name": "Heidelberg",
+        "geonames_id": "6555638.0",
+        "wikidata_id": "Q2966",
+        "nodegoat_id": "ngBI6r78mDIN9DSBnBa5lqIsyBbYrNIsoDF"
+      },
+      {
+        "name": "Pforzheim",
+        "type": "",
+        "alternate_place_name": "Pforzheim",
+        "geonames_id": "2853969.0",
+        "wikidata_id": "Q3046",
+        "nodegoat_id": "ngLS7X78wNCX8NCDxMU50aSkiLlIbXSYyNZ"
+      }
+    ],
+    "creation_place": {},
+    "recipient_place": {
+      "name": "Gau Baden",
+      "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj",
+      "score": 105.0,
+      "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden"
+    },
+    "creation_date": "27.09.1942"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Sangeskameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "als",
+      "alternate_name": "",
+      "familyname": "Sängergauchormeister",
+      "title": "",
+      "role": "Oberstudienrat",
+      "role_schema": "Oberstudienrat",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Helmut",
+      "alternate_name": "",
+      "familyname": "Schmitt",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngHO7b38sHYT8IuZ8HA16wOMeJBExTOcuHV",
+      "confidence": "fuzzy",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 85,
+      "recipient_score": 0,
+      "mentioned_count": 3
+    },
+    {
+      "forename": "Hugo",
+      "alternate_name": "",
+      "familyname": "Rahner",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "ngRY5D78cSID8SeD2Sq50gYKoSrOhDYEeSF",
+      "confidence": "fuzzy",
+      "needs_review": true,
+      "review_reason": "Keine Rolle erkannt",
+      "match_score": 85,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Sangeskameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "als",
+      "alternate_name": "",
+      "familyname": "Sängergauchormeister",
+      "title": "",
+      "role": "Oberstudienrat",
+      "role_schema": "Oberstudienrat",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    },
+    {
+      "forename": "Schmitt",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Sängergauführer",
+      "role_schema": "Sängergauführer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 3
+    },
+    {
+      "forename": "stellvertr.",
+      "alternate_name": "",
+      "familyname": "Münch",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    },
+    {
+      "forename": "Sängergaukassenwart:",
+      "alternate_name": "",
+      "familyname": "Horn",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 2
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "D.S.B.",
+      "type": "Verein",
+      "nodegoat_id": "ngMT7Y88xNzY8ODYwM96ybThjNGJcYTZzNw",
+      "alternate_names": [
+        "DSB"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Badischer Sängerbund",
+      "type": "Verein",
+      "nodegoat_id": "ngLS7X78wNCX8NCHvL858aSUiLlIbXSYyNZ",
+      "alternate_names": [
+        "Gau XV Baden im DSB"
+      ],
+      "feldpostnummer": "",
+      "match_score": 90.9090909090909,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Wehrmacht",
+      "type": "Staatliche Organisation",
+      "nodegoat_id": "ngDK9x58oEUP9FUbnDM38sKSaEXAtPKyqER",
+      "alternate_names": [
+        "Deutsche Wehrmacht"
+      ],
+      "feldpostnummer": "",
+      "match_score": 100.0,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "03.10.1942",
+      "count": 1
+    },
+    {
+      "date": "27.09.1942",
+      "count": 3
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Gau Baden",
+      "type": "",
+      "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden",
+      "geonames_id": "",
+      "wikidata_id": "Q3099311",
+      "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj"
+    },
+    {
+      "name": "Karlsruhe",
+      "type": "",
+      "alternate_place_name": "Karlsruhe;Karlsruhe, Moltke-",
+      "geonames_id": "2892794.0",
+      "wikidata_id": "Q1040",
+      "nodegoat_id": "ngDK1Z78oFUP7FURpDW5nsKMaDdAtPKAqFR"
+    },
+    {
+      "name": "Kappelrodeck",
+      "type": "",
+      "alternate_place_name": "Kappelrodeck",
+      "geonames_id": "6555785.0",
+      "wikidata_id": "Q538599",
+      "nodegoat_id": "ngKR7W68vMRW7MBGwLD49zRXhLEHaWRXxMO"
+    },
+    {
+      "name": "Bruchsal",
+      "type": "",
+      "alternate_place_name": "Bruchsal",
+      "geonames_id": "6558034.0",
+      "wikidata_id": "Q7059",
+      "nodegoat_id": "ngQX0o48bQHC9SHUcQ524fXVnBKM9CXFdSU"
+    },
+    {
+      "name": "Heidelberg",
+      "type": "",
+      "alternate_place_name": "Heidelberg",
+      "geonames_id": "6555638.0",
+      "wikidata_id": "Q2966",
+      "nodegoat_id": "ngBI6r78mDIN9DSBnBa5lqIsyBbYrNIsoDF"
+    },
+    {
+      "name": "Pforzheim",
+      "type": "",
+      "alternate_place_name": "Pforzheim",
+      "geonames_id": "2853969.0",
+      "wikidata_id": "Q3046",
+      "nodegoat_id": "ngLS7X78wNCX8NCDxMU50aSkiLlIbXSYyNZ"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Sängergau XV Baden \n im DSB \n (Badischer Sängerbund e. V.) \n Bruchsal, Kaiserstraße 10. \n den 3. Oktober 1942. \n Karlsruhe, Klosestraße 1. \n An alle Sängerkreise, Sängergruppen und Chöre \n im Sängergau XV Baden. \n Liebe Sangeskameraden ! \n Als stellvertretender Sängergauführer, der für die Dauer der Einberufung des neu gewählten \n Sängergauführers die Führung des Sängergaues übernommen hat, mache ich folgende Mitteilungen: \n I. Organisatorisches: \n 1.) Unser bisheriger, um die Sängersache hochverdienter Sängergauführer Karl Schmitt \n ist infolge seiner Berufung als Geschäftsführer des Deutschen Sängerbundes nach \n Ablauf seiner Amtsperiode aus der Führung des Sängergaues Baden ausgeschieden. \n Ihm wurde beim Gausängertag am 27. September 1942 für seine vorbildliche Führung \n des Sängergaues während acht Jahren herzlich gedankt. Unsere besten Wünsche \n begleiten ihn in die Zukunft. \n An seiner Stelle wurde auf dem ordentlichen Gausängertag in Karlsruhe am 27. \n September 1942 einstimmig Hauptlehrer Helmut Adolf Schmitt in Kappelrodeck, \n der jüngste unter den seitherigen Sängerkreisführern, auf den Schild erhoben. \n Einmütig wiedergewählt wurden: \n zum stellvertr. Sängergauführer: Oberstudiendirektor Dr. Münch in Bruchsal, \n und zu Rechnungsprüfern: die Bankvorstände Bader in Heidelberg und \n Scheu in Pforzheim. \n 4.) Der neue Sängergauführer bestätigte sämtliche seitherigen Sängerkreisführer in ihren \n Ämtern und berief namentlich in die Sängergauführung wieder: \n Oberstudienrat Hugo Rahner in Karlsruhe als Sängergauchormeister, \n Oberregistrator Otto Horn in Karlsruhe als Sängergaukassenwart. \n Der Führerrat hat demnach folgende Zusammensetzung: \n Sängergauführer: Helmut Adolf Schmitt in Kappelrodeck (z. Zt. Wehrmacht) \n Stellvertr. Sängergauführer: Oberstudiendirektor Dr. Josef Münch in Bruchsal, \n Kaiserstraße 10, Tel. 2746. \n Sängergauchormeister: Oberstudienrat Hugo Rahner in Karlsruhe, Moltke- \n straße 15a, Tel. 997. \n Sängergaukassenwart: Oberregistrator Otto Horn in Karlsruhe, Klosestraße 1, \n Tel. 1837",
+  "document_format": ""
+}

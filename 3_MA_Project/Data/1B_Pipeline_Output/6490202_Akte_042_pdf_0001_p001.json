@@ -1,0 +1,220 @@
+{
+  "attributes": {
+    "docId": "6490202",
+    "pageId": "89844345",
+    "tsid": "235201182",
+    "imgUrl": "https://files.transkribus.eu/Get?id=SSLOXWKAADCZTRWIUHZZZVLP&fileType=view",
+    "xmlUrl": "https://files.transkribus.eu/Get?id=FUXPPNYQXRYSAGPZIPQNOSOU",
+    "document_type": "Brief",
+    "object_type": "Dokument",
+    "mentioned_places": [
+      {
+        "name": "Gau Baden",
+        "type": "",
+        "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden",
+        "geonames_id": "",
+        "wikidata_id": "Q3099311",
+        "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj"
+      },
+      {
+        "name": "Karlsruhe",
+        "type": "",
+        "alternate_place_name": "Karlsruhe",
+        "geonames_id": "2892794.0",
+        "wikidata_id": "Q1040",
+        "nodegoat_id": "ngDK1Z78oFUP7FURpDW5nsKMaDdAtPKAqFR"
+      },
+      {
+        "name": "Lauda",
+        "type": "",
+        "alternate_place_name": "Lauda",
+        "geonames_id": "11972842.0",
+        "wikidata_id": "Q1807270",
+        "nodegoat_id": "ngHO7b38sHYT8JYZtHA1uwOIeIhExTOcuHV"
+      }
+    ],
+    "creation_place": {
+      "name": "Karlsruhe",
+      "nodegoat_id": "ngDK1Z78oFUP7FURpDW5nsKMaDdAtPKAqFR",
+      "score": 100.0
+    },
+    "recipient_place": {
+      "name": "Gau Baden",
+      "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj",
+      "score": 105.0,
+      "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden"
+    },
+    "creation_date": "06.1941"
+  },
+  "authors": [],
+  "recipients": [
+    {
+      "forename": "Sangeskameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerkreis",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Führer",
+      "role_schema": "Führer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    }
+  ],
+  "mentioned_persons": [
+    {
+      "forename": "Sangeskameraden",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "String_direct_from_text",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=50; missing_familyname; extracted_from_text_only",
+      "match_score": 50,
+      "recipient_score": 100,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Sängerkreis",
+      "alternate_name": "",
+      "familyname": "",
+      "title": "",
+      "role": "Führer",
+      "role_schema": "Führer",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "context_window",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30; missing_familyname",
+      "match_score": 30,
+      "recipient_score": 100,
+      "mentioned_count": 4
+    },
+    {
+      "forename": "Stellv.",
+      "alternate_name": "",
+      "familyname": "Bohnert",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    },
+    {
+      "forename": "Hugo",
+      "alternate_name": "",
+      "familyname": "Vierneisel",
+      "title": "",
+      "role": "",
+      "role_schema": "",
+      "gender": "",
+      "associated_place": "",
+      "nodegoat_id": "",
+      "confidence": "single-name",
+      "needs_review": true,
+      "review_reason": "no_nodegoat_id; low_score=30",
+      "match_score": 30,
+      "recipient_score": 0,
+      "mentioned_count": 1
+    }
+  ],
+  "mentioned_organizations": [
+    {
+      "name": "D.S.B.",
+      "type": "Verein",
+      "nodegoat_id": "ngMT7Y88xNzY8ODYwM96ybThjNGJcYTZzNw",
+      "alternate_names": [
+        "Deutscher Sängerbund"
+      ],
+      "feldpostnummer": "",
+      "match_score": 95.0,
+      "confidence": "fuzzy"
+    },
+    {
+      "name": "Badischer Sängerbund",
+      "type": "Verein",
+      "nodegoat_id": "ngLS7X78wNCX8NCHvL858aSUiLlIbXSYyNZ",
+      "alternate_names": [
+        "Gau XV Baden im DSB"
+      ],
+      "feldpostnummer": "",
+      "match_score": 93.02325581395348,
+      "confidence": "fuzzy"
+    }
+  ],
+  "mentioned_events": [],
+  "mentioned_dates": [
+    {
+      "date": "12.09.1942",
+      "count": 2
+    },
+    {
+      "date": "27.09.1942",
+      "count": 1
+    }
+  ],
+  "mentioned_places": [
+    {
+      "name": "Gau Baden",
+      "type": "",
+      "alternate_place_name": "Gau Baden;Gau Baden-Elsaß;Gau XV Baden;Sängergau XV Baden;Sängergaues Baden",
+      "geonames_id": "",
+      "wikidata_id": "Q3099311",
+      "nodegoat_id": "ngPW8f18aPmB5RGLbPo92eWUmQJMfBWgcPj"
+    },
+    {
+      "name": "Karlsruhe",
+      "type": "",
+      "alternate_place_name": "Karlsruhe",
+      "geonames_id": "2892794.0",
+      "wikidata_id": "Q1040",
+      "nodegoat_id": "ngDK1Z78oFUP7FURpDW5nsKMaDdAtPKAqFR"
+    },
+    {
+      "name": "Lauda",
+      "type": "",
+      "alternate_place_name": "Lauda",
+      "geonames_id": "11972842.0",
+      "wikidata_id": "Q1807270",
+      "nodegoat_id": "ngHO7b38sHYT8JYZtHA1uwOIeIhExTOcuHV"
+    }
+  ],
+  "content_tags_in_german": [],
+  "content_transcription": "Sängergau XV Baden \n im deutschen Sängerbund \n (Badischer Sängerbund e.V.) \n Karlsruhe, 12. September 1942. \n An alle Chöre des Sängergaues Baden. \n Liebe Sangeskameraden! \n Hierdurch werden die nachfolgenden, wichtigen Punkte — in Ermangelung unseres Gauorgans, \n der Süddeutschen Sängerzeitung, die, wie bekannt, seit Juni v. J. aus kriegsbedingten Ursachen \n ihr Erscheinen einstellen mußte, durch Rundschreiben bekannt gegeben. \n 1. Ordentlicher Gausängertag 1942. \n Der diesjährige Gausängertag findet am \n Sonntag, dem 27. September um 10.30 Uhr in Karlsruhe \n im Saale des „Friedrichshof\" Karlfriedrich-Straße \n statt. Hierzu werden unsere Chöre hiermit eingeladen. \n Die Tagesordnung ist folgende: \n 1. Geschäftsbericht des Sängergauführers. \n 2. Bericht des Sängergauschatzmeisters. \n 3. Wahl des Sängergauführers, dessen Stellvertreters und zweier Rechnungsprüfer. \n 4. Verschiedenes; Wünsche und Anregungen. \n Im Hinblick auf die Einschränkungen im Reiseverkehr erwartet die Sängergauführung vor allem \n die Vertreter aus den zum Tagungsort günstig gelegenen Plätzen. Auf die Möglichkeit der \n (schriftlichen) Übertragung des Stimmrechts auf einen anderen Mitgliedschor wird besonders \n aufmerksam gemacht. \n 2. Organisatorisches. \n Seit Juni v. J. haben sich innerhalb einzelner Sängerkreisführungen folgende Änderungen ergeben: \n Der an Lebensjahren älteste Sängerkreisführer unseres Sängergaues, Sangeskamerad Robert \n Müllerleile vom Sängerkreis Offenburg in Lahr, ist gestorben. Als einem Sängerführer \n von hervorragenden Eigenschaften des Geistes und des Herzens ist ihm bei allen, die ihn \n kannten und schätzten, ein dauerndes, ehrendes Andenken gewiß. Mit Zustimmung des Sänger- \n gauführers soll von einer Neubesetzung des Postens bis Ende des Krieges abgesehen werden. \n Die Geschäfte führt inzwischen der Stellv. Sängerkreisführer, Sangeskamerad Max Bohnert, \n Lahr, Bergstraße 117. \n Im Sängerkreis Main-Neckar ist an Stelle des zurückgetretenen, früheren Sängerkreisführers- \n neu berufen worden: Sangeskamerad Hugo Vierneisel in Lauda.",
+  "document_format": ""
+}
