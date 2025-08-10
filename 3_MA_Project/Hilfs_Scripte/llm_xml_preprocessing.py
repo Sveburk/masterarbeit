@@ -17,7 +17,7 @@ TRANSKRIBUS_DIR = Path("/Users/svenburkhardt/Downloads/export_job_17826913")
 # --- Hilfsfunktionen ---
 def get_api_client() -> openai.OpenAI:
     #api_key = os.getenv("OPENAI_API_KEY")
-    api_key = "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"
+    api_key = " "
     if not api_key:
         raise RuntimeError("Kein OPENAI_API_KEY in der Umgebung gefunden.")
     return openai.OpenAI(api_key=api_key)
