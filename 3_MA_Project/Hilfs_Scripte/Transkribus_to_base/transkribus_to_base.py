@@ -26,24 +26,7 @@ import pandas as pd
 import spacy
 from rapidfuzz import fuzz, process
 
-# import openai
-
-# Zeitstempel
-now = datetime.now()
-formatted = now.strftime("%d.%m.%Y. %H:%M")
-print("==========================")  # Beginn Übersichtsblock,
-print("\n")
-print(formatted)  # Zeit
-
-
-# Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
-THIS_FILE = Path(__file__).resolve()
-BASE_DIR = THIS_FILE.parents[2]
-
-THIS_FILE = Path(__file__).resolve()
-PROJECT_ROOT = THIS_FILE.parent  # …/Transkribus_to_base
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+#import openai
 
 # --------------- Eigene Module (aus /Module) ---------------
 from Module import (
@@ -119,16 +102,34 @@ from Module import (
 )
 
 
+
+
+# Zeitstempel
+now = datetime.now()
+formatted = now.strftime("%d.%m.%Y. %H:%M")
+print("==========================")  # Beginn Übersichtsblock,
+print("\n")
+print(formatted)  # Zeit
+
 # --------------- Pfadkonfiguration ---------------
+
+# Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
+THIS_FILE = Path(__file__).resolve()
+BASE_DIR = THIS_FILE.parents[2]
+
+THIS_FILE = Path(__file__).resolve()
+PROJECT_ROOT = THIS_FILE.parent  # …/Transkribus_to_base
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 #TRANSKRIBUS_DIR = "/Users/svenburkhardt/Desktop/Transkribus_test_In"
 
-TRANSKRIBUS_DIR = os.path.join(os.getcwd(), "masterarbeit/3_MA_Project/Data/1A_Transkribus_Export")
+TRANSKRIBUS_DIR = BASE_DIR / "Data" / "1A_Transkribus_Export"
 if not os.path.exists(TRANSKRIBUS_DIR):
     print(f"Fehler: Der Ordner {TRANSKRIBUS_DIR} existiert nicht.")
 else:
     print(f"Pfad gefunden: {TRANSKRIBUS_DIR}")
-OUTPUT_DIR =  os.path.join(os.getcwd(), "masterarbeit/3_MA_Project/Data/1B_Pipeline_Output")
+OUTPUT_DIR =   BASE_DIR / "Data" / "1B_Pipeline_Output"
 if not os.path.exists(OUTPUT_DIR):
     print(f"Fehler: Der Ordner {OUTPUT_DIR} existiert nicht.")
 else:
