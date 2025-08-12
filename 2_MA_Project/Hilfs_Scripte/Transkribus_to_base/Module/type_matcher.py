@@ -2,7 +2,7 @@ import pandas as pd
 import re
 
 # Pfad zur CSV mit Ground Truth-Typen
-CSV_TYPE_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Akten_Gesamtübersicht.csv"
+CSV_TYPE_PATH = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Akten_Gesamtübersicht.csv"
 
 # Lade CSV einmal beim Import
 try:
@@ -23,7 +23,7 @@ import xml.etree.ElementTree as ET
 from typing import Optional
 
 # CSV-Pfad und Laden (nur einmal beim Import)
-CSV_TYPE_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Akten_Gesamtübersicht.csv"
+CSV_TYPE_PATH = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Akten_Gesamtübersicht.csv"
 try:
     type_df = pd.read_csv(CSV_TYPE_PATH, sep=";", dtype=str)
     type_df.columns = [col.strip() for col in type_df.columns]

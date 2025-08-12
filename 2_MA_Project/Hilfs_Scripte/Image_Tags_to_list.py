@@ -55,8 +55,8 @@ def read_image_tags(directory, csv_output):
                 print("  Keine Finder-Tags vorhanden.")
 
 if __name__ == "__main__":
-    dir_path = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/JPEG_Akten_Scans"
-    csv_output_path = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/finder_tags.csv"
+    dir_path = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/JPEG_Akten_Scans"
+    csv_output_path = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/finder_tags.csv"
     
     read_image_tags(dir_path, csv_output_path)
     print(f"\nCSV-Datei wurde erstellt: {csv_output_path}")

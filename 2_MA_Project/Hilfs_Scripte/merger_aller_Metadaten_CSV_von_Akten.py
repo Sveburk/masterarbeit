@@ -36,8 +36,8 @@ def erstelle_gesamtuebersicht(
     print(f"Gesamtübersicht erzeugt: {ausgabe_csv}")
 
 if __name__ == "__main__":
-    finder_tags_csv = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/finder_tags.csv"
-    akten_uebersicht_csv = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Akten_Übersicht-Männerchor_Murg_II_WK.csv"
-    ausgabe_csv = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Gesamtübersicht.csv"
+    finder_tags_csv = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/finder_tags.csv"
+    akten_uebersicht_csv = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Akten_Übersicht-Männerchor_Murg_II_WK.csv"
+    ausgabe_csv = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Gesamtübersicht.csv"
     
     erstelle_gesamtuebersicht(finder_tags_csv, akten_uebersicht_csv, ausgabe_csv)

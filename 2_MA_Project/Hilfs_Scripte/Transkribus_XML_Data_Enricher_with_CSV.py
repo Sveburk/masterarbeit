@@ -4,11 +4,11 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 
 # Verzeichnisse festlegen
-#xml_base_dir = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"
-xml_base_dir = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"
+#xml_base_dir = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"
+xml_base_dir = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Transkribus_Export_06.03.2025_Akte_001-Akte_150"
 
-csv_file_path = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Akten_Gesamtübersicht.csv" 
-#output_dir = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Enriched_Transkribus_XML"
+csv_file_path = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Akten_Gesamtübersicht.csv"
+#output_dir = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Enriched_Transkribus_XML"
 output_dir = "/Users/svenburkhardt/Downloads/Test_export_CSV_XML"
 
 os.makedirs(output_dir, exist_ok=True)

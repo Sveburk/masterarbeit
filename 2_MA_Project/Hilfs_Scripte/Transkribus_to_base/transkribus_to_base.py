@@ -113,7 +113,7 @@ print(formatted)  # Zeit
 
 # --------------- Pfadkonfiguration ---------------
 
-# Basis­verzeichnis = zwei Ebenen über diesem File  (…/3_MA_Project)
+# Basis­verzeichnis = zwei Ebenen über diesem File  (…/2_MA_Project)
 THIS_FILE = Path(__file__).resolve()
 BASE_DIR = THIS_FILE.parents[2]
 

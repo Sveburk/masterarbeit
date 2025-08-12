@@ -189,7 +189,7 @@ def match_organization_entities(
 
 
 # Optional: anpassen oder dynamisch setzen, falls du einen Konfigurationspfad nutzt
-CSV_ORG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-organisationen.csv"
+CSV_ORG_PATH = "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Nodegoat_Export/export-organisationen.csv"
 
 # Globale Liste aller bekannten Organisationen
 try:

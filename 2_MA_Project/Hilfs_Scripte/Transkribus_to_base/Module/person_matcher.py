@@ -240,7 +240,7 @@ def get_matching_thresholds() -> dict[str, int]:
 
 # CSV-Pfad für bekannte Personen
 CSV_PATH_KNOWN_PERSONS = os.path.expanduser(
-    "/Users/svenburkhardt/Developer/masterarbeit/3_MA_Project/Data/Nodegoat_Export/export-person.csv"
+    "/Users/svenburkhardt/Developer/masterarbeit/2_MA_Project/Data/Nodegoat_Export/export-person.csv"
 )
 
 

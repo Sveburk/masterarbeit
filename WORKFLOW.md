@@ -3,7 +3,7 @@ Workflow to structure and extract data
 
 Goal
 -----
-1. **Data Collection**: Gather all data and imagery from the export folder 3_MA_Project/Transkribus_Export_*. The data is organized in documents.
+1. **Data Collection**: Gather all data and imagery from the export folder 2_MA_Project/Transkribus_Export_*. The data is organized in documents.
 2. **Schema Creation**: Create a schema for the types of data to be processed.
 3. **Data Processing**: Process the collected data to extract entities, normalize them, and resolve duplicates.
 4. **Metadata Update**: Update the metadata of the processed data to include additional information. Refer to "Akten_Gesamtübersicht.csv" where each Transkribus document has a dedicated entry, identified by the column "Transkribus-ID"
@@ -71,7 +71,7 @@ In "Akten_Gesamtübersicht.csv" you find metadata for each document. The column 
 You'll find a column called "Dokumententyp" indicating the type of document. Process the data to output json which validates against its type-schema.
 
 #### Implementation Status
-- ✅ Created `transkribus_to_base_schema.py` script in `3_MA_Project/Hilfs_Scripte/` that:
+- ✅ Created `transkribus_to_base_schema.py` script in `2_MA_Project/Hilfs_Scripte/` that:
   - Extracts metadata from Transkribus XML files
   - Parses custom attributes to identify persons, organizations, dates, and places
   - Formats dates in YYYY.MM.DD format
