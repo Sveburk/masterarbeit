@@ -1,1 +1,0 @@
-$bibtex = 'biber %O %S';
