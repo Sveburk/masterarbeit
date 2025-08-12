@@ -10,10 +10,12 @@ running the Transkribus-to-NER-Data-Pipeline created within the scope of my thes
 
 ```bash
 masterarbeit/
-├── 1_MA_Arbeit/         # Core thesis content (e.g., LaTeX files, figures, bibliography)
-├── 2_MA_Project/        # Related project code or supplementary components
-├── WORKFLOW.md          # Workflow guidance (compiling, drafting, versioning)
-├── requirements.txt     # Python dependencies for scripts or auxiliary tools
-├── README.md            # Current (placeholder) README — to be replaced with this curated version
+├── 1_MA_Arbeit/             # Core thesis content (e.g., LaTeX files, figures, bibliography)
+├── 2_MA_Project/            # Related project code or supplementary components
+│   ├── Data/                # Data analysis scripts, notebooks, and result files
+│   ├── Hilfs-Scripte/       # Input datasets or processed data files
+├── WORKFLOW.md              # Workflow guidance (compiling, drafting, versioning)
+├── requirements.txt         # Python dependencies for scripts or auxiliary tools
+├── README.md                # Repository overview (this file)
 └── .gitattributes / .gitignore
 ```
